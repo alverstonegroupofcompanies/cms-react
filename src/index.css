@@ -3024,7 +3024,7 @@ a { color: var(--accent); text-decoration: none; }
   .rdm-table td:nth-child(4) { display: none; }
 }
 
-/* Receptionist patients — clean list */
+/* Receptionist patients - clean list */
 .rp-card .search-bar { margin-bottom: 1rem; }
 .rp-table th { font-size: 0.72rem; letter-spacing: 0.04em; color: #64748b; }
 .rp-patient-cell {
