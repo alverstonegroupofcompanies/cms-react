@@ -4,13 +4,17 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Home from './pages/Home'
 import StaffLogin from './pages/StaffLogin'
 import PatientLogin from './pages/patient/Login'
+import PatientRegister from './pages/patient/Register'
 import PatientDashboard from './pages/patient/Dashboard'
+import PatientResetPassword from './pages/patient/ResetPassword'
+import PatientProfile from './pages/patient/Profile'
 import BookAppointment from './pages/patient/BookAppointment'
-import JoinQueue from './pages/patient/JoinQueue'
 import MyAppointments from './pages/patient/MyAppointments'
 import LabReports from './pages/patient/LabReports'
 import ReceptionistDashboard from './pages/receptionist/Dashboard'
 import ReceptionistPatients from './pages/receptionist/Patients'
+import ReceptionistBookAppointment from './pages/receptionist/BookAppointment'
+import ReceptionistDoctors from './pages/receptionist/Doctors'
 import QueueBoard from './pages/receptionist/QueueBoard'
 import ReceptionistAppointments from './pages/receptionist/Appointments'
 import ReceptionistPharmacy from './pages/receptionist/Pharmacy'
@@ -31,15 +35,17 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/patient/register" element={<PatientRegister />} />
           <Route path="/patient/login" element={<PatientLogin />} />
           <Route path="/receptionist/login" element={<StaffLogin role="receptionist" redirect="/receptionist/dashboard" title="Receptionist Login" />} />
           <Route path="/doctor/login" element={<StaffLogin role="doctor" redirect="/doctor/dashboard" title="Doctor Login" />} />
           <Route path="/admin/login" element={<StaffLogin role="admin" redirect="/admin/dashboard" title="Admin Login" />} />
 
           <Route element={<ProtectedRoute roles={['patient']} />}>
+            <Route path="/patient/reset-password" element={<PatientResetPassword />} />
             <Route path="/patient/dashboard" element={<PatientDashboard />} />
+            <Route path="/patient/profile" element={<PatientProfile />} />
             <Route path="/patient/book" element={<BookAppointment />} />
-            <Route path="/patient/queue" element={<JoinQueue />} />
             <Route path="/patient/appointments" element={<MyAppointments />} />
             <Route path="/patient/lab-reports" element={<LabReports />} />
           </Route>
@@ -47,6 +53,8 @@ function App() {
           <Route element={<ProtectedRoute roles={['receptionist', 'admin']} />}>
             <Route path="/receptionist/dashboard" element={<ReceptionistDashboard />} />
             <Route path="/receptionist/patients" element={<ReceptionistPatients />} />
+            <Route path="/receptionist/book" element={<ReceptionistBookAppointment />} />
+            <Route path="/receptionist/doctors" element={<ReceptionistDoctors />} />
             <Route path="/receptionist/queue" element={<QueueBoard />} />
             <Route path="/receptionist/appointments" element={<ReceptionistAppointments />} />
             <Route path="/receptionist/pharmacy" element={<ReceptionistPharmacy />} />

@@ -14,9 +14,9 @@ export default function AuthLayout({ title, subtitle, children, variant = 'staff
       <div className="auth-split-visual">
         <div className="auth-visual-overlay" />
         <div className="auth-visual-content">
-          <div className="auth-logo">Clinic<span>CMS</span></div>
-          <h1>Clinic Management System</h1>
-          <p>Book appointments, join live queue, manage your clinic — all in one place.</p>
+          <div className="auth-logo">Alverstone<span> Medcity</span></div>
+          <h1>Alverstone Medcity</h1>
+          <p>Book appointments, join live queue, and manage your health — all in one place.</p>
         </div>
       </div>
       <div className="auth-split-form">
@@ -29,7 +29,8 @@ export default function AuthLayout({ title, subtitle, children, variant = 'staff
           {variant === 'patient' && (
             <div className="auth-phone-icon">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5">
-                <rect x="5" y="2" width="14" height="20" rx="2" /><line x1="12" y1="18" x2="12.01" y2="18" />
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="M2 7l10 7 10-7" />
               </svg>
             </div>
           )}

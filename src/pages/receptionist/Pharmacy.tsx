@@ -3,6 +3,7 @@ import Layout from '../../components/Layout'
 import { dispensePrescription, getPrescriptions } from '../../api/client'
 import { receptionistNav } from '../../config/navigation'
 import type { Prescription } from '../../api/types'
+import { displayDoctorName } from '../../utils/doctorName'
 
 export default function ReceptionistPharmacy() {
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([])
@@ -36,7 +37,7 @@ export default function ReceptionistPharmacy() {
               <div className="prescription-header">
                 <div>
                   <strong>{p.patient?.name}</strong>
-                  <span className="text-muted"> — Dr. {p.doctor?.name}</span>
+                  <span className="text-muted"> — {displayDoctorName(p.doctor?.name)}</span>
                 </div>
                 <button type="button" className="btn btn-sm btn-primary" onClick={() => handleDispense(p.id)}>Dispense</button>
               </div>

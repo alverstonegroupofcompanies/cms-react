@@ -11,7 +11,8 @@ const DEV_REDIRECTS = {
 } as const
 
 const portals = [
-  { to: '/patient/login', className: 'patient', icon: 'calendar' as const, title: 'Patient Portal', desc: 'Book slots, join queue, view reports' },
+  { to: '/patient/register', className: 'patient', icon: 'calendar' as const, title: 'Patient Register', desc: 'Create your medical profile' },
+  { to: '/patient/login', className: 'patient', icon: 'calendar' as const, title: 'Patient Login', desc: 'Book appointments and view reports' },
   { to: '/receptionist/login', className: 'receptionist', icon: 'users' as const, title: 'Receptionist', desc: 'Register patients, manage queue' },
   { to: '/doctor/login', className: 'doctor', icon: 'stethoscope' as const, title: 'Doctor Panel', desc: 'View schedule, call next patient' },
   { to: '/admin/login', className: 'admin', icon: 'shield' as const, title: 'Admin Panel', desc: 'Manage doctors, staff, dashboard' },
@@ -38,9 +39,9 @@ export default function Home() {
       <div className="home-visual">
         <div className="home-visual-overlay" />
         <div className="home-visual-content">
-          <div className="home-logo">Clinic<span>CMS</span></div>
-          <h1>Clinic Management System</h1>
-          <p>Book appointments, join live queue, manage your clinic — all in one place.</p>
+          <div className="home-logo">Alverstone<span> Medcity</span></div>
+          <h1>Alverstone Medcity</h1>
+          <p>Book appointments and manage your health — all in one place.</p>
         </div>
       </div>
       <div className="home-panel">

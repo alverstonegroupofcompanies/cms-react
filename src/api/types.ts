@@ -5,19 +5,81 @@ export interface User {
   phone: string | null
   role: 'admin' | 'doctor' | 'receptionist' | 'patient'
   status: string
+  must_reset_password?: boolean
+  has_password?: boolean
   patient?: Patient
   doctor?: Doctor
+}
+
+export interface Clinic {
+  id: number
+  name: string
+  code: string
+  address?: string
+}
+
+export interface Department {
+  id: number
+  clinic_id: number
+  name: string
+  code?: string
 }
 
 export interface Patient {
   id: number
   patient_code: string
   name: string
+  user_id?: number
+  registration_source?: string
+  first_name?: string
+  last_name?: string
   phone: string
   email?: string
   dob?: string
   gender?: string
+  blood_group?: string
+  marital_status?: string
+  symptoms?: string
+  current_medications?: string
+  taking_medications?: boolean
   address?: string
+  address_street?: string
+  address_line2?: string
+  city?: string
+  state?: string
+  postal_code?: string
+  emergency_contact?: string
+  emergency_contact_first_name?: string
+  emergency_contact_last_name?: string
+  emergency_contact_relationship?: string
+  emergency_contact_phone?: string
+  photo_path?: string | null
+  photo_url?: string | null
+  upcoming_appointment?: PatientVisitSummary | null
+  last_appointment?: PatientVisitSummary | null
+}
+
+export interface PatientVisitSummary {
+  id: number
+  appointment_date: string
+  slot_time?: string | null
+  status: string
+  doctor?: { id: number; name: string; specialization?: string } | null
+}
+
+export interface RegisterPatientPayload {
+  first_name: string
+  last_name?: string
+  phone: string
+  email?: string
+  password: string
+  password_confirmation: string
+  gender?: 'male' | 'female' | 'other'
+  dob?: string
+  address?: string
+  blood_group?: string
+  emergency_contact?: string
+  code?: string
 }
 
 export interface Doctor {
@@ -27,7 +89,13 @@ export interface Doctor {
   phone: string
   email: string
   status: string
+  clinic_id?: number
+  department_id?: number
   consultation_fee?: number
+  lunch_start?: string
+  lunch_end?: string
+  clinic?: Clinic
+  department?: Department
   availability?: DoctorAvailability[]
 }
 
@@ -43,11 +111,21 @@ export interface Appointment {
   id: number
   patient_id: number
   doctor_id: number
+  clinic_id?: number
+  department_id?: number
   appointment_date: string
   slot_time: string
   status: string
+  type?: string
   patient?: Patient
   doctor?: Doctor
+  clinic?: Clinic
+  department?: Department
+}
+
+export interface BookingConfirmation {
+  appointment: Appointment
+  queue_token: QueueToken
 }
 
 export interface QueueToken {
@@ -63,6 +141,31 @@ export interface QueueToken {
 export interface Slot {
   time: string
   slot_time: string
+  duration_minutes?: number
+  status?: string
+}
+
+export interface DayScheduleSlot {
+  time: string
+  slot_time: string
+  duration_minutes: number
+  status: 'available' | 'booked' | 'lunch' | 'past' | string
+  appointment_id?: number
+  appointment_status?: string
+  appointment_type?: string
+  patient?: {
+    id: number
+    name: string
+    patient_code: string
+    phone: string
+    email?: string | null
+  } | null
+}
+
+export interface AvailableDate {
+  date: string
+  day: string
+  label: string
 }
 
 export interface Medicine {

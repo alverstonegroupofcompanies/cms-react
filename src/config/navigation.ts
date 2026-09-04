@@ -8,8 +8,8 @@ export interface NavItem {
 
 export const patientNav: NavItem[] = [
   { to: '/patient/dashboard', label: 'Dashboard', icon: 'dashboard' },
+  { to: '/patient/profile', label: 'My Profile', icon: 'users' },
   { to: '/patient/book', label: 'Book Appointment', icon: 'calendar' },
-  { to: '/patient/queue', label: 'Join Queue', icon: 'queue' },
   { to: '/patient/appointments', label: 'My Appointments', icon: 'calendar' },
   { to: '/patient/lab-reports', label: 'Lab Reports', icon: 'flask' },
 ]
@@ -17,8 +17,10 @@ export const patientNav: NavItem[] = [
 export const receptionistNav: NavItem[] = [
   { to: '/receptionist/dashboard', label: 'Dashboard', icon: 'dashboard' },
   { to: '/receptionist/patients', label: 'Patients', icon: 'users' },
-  { to: '/receptionist/queue', label: 'Queue Board', icon: 'queue' },
+  { to: '/receptionist/book', label: 'Book', icon: 'calendar' },
   { to: '/receptionist/appointments', label: 'Appointments', icon: 'calendar' },
+  { to: '/receptionist/doctors', label: 'Doctors', icon: 'stethoscope' },
+  { to: '/receptionist/queue', label: 'Queue', icon: 'queue' },
   { to: '/receptionist/pharmacy', label: 'Pharmacy', icon: 'pill' },
 ]
 

@@ -25,7 +25,7 @@ export default function Layout({ title, subtitle, nav, children }: LayoutProps) 
     <div className="layout">
       <aside className="sidebar">
         <div className="sidebar-brand">
-          <div className="sidebar-logo">Clinic<span>CMS</span></div>
+          <div className="sidebar-logo">Alverstone<span> Medcity</span></div>
         </div>
         <div className="sidebar-user">
           <div className="avatar">{initials}</div>
