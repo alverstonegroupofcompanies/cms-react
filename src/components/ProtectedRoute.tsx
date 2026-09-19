@@ -10,8 +10,23 @@ export default function ProtectedRoute({ roles }: Props) {
   const location = useLocation()
 
   if (loading) return <div className="loading">Loading...</div>
-  if (!user) return <Navigate to="/" replace />
-  if (roles && !roles.includes(user.role)) return <Navigate to="/" replace />
+  if (!user) {
+    if (location.pathname.startsWith('/patient')) {
+      const next = `${location.pathname}${location.search || ''}`
+      return (
+        <Navigate
+          to={`/patient/login?next=${encodeURIComponent(next)}`}
+          replace
+          state={{ from: location.pathname }}
+        />
+      )
+    }
+    return <Navigate to="/" replace state={{ from: location.pathname }} />
+  }
+  if (roles && !roles.includes(user.role)) {
+    const fallback = user.role === 'patient' ? '/patient/dashboard' : '/'
+    return <Navigate to={fallback} replace />
+  }
 
   if (
     user.role === 'patient' &&

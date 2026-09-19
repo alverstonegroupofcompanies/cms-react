@@ -1,6 +1,7 @@
 import type { Slot } from '../api/types'
 
-function localDateString(): string {
+/** Local calendar date as YYYY-MM-DD (not UTC). */
+export function localDateString(): string {
   const d = new Date()
   const y = d.getFullYear()
   const m = String(d.getMonth() + 1).padStart(2, '0')
@@ -17,7 +18,9 @@ export function filterPastSlotsForToday(slots: Slot[], date: string): Slot[] {
   const nowMinutes = now.getHours() * 60 + now.getMinutes()
 
   return slots.filter((slot) => {
-    const [h, m] = slot.slot_time.split(':').map(Number)
+    if (!slot?.slot_time) return false
+    const [h, m] = String(slot.slot_time).split(':').map(Number)
+    if (Number.isNaN(h) || Number.isNaN(m)) return false
     return h * 60 + m > nowMinutes
   })
 }

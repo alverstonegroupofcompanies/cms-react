@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import PatientPage from '../../components/PatientPage'
+import PasswordInput from '../../components/PasswordInput'
 import { getMe, getMyProfile, resetPassword, updateMyProfile } from '../../api/client'
 import type { Patient, User } from '../../api/types'
 import { useAuth } from '../../context/AuthContext'
@@ -73,7 +74,7 @@ export default function PatientProfile() {
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
-  const [pwdForm, setPwdForm] = useState({ current_password: '', password: '', password_confirmation: '' })
+  const [pwdForm, setPwdForm] = useState({ current_password: '', password: '' })
   const [pwdSaving, setPwdSaving] = useState(false)
   const [pwdMessage, setPwdMessage] = useState('')
   const [pwdError, setPwdError] = useState('')
@@ -152,10 +153,6 @@ export default function PatientProfile() {
       setPwdError('Password must be at least 8 characters')
       return
     }
-    if (pwdForm.password !== pwdForm.password_confirmation) {
-      setPwdError('Passwords do not match')
-      return
-    }
     if (hasPassword && !pwdForm.current_password) {
       setPwdError('Current password is required')
       return
@@ -166,11 +163,10 @@ export default function PatientProfile() {
     try {
       const { data } = await resetPassword(
         pwdForm.password,
-        pwdForm.password_confirmation,
         hasPassword ? pwdForm.current_password : undefined
       )
       updateUser(data.user)
-      setPwdForm({ current_password: '', password: '', password_confirmation: '' })
+      setPwdForm({ current_password: '', password: '' })
       setPwdMessage(hasPassword ? 'Password updated successfully' : 'Password set successfully — you can now sign in with mobile/email and password')
     } catch (err: unknown) {
       const res = (err as { response?: { data?: { message?: string; errors?: Record<string, string[]> } } })?.response?.data
@@ -182,8 +178,10 @@ export default function PatientProfile() {
 
   if (loading || !form || !meta) {
     return (
-      <PatientPage title="My Profile" subtitle="Loading...">
-        <div className="ph-card"><p className="ph-muted">Loading profile...</p></div>
+      <PatientPage kicker="Account" title="My profile" subtitle="Loading your details…">
+        <div className="ph-page-panel">
+          <p className="ph-home-empty" style={{ margin: 0 }}>Loading profile…</p>
+        </div>
       </PatientPage>
     )
   }
@@ -193,7 +191,27 @@ export default function PatientProfile() {
   const initials = fullName.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()
 
   return (
-    <PatientPage title="My Profile" subtitle={fullName || 'Manage your health information'}>
+    <PatientPage
+      kicker="Account"
+      title="My profile"
+      subtitle="Manage your personal and health information."
+      actions={
+        !editing ? (
+          <button type="button" className="ph-btn ph-btn-primary" onClick={() => setEditing(true)}>
+            Edit profile
+          </button>
+        ) : (
+          <>
+            <button type="button" className="ph-btn ph-btn-outline" onClick={handleCancel}>
+              Cancel
+            </button>
+            <button type="submit" form="profile-form" className="ph-btn ph-btn-primary" disabled={saving}>
+              {saving ? 'Saving…' : 'Save changes'}
+            </button>
+          </>
+        )
+      }
+    >
       {isWelcome && (
         <div className="ph-alert ph-alert-success">
           Welcome! Your registration is complete. Review your details below and update anything if needed.
@@ -202,7 +220,7 @@ export default function PatientProfile() {
       {message && <div className="ph-alert ph-alert-success">{message}</div>}
       {error && <div className="ph-alert ph-alert-error">{error}</div>}
 
-      <div className="ph-profile-hero">
+      <div className="ph-profile-hero ph-page-panel">
         <div className="ph-profile-hero-avatar">{initials}</div>
         <div className="ph-profile-hero-info">
           <h2>{fullName || 'Patient'}</h2>
@@ -210,25 +228,13 @@ export default function PatientProfile() {
           <p className="ph-muted">{meta.email}</p>
           {age && <p className="ph-muted">Age: {formatAge(age)}</p>}
         </div>
-        <div className="ph-profile-hero-actions">
-          {!editing ? (
-            <button type="button" className="ph-btn ph-btn-primary" onClick={() => setEditing(true)}>
-              Edit Profile
-            </button>
-          ) : (
-            <>
-              <button type="button" className="ph-btn ph-btn-outline" onClick={handleCancel}>Cancel</button>
-              <button type="submit" form="profile-form" className="ph-btn ph-btn-primary" disabled={saving}>
-                {saving ? 'Saving...' : 'Save Changes'}
-              </button>
-            </>
-          )}
-        </div>
       </div>
 
       <form id="profile-form" onSubmit={handleSave} className="ph-profile-sections">
-        <section className="ph-card ph-profile-section">
-          <h3 className="ph-section-heading">Personal Information</h3>
+        <section className="ph-page-panel ph-profile-section">
+          <div className="ph-page-panel-head">
+            <h3>Personal information</h3>
+          </div>
           {!editing ? (
             <dl className="ph-dl">
               <div><dt>First Name</dt><dd>{form.first_name || '—'}</dd></div>
@@ -254,8 +260,10 @@ export default function PatientProfile() {
           )}
         </section>
 
-        <section className="ph-card ph-profile-section">
-          <h3 className="ph-section-heading">Address</h3>
+        <section className="ph-page-panel ph-profile-section">
+          <div className="ph-page-panel-head">
+            <h3>Address</h3>
+          </div>
           {!editing ? (
             <dl className="ph-dl">
               <div><dt>Street</dt><dd>{form.address_street || '—'}</dd></div>
@@ -275,8 +283,10 @@ export default function PatientProfile() {
           )}
         </section>
 
-        <section className="ph-card ph-profile-section">
-          <h3 className="ph-section-heading">Medical Information</h3>
+        <section className="ph-page-panel ph-profile-section">
+          <div className="ph-page-panel-head">
+            <h3>Medical information</h3>
+          </div>
           {!editing ? (
             <dl className="ph-dl">
               <div className="ph-full"><dt>Current Symptoms</dt><dd>{form.symptoms || 'None reported'}</dd></div>
@@ -300,8 +310,10 @@ export default function PatientProfile() {
           )}
         </section>
 
-        <section className="ph-card ph-profile-section">
-          <h3 className="ph-section-heading">Emergency Contact</h3>
+        <section className="ph-page-panel ph-profile-section">
+          <div className="ph-page-panel-head">
+            <h3>Emergency contact</h3>
+          </div>
           {!editing ? (
             <dl className="ph-dl">
               <div><dt>First Name</dt><dd>{form.emergency_contact_first_name || '—'}</dd></div>
@@ -320,8 +332,10 @@ export default function PatientProfile() {
         </section>
       </form>
 
-      <section className="ph-card ph-profile-section" style={{ marginTop: '1.25rem' }}>
-        <h3 className="ph-section-heading">{hasPassword ? 'Change Password' : 'Set Password'}</h3>
+      <section className="ph-page-panel ph-profile-section" style={{ marginTop: '0.15rem' }}>
+        <div className="ph-page-panel-head">
+          <h3>{hasPassword ? 'Change password' : 'Set password'}</h3>
+        </div>
         <p className="ph-muted" style={{ marginBottom: '1rem' }}>
           {hasPassword
             ? 'Update your login password. Use mobile or email with this password on the Sign in page.'
@@ -333,9 +347,7 @@ export default function PatientProfile() {
           {hasPassword && (
             <div className="ph-form-group ph-full">
               <label className="ph-label-form">Current Password</label>
-              <input
-                className="ph-input"
-                type="password"
+              <PasswordInput
                 value={pwdForm.current_password}
                 onChange={(e) => {
                   setPwdForm((p) => ({ ...p, current_password: e.target.value }))
@@ -347,11 +359,9 @@ export default function PatientProfile() {
               />
             </div>
           )}
-          <div className="ph-form-group">
+          <div className="ph-form-group ph-full">
             <label className="ph-label-form">New Password</label>
-            <input
-              className="ph-input"
-              type="password"
+            <PasswordInput
               value={pwdForm.password}
               onChange={(e) => {
                 setPwdForm((p) => ({ ...p, password: e.target.value }))
@@ -362,22 +372,6 @@ export default function PatientProfile() {
               autoComplete="new-password"
               required
               placeholder="At least 8 characters"
-            />
-          </div>
-          <div className="ph-form-group">
-            <label className="ph-label-form">Confirm New Password</label>
-            <input
-              className="ph-input"
-              type="password"
-              value={pwdForm.password_confirmation}
-              onChange={(e) => {
-                setPwdForm((p) => ({ ...p, password_confirmation: e.target.value }))
-                setPwdError('')
-                setPwdMessage('')
-              }}
-              minLength={8}
-              autoComplete="new-password"
-              required
             />
           </div>
           <div className="ph-form-group ph-full">

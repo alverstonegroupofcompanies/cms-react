@@ -28,8 +28,8 @@ type VisitItem = {
 }
 
 const STATUS_LABELS: Record<string, string> = {
-  booked: 'Booked',
-  checked_in: 'Checked In',
+  booked: 'Scheduled',
+  checked_in: 'In queue',
   completed: 'Completed',
   cancelled: 'Cancelled',
   no_show: 'Missed',
@@ -37,6 +37,8 @@ const STATUS_LABELS: Record<string, string> = {
   ordered: 'Planned',
   pending: 'Planned',
   in_progress: 'In Progress',
+  in_consultation: 'With doctor',
+  waiting: 'In queue',
 }
 
 function parseList<T>(data: unknown): T[] {
@@ -110,9 +112,15 @@ function appointmentToVisit(a: Appointment, _index: number): VisitItem {
     status: missed ? 'missed' : a.status,
     statusLabel: missed
       ? 'Missed'
-      : isToday(date) && a.status === 'booked'
-        ? 'Today'
-        : (STATUS_LABELS[a.status] || a.status),
+      : a.status === 'checked_in'
+        ? (a.queue_token?.status === 'in_consultation' ? 'With doctor' : 'In queue')
+        : a.status === 'cancelled'
+          ? 'Cancelled by clinic'
+          : isToday(date) && a.status === 'booked' && a.queue_token
+            ? 'In queue'
+            : isToday(date) && a.status === 'booked'
+              ? 'Today'
+              : (STATUS_LABELS[a.status] || a.status),
     accent,
     appointmentId: a.id,
     cancellable: a.status === 'booked' || a.status === 'no_show',
@@ -181,7 +189,16 @@ export default function VisitsSection({
       .finally(() => setLoading(false))
   }
 
-  useEffect(() => { load() }, [patientId])
+  useEffect(() => {
+    load()
+    const onFocus = () => load()
+    window.addEventListener('focus', onFocus)
+    const timer = window.setInterval(load, 15000)
+    return () => {
+      window.removeEventListener('focus', onFocus)
+      window.clearInterval(timer)
+    }
+  }, [patientId])
 
   const upcomingVisits = useMemo(() => {
     const appts = appointments

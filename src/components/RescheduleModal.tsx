@@ -15,12 +15,14 @@ export type RescheduleTarget = {
   doctorName: string
   appointmentDate: string
   slotTime: string
+  /** Optional — shown when staff reschedules for a patient */
+  patientName?: string
 }
 
 interface Props {
   target: RescheduleTarget | null
   onClose: () => void
-  onSuccess: () => void
+  onSuccess: (result?: { date: string; slot: string }) => void
 }
 
 function normalizeSlotTime(slotTime: string): string {
@@ -86,6 +88,7 @@ export default function RescheduleModal({ target, onClose, onSuccess }: Props) {
   const currentDate = target.appointmentDate.slice(0, 10)
   const currentSlot = normalizeSlotTime(target.slotTime)
   const unchanged = date === currentDate && selectedSlot === currentSlot
+  const forPatient = Boolean(target.patientName)
 
   const handleSave = async () => {
     if (!selectedSlot) return
@@ -96,7 +99,7 @@ export default function RescheduleModal({ target, onClose, onSuccess }: Props) {
         appointment_date: date,
         slot_time: selectedSlot,
       })
-      onSuccess()
+      onSuccess({ date, slot: selectedSlot })
       onClose()
     } catch {
       setError('Could not reschedule. The slot may have been taken.')
@@ -116,7 +119,11 @@ export default function RescheduleModal({ target, onClose, onSuccess }: Props) {
         <div className="ph-modal-head">
           <div>
             <h2 id="reschedule-title" className="ph-modal-title">Reschedule appointment</h2>
-            <p className="ph-modal-sub">Pick a new date and time with the same doctor</p>
+            <p className="ph-modal-sub">
+              {forPatient
+                ? `For ${target.patientName} — pick a new date and time (same as patient booking)`
+                : 'Pick a new date and time with the same doctor'}
+            </p>
           </div>
           <button type="button" className="ph-modal-close" onClick={onClose} aria-label="Close">
             ×
@@ -128,6 +135,7 @@ export default function RescheduleModal({ target, onClose, onSuccess }: Props) {
           <div>
             <strong>{displayDoctorName(target.doctorName)}</strong>
             <span className="ph-muted">Current: {formatCurrentSlot(target.appointmentDate, target.slotTime)}</span>
+            {forPatient && <span className="ph-muted">Patient: {target.patientName}</span>}
           </div>
         </div>
 

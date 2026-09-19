@@ -43,7 +43,15 @@ export default function AdminLab() {
         ) : (
           orders.map((o) => (
             <div key={o.id} className="prescription-card">
-              <strong>{o.patient?.name}</strong>
+              <div className="rx-bill-identity">
+                <strong>{o.patient?.name}</strong>
+                <span className="text-muted">
+                  {[o.patient?.patient_code, o.queue_token?.display_code, o.worksheet?.worksheet_code]
+                    .filter(Boolean)
+                    .join(' · ') || '—'}
+                </span>
+                <span className="rx-bill-id">Order #{o.id}</span>
+              </div>
               <span className="text-muted"> — {o.items?.map((i) => i.lab_test.name).join(', ')}</span>
               <div style={{ marginTop: '0.75rem' }}>
                 <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => e.target.files?.[0] && handleUpload(o.id, e.target.files[0])} />

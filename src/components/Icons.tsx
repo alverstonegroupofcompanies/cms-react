@@ -140,6 +140,109 @@ export function IconX({ size = 20, className = '' }: IconProps) {
   )
 }
 
+export function IconSearch({ size = 20, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  )
+}
+
+export function IconTrash({ size = 20, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+      <path d="M10 11v6M14 11v6" /><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+    </svg>
+  )
+}
+
+export function IconArrowLeft({ size = 20, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+    </svg>
+  )
+}
+
+export function IconNotes({ size = 20, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="13" y2="17" />
+    </svg>
+  )
+}
+
+export function IconAlert({ size = 20, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10.3 3.2 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.2a2 2 0 0 0-3.4 0z" />
+      <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
+    </svg>
+  )
+}
+
+export function IconDroplet({ size = 20, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2.7c.3 0 6.5 6.2 6.5 10.8a6.5 6.5 0 1 1-13 0C5.5 8.9 11.7 2.7 12 2.7z" />
+    </svg>
+  )
+}
+
+export function IconReceipt({ size = 20, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 2v20l3-2 3 2 3-2 3 2 3-2 3 2V2l-3 2-3-2-3 2-3-2-3 2-3-2z" />
+      <line x1="8" y1="10" x2="16" y2="10" /><line x1="8" y1="14" x2="16" y2="14" />
+    </svg>
+  )
+}
+
+export function IconEnter({ size = 20, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 10H4V4" /><path d="M4 10c0 5 4 8 9 8h7" /><polyline points="15 14 20 10 15 6" />
+    </svg>
+  )
+}
+
+export function IconBuilding({ size = 20, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 21h18" />
+      <path d="M5 21V7l7-4 7 4v14" />
+      <path d="M9 21v-6h6v6" />
+      <path d="M9 9h.01M15 9h.01M9 13h.01M15 13h.01" />
+    </svg>
+  )
+}
+
+export function IconHeart({ size = 20, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19.5 12.572 12 20l-7.5-7.428A5 5 0 1 1 12 5.072a5 5 0 1 1 7.5 7.5Z" />
+    </svg>
+  )
+}
+
+export function IconQuote({ size = 20, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M7.2 18c-1.8 0-3.2-1.5-3.2-3.4 0-2.6 1.8-5.1 5.1-7.4L10.5 9c-1.6 1.1-2.5 2.3-2.5 3.6 0 .4.1.7.3 1 .7-.4 1.5-.3 2.1.3.7.7.7 1.8 0 2.5-.6.6-1.5.8-2.2.6Zm9.5 0c-1.8 0-3.2-1.5-3.2-3.4 0-2.6 1.8-5.1 5.1-7.4L20 9c-1.6 1.1-2.5 2.3-2.5 3.6 0 .4.1.7.3 1 .7-.4 1.5-.3 2.1.3.7.7.7 1.8 0 2.5-.6.6-1.5.8-2.2.6Z" />
+    </svg>
+  )
+}
+
+export function IconChevronDown({ size = 20, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  )
+}
+
 export const iconMap = {
   dashboard: IconDashboard,
   calendar: IconCalendar,
@@ -149,6 +252,12 @@ export const iconMap = {
   flask: IconFlask,
   pill: IconPill,
   shield: IconShield,
+  clock: IconClock,
+  building: IconBuilding,
+  heart: IconHeart,
+  droplet: IconDroplet,
+  quote: IconQuote,
+  chevronDown: IconChevronDown,
 } as const
 
 export type IconName = keyof typeof iconMap
