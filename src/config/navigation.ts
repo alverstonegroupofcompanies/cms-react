@@ -23,6 +23,7 @@ export const receptionistNav: NavItem[] = [
   { to: '/receptionist/appointments', label: 'Appointments', icon: 'calendar' },
   { to: '/receptionist/doctors', label: 'Doctors', icon: 'stethoscope' },
   { to: '/receptionist/queue', label: 'Queue', icon: 'queue' },
+  { to: '/receptionist/displays', label: 'TV Displays', icon: 'tv' },
   { to: '/receptionist/pharmacy', label: 'Pharmacy', icon: 'pill' },
 ]
 
@@ -38,6 +39,7 @@ export const adminNav: NavItem[] = [
   { to: '/admin/doctors', label: 'Doctors', icon: 'stethoscope' },
   { to: '/admin/patients', label: 'Patients', icon: 'users' },
   { to: '/admin/staff', label: 'Staff', icon: 'shield' },
+  { to: '/admin/displays', label: 'TV Displays', icon: 'tv' },
   { to: '/admin/medicines', label: 'Medicines', icon: 'pill' },
   { to: '/admin/lab', label: 'Lab Tests', icon: 'flask' },
 ]

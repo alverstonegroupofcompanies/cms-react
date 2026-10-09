@@ -67,7 +67,7 @@ export default function ReceptionistPharmacy() {
   return (
     <Layout
       title="Pharmacy (view only)"
-      subtitle="Reception can preview bills — pharmacy staff edit qty / hand over medicines"
+      subtitle="Reception can preview prescriptions and dispense status — pharmacy portal handles billing, purchase, and handover"
       nav={receptionistNav}
     >
       {error && <div className="alert alert-error">{error}</div>}
@@ -78,7 +78,7 @@ export default function ReceptionistPharmacy() {
           className={`pbh-range${tab === 'bills' ? ' pbh-range-on' : ''}`}
           onClick={() => { setSelected(null); setTab('bills') }}
         >
-          Visit bills
+          Prescription orders
         </button>
         <button
           type="button"
@@ -92,7 +92,7 @@ export default function ReceptionistPharmacy() {
       {tab === 'bills' && selected && (
         <div className="card">
           <div className="card-header">
-            <h3>Bill preview · {selected.bill_code}</h3>
+            <h3>Prescription details · {selected.bill_code}</h3>
             <button type="button" className="btn btn-sm btn-secondary" onClick={() => setSelected(null)}>
               Back
             </button>
@@ -102,6 +102,7 @@ export default function ReceptionistPharmacy() {
           </p>
           <VisitBillPreview
             readOnly
+            hidePrices
             billCode={selected.bill_code}
             patientName={selected.patient?.name || 'Patient'}
             worksheetCode={selected.worksheet?.worksheet_code || `WS #${selected.worksheet_id}`}
@@ -126,11 +127,11 @@ export default function ReceptionistPharmacy() {
               className={`pbh-range${filter === 'all' ? ' pbh-range-on' : ''}`}
               onClick={() => setFilter('all')}
             >
-              All bills
+              All orders
             </button>
           </div>
           {bills.length === 0 ? (
-            <p className="empty-state">No bills here yet.</p>
+            <p className="empty-state">No prescription orders here yet.</p>
           ) : (
             <div className="staff-doctor-cards" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))' }}>
               {bills.map((b) => {
@@ -142,13 +143,13 @@ export default function ReceptionistPharmacy() {
                       <h4 className="staff-doctor-card-name">{b.patient?.name || 'Patient'}</h4>
                       <p className="staff-doctor-card-spec">{b.bill_code}</p>
                       <p className="staff-doctor-card-meta">
-                        {formatInr(b.grand_total)} · Pharmacy {b.pharmacy_status}
+                        Pharmacy: <strong style={{ textTransform: 'capitalize' }}>{b.pharmacy_status}</strong>
                       </p>
                       <p className="staff-doctor-card-meta">
-                        Purchased {bought}/{pharm.length}
+                        Dispensed {bought}/{pharm.length} items
                       </p>
                       <div className="staff-doctor-card-actions">
-                        <button type="button" className="btn btn-sm btn-secondary">View bill</button>
+                        <button type="button" className="btn btn-sm btn-secondary">View details</button>
                       </div>
                     </div>
                   </article>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Layout from '../../components/Layout'
 import {
   QueueRowActions,
@@ -7,7 +8,7 @@ import {
   queueStatusLabel,
   type QueueRow,
 } from '../../components/QueueRowActions'
-import { IconQueue, IconStethoscope } from '../../components/Icons'
+import { IconQueue, IconStethoscope, IconTv } from '../../components/Icons'
 import { cancelToken, checkInQueueToken, checkOutQueueToken, getDoctors } from '../../api/client'
 import { useQueuePolling } from '../../hooks/useQueuePolling'
 import { receptionistNav } from '../../config/navigation'
@@ -102,6 +103,29 @@ export default function QueueBoard() {
               <span className="rdm-live">
                 <span className="rdm-live-dot" aria-hidden /> Live
               </span>
+            </div>
+            <div className="rdm-bar-right" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <a
+                href={doctorId ? `/tv?doctor_id=${doctorId}&layout=horizontal` : '/tv?layout=horizontal'}
+                target="_blank"
+                rel="noreferrer"
+                className="rdm-linkbtn"
+                title="Launch Horizontal TV Waiting Display (16:9 Landscape)"
+              >
+                <IconTv size={15} /> TV (Horizontal)
+              </a>
+              <a
+                href={doctorId ? `/tv?doctor_id=${doctorId}&layout=vertical` : '/tv?layout=vertical'}
+                target="_blank"
+                rel="noreferrer"
+                className="rdm-linkbtn"
+                title="Launch Vertical TV Waiting Display (9:16 Portrait)"
+              >
+                <IconTv size={15} /> TV (Vertical)
+              </a>
+              <Link to="/receptionist/displays" className="rdm-linkbtn" style={{ fontWeight: 600 }}>
+                Doctor Displays →
+              </Link>
             </div>
           </div>
         </div>

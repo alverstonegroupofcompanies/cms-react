@@ -22,6 +22,7 @@ const DAY_OPTIONS = [
 type FormState = {
   name: string
   specialization: string
+  room_number: string
   email: string
   phone: string
   phone_secondary: string
@@ -38,6 +39,7 @@ type FormState = {
 const emptyForm = (): FormState => ({
   name: '',
   specialization: '',
+  room_number: '',
   email: '',
   phone: '',
   phone_secondary: '',
@@ -57,6 +59,7 @@ function formFromDoctor(doctor: Doctor): FormState {
   return {
     name: doctor.name || '',
     specialization: doctor.specialization || '',
+    room_number: doctor.room_number || '',
     email: doctor.email || '',
     phone: doctor.phone || '',
     phone_secondary: doctor.phone_secondary || '',
@@ -95,6 +98,7 @@ function toPayload(form: FormState, photo: File | null): FormData | Record<strin
     const fd = new FormData()
     fd.append('name', form.name)
     fd.append('specialization', form.specialization)
+    if (form.room_number) fd.append('room_number', form.room_number)
     fd.append('email', form.email)
     fd.append('phone', form.phone)
     if (form.phone_secondary) fd.append('phone_secondary', form.phone_secondary)
@@ -110,6 +114,7 @@ function toPayload(form: FormState, photo: File | null): FormData | Record<strin
   return {
     name: form.name,
     specialization: form.specialization,
+    room_number: form.room_number || null,
     email: form.email,
     phone: form.phone,
     phone_secondary: form.phone_secondary || null,
@@ -302,6 +307,17 @@ export default function DoctorManageForm({ doctor, onDone, onCancel }: Props) {
             value={form.specialization}
             onChange={(e) => setForm({ ...form, specialization: e.target.value })}
             required
+          />
+        </div>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label>Consultation Room / OPD (for TV display)</label>
+          <input
+            value={form.room_number}
+            placeholder="e.g. OPD 1, Room 102, Cabin A"
+            onChange={(e) => setForm({ ...form, room_number: e.target.value })}
           />
         </div>
       </div>

@@ -139,6 +139,28 @@ export default function DoctorQueue() {
             <Link to="/doctor/dashboard" className="rdm-linkbtn">
               ← Day board
             </Link>
+            {doctorId && (
+              <>
+                <a
+                  href={`/tv?doctor_id=${doctorId}&layout=horizontal`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rdm-linkbtn"
+                  title="Launch this doctor's Room TV in Horizontal mode"
+                >
+                  📺 Room TV (Horizontal)
+                </a>
+                <a
+                  href={`/tv?doctor_id=${doctorId}&layout=vertical`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rdm-linkbtn"
+                  title="Launch this doctor's Room TV in Vertical mode"
+                >
+                  📱 Room TV (Vertical)
+                </a>
+              </>
+            )}
           </div>
           <div className="rdm-bar-right">
             <button

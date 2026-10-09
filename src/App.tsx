@@ -37,6 +37,8 @@ import AdminPatients from './pages/admin/Patients'
 import AdminStaff from './pages/admin/Staff'
 import AdminMedicines from './pages/admin/Medicines'
 import AdminLab from './pages/admin/Lab'
+import TvDisplay from './pages/TvDisplay'
+import TvDisplayManager from './pages/receptionist/TvDisplayManager'
 
 function App() {
   return (
@@ -44,6 +46,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/tv" element={<TvDisplay />} />
+          <Route path="/tv-display" element={<TvDisplay />} />
           <Route path="/patient" element={<PatientLanding />} />
           <Route path="/patient/about" element={<PatientAbout />} />
           <Route path="/patient/contact" element={<Navigate to={{ pathname: '/patient', hash: 'contact' }} replace />} />
@@ -71,6 +75,7 @@ function App() {
             <Route path="/receptionist/book" element={<ReceptionistBookAppointment />} />
             <Route path="/receptionist/doctors" element={<ReceptionistDoctors />} />
             <Route path="/receptionist/queue" element={<QueueBoard />} />
+            <Route path="/receptionist/displays" element={<TvDisplayManager />} />
             <Route path="/receptionist/appointments" element={<ReceptionistAppointments />} />
             <Route path="/receptionist/calendar" element={<ReceptionistCalendar />} />
             <Route path="/receptionist/pharmacy" element={<ReceptionistPharmacy />} />
@@ -100,6 +105,7 @@ function App() {
             <Route path="/admin/doctors" element={<AdminDoctors />} />
             <Route path="/admin/patients" element={<AdminPatients />} />
             <Route path="/admin/staff" element={<AdminStaff />} />
+            <Route path="/admin/displays" element={<TvDisplayManager />} />
             <Route path="/admin/medicines" element={<AdminMedicines />} />
             <Route path="/admin/lab" element={<AdminLab />} />
           </Route>

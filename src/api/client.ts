@@ -174,6 +174,13 @@ export const getQueueDayBoard = (date?: string, doctorId?: number) =>
   api.get('/queue/day-board', { params: { date, doctor_id: doctorId } })
 export const getQueueStatus = (doctorId: number, date?: string) =>
   api.get('/queue/status', { params: { doctor_id: doctorId, date } })
+export const getTvDisplay = (doctorId?: number | null, date?: string) =>
+  api.get('/queue/tv-display', {
+    params: {
+      ...(doctorId ? { doctor_id: doctorId } : {}),
+      ...(date ? { date } : {}),
+    },
+  })
 export const getMyPosition = (doctorId: number, date?: string) =>
   api.get('/queue/my-position', { params: { doctor_id: doctorId, date } })
 export const getMyActiveQueue = (date?: string) =>

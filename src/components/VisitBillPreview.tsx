@@ -163,6 +163,7 @@ type Props = {
   confirming?: boolean
   readOnly?: boolean
   billCode?: string | null
+  hidePrices?: boolean
   onBack?: () => void
   onConfirm?: () => void
 }
@@ -175,6 +176,7 @@ export default function VisitBillPreview({
   confirming,
   readOnly,
   billCode,
+  hidePrices = false,
   onBack,
   onConfirm,
 }: Props) {
@@ -192,7 +194,11 @@ export default function VisitBillPreview({
         <header className="ws-bill-head">
           <div>
             <p className="ws-bill-kicker">
-              {readOnly ? 'Visit bill' : 'Visit summary · bill preview'}
+              {hidePrices
+                ? 'Prescription & visit details'
+                : readOnly
+                  ? 'Visit bill'
+                  : 'Visit summary · bill preview'}
               {billCode ? ` · ${billCode}` : ''}
             </p>
             <h2 id="ws-bill-title">{patientName}</h2>
@@ -218,8 +224,8 @@ export default function VisitBillPreview({
                     <th>Medicine</th>
                     <th>Detail</th>
                     <th className="num">Qty</th>
-                    <th className="num">Rate</th>
-                    <th className="num">Amount</th>
+                    {!hidePrices && <th className="num">Rate</th>}
+                    {!hidePrices && <th className="num">Amount</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -231,17 +237,19 @@ export default function VisitBillPreview({
                       </td>
                       <td>{l.detail || '—'}</td>
                       <td className="num">{l.qty}</td>
-                      <td className="num">{inr(l.unitPrice)}</td>
-                      <td className="num">{inr(l.amount)}</td>
+                      {!hidePrices && <td className="num">{inr(l.unitPrice)}</td>}
+                      {!hidePrices && <td className="num">{inr(l.amount)}</td>}
                     </tr>
                   ))}
                 </tbody>
-                <tfoot>
-                  <tr>
-                    <td colSpan={4}>Pharmacy subtotal</td>
-                    <td className="num">{inr(pharmacyTotal)}</td>
-                  </tr>
-                </tfoot>
+                {!hidePrices && (
+                  <tfoot>
+                    <tr>
+                      <td colSpan={4}>Pharmacy subtotal</td>
+                      <td className="num">{inr(pharmacyTotal)}</td>
+                    </tr>
+                  </tfoot>
+                )}
               </table>
             </div>
           )}
@@ -259,8 +267,8 @@ export default function VisitBillPreview({
                     <th>Test</th>
                     <th>Code</th>
                     <th className="num">Qty</th>
-                    <th className="num">Rate</th>
-                    <th className="num">Amount</th>
+                    {!hidePrices && <th className="num">Rate</th>}
+                    {!hidePrices && <th className="num">Amount</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -272,42 +280,46 @@ export default function VisitBillPreview({
                       </td>
                       <td>{l.detail || '—'}</td>
                       <td className="num">{l.qty}</td>
-                      <td className="num">{inr(l.unitPrice)}</td>
-                      <td className="num">{inr(l.amount)}</td>
+                      {!hidePrices && <td className="num">{inr(l.unitPrice)}</td>}
+                      {!hidePrices && <td className="num">{inr(l.amount)}</td>}
                     </tr>
                   ))}
                 </tbody>
-                <tfoot>
-                  <tr>
-                    <td colSpan={4}>Lab subtotal</td>
-                    <td className="num">{inr(labTotal)}</td>
-                  </tr>
-                </tfoot>
+                {!hidePrices && (
+                  <tfoot>
+                    <tr>
+                      <td colSpan={4}>Lab subtotal</td>
+                      <td className="num">{inr(labTotal)}</td>
+                    </tr>
+                  </tfoot>
+                )}
               </table>
             </div>
           )}
         </section>
 
-        <div className="ws-bill-totals">
-          {fee > 0 && (
+        {!hidePrices && (
+          <div className="ws-bill-totals">
+            {fee > 0 && (
+              <div className="ws-bill-total-row">
+                <span>Consultation</span>
+                <strong>{inr(fee)}</strong>
+              </div>
+            )}
             <div className="ws-bill-total-row">
-              <span>Consultation</span>
-              <strong>{inr(fee)}</strong>
+              <span>Pharmacy</span>
+              <strong>{inr(pharmacyTotal)}</strong>
             </div>
-          )}
-          <div className="ws-bill-total-row">
-            <span>Pharmacy</span>
-            <strong>{inr(pharmacyTotal)}</strong>
+            <div className="ws-bill-total-row">
+              <span>Lab</span>
+              <strong>{inr(labTotal)}</strong>
+            </div>
+            <div className="ws-bill-total-row is-grand">
+              <span>Total</span>
+              <strong>{inr(grand)}</strong>
+            </div>
           </div>
-          <div className="ws-bill-total-row">
-            <span>Lab</span>
-            <strong>{inr(labTotal)}</strong>
-          </div>
-          <div className="ws-bill-total-row is-grand">
-            <span>Total</span>
-            <strong>{inr(grand)}</strong>
-          </div>
-        </div>
+        )}
 
         {!readOnly && (
           <div className="ws-bill-actions">

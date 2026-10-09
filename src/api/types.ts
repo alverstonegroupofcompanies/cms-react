@@ -94,6 +94,7 @@ export interface Doctor {
   status: string
   photo_path?: string | null
   photo_url?: string | null
+  room_number?: string
   clinic_id?: number
   department_id?: number
   consultation_fee?: number
@@ -103,6 +104,63 @@ export interface Doctor {
   department?: Department
   availability?: DoctorAvailability[]
   user?: { id: number; email: string; must_reset_password?: boolean }
+}
+
+export interface TvCurrentToken {
+  id: number
+  token_number: number
+  display_code: string
+  patient_name: string
+  patient_full_name: string
+  patient_code?: string
+  called_at: string
+  elapsed_minutes: number
+  status: 'in_consultation'
+}
+
+export interface TvWaitingToken {
+  id: number
+  token_number: number
+  display_code: string
+  patient_name: string
+  position: number
+  slot_time?: string | null
+  waiting_minutes: number
+}
+
+export interface TvDoctorData {
+  id: number
+  name: string
+  specialization: string
+  room_number: string
+  department?: { id: number; name: string } | null
+  photo_url?: string | null
+  status: 'available' | 'in_consultation' | 'calling_next'
+  current_token?: TvCurrentToken | null
+  waiting_tokens: TvWaitingToken[]
+  waiting_count: number
+  completed_count: number
+  total_today: number
+}
+
+export interface TvDisplayData {
+  clinic: {
+    name: string
+    code: string
+    address?: string
+  }
+  date: string
+  server_time: string
+  doctors: TvDoctorData[]
+  latest_call?: {
+    token_id: number
+    token_code: string
+    doctor_id: number
+    doctor_name: string
+    room_number?: string
+    patient_name: string
+    called_at: string
+  } | null
 }
 
 export interface DoctorAvailability {

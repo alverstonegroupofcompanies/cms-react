@@ -243,6 +243,15 @@ export function IconChevronDown({ size = 20, className = '' }: IconProps) {
   )
 }
 
+export function IconTv({ size = 20, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="7" width="20" height="15" rx="2" ry="2" />
+      <polyline points="17 2 12 7 7 2" />
+    </svg>
+  )
+}
+
 export const iconMap = {
   dashboard: IconDashboard,
   calendar: IconCalendar,
@@ -258,6 +267,7 @@ export const iconMap = {
   droplet: IconDroplet,
   quote: IconQuote,
   chevronDown: IconChevronDown,
+  tv: IconTv,
 } as const
 
 export type IconName = keyof typeof iconMap
