@@ -1999,38 +1999,107 @@
 
 /* Card Launch Actions */
 .staff-doc-actions {
-  padding: 0.85rem 1.25rem;
+  padding: 0.85rem 1.15rem;
   background: #f8fafc;
   border-top: 1px solid #e2e8f0;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 0.5rem;
 }
 
-.staff-action-link {
-  font-size: 0.82rem;
+.staff-doc-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+.staff-doc-actions-row.is-primary-tvs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.staff-doc-actions-row.is-secondary-tools {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.staff-action-btn {
+  appearance: none;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #334155;
+  font-size: 0.8rem;
   font-weight: 600;
-  color: #0284c7;
   text-decoration: none;
-  padding: 0.35rem 0.65rem;
-  border-radius: 6px;
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
   transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.35rem;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  font-family: inherit;
+  line-height: 1.25;
 }
 
-.staff-action-link:hover {
-  background: #e0f2fe;
-  color: #0369a1;
-}
-
-.staff-action-link.is-copy {
+.staff-action-btn svg {
+  flex-shrink: 0;
   color: #64748b;
+  transition: color 0.15s ease;
 }
 
-.staff-action-link.is-copy:hover {
+.staff-action-btn:hover {
   background: #f1f5f9;
+  border-color: #cbd5e1;
   color: #0f172a;
+}
+
+.staff-action-btn:hover svg {
+  color: #0284c7;
+}
+
+/* Primary TV Launch Buttons */
+.staff-action-btn.is-tv-horiz {
+  background: #f0f9ff;
+  border-color: #bae6fd;
+  color: #0284c7;
+}
+
+.staff-action-btn.is-tv-horiz svg {
+  color: #0284c7;
+}
+
+.staff-action-btn.is-tv-horiz:hover {
+  background: #e0f2fe;
+  border-color: #7dd3fc;
+  color: #0369a1;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.15);
+}
+
+.staff-action-btn.is-tv-vert {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #475569;
+}
+
+.staff-action-btn.is-tv-vert:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.staff-action-btn.is-copied {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #059669;
+}
+
+.staff-action-btn.is-copied svg {
+  color: #10b981;
 }

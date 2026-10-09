@@ -108,15 +108,42 @@ export default function TvDisplayManager() {
               className="staff-tv-btn-secondary"
               title="Launch All Doctors Main TV in Clean Medical Light Mode"
             >
-              ☀️ Open Light TV
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+              Light TV
             </a>
 
             <button
               type="button"
               className="staff-tv-btn-secondary"
               onClick={() => copyToClipboard('/tv', 'main')}
+              title="Copy Main TV URL"
             >
-              {copiedId === 'main' ? '✓ Link Copied!' : '📋 Copy TV Link'}
+              {copiedId === 'main' ? (
+                <>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2.5">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  Link Copied!
+                </>
+              ) : (
+                <>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                  </svg>
+                  Copy TV Link
+                </>
+              )}
             </button>
 
             <button
@@ -125,7 +152,11 @@ export default function TvDisplayManager() {
               onClick={() => clinicAudioNotifier.playChime()}
               title="Play test hospital chime sound"
             >
-              🔔 Test Chime
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+              Test Chime
             </button>
 
             <button
@@ -139,8 +170,25 @@ export default function TvDisplayManager() {
                   setPreviewMode('none')
                 }
               }}
+              title="Toggle Live TV Monitor Preview"
             >
-              {previewMode === 'none' ? '👁️ Live Preview' : '✕ Close Preview'}
+              {previewMode === 'none' ? (
+                <>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  Live Preview
+                </>
+              ) : (
+                <>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                  Close Preview
+                </>
+              )}
             </button>
           </div>
         </section>
@@ -200,7 +248,7 @@ export default function TvDisplayManager() {
                     style={{ borderRadius: 0, padding: '0.25rem 0.65rem' }}
                     title="Preview in Dark Theme"
                   >
-                    🌙 Dark
+                    Dark
                   </button>
                   <button
                     type="button"
@@ -209,7 +257,7 @@ export default function TvDisplayManager() {
                     style={{ borderRadius: 0, padding: '0.25rem 0.65rem' }}
                     title="Preview in Light Theme"
                   >
-                    ☀️ Light
+                    Light
                   </button>
                 </div>
 
@@ -393,56 +441,88 @@ export default function TvDisplayManager() {
 
                   {/* Launch Actions for this Doctor */}
                   <div className="staff-doc-actions">
-                    <div style={{ display: 'flex', gap: '0.4rem' }}>
+                    {/* Primary TV Launch Row: Landscape & Portrait */}
+                    <div className="staff-doc-actions-row is-primary-tvs">
                       <a
                         href={docRoomUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="staff-action-link"
-                        title="Launch this doctor's room TV in Horizontal mode"
+                        className="staff-action-btn is-tv-horiz"
+                        title="Launch this doctor's Room TV in 16:9 Landscape mode"
                       >
-                        🖥️ Horizontal TV
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="2" y="7" width="20" height="15" rx="2" ry="2" />
+                          <polyline points="17 2 12 7 7 2" />
+                        </svg>
+                        Horizontal TV
                       </a>
 
                       <a
                         href={docVertUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="staff-action-link"
-                        title="Launch this doctor's room TV in Vertical mode"
+                        className="staff-action-btn is-tv-vert"
+                        title="Launch this doctor's Room TV in 9:16 Portrait mode"
                       >
-                        📱 Vertical TV
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="5" y="2" width="14" height="20" rx="2" />
+                          <line x1="12" y1="18" x2="12.01" y2="18" />
+                        </svg>
+                        Vertical TV
                       </a>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '0.4rem' }}>
+                    {/* Secondary Utilities Row: Copy, Preview, Queue */}
+                    <div className="staff-doc-actions-row is-secondary-tools">
                       <button
                         type="button"
-                        className="staff-action-link is-copy"
+                        className={`staff-action-btn ${copiedId === `doc-${doc.id}` ? 'is-copied' : ''}`}
                         onClick={() => copyToClipboard(docRoomUrl, `doc-${doc.id}`)}
                         title="Copy direct TV URL for this doctor's room"
                       >
-                        {copiedId === `doc-${doc.id}` ? '✓ Copied' : '📋 Copy'}
+                        {copiedId === `doc-${doc.id}` ? (
+                          <>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            Copied
+                          </>
+                        ) : (
+                          <>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <rect x="9" y="9" width="13" height="13" rx="2" />
+                              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                            </svg>
+                            Copy Link
+                          </>
+                        )}
                       </button>
 
                       <button
                         type="button"
-                        className="staff-action-link is-copy"
+                        className="staff-action-btn"
                         onClick={() => {
                           setPreviewDocId(doc.id)
                           setPreviewMode('horizontal')
                         }}
                         title="Preview this doctor's display screen"
                       >
-                        👁️ Preview
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                        Preview
                       </button>
 
                       <Link
                         to={`/receptionist/queue?doctor_id=${doc.id}`}
-                        className="staff-action-link"
+                        className="staff-action-btn"
                         title="Open receptionist queue manager for this doctor"
                       >
-                        Queue →
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M4 6h16M4 12h16M4 18h10" />
+                        </svg>
+                        Queue
                       </Link>
                     </div>
                   </div>

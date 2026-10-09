@@ -12,6 +12,7 @@ import { callNext, checkInQueueToken, checkOutQueueToken } from '../../api/clien
 import { useAuth } from '../../context/AuthContext'
 import { useQueuePolling } from '../../hooks/useQueuePolling'
 import { doctorNav } from '../../config/navigation'
+import { IconTv } from '../../components/Icons'
 
 export default function DoctorQueue() {
   const { user } = useAuth()
@@ -148,7 +149,7 @@ export default function DoctorQueue() {
                   className="rdm-linkbtn"
                   title="Launch this doctor's Room TV in Horizontal mode"
                 >
-                  📺 Room TV (Horizontal)
+                  <IconTv size={15} /> Room TV (Horizontal)
                 </a>
                 <a
                   href={`/tv?doctor_id=${doctorId}&layout=vertical`}
@@ -157,7 +158,7 @@ export default function DoctorQueue() {
                   className="rdm-linkbtn"
                   title="Launch this doctor's Room TV in Vertical mode"
                 >
-                  📱 Room TV (Vertical)
+                  <IconTv size={15} /> Room TV (Vertical)
                 </a>
               </>
             )}

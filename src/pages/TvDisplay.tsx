@@ -502,7 +502,12 @@ export default function TvDisplay() {
       {/* Real-time Call Announcement Banner */}
       {announcement && (
         <div className="tv-announcement-overlay">
-          <div className="tv-announcement-pulse-icon">🔔</div>
+          <div className="tv-announcement-pulse-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+          </div>
           <div className="tv-announcement-body">
             <p className="tv-announcement-kicker">NOW CALLING PATIENT</p>
             <div className="tv-announcement-title">
@@ -736,11 +741,11 @@ export default function TvDisplay() {
         </div>
         <div className="tv-ticker-content">
           <div className="tv-ticker-track">
-            <span>📢 Please keep your appointment or walk-in slip ready with token number.</span>
-            <span>🏥 Proceed directly to the designated Consultation Room / OPD when your token is called.</span>
-            <span>⏱️ Estimated wait times may vary depending on patient consultation complexity.</span>
-            <span>🛡️ If you require emergency care or immediate assistance, please notify Reception immediately.</span>
-            <span>📞 Helpdesk & Token Queries: Contact Reception counter or dial Ext. 101.</span>
+            <span>Please keep your appointment or walk-in slip ready with token number.</span>
+            <span>Proceed directly to the designated Consultation Room / OPD when your token is called.</span>
+            <span>Estimated wait times may vary depending on patient consultation complexity.</span>
+            <span>If you require emergency care or immediate assistance, please notify Reception immediately.</span>
+            <span>Helpdesk &amp; Token Queries: Contact Reception counter or dial Ext. 101.</span>
           </div>
         </div>
       </footer>
