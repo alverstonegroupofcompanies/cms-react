@@ -132,10 +132,26 @@ export default function TvDisplay() {
     return () => clearInterval(timer)
   }, [])
 
-  // Keyboard shortcuts (N: Next, P: Prev, Space: Pause/Resume loop, F: Fullscreen, H: Horizontal, V: Vertical, M: Mute, T: Theme)
+  // TV Controls Visibility (Hide / Unhide Toggle)
+  const [showControls, setShowControls] = useState(() => {
+    const saved = localStorage.getItem('tv_show_controls')
+    return saved !== null ? saved === 'true' : true
+  })
+
+  const toggleControls = useCallback(() => {
+    setShowControls((prev) => {
+      const next = !prev
+      localStorage.setItem('tv_show_controls', String(next))
+      return next
+    })
+  }, [])
+
+  // Keyboard shortcuts (C: Toggle Controls, N: Next, P: Prev, Space: Pause/Resume loop, F: Fullscreen, H: Horizontal, V: Vertical, M: Mute, T: Theme)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'f' || e.key === 'F') {
+      if (e.key === 'c' || e.key === 'C') {
+        toggleControls()
+      } else if (e.key === 'f' || e.key === 'F') {
         toggleFullscreen()
       } else if (e.key === 'h' || e.key === 'H') {
         handleSetLayout('horizontal')
@@ -160,7 +176,7 @@ export default function TvDisplay() {
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [soundEnabled, searchParams, theme, handleNextDoctor, handlePrevDoctor, toggleAutoLoop])
+  }, [soundEnabled, searchParams, theme, handleNextDoctor, handlePrevDoctor, toggleAutoLoop, toggleControls])
 
   // Fetch TV Display Queue Data (fetch all doctors to enable switching)
   const fetchData = useCallback(async () => {
@@ -280,8 +296,9 @@ export default function TvDisplay() {
           </div>
         </div>
 
-        {/* Floating TV Controls */}
-        <div className="tv-controls">
+        {/* Floating TV Controls with Hide/Unhide Toggle */}
+        <div className={`tv-controls-wrapper ${!showControls ? 'is-collapsed' : ''}`}>
+          <div className={`tv-controls ${!showControls ? 'is-hidden' : ''}`} id="tv-controls-bar">
           {/* Doctor Switcher & 15s Auto-Loop Group */}
           {doctors.length > 1 && (
             <>
@@ -486,6 +503,39 @@ export default function TvDisplay() {
             </svg>
           </button>
         </div>
+
+        {/* Toggle Hide/Unhide Button */}
+        <button
+          type="button"
+          className={`tv-controls-toggle-btn ${!showControls ? 'is-collapsed-btn' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation()
+            toggleControls()
+          }}
+          title={showControls ? 'Hide TV Controls (Key: C)' : 'Show TV Controls (Key: C)'}
+          aria-label={showControls ? 'Hide TV controls' : 'Show TV controls'}
+          id="tv-controls-toggle-btn"
+        >
+          {showControls ? (
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="4" y1="21" x2="4" y2="14" />
+              <line x1="4" y1="10" x2="4" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="12" />
+              <line x1="12" y1="8" x2="12" y2="3" />
+              <line x1="20" y1="21" x2="20" y2="16" />
+              <line x1="20" y1="12" x2="20" y2="3" />
+              <line x1="1" y1="14" x2="7" y2="14" />
+              <line x1="9" y1="8" x2="15" y2="8" />
+              <line x1="17" y1="16" x2="23" y2="16" />
+            </svg>
+          )}
+        </button>
+      </div>
 
         {/* Digital Clock */}
         <div className="tv-clock-wrap">

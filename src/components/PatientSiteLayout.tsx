@@ -4,7 +4,7 @@ import BrandLogo from './BrandLogo'
 import { CLINIC } from '../config/clinic'
 import { useAuth } from '../context/AuthContext'
 import { useScrollReveal } from '../hooks/useScrollReveal'
-import { iconMap } from './Icons'
+import { IconLogout, iconMap } from './Icons'
 
 interface Props {
   children: React.ReactNode
@@ -16,6 +16,18 @@ const PUBLIC_NAV = [
   { to: '/patient', label: 'Home', end: true },
   { to: '/patient/about', label: 'About', end: false },
   { to: '/patient#contact', label: 'Contact', end: false },
+] as const
+
+const PATIENT_SIDEBAR_NAV = [
+  { to: '/patient', label: 'Home', end: true, icon: 'home' as const },
+  { to: '/patient/dashboard', label: 'Overview', end: true, icon: 'dashboard' as const },
+  { to: '/patient/book', label: 'Book', end: false, icon: 'calendar' as const },
+  { to: '/patient/appointments', label: 'Visits', end: false, icon: 'clock' as const },
+  { to: '/patient/lab-reports', label: 'Labs', end: false, icon: 'flask' as const },
+  { to: '/patient/prescriptions', label: 'Rx', end: false, icon: 'pill' as const },
+  { to: '/patient/profile', label: 'Profile', end: false, icon: 'users' as const },
+  { to: '/patient/about', label: 'About', end: false, icon: 'building' as const },
+  { to: '/patient#contact', label: 'Contact', end: false, icon: 'phone' as const },
 ] as const
 
 const PORTAL_NAV = [
@@ -41,18 +53,6 @@ export default function PatientSiteLayout({ children, portal = false }: Props) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
   const profileRef = useRef<HTMLDivElement>(null)
-
-  const navItems = isPatient
-    ? [
-        { to: '/patient', label: 'Home', end: true as const },
-        ...PORTAL_NAV.map(({ to, label, end }) => ({ to, label, end })),
-        { to: '/patient/about', label: 'About', end: false as const },
-        { to: '/patient#contact', label: 'Contact', end: false as const },
-      ]
-    : [
-        ...PUBLIC_NAV,
-        { to: loginHref('/patient/book'), label: 'Book', end: false as const },
-      ]
 
   const initials =
     user?.name
@@ -104,26 +104,33 @@ export default function PatientSiteLayout({ children, portal = false }: Props) {
 
   return (
     <div className={`ps-site ph-app page-fade${portal ? ' is-portal' : ''}${isPatient ? ' is-signed-in' : ''}`}>
-      <header className="ps-topbar ps-topbar-enter">
-        <div className="ps-topbar-inner ps-topbar-centered">
-          <nav
-            className={`ps-nav ps-nav-left${menuOpen ? ' open' : ''}`}
-            aria-label="Clinic site"
-          >
-            {navItems.map((item) => {
+      {/* ==================================================================
+          SIDEBAR DOCK FOR SIGNED-IN PATIENTS (ICONS WITH RICH TOOLTIPS)
+          ================================================================== */}
+      {isPatient && (
+        <aside className="ps-patient-sidebar-dock" aria-label="Patient navigation">
+          <div className="ps-sidebar-brand">
+            <Link to="/patient" className="ps-sidebar-brand-btn" title="Alverstone Medcity Home">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2v20M2 12h20" />
+              </svg>
+            </Link>
+          </div>
+
+          <nav className="ps-sidebar-icons-list">
+            {PATIENT_SIDEBAR_NAV.map((item) => {
+              const Icon = iconMap[item.icon]
               const isContact = item.to.includes('#contact')
-              const onContact =
-                location.pathname === '/patient' && location.hash === '#contact'
+              const onContact = location.pathname === '/patient' && location.hash === '#contact'
 
               if (isContact) {
                 return (
                   <Link
                     key={item.to}
                     to="/patient#contact"
-                    className={`ps-nav-link${onContact ? ' active' : ''}`}
-                    aria-current={onContact ? 'page' : undefined}
+                    className={`ps-sidebar-icon-btn${onContact ? ' active' : ''}`}
+                    aria-label={item.label}
                     onClick={(e) => {
-                      setMenuOpen(false)
                       if (location.pathname === '/patient') {
                         e.preventDefault()
                         if (location.hash !== '#contact') {
@@ -138,7 +145,9 @@ export default function PatientSiteLayout({ children, portal = false }: Props) {
                       }
                     }}
                   >
-                    {item.label}
+                    <span className="ps-sidebar-active-indicator" />
+                    <Icon size={21} />
+                    <span className="ps-sidebar-tooltip">{item.label}</span>
                   </Link>
                 )
               }
@@ -147,16 +156,13 @@ export default function PatientSiteLayout({ children, portal = false }: Props) {
                 <NavLink
                   key={item.to}
                   to={item.to}
-                  end={'end' in item ? item.end : false}
+                  end={item.end}
                   className={({ isActive }) => {
-                    if (item.to === '/patient' && item.end && onContact) {
-                      return 'ps-nav-link'
-                    }
-                    return `ps-nav-link${isActive ? ' active' : ''}`
+                    const active = item.to === '/patient' && item.end && onContact ? false : isActive
+                    return `ps-sidebar-icon-btn${active ? ' active' : ''}`
                   }}
+                  aria-label={item.label}
                   onClick={(e) => {
-                    setMenuOpen(false)
-                    // Leaving contact: clear hash so Contact is no longer active
                     if (item.to === '/patient' && item.end && location.hash === '#contact') {
                       e.preventDefault()
                       navigate('/patient', { replace: true })
@@ -164,72 +170,170 @@ export default function PatientSiteLayout({ children, portal = false }: Props) {
                     }
                   }}
                 >
-                  {item.label}
+                  <span className="ps-sidebar-active-indicator" />
+                  <Icon size={21} />
+                  <span className="ps-sidebar-tooltip">{item.label}</span>
                 </NavLink>
               )
             })}
           </nav>
 
-          <BrandLogo brand="clinic" to={isPatient ? '/patient/dashboard' : '/patient'} height={52} className="ps-logo" />
+          <div className="ps-sidebar-footer">
+            <NavLink
+              to="/patient/profile"
+              className={({ isActive }) => `ps-sidebar-avatar-btn${isActive ? ' active' : ''}`}
+              aria-label="Profile"
+            >
+              <span className="ps-sidebar-avatar-circle">{initials}</span>
+              <span className="ps-sidebar-tooltip">Profile ({user?.name?.split(' ')[0]})</span>
+            </NavLink>
+            <button
+              type="button"
+              className="ps-sidebar-logout-btn"
+              onClick={handleLogout}
+              aria-label="Sign out"
+            >
+              <IconLogout size={19} />
+              <span className="ps-sidebar-tooltip">Sign out</span>
+            </button>
+          </div>
+        </aside>
+      )}
+
+      <header className="ps-topbar ps-topbar-enter">
+        <div className="ps-topbar-inner ps-topbar-centered">
+          {!isPatient && (
+            <nav
+              className={`ps-nav ps-nav-left${menuOpen ? ' open' : ''}`}
+              aria-label="Clinic site"
+            >
+              {PUBLIC_NAV.map((item) => {
+                const isContact = item.to.includes('#contact')
+                const onContact =
+                  location.pathname === '/patient' && location.hash === '#contact'
+
+                if (isContact) {
+                  return (
+                    <Link
+                      key={item.to}
+                      to="/patient#contact"
+                      className={`ps-nav-link${onContact ? ' active' : ''}`}
+                      aria-current={onContact ? 'page' : undefined}
+                      onClick={(e) => {
+                        setMenuOpen(false)
+                        if (location.pathname === '/patient') {
+                          e.preventDefault()
+                          if (location.hash !== '#contact') {
+                            navigate({ pathname: '/patient', hash: 'contact' })
+                          }
+                          window.setTimeout(() => {
+                            document.getElementById('contact')?.scrollIntoView({
+                              behavior: 'smooth',
+                              block: 'start',
+                            })
+                          }, 50)
+                        }
+                      }}
+                    >
+                      {item.label}
+                    </Link>
+                  )
+                }
+
+                return (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    end={'end' in item ? item.end : false}
+                    className={({ isActive }) => {
+                      if (item.to === '/patient' && item.end && onContact) {
+                        return 'ps-nav-link'
+                      }
+                      return `ps-nav-link${isActive ? ' active' : ''}`
+                    }}
+                    onClick={(e) => {
+                      setMenuOpen(false)
+                      if (item.to === '/patient' && item.end && location.hash === '#contact') {
+                        e.preventDefault()
+                        navigate('/patient', { replace: true })
+                        window.scrollTo({ top: 0, behavior: 'smooth' })
+                      }
+                    }}
+                  >
+                    {item.label}
+                  </NavLink>
+                )
+              })}
+            </nav>
+          )}
+
+          <BrandLogo brand="clinic" to={isPatient ? '/patient/dashboard' : '/patient'} height={50} className="ps-logo" />
 
           <div className="ps-topbar-actions">
             {isPatient ? (
-              <div className="ps-profile-wrap" ref={profileRef}>
-                <button
-                  type="button"
-                  className="ps-profile-btn"
-                  aria-expanded={profileOpen}
-                  aria-haspopup="menu"
-                  onClick={() => setProfileOpen((o) => !o)}
-                >
-                  <span className="ps-profile-avatar">{initials}</span>
-                  <span className="ps-profile-name">{user.name?.split(' ')[0]}</span>
-                </button>
-                {profileOpen && (
-                  <div className="ps-profile-menu" role="menu">
-                    <NavLink
-                      to="/patient/dashboard"
-                      role="menuitem"
-                      className="ps-profile-menu-item"
-                      onClick={() => setProfileOpen(false)}
-                    >
-                      Overview
-                    </NavLink>
-                    <NavLink
-                      to="/patient/profile"
-                      role="menuitem"
-                      className="ps-profile-menu-item"
-                      onClick={() => setProfileOpen(false)}
-                    >
-                      Profile
-                    </NavLink>
-                    <NavLink
-                      to="/patient/book"
-                      role="menuitem"
-                      className="ps-profile-menu-item"
-                      onClick={() => setProfileOpen(false)}
-                    >
-                      Book a visit
-                    </NavLink>
-                    <NavLink
-                      to="/patient/appointments"
-                      role="menuitem"
-                      className="ps-profile-menu-item"
-                      onClick={() => setProfileOpen(false)}
-                    >
-                      My visits
-                    </NavLink>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      className="ps-profile-menu-item ps-profile-menu-logout"
-                      onClick={handleLogout}
-                    >
-                      Sign out
-                    </button>
-                  </div>
-                )}
-              </div>
+              <>
+                <Link to="/patient/book" className="ps-btn ps-btn-nav ps-topbar-quick-book">
+                  <span>Book Visit</span>
+                  <span aria-hidden>→</span>
+                </Link>
+
+                <div className="ps-profile-wrap" ref={profileRef}>
+                  <button
+                    type="button"
+                    className="ps-profile-btn"
+                    aria-expanded={profileOpen}
+                    aria-haspopup="menu"
+                    onClick={() => setProfileOpen((o) => !o)}
+                  >
+                    <span className="ps-profile-avatar">{initials}</span>
+                    <span className="ps-profile-name">{user?.name?.split(' ')[0]}</span>
+                  </button>
+                  {profileOpen && (
+                    <div className="ps-profile-menu" role="menu">
+                      <NavLink
+                        to="/patient/dashboard"
+                        role="menuitem"
+                        className="ps-profile-menu-item"
+                        onClick={() => setProfileOpen(false)}
+                      >
+                        Overview
+                      </NavLink>
+                      <NavLink
+                        to="/patient/profile"
+                        role="menuitem"
+                        className="ps-profile-menu-item"
+                        onClick={() => setProfileOpen(false)}
+                      >
+                        Profile
+                      </NavLink>
+                      <NavLink
+                        to="/patient/book"
+                        role="menuitem"
+                        className="ps-profile-menu-item"
+                        onClick={() => setProfileOpen(false)}
+                      >
+                        Book a visit
+                      </NavLink>
+                      <NavLink
+                        to="/patient/appointments"
+                        role="menuitem"
+                        className="ps-profile-menu-item"
+                        onClick={() => setProfileOpen(false)}
+                      >
+                        My visits
+                      </NavLink>
+                      <button
+                        type="button"
+                        role="menuitem"
+                        className="ps-profile-menu-item ps-profile-menu-logout"
+                        onClick={handleLogout}
+                      >
+                        Sign out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
             ) : (
               <>
                 <Link to="/patient/register" className="ps-btn-text">

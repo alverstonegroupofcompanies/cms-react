@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Layout from '../../components/Layout'
-import VisitBillPreview, { billLinesFromVisitBill, formatInr } from '../../components/VisitBillPreview'
+import VisitBillPreview, { billLinesFromVisitBill } from '../../components/VisitBillPreview'
 import { getPrescriptions, getVisitBills } from '../../api/client'
 import { receptionistNav } from '../../config/navigation'
 import type { Prescription, VisitBill } from '../../api/types'

@@ -168,16 +168,112 @@
   100% { transform: scale(0.9); opacity: 0.8; }
 }
 
-/* TV Controls (Layout toggle, sound, fullscreen) */
+/* TV Controls (Layout toggle, sound, fullscreen) with Hide/Unhide Toggle */
+.tv-controls-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .tv-controls {
   display: flex;
   align-items: center;
   gap: 0.65rem;
   background: var(--tv-controls-bg, rgba(7, 13, 25, 0.6));
-  padding: 0.35rem 0.6rem;
+  padding: 0.35rem 0.6rem 0.35rem 0.85rem;
   border-radius: 12px;
   border: 1px solid var(--tv-border);
-  transition: background-color 0.25s ease, border-color 0.25s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+  transform-origin: center;
+}
+
+.tv-controls.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  max-width: 0;
+  max-height: 0;
+  padding: 0;
+  margin: 0;
+  border-width: 0;
+  overflow: hidden;
+  transform: scale(0.92) translateY(-6px);
+}
+
+/* Circular Close / Hide Toggle Button (Matches user screenshot: dark circular badge with white X) */
+.tv-controls-toggle-btn {
+  position: absolute;
+  bottom: -15px;
+  left: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #232c3d;
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 50;
+  padding: 0;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              box-shadow 0.2s ease,
+              color 0.2s ease;
+}
+
+.tv-controls-toggle-btn:hover {
+  transform: scale(1.12);
+  background: #0f172a;
+  border-color: #38bdf8;
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.55);
+  color: #ffffff;
+}
+
+.tv-controls-toggle-btn:active {
+  transform: scale(0.94);
+}
+
+.tv-controls-toggle-btn:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
+/* Collapsed Mode: Clean Circular Icon Button to Unhide (Only icon, no text) */
+.tv-controls-toggle-btn.is-collapsed-btn {
+  position: static;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tv-controls-bg, rgba(7, 13, 25, 0.65));
+  border: 1px solid var(--tv-border);
+  color: var(--tv-text-muted);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tv-controls-toggle-btn.is-collapsed-btn:hover {
+  transform: scale(1.08);
+  color: #38bdf8;
+  border-color: #38bdf8;
+  background: rgba(14, 116, 144, 0.22);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+}
+
+.tv-controls-toggle-text {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: inherit;
 }
 
 .tv-controls-group {
@@ -360,9 +456,9 @@
   border-radius: 12px 0 0 12px;
 }
 
-/* Doctor Tabs Bar (Pills below card) */
+/* Doctor Tabs Bar (Pills below card) - No scrollbar, clean wrapping */
 .tv-doctor-tabs {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -371,7 +467,15 @@
   backdrop-filter: blur(14px);
   border-radius: 16px;
   border: 1px solid var(--tv-border);
-  overflow-x: auto;
+  overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tv-doctor-tabs::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .tv-doctor-tabs-label {
@@ -386,10 +490,18 @@
 .tv-doctor-tabs-scroll {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   flex: 1;
-  overflow-x: auto;
-  scrollbar-width: thin;
+  overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tv-doctor-tabs-scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .tv-doc-tab-pill {
@@ -1409,6 +1521,34 @@
   background: #e2e8f0;
   border: 1px solid #cbd5e1;
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+}
+
+.tv-screen.is-light .tv-controls-toggle-btn {
+  background: #334155;
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.28);
+}
+
+.tv-screen.is-light .tv-controls-toggle-btn:hover {
+  background: #1e293b;
+  border-color: #0284c7;
+  box-shadow: 0 0 16px rgba(2, 132, 199, 0.4);
+  color: #ffffff;
+}
+
+.tv-screen.is-light .tv-controls-toggle-btn.is-collapsed-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+}
+
+.tv-screen.is-light .tv-controls-toggle-btn.is-collapsed-btn:hover {
+  background: #f0f9ff;
+  border-color: #0284c7;
+  color: #0284c7;
+  box-shadow: 0 0 12px rgba(2, 132, 199, 0.2);
 }
 
 .tv-screen.is-light .tv-controls-divider {
