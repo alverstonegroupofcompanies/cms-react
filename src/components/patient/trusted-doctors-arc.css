@@ -1,0 +1,727 @@
+/* ==========================================================================
+   TRUSTED DOCTORS ARC - 3D PANORAMIC CAROUSEL & CLINICAL SPOTLIGHT
+   Inspired by curved amphitheater galleries with pleasant, high-contrast,
+   multi-generational clinical aesthetics.
+   ========================================================================== */
+
+.tda-section {
+  position: relative;
+  background-color: #FAF8F5;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(5, 150, 105, 0.05) 0%, transparent 70%),
+    linear-gradient(180deg, #F8FAFC 0%, #FAF8F5 40%, #F5F3EF 100%);
+  padding: 80px 24px 88px;
+  overflow: hidden;
+  border-top: 1px solid #E2E8F0;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.tda-container {
+  max-width: 1360px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ==========================================================================
+   1. SECTION HEADER
+   ========================================================================== */
+.tda-header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 44px;
+}
+
+.tda-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #064E3B;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  margin-bottom: 16px;
+}
+
+.tda-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #059669;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.25);
+  animation: tdaPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes tdaPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+
+.tda-title {
+  font-family: 'Sansation', 'Outfit', sans-serif;
+  font-size: clamp(30px, 4.2vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #382417;
+  line-height: 1.15;
+  margin: 0 0 14px;
+}
+
+.tda-subtitle {
+  font-size: clamp(15px, 1.6vw, 17px);
+  line-height: 1.6;
+  color: #6f5342;
+  margin: 0 0 24px;
+  font-weight: 450;
+}
+
+.tda-cta-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.tda-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #7f5539 0%, #9c6644 100%);
+  color: #ede0d4;
+  text-decoration: none;
+  font-size: 14.5px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(127, 85, 57, 0.28);
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tda-pill-btn:hover {
+  background: #543825;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(84, 56, 37, 0.45);
+}
+
+.tda-pill-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  transition: transform 0.2s ease;
+}
+
+.tda-pill-btn:hover .tda-pill-arrow {
+  transform: translateX(3px);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* ==========================================================================
+   2. 3D CURVED PANORAMIC ARC GALLERY
+   ========================================================================== */
+.tda-arc-stage-wrap {
+  position: relative;
+  width: 100%;
+  margin: 16px 0 36px;
+  padding: 24px 0 32px;
+}
+
+/* Vignette edge fades for soft transition */
+.tda-edge-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 90px;
+  z-index: 25;
+  pointer-events: none;
+}
+
+.tda-edge-fade--left {
+  left: 0;
+  background: linear-gradient(to right, #FAF8F5 20%, rgba(250, 248, 245, 0) 100%);
+}
+
+.tda-edge-fade--right {
+  right: 0;
+  background: linear-gradient(to left, #FAF8F5 20%, rgba(250, 248, 245, 0) 100%);
+}
+
+/* Navigation Buttons */
+.tda-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  color: #06281B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 28;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.tda-nav-btn:hover {
+  background: #06281B;
+  color: #FFFFFF;
+  border-color: #06281B;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.tda-nav-btn--prev {
+  left: 14px;
+}
+
+.tda-nav-btn--next {
+  right: 14px;
+}
+
+/* The Arc Stage Container */
+.tda-arc-stage {
+  perspective: 1200px;
+  perspective-origin: center 45%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+  padding: 18px 0 24px;
+}
+
+.tda-cards-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  transform-style: preserve-3d;
+  position: relative;
+  width: 100%;
+}
+
+/* ==========================================================================
+   INDIVIDUAL DOCTOR CARD (3D ARC TRANSFORM)
+   ========================================================================== */
+.tda-card {
+  position: relative;
+  flex: 0 0 178px;
+  width: 178px;
+  height: 310px;
+  border-radius: 20px;
+  cursor: pointer;
+  outline: none;
+  background: #06281B;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  transform: perspective(1000px)
+             rotateY(var(--rotate-y, 0deg))
+             translateZ(var(--translate-z, 0px))
+             translateY(var(--translate-y, 0px));
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease,
+              filter 0.3s ease;
+  will-change: transform;
+}
+
+@media (min-width: 1200px) {
+  .tda-card {
+    flex: 0 0 192px;
+    width: 192px;
+    height: 330px;
+    border-radius: 22px;
+  }
+}
+
+.tda-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 12px 28px -8px rgba(6, 40, 27, 0.18);
+  background: #06281B;
+}
+
+.tda-card-photo-box {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.tda-card-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  transition: transform 0.45s ease;
+}
+
+.tda-card:hover .tda-card-photo {
+  transform: scale(1.05);
+}
+
+/* Top Experience Badge Pill */
+.tda-card-top-pill {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #06281B;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  z-index: 5;
+  letter-spacing: 0.02em;
+}
+
+.tda-pill-icon {
+  color: #F59E0B;
+  font-size: 10px;
+}
+
+/* Bottom Card Scrim */
+.tda-card-scrim {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 42px 12px 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 40, 27, 0) 0%,
+    rgba(6, 40, 27, 0.45) 25%,
+    rgba(6, 40, 27, 0.88) 65%,
+    rgba(6, 40, 27, 0.98) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  z-index: 4;
+}
+
+.tda-card-dept {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #6EE7B7;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 3px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tda-card-name {
+  font-family: 'Sansation', 'Outfit', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 3px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tda-card-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #D1D5DB;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.tda-card-degree {
+  color: #9CA3AF;
+}
+
+.tda-card-dot {
+  color: #6B7280;
+}
+
+.tda-card-exp-highlight {
+  color: #FBBF24;
+  font-weight: 600;
+}
+
+.tda-card-hover-action {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #6EE7B7;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ==========================================================================
+   ACTIVE & HOVER STATES
+   ========================================================================== */
+.tda-card--active {
+  z-index: 30 !important;
+}
+
+.tda-card--active .tda-card-inner {
+  border: 2px solid #7f5539;
+  box-shadow:
+    0 20px 45px -10px rgba(56, 36, 23, 0.45),
+    0 0 0 3px rgba(127, 85, 57, 0.35);
+}
+
+.tda-card--active {
+  transform: perspective(1000px)
+             rotateY(var(--rotate-y, 0deg))
+             translateZ(calc(var(--translate-z, 0px) + 28px))
+             translateY(calc(var(--translate-y, 0px) - 8px))
+             scale(1.04);
+}
+
+.tda-card--hovered:not(.tda-card--active) {
+  transform: perspective(1000px)
+             rotateY(var(--rotate-y, 0deg))
+             translateZ(calc(var(--translate-z, 0px) + 16px))
+             translateY(calc(var(--translate-y, 0px) - 4px))
+             scale(1.02);
+}
+
+.tda-card--active .tda-card-hover-action {
+  display: inline-flex;
+}
+
+/* Dots Indicator */
+.tda-dots-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.tda-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  background: #CBD5E1;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: width 0.25s ease, background-color 0.25s ease;
+}
+
+.tda-dot--active {
+  width: 26px;
+  background: #7f5539;
+}
+
+/* ==========================================================================
+   3. ACTIVE DOCTOR SPOTLIGHT BANNER
+   ========================================================================== */
+.tda-spotlight-bar {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
+  padding: 20px 28px;
+  margin: 8px 0 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  box-shadow: 0 10px 30px -8px rgba(6, 40, 27, 0.08);
+}
+
+.tda-spotlight-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.tda-spotlight-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid #7f5539;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(56, 36, 23, 0.08);
+}
+
+.tda-spotlight-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.tda-spotlight-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tda-spotlight-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tda-spotlight-name {
+  font-family: 'Sansation', 'Outfit', sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  color: #382417;
+  margin: 0;
+}
+
+.tda-spotlight-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #7f5539;
+  background: #ede0d4;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  border: 1px solid #ddb892;
+}
+
+.tda-spotlight-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #1F2937;
+}
+
+.tda-spotlight-rating small {
+  color: #64748B;
+  font-weight: 500;
+}
+
+.tda-spotlight-dept {
+  font-size: 13.5px;
+  color: #334155;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.tda-exp-accent {
+  color: #D97706;
+  font-weight: 700;
+}
+
+.tda-spotlight-schedule {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12.5px;
+  color: #475569;
+  font-weight: 500;
+  margin-top: 2px;
+  flex-wrap: wrap;
+}
+
+.tda-schedule-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tda-schedule-item svg {
+  color: #7f5539;
+}
+
+.tda-spotlight-action {
+  flex-shrink: 0;
+}
+
+.tda-spotlight-book-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #7f5539 0%, #9c6644 100%);
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 22px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(127, 85, 57, 0.28);
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.tda-spotlight-book-btn:hover {
+  background: #543825;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(84, 56, 37, 0.38);
+}
+
+/* ==========================================================================
+   4. THREE BOTTOM PILLARS (MATCHING SCREENSHOT COLUMNS)
+   ========================================================================== */
+.tda-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  border-top: 1px solid #E2E8F0;
+  padding-top: 48px;
+}
+
+.tda-pillar-card {
+  text-align: center;
+  padding: 0 12px;
+}
+
+.tda-pillar-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #ede0d4;
+  border: 1.5px solid #ddb892;
+  color: #7f5539;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(127, 85, 57, 0.08);
+}
+
+.tda-pillar-title {
+  font-family: 'Sansation', 'Outfit', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #382417;
+  margin: 0 0 10px;
+  letter-spacing: -0.01em;
+}
+
+.tda-pillar-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #475569;
+  margin: 0;
+}
+
+/* ==========================================================================
+   RESPONSIVENESS (MOBILE & TABLET ADAPTATION)
+   ========================================================================== */
+@media (max-width: 1080px) {
+  .tda-arc-stage {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
+    padding: 20px 24px;
+  }
+
+  .tda-cards-row {
+    justify-content: flex-start;
+    width: max-content;
+    padding: 0 20px;
+  }
+
+  .tda-card {
+    scroll-snap-align: center;
+    flex: 0 0 190px;
+    width: 190px;
+    height: 310px;
+    /* Flatten 3D slightly on narrow viewports for crisp horizontal scrolling */
+    transform: none !important;
+  }
+
+  .tda-card--active {
+    border: 2px solid #059669;
+    transform: scale(1.03) !important;
+  }
+
+  .tda-edge-fade {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .tda-spotlight-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .tda-spotlight-action {
+    width: 100%;
+  }
+
+  .tda-spotlight-book-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tda-pillars-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding-top: 36px;
+  }
+
+  .tda-pillar-card {
+    text-align: left;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .tda-pillar-icon-box {
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .tda-section {
+    padding: 56px 16px 64px;
+  }
+
+  .tda-title {
+    font-size: 28px;
+  }
+
+  .tda-subtitle {
+    font-size: 14.5px;
+  }
+
+  .tda-nav-btn {
+    display: none;
+  }
+
+  .tda-spotlight-left {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

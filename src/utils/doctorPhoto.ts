@@ -1,5 +1,9 @@
-/** Stable placeholder doctor portrait until real photos are uploaded. */
-export function getDoctorPhotoUrl(doctorId?: number, name?: string): string {
-  const seed = doctorId ?? encodeURIComponent((name ?? 'doctor').toLowerCase().replace(/\s+/g, '-'))
-  return `https://api.dicebear.com/7.x/personas/png?seed=doctor-${seed}&size=128&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc`
+/** Return a valid uploaded doctor photo URL, or undefined when no real image exists. */
+export function getDoctorPhotoUrl(photoUrl?: string | null): string | undefined {
+  const trimmed = (photoUrl ?? '').trim()
+  if (!trimmed) return undefined
+  if (trimmed.includes('dicebear.com') || trimmed.includes('ui-avatars.com')) {
+    return undefined
+  }
+  return trimmed
 }

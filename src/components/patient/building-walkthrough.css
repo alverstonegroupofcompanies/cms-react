@@ -1,0 +1,651 @@
+/* ==========================================================================
+   PREMIUM CLINICAL ARRIVAL WALKTHROUGH
+   Warm, reassuring, luxury healthcare pavilion aesthetic for all age groups
+   ========================================================================== */
+
+.btr-section {
+  position: relative;
+  background-color: #f8fafc;
+  color: #0f172a;
+  overflow: visible !important;
+  width: 100%;
+}
+
+/* Outer Scroll Track: Smooth journey spread across ~3.8 screen heights */
+.btr-scroll-track {
+  position: relative;
+  height: 380vh;
+  width: 100%;
+  overflow: visible !important;
+}
+
+@media (max-width: 768px) {
+  .btr-scroll-track {
+    height: 320vh;
+  }
+}
+
+/* Sticky Viewport: Stays locked in viewport while parent track scrolls */
+.btr-sticky-viewport {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 50;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #f1f5f9;
+  touch-action: pan-y;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   SCENE LAYERS (BACKGROUND 3D / 2.5D IMAGES)
+   ========================================================================== */
+
+.btr-canvas-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.btr-scene-layer {
+  position: absolute;
+  inset: -3%;
+  width: 106%;
+  height: 106%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: filter 350ms ease;
+}
+
+/* Responsive focal point adjustments */
+@media (max-width: 768px) {
+  .btr-scene-layer[data-scene="0"] {
+    background-position: 52% 45%;
+  }
+  .btr-scene-layer[data-scene="1"] {
+    background-position: 50% 50%;
+  }
+  .btr-scene-layer[data-scene="2"] {
+    background-position: 45% 50%;
+  }
+  .btr-scene-layer[data-scene="3"] {
+    background-position: 58% 30%;
+  }
+}
+
+/* Natural Daylight & Pleasant Clinical Overlays (Soft, Bright & Reassuring) */
+.btr-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    circle at 50% 45%,
+    transparent 55%,
+    rgba(15, 30, 23, 0.08) 80%,
+    rgba(15, 30, 23, 0.22) 100%
+  );
+}
+
+.btr-gradient-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 30, 23, 0.28) 0%,
+    rgba(15, 30, 23, 0.1) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+.btr-gradient-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(
+    to top,
+    rgba(15, 30, 23, 0.35) 0%,
+    rgba(15, 30, 23, 0.12) 55%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Glass Door Passage Soft Light Shimmer */
+.btr-door-shimmer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.35) 45%,
+    rgba(236, 253, 245, 0.45) 50%,
+    rgba(255, 255, 255, 0.35) 55%,
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  mix-blend-mode: overlay;
+}
+
+/* ==========================================================================
+   HEADS-UP DISPLAY (HUD) & INTERFACE
+   ========================================================================== */
+
+.btr-hud-container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem 2.25rem;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .btr-hud-container {
+    padding: 1rem 1rem 1.25rem;
+  }
+}
+
+/* Top HUD Bar */
+.btr-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  pointer-events: auto;
+}
+
+.btr-kicker-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Pure Porcelain Kicker Pill */
+.btr-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #065f46;
+  box-shadow: 0 4px 16px rgba(15, 30, 23, 0.08);
+}
+
+.btr-pulse-emerald {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #059669;
+  box-shadow: 0 0 8px rgba(5, 150, 105, 0.6);
+  animation: btr-radar 2s infinite ease-out;
+}
+
+@keyframes btr-radar {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.6);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(5, 150, 105, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0);
+  }
+}
+
+.btr-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+/* Pure White Porcelain Action Buttons */
+.btr-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  color: #0f172a;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(15, 30, 23, 0.08);
+  transition: all 220ms ease;
+  white-space: nowrap;
+}
+
+.btr-action-btn:hover {
+  background: #f0fdf4;
+  border-color: #059669;
+  color: #065f46;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.16);
+}
+
+.btr-action-btn.is-active {
+  background: #059669;
+  border-color: #047857;
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.35);
+}
+
+.btr-skip-btn {
+  color: #475569;
+}
+
+.btr-skip-btn:hover {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+/* ==========================================================================
+   UNIFIED CLINICAL BOTTOM CONSOLE
+   Neat, uncluttered console docking at the bottom with visual icons
+   Replaces both the square floating over the image and the separate 4-step buttons
+   ========================================================================== */
+
+.btr-bottom-dock {
+  width: 100%;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+/* Continuous Progress Bar */
+.btr-progress-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(15, 30, 23, 0.06);
+}
+
+.btr-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #059669 0%, #10b981 50%, #34d399 100%);
+  border-radius: 9999px;
+  box-shadow: 0 0 10px rgba(5, 150, 105, 0.4);
+  will-change: width;
+  transition: width 60ms linear;
+}
+
+.btr-console-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 0.85rem 1.35rem;
+  box-shadow: 0 16px 40px -10px rgba(15, 30, 23, 0.16), 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  width: 100%;
+  animation: btr-console-in 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes btr-console-in {
+  from {
+    opacity: 0.85;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Left: Step Tag & Clean Title */
+.btr-console-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex-shrink: 0;
+  min-width: 190px;
+}
+
+.btr-step-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7f5539;
+}
+
+.btr-console-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  font-family: var(--ph-font-display, 'Outfit', 'Plus Jakarta Sans', sans-serif);
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+
+/* Center: Visual Icon Feature Badges (Icons instead of walls of text) */
+.btr-console-features {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.btr-feature-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 0.85rem;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #0f172a;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  white-space: nowrap;
+  transition: all 200ms ease;
+}
+
+.btr-feature-chip:hover {
+  background: #ede0d4;
+  border-color: #ddb892;
+  color: #7f5539;
+  transform: translateY(-1px);
+}
+
+.btr-feat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #7f5539;
+  flex-shrink: 0;
+}
+
+.btr-feat-label {
+  line-height: 1.2;
+}
+
+/* Right: Stepper Controls or Reception CTAs */
+.btr-console-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.btr-stepper-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 9999px;
+  padding: 0.25rem 0.45rem;
+}
+
+.btr-arrow-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #475569;
+  font-size: 1.2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.btr-arrow-btn:hover:not(:disabled) {
+  background: #7f5539;
+  color: #ffffff;
+}
+
+.btr-arrow-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.btr-dot-track {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0 0.2rem;
+}
+
+.btr-dot-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.btr-dot-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.btr-dot-btn.is-active {
+  background: #7f5539;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(127, 85, 57, 0.35);
+}
+
+.btr-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.btr-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: linear-gradient(135deg, #7f5539 0%, #9c6644 100%);
+  color: #ffffff !important;
+  padding: 0.62rem 1.25rem;
+  border-radius: 12px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(127, 85, 57, 0.3);
+  transition: all 220ms ease;
+  white-space: nowrap;
+}
+
+.btr-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(84, 56, 37, 0.45);
+  background: #543825;
+}
+
+.btr-btn-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  color: #0f172a !important;
+  padding: 0.6rem 0.95rem;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 220ms ease;
+  white-space: nowrap;
+}
+
+.btr-btn-phone:hover {
+  background: #ffffff;
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN FOR CONSOLE BAR (TABLET & MOBILE)
+   ========================================================================== */
+
+@media (max-width: 960px) {
+  .btr-console-bar {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 16px;
+  }
+
+  .btr-console-identity {
+    min-width: auto;
+  }
+
+  .btr-console-features {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .btr-console-features::-webkit-scrollbar {
+    display: none;
+  }
+
+  .btr-console-actions {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .btr-console-bar {
+    padding: 0.65rem 0.85rem;
+    border-radius: 14px;
+    gap: 0.5rem;
+  }
+
+  .btr-console-title {
+    font-size: 0.95rem;
+  }
+
+  .btr-feature-chip {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.76rem;
+  }
+
+  .btr-btn-primary {
+    padding: 0.55rem 1rem;
+    font-size: 0.82rem;
+  }
+
+  .btr-btn-phone {
+    padding: 0.55rem 0.75rem;
+  }
+}
+
+/* Scroll Hint Bar (shown at start) */
+.btr-scroll-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  padding-top: 0.25rem;
+  animation: btr-bounce 2s infinite ease-in-out;
+}
+
+@keyframes btr-bounce {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+}
+
+/* Reduced Motion Fallback */
+@media (prefers-reduced-motion: reduce) {
+  .btr-scene-layer {
+    transition: opacity 250ms ease !important;
+    transform: none !important;
+  }
+  .btr-pulse-emerald,
+  .btr-scroll-hint {
+    animation: none !important;
+  }
+}

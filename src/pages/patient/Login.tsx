@@ -309,7 +309,7 @@ export default function PatientLogin() {
 
       <section className="pp-hero pp-hero-auth">
         <div className="pp-hero-copy">
-          <BrandLogo brand="clinic" to="/patient" height={40} className="pp-auth-brand" />
+          <BrandLogo brand="clinic" to="/" height={40} className="pp-auth-brand" />
           <h1 className="pp-headline">Your care, ready when you are</h1>
           <p className="pp-lead">
             Book visits, review history, and open lab results in one calm place —
@@ -330,8 +330,8 @@ export default function PatientLogin() {
             ))}
           </ul>
 
-          <Link to="/patient" className="pp-auth-back">
-            ← Back to clinic site
+          <Link to="/" className="pp-auth-back">
+            ← Back to hospital site
           </Link>
         </div>
 

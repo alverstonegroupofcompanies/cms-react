@@ -404,7 +404,7 @@ export default function PatientRegister() {
 
       <div className="ph-register-wrap">
         <header className="ph-register-head">
-          <BrandLogo brand="clinic" to="/patient" height={40} className="ph-register-logo" />
+          <BrandLogo brand="clinic" to="/" height={40} className="ph-register-logo" />
           <p className="ph-register-head-sub">
             Already registered? <Link to="/patient/login">Sign in</Link>
           </p>
@@ -666,7 +666,7 @@ export default function PatientRegister() {
         </div>
 
         <p className="ph-register-foot">
-          <Link to="/patient">← Patient home</Link>
+          <Link to="/">← Hospital home</Link>
         </p>
       </div>
     </div>

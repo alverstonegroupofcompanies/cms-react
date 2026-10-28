@@ -27,6 +27,8 @@ import {
   IconUsers,
 } from '../../components/Icons'
 
+import { formatAppointmentDate, toDateOnlyString } from '../../utils/dateUtils'
+
 const STEPS = ['Department', 'Doctor', 'Date', 'Slot', 'Confirm'] as const
 
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -40,19 +42,6 @@ function formatWorkingDays(availability?: Doctor['availability']): string {
 function formatSlotTime(slotTime?: string | null): string {
   if (!slotTime) return '—'
   return String(slotTime).slice(0, 5)
-}
-
-function formatAppointmentDate(dateStr?: string | null): string {
-  if (!dateStr) return '—'
-  const isoDate = String(dateStr).slice(0, 10)
-  const parsed = new Date(`${isoDate}T12:00:00`)
-  if (Number.isNaN(parsed.getTime())) return isoDate
-  return parsed.toLocaleDateString('en-IN', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
 }
 
 function formatFee(n?: number | null) {
@@ -220,7 +209,7 @@ export default function BookAppointment() {
       null
     const tokenNumber = queue_token?.token_number ?? appointment.queue_token?.token_number
     const isTodayBooking = (() => {
-      const d = String(appointment.appointment_date || '').slice(0, 10)
+      const d = toDateOnlyString(appointment.appointment_date)
       if (!d) return Boolean(queue_token && appointment.status === 'checked_in')
       const today = new Date()
       const iso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
@@ -451,7 +440,7 @@ export default function BookAppointment() {
                         className={`pb-doctor-card${doctorId === String(d.id) ? ' is-on' : ''}`}
                         onClick={() => setDoctorId(String(d.id))}
                       >
-                        <DoctorAvatar doctorId={d.id} name={d.name} className="pb-doctor-photo" />
+                        <DoctorAvatar doctorId={d.id} name={d.name} photoUrl={d.photo_url} className="pb-doctor-photo" />
                         <div className="pb-doctor-copy">
                           <strong>{d.name}</strong>
                           <span>{d.specialization}</span>

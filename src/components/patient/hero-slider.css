@@ -1,0 +1,259 @@
+/* ==========================================================================
+   PURE IMAGE HERO BANNER SLIDER
+   - Exact screen viewport width & height (no screen overflow, fits in 1 screen)
+   - Zero text contents (pure banner images, ready for user's custom banners)
+   - Smooth cinematic cross-fade transitions
+   - Glassmorphism hover arrows & pagination pill indicators
+   ========================================================================== */
+
+.ps-hero-image-slider {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 8.5;
+  max-height: calc(100dvh - 110px);
+  min-height: 420px;
+  overflow: hidden;
+  background-color: #24160e;
+  user-select: none;
+  outline: none;
+}
+
+/* TRACK HOLDING ALL BANNER SLIDES */
+.ps-banner-track {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ps-banner-slide-link {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  pointer-events: none;
+}
+
+.ps-banner-slide-link--active {
+  pointer-events: auto;
+  z-index: 2;
+}
+
+/* INDIVIDUAL SLIDE WITH SILKY CROSS-FADE */
+.ps-banner-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
+}
+
+.ps-banner-slide--active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+}
+
+/* BANNER IMAGE: PERFECT SCREEN FIT WITH SUBTLE AMBIENT SCALE */
+.ps-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+  transform: scale(1.02);
+  transition: transform 6.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ps-banner-slide--active .ps-banner-img {
+  transform: scale(1);
+}
+
+/* NAVIGATION ARROWS (GLASSMORPHISM WITH HOVER REVEAL) */
+.ps-banner-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+}
+
+.ps-hero-image-slider:hover .ps-banner-nav-arrow,
+.ps-hero-image-slider:focus-within .ps-banner-nav-arrow {
+  opacity: 1;
+}
+
+.ps-banner-nav-arrow--prev {
+  left: 28px;
+}
+
+.ps-banner-nav-arrow--next {
+  right: 28px;
+}
+
+.ps-banner-nav-arrow:hover {
+  background: #7f5539;
+  border-color: #ddb892;
+  color: #FFFFFF;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 10px 28px rgba(127, 85, 57, 0.45);
+}
+
+.ps-banner-nav-arrow:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
+/* BOTTOM PAGINATION & COUNTER */
+.ps-banner-pagination {
+  position: absolute;
+  bottom: 28px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.ps-banner-dots {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 9999px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35);
+  pointer-events: auto;
+}
+
+.ps-banner-dot {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.ps-banner-dot:hover {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.ps-banner-dot--active {
+  width: 32px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.ps-banner-dot-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: #ddb892;
+  animation: psBannerDotProgress 5.5s linear forwards;
+}
+
+@keyframes psBannerDotProgress {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+.ps-banner-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 9999px;
+  font-family: var(--ph-font-display, 'Sansation', sans-serif);
+  font-size: 13px;
+  font-weight: 700;
+  color: #FFFFFF;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35);
+  pointer-events: auto;
+}
+
+.ps-banner-counter-curr {
+  color: #34D399;
+}
+
+.ps-banner-counter-sep {
+  opacity: 0.5;
+  font-size: 11px;
+}
+
+.ps-banner-counter-total {
+  opacity: 0.8;
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVENESS
+   ========================================================================== */
+@media (max-width: 768px) {
+  .ps-hero-image-slider {
+    height: calc(100vh - 60px);
+    height: calc(100dvh - 60px);
+    max-height: calc(100dvh - 60px);
+    min-height: 380px;
+  }
+
+  .ps-banner-nav-arrow {
+    opacity: 0.9; /* visible for touch on mobile */
+    width: 42px;
+    height: 42px;
+  }
+
+  .ps-banner-nav-arrow--prev {
+    left: 12px;
+  }
+
+  .ps-banner-nav-arrow--next {
+    right: 12px;
+  }
+
+  .ps-banner-pagination {
+    bottom: 16px;
+    gap: 10px;
+  }
+
+  .ps-banner-counter {
+    display: none;
+  }
+}

@@ -12,6 +12,7 @@ import {
 import { receptionistNav } from '../../config/navigation'
 import VisitSourceBadge from '../../components/VisitSourceBadge'
 import type { Appointment, Doctor } from '../../api/types'
+import { toDateOnlyString } from '../../utils/dateUtils'
 
 export default function ReceptionistAppointments() {
   const [searchParams] = useSearchParams()
@@ -93,7 +94,7 @@ export default function ReceptionistAppointments() {
       appointmentId: a.id,
       doctorId: a.doctor_id,
       doctorName: a.doctor?.name || 'Doctor',
-      appointmentDate: String(a.appointment_date).slice(0, 10),
+      appointmentDate: toDateOnlyString(a.appointment_date),
       slotTime: a.slot_time,
       patientName: a.patient?.name,
     })
@@ -169,7 +170,7 @@ export default function ReceptionistAppointments() {
               <tbody>
                 {appointments.map((a) => (
                   <tr key={a.id}>
-                    <td>{String(a.appointment_date).slice(0, 10)}</td>
+                    <td>{toDateOnlyString(a.appointment_date)}</td>
                     <td><strong>{a.slot_time?.slice(0, 5)}</strong></td>
                     <td>
                       {a.patient?.name}

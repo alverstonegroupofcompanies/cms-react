@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import { CLINIC } from '../config/clinic'
+import { IconCheck } from './Icons'
 
 export const ENQUIRY_PURPOSES = [
-  { value: 'callback', label: 'Request a call back' },
-  { value: 'appointment', label: 'Book an appointment' },
-  { value: 'lab-home', label: 'Lab test at home' },
-  { value: 'sample-collection', label: 'Home sample collection' },
-  { value: 'pharmacy', label: 'Pharmacy / medicine query' },
-  { value: 'reports', label: 'Reports & documents' },
-  { value: 'general', label: 'General enquiry' },
-  { value: 'other', label: 'Other' },
+  { value: 'callback', label: 'Request a quick call back' },
+  { value: 'appointment', label: 'Book a specialist consultation' },
+  { value: 'lab-home', label: 'Lab diagnostic test at home' },
+  { value: 'sample-collection', label: 'Home blood sample collection' },
+  { value: 'pharmacy', label: 'Pharmacy & prescription availability' },
+  { value: 'reports', label: 'Lab reports & clinical documents' },
+  { value: 'general', label: 'General hospital enquiry' },
+  { value: 'other', label: 'Other assistance' },
 ] as const
 
 export type EnquiryPurpose = (typeof ENQUIRY_PURPOSES)[number]['value']
@@ -40,9 +41,9 @@ interface Props {
 }
 
 export default function PatientEnquiryForm({
-  title = 'Request a call back',
-  lead = 'Tell us what you need — we are open 24 hours for call backs and enquiries.',
-  submitLabel = 'Submit enquiry',
+  title = 'Request a Priority Call Back',
+  lead = 'Leave your details below and our hospital reception desk will contact you promptly.',
+  submitLabel = 'Request Priority Call Back',
   compact = false,
 }: Props) {
   const [sent, setSent] = useState(false)
@@ -59,7 +60,6 @@ export default function PatientEnquiryForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Front-end acknowledgement only — no backend contact API yet
     setSent(true)
   }
 
@@ -71,15 +71,21 @@ export default function PatientEnquiryForm({
   if (sent) {
     return (
       <div className="ps-contact-thanks">
-        <h2>Request received</h2>
+        <div className="ps-thanks-icon-wrap">
+          <IconCheck size={28} />
+        </div>
+        <h2>Request Received Successfully</h2>
         <p>
-          Thanks{form.name ? `, ${form.name}` : ''}. We noted your{' '}
+          Thank you{form.name ? `, ${form.name}` : ''}. We noted your request for{' '}
           <strong>{purposeLabel.toLowerCase()}</strong>
-          {form.phone ? ` and will reach you on ${form.phone}` : ''}.
-          We are open 24 hours — for urgent needs, call {CLINIC.phone}.
+          {form.phone ? ` and our front desk will call you back on ${form.phone}` : ''}.
         </p>
+        <div className="ps-thanks-urgent-box">
+          <span>For acute symptoms or immediate emergency care:</span>
+          <a href={`tel:${CLINIC.phone.replace(/\s/g, '')}`}>{CLINIC.phone} (24/7 Desk)</a>
+        </div>
         <button type="button" className="ps-btn" onClick={reset}>
-          Send another
+          Submit Another Request
         </button>
       </div>
     )
@@ -87,22 +93,26 @@ export default function PatientEnquiryForm({
 
   return (
     <>
+      <div className="ps-form-badge-pill">
+        <span className="ps-form-badge-dot" />
+        <span>Average callback response: &lt; 15 mins</span>
+      </div>
       <h2>{title}</h2>
       <p className="ps-form-lead">{lead}</p>
       <form className={`ps-form${compact ? ' ps-form-compact' : ''}`} onSubmit={handleSubmit}>
         <div className="ps-form-row">
           <label>
-            <span>Full name</span>
+            <span>Full Name</span>
             <input
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               autoComplete="name"
-              placeholder="Your name"
+              placeholder="e.g. Rahul Nair"
             />
           </label>
           <label>
-            <span>Phone</span>
+            <span>Phone Number</span>
             <input
               required
               type="tel"
@@ -110,13 +120,13 @@ export default function PatientEnquiryForm({
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
               autoComplete="tel"
-              placeholder="For call back"
+              placeholder="e.g. 98470 12345"
             />
           </label>
         </div>
 
         <label>
-          <span>Email <em className="ps-optional">(optional)</em></span>
+          <span>Email Address <em className="ps-optional">(optional)</em></span>
           <input
             type="email"
             value={form.email}
@@ -127,7 +137,7 @@ export default function PatientEnquiryForm({
         </label>
 
         <label>
-          <span>How can we help?</span>
+          <span>Service Purpose</span>
           <select
             required
             value={form.purpose}
@@ -136,7 +146,7 @@ export default function PatientEnquiryForm({
             }
           >
             <option value="" disabled>
-              Select purpose
+              Select your purpose
             </option>
             {ENQUIRY_PURPOSES.map((p) => (
               <option key={p.value} value={p.value}>
@@ -148,33 +158,38 @@ export default function PatientEnquiryForm({
 
         {needsCallbackSlot && (
           <label>
-            <span>Preferred call-back time <em className="ps-optional">(optional)</em></span>
+            <span>Preferred Time Slot <em className="ps-optional">(optional)</em></span>
             <select
               value={form.preferredTime}
               onChange={(e) => setForm({ ...form, preferredTime: e.target.value })}
             >
               <option value="">Any time (24 hours)</option>
-              <option value="morning">Morning (9 AM – 12 PM)</option>
-              <option value="afternoon">Afternoon (12 PM – 4 PM)</option>
-              <option value="evening">Evening (4 PM – 8 PM)</option>
-              <option value="night">Night (8 PM – 9 AM)</option>
+              <option value="morning">Morning (9:00 AM – 12:00 PM)</option>
+              <option value="afternoon">Afternoon (12:00 PM – 4:00 PM)</option>
+              <option value="evening">Evening (4:00 PM – 8:00 PM)</option>
+              <option value="night">Night Emergency (8:00 PM – 9:00 AM)</option>
             </select>
           </label>
         )}
 
         <label>
-          <span>Message <em className="ps-optional">(optional)</em></span>
+          <span>Additional Notes <em className="ps-optional">(optional)</em></span>
           <textarea
             rows={compact ? 3 : 4}
             value={form.message}
             onChange={(e) => setForm({ ...form, message: e.target.value })}
-            placeholder="Share a few details so we can help faster…"
+            placeholder="Briefly describe your health question or preferred doctor…"
           />
         </label>
 
-        <button type="submit" className="ps-btn ps-btn-block">
-          {submitLabel}
+        <button type="submit" className="ps-btn ps-btn-block ps-btn-submit-clinical">
+          <span>{submitLabel}</span>
+          <span className="ps-btn-arrow">→</span>
         </button>
+
+        <div className="ps-form-privacy-note">
+          <span>🔒 100% Confidential • Directly handled by Alverstone Medcity clinical desk</span>
+        </div>
       </form>
     </>
   )

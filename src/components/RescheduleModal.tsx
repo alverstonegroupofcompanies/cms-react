@@ -8,11 +8,13 @@ import {
 import type { AvailableDate, Slot } from '../api/types'
 import { filterPastSlotsForToday } from '../utils/slotUtils'
 import { displayDoctorName } from '../utils/doctorName'
+import { toDateOnlyString } from '../utils/dateUtils'
 
 export type RescheduleTarget = {
   appointmentId: number
   doctorId: number
   doctorName: string
+  doctorPhotoUrl?: string | null
   appointmentDate: string
   slotTime: string
   /** Optional — shown when staff reschedules for a patient */
@@ -85,7 +87,7 @@ export default function RescheduleModal({ target, onClose, onSuccess }: Props) {
 
   if (!target) return null
 
-  const currentDate = target.appointmentDate.slice(0, 10)
+  const currentDate = toDateOnlyString(target.appointmentDate)
   const currentSlot = normalizeSlotTime(target.slotTime)
   const unchanged = date === currentDate && selectedSlot === currentSlot
   const forPatient = Boolean(target.patientName)
@@ -131,7 +133,12 @@ export default function RescheduleModal({ target, onClose, onSuccess }: Props) {
         </div>
 
         <div className="ph-reschedule-doctor">
-          <DoctorAvatar doctorId={target.doctorId} name={target.doctorName} className="ph-reschedule-photo" />
+          <DoctorAvatar
+            doctorId={target.doctorId}
+            name={target.doctorName}
+            photoUrl={target.doctorPhotoUrl}
+            className="ph-reschedule-photo"
+          />
           <div>
             <strong>{displayDoctorName(target.doctorName)}</strong>
             <span className="ph-muted">Current: {formatCurrentSlot(target.appointmentDate, target.slotTime)}</span>

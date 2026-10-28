@@ -58,7 +58,7 @@ export default function Layout({ title, subtitle, hidePageHeader = false, nav, c
       <aside className="sidebar">
         <div className="sidebar-brand">
           <BrandLogo
-            to="/"
+            to="/dashboard"
             height={logoHeight}
             variant={isClinic ? 'full' : 'compact'}
             onDark

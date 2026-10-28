@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PatientLayout from '../../components/PatientLayout'
+import DoctorAvatar from '../../components/DoctorAvatar'
 import RescheduleModal, { type RescheduleTarget } from '../../components/RescheduleModal'
 import VisitsSection from '../../components/VisitsSection'
 import {
@@ -8,8 +9,11 @@ import {
   IconCheck,
   IconClock,
   IconFlask,
+  IconHeart,
+  IconPhone,
   IconPill,
-  IconUser,
+  IconQueue,
+  IconStethoscope,
 } from '../../components/Icons'
 import { useAuth } from '../../context/AuthContext'
 import {
@@ -19,8 +23,10 @@ import {
   getMyActiveQueue,
   getPrescriptions,
 } from '../../api/client'
+import { CLINIC } from '../../config/clinic'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import type { Appointment, LabOrder, Prescription } from '../../api/types'
+import { formatAppointmentDate, toDateOnlyString } from '../../utils/dateUtils'
 
 type ActiveQueue = {
   status: string
@@ -35,16 +41,32 @@ type ActiveQueue = {
     id: number
     display_code: string
     status: string
-    doctor?: { id: number; name: string; specialization?: string }
+    doctor?: { id: number; name: string; specialization?: string; photo_url?: string | null }
     appointment?: { id: number; slot_time?: string; appointment_date?: string } | null
   }
 }
+
+const QUICK_SPECIALTIES = [
+  { label: 'General Medicine', dept: 'General & Internal Medicine' },
+  { label: 'Cardiology', dept: 'Cardiology & Heart Care' },
+  { label: 'Pediatrics', dept: 'Pediatrics & Child Wellness' },
+  { label: 'Geriatrics', dept: 'Geriatrics & Elder Care' },
+]
 
 function greeting() {
   const h = new Date().getHours()
   if (h < 12) return 'Good morning'
   if (h < 17) return 'Good afternoon'
   return 'Good evening'
+}
+
+function todayFormatted() {
+  return new Date().toLocaleDateString('en-IN', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
 }
 
 function parseList<T>(data: unknown): T[] {
@@ -56,22 +78,32 @@ function parseList<T>(data: unknown): T[] {
 }
 
 function appointmentStart(a: Appointment): Date {
-  const date = a.appointment_date.split('T')[0]
+  const date = toDateOnlyString(a.appointment_date)
   const raw = (a.slot_time || '00:00:00').slice(0, 8)
   const time = raw.length === 5 ? `${raw}:00` : raw
   return new Date(`${date}T${time}`)
 }
 
+function isTodayDate(dateStr: string): boolean {
+  const today = new Date()
+  const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+  return toDateOnlyString(dateStr) === todayIso
+}
+
 function isMissedAppointment(a: Appointment): boolean {
+  if (a.status === 'cancelled' || a.status === 'completed') return false
   if (a.status === 'no_show') return true
+  if (a.status === 'checked_in' && !isTodayDate(a.appointment_date) && appointmentStart(a).getTime() < Date.now()) {
+    return true
+  }
   if (a.status !== 'booked') return false
   return appointmentStart(a).getTime() < Date.now()
 }
 
 function isUpcomingAppointment(a: Appointment): boolean {
   if (['cancelled', 'completed', 'no_show'].includes(a.status)) return false
-  if (a.status === 'booked' && appointmentStart(a).getTime() < Date.now()) return false
-  return appointmentStart(a).getTime() >= Date.now() || a.status === 'checked_in'
+  if (isMissedAppointment(a)) return false
+  return appointmentStart(a).getTime() >= Date.now() || (a.status === 'checked_in' && isTodayDate(a.appointment_date))
 }
 
 function appointmentStatusLabel(a: Appointment) {
@@ -99,6 +131,8 @@ function labOrderHasResults(o: LabOrder): boolean {
 }
 
 function isQueuedAppointment(a: Appointment) {
+  if (isMissedAppointment(a) || a.status === 'cancelled' || a.status === 'completed') return false
+  if (!isTodayDate(a.appointment_date)) return false
   return (
     a.status === 'checked_in' ||
     Boolean(a.queue_token && ['waiting', 'in_consultation'].includes(a.queue_token.status))
@@ -124,9 +158,15 @@ function formatShortDate(iso?: string | null) {
 
 export default function PatientDashboard() {
   const { user } = useAuth()
-  usePageTitle('Home', 'Patient')
+  usePageTitle('Care Overview', 'Patient')
   const name = user?.patient?.name || user?.name || 'Patient'
   const firstName = name.split(' ')[0]
+  const initials = name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
   const patientId = user?.patient?.id
   const patient = user?.patient
 
@@ -165,62 +205,81 @@ export default function PatientDashboard() {
     }
     loadAppointments()
     const onFocus = () => loadAppointments()
+    const onApptsChanged = () => loadAppointments()
     window.addEventListener('focus', onFocus)
+    window.addEventListener('appointments:changed', onApptsChanged)
     const timer = window.setInterval(loadAppointments, 8000)
     return () => {
       window.removeEventListener('focus', onFocus)
+      window.removeEventListener('appointments:changed', onApptsChanged)
       window.clearInterval(timer)
     }
   }, [patientId])
 
-  const { upcoming, completed, labHighlight, pendingLab, nextAppt, missedAppt, lastVisit, activeRx } =
-    useMemo(() => {
-      const upcomingList = appointments.filter(isUpcomingAppointment)
-      const missedList = appointments.filter(isMissedAppointment)
-      const completedList = appointments.filter((a) => a.status === 'completed')
-      const activeLabs = labOrders.filter((o) => o.status !== 'cancelled')
-      const pendingLabs = activeLabs.filter((o) => !labOrderHasResults(o))
-      const ready = activeLabs.filter((o) => labOrderHasResults(o)).length
-      const pending = pendingLabs.length
+  const {
+    upcoming,
+    completed,
+    readyLabsCount,
+    pendingLabsCount,
+    labHighlight,
+    latestLab,
+    nextAppt,
+    missedAppt,
+    lastVisit,
+    activeRx,
+  } = useMemo(() => {
+    const upcomingList = appointments.filter(isUpcomingAppointment)
+    const missedList = appointments.filter(isMissedAppointment)
+    const completedList = appointments.filter((a) => a.status === 'completed')
+    const activeLabs = labOrders.filter((o) => o.status !== 'cancelled')
+    const pendingLabs = activeLabs.filter((o) => !labOrderHasResults(o))
+    const ready = activeLabs.filter((o) => labOrderHasResults(o)).length
+    const pending = pendingLabs.length
 
-      const queued = [...upcomingList]
-        .filter(isQueuedAppointment)
-        .sort((a, b) => appointmentStart(a).getTime() - appointmentStart(b).getTime())[0]
-      const next =
-        queued ||
-        [...upcomingList].sort((a, b) => appointmentStart(a).getTime() - appointmentStart(b).getTime())[0]
-      const missed = [...missedList].sort(
-        (a, b) => appointmentStart(b).getTime() - appointmentStart(a).getTime()
-      )[0]
-      const last = [...completedList].sort(
-        (a, b) => appointmentStart(b).getTime() - appointmentStart(a).getTime()
-      )[0]
-      const pendingLabOrder = [...pendingLabs].sort((a, b) => {
-        const ta = a.created_at ? new Date(a.created_at).getTime() : 0
-        const tb = b.created_at ? new Date(b.created_at).getTime() : 0
-        return tb - ta
-      })[0]
+    const queued = [...upcomingList]
+      .filter(isQueuedAppointment)
+      .sort((a, b) => appointmentStart(a).getTime() - appointmentStart(b).getTime())[0]
+    const next =
+      queued ||
+      [...upcomingList].sort((a, b) => appointmentStart(a).getTime() - appointmentStart(b).getTime())[0]
+    const missed = [...missedList].sort(
+      (a, b) => appointmentStart(b).getTime() - appointmentStart(a).getTime()
+    )[0]
+    const last = [...completedList].sort(
+      (a, b) => appointmentStart(b).getTime() - appointmentStart(a).getTime()
+    )[0]
+    const sortedLabs = [...activeLabs].sort((a, b) => {
+      const ta = a.created_at ? new Date(a.created_at).getTime() : 0
+      const tb = b.created_at ? new Date(b.created_at).getTime() : 0
+      return tb - ta
+    })
+    const pendingLabOrder = [...pendingLabs].sort((a, b) => {
+      const ta = a.created_at ? new Date(a.created_at).getTime() : 0
+      const tb = b.created_at ? new Date(b.created_at).getTime() : 0
+      return tb - ta
+    })[0]
 
-      const rxActive = prescriptions.filter((p) => !['cancelled', 'dispensed'].includes(p.status))
+    const rxActive = prescriptions.filter((p) => !['cancelled', 'dispensed'].includes(p.status))
 
-      return {
-        upcoming: upcomingList.length,
-        completed: completedList.length,
-        labHighlight: {
-          count: pending > 0 ? pending : ready,
-          label: pending > 0 ? 'pending results' : ready > 0 ? 'reports ready' : 'pending results',
-        },
-        pendingLab: pendingLabOrder || null,
-        nextAppt: next || null,
-        missedAppt: missed || null,
-        lastVisit: last || null,
-        activeRx: rxActive.slice(0, 3),
-      }
-    }, [appointments, labOrders, prescriptions])
+    return {
+      upcoming: upcomingList.length,
+      completed: completedList.length,
+      readyLabsCount: ready,
+      pendingLabsCount: pending,
+      labHighlight: {
+        count: pending > 0 ? pending : ready,
+        label: pending > 0 ? 'pending results' : ready > 0 ? 'reports ready' : 'pending results',
+      },
+      latestLab: pendingLabOrder || sortedLabs[0] || null,
+      nextAppt: next || null,
+      missedAppt: missed || null,
+      lastVisit: last || null,
+      activeRx: rxActive.slice(0, 3),
+    }
+  }, [appointments, labOrders, prescriptions])
 
   const formatApptDate = (a: Appointment) => {
-    const d = new Date(a.appointment_date.split('T')[0] + 'T00:00:00')
-    return d.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })
+    return formatAppointmentDate(a.appointment_date)
   }
 
   const featured = missedAppt || nextAppt
@@ -230,11 +289,21 @@ export default function PatientDashboard() {
   const queueStatusLabel =
     activeQueue?.status_label || (activeQueue?.status === 'in_consultation' ? 'With doctor' : 'In queue')
   const featuredStatusLabel = featured ? appointmentStatusLabel(featured) : 'Scheduled'
-  const featuredIsQueued = featured ? isQueuedAppointment(featured) || showQueueHero : showQueueHero
+  const featuredIsQueued = featured ? (!isMissedFeature && isQueuedAppointment(featured)) || showQueueHero : showQueueHero
   const tokenCode =
     (showQueueHero && (activeQueue?.display_code || activeQueue?.token?.display_code)) ||
-    featured?.queue_token?.display_code ||
+    (!isMissedFeature ? featured?.queue_token?.display_code : null) ||
     null
+
+  const journeyStep = useMemo(() => {
+    if (!featured && !showQueueHero) return 0
+    if (activeQueue?.status === 'in_consultation' || featured?.queue_token?.status === 'in_consultation') {
+      return 4
+    }
+    if (featuredIsQueued) return 3
+    if (tokenCode) return 2
+    return 1
+  }, [featured, showQueueHero, activeQueue, featuredIsQueued, tokenCode])
 
   const openReschedule = (a: Appointment) => {
     setActionError('')
@@ -242,373 +311,547 @@ export default function PatientDashboard() {
       appointmentId: a.id,
       doctorId: a.doctor_id,
       doctorName: a.doctor?.name || 'Doctor',
+      doctorPhotoUrl: a.doctor?.photo_url,
       appointmentDate: a.appointment_date,
       slotTime: a.slot_time,
     })
   }
 
   const handleCancelFeatured = async () => {
-    if (!featured) return
-    if (!window.confirm('Cancel this appointment?')) return
+    if (!featured || cancelling) return
     setCancelling(true)
     setActionError('')
+
+    const targetDate = toDateOnlyString(featured.appointment_date)
+    const targetIds = appointments
+      .filter(
+        (a) =>
+          a.id === featured.id ||
+          (isMissedAppointment(a) &&
+            a.doctor_id === featured.doctor_id &&
+            toDateOnlyString(a.appointment_date) === targetDate)
+      )
+      .map((a) => a.id)
+
+    setAppointments((prev) =>
+      prev.map((a) => (targetIds.includes(a.id) ? { ...a, status: 'cancelled' } : a))
+    )
+
     try {
-      await cancelAppointment(featured.id)
+      await Promise.all(targetIds.map((id) => cancelAppointment(id)))
+      window.dispatchEvent(new CustomEvent('appointments:changed'))
       loadAppointments()
     } catch {
       setActionError('Could not cancel appointment. Please try again.')
+      loadAppointments()
+    } finally {
+      setCancelling(false)
     }
-    setCancelling(false)
   }
 
   const visitDoctor = showQueueHero ? queueDoctor : featured?.doctor
   const visitTitle = showQueueHero
     ? activeQueue?.status === 'in_consultation'
-      ? 'Please go in to see the doctor'
-      : "You are in today's queue"
+      ? 'Doctor is ready for your consultation'
+      : "You are checked into today's live queue"
     : featured
       ? formatApptDate(featured)
-      : 'Book your next clinic visit'
+      : 'Ready when you need care'
   const visitMeta = showQueueHero
     ? activeQueue?.status === 'waiting' && activeQueue.position != null
-      ? `Position #${activeQueue.position}${
+      ? `Queue Position #${activeQueue.position}${
           activeQueue.estimated_wait_minutes != null
-            ? ` · ~${activeQueue.estimated_wait_minutes} min wait`
+            ? ` · Est. wait ~${activeQueue.estimated_wait_minutes} mins`
             : ''
         }`
       : queueStatusLabel
     : featured
-      ? `${formatSlotAmPm(featured.slot_time)} · 30 min consultation`
-      : 'Choose department, doctor, and an available slot'
+      ? `${formatSlotAmPm(featured.slot_time)} · 30 min specialist consultation`
+      : 'Choose a department below or open the slot calendar to reserve your visit.'
 
   return (
     <PatientLayout>
-      <div className="po-page">
+      <div className="po-flow">
+        {/* ==================================================================
+            1. FLUID EDITORIAL HERO CANVAS (NO BOXES — SWEPT ORGANIC HEADER)
+            ================================================================== */}
         <section
-          className="po-hero"
+          className="po-flow-hero"
           data-reveal="hero"
           style={{ backgroundImage: "url('/images/patient-site-banner.jpg')" }}
         >
-          <div className="ps-hero-orb" aria-hidden />
-          <div className="ps-hero-scan" aria-hidden />
-          <div className="po-hero-inner">
-            <p className="ps-kicker po-hero-line" style={{ ['--d' as string]: '0ms' }}>
-              {greeting()} · Care overview
-            </p>
-            <h1 className="po-hero-line" style={{ ['--d' as string]: '80ms' }}>
-              Welcome back, <span>{firstName}</span>
-            </h1>
-            <p className="po-hero-lead po-hero-line" style={{ ['--d' as string]: '160ms' }}>
-              Book visits, follow your queue, and open labs or prescriptions — the same calm
-              experience as the Alverstone Medcity website.
-            </p>
-            <div className="ps-hero-actions po-hero-line" style={{ ['--d' as string]: '240ms' }}>
-              <Link to="/patient/book" className="ps-btn ps-btn-lg">
-                <IconCalendar size={16} /> Book a visit
-              </Link>
-              <Link to="/patient/appointments" className="ps-btn-ghost">
-                My visits
+          <div className="po-flow-hero-veil" aria-hidden />
+
+          <div className="po-flow-hero-inner">
+            {/* Inline Patient Identity Strip (Borderless) */}
+            <div className="po-flow-meta-bar po-hero-line" style={{ ['--d' as string]: '0ms' }}>
+              <span className="po-flow-date">{todayFormatted()}</span>
+              <span className="po-flow-dot" />
+              <span className="po-flow-id">
+                ID {patient?.patient_code || `PT-${String(patientId || 101).padStart(4, '0')}`}
+              </span>
+              {patient?.blood_group && (
+                <>
+                  <span className="po-flow-dot" />
+                  <span className="po-flow-id">Blood Group {patient.blood_group}</span>
+                </>
+              )}
+              <span className="po-flow-dot" />
+              <Link to="/patient/profile" className="po-flow-profile-link">
+                <span className="po-flow-avatar-mini">{initials}</span>
+                <span>{name}</span>
+                <span aria-hidden>→</span>
               </Link>
             </div>
-          </div>
-        </section>
 
-        {actionError && (
-          <div className="po-wrap">
-            <div className="ph-alert ph-alert-error">{actionError}</div>
-          </div>
-        )}
+            <div className="po-flow-hero-main">
+              <div className="po-flow-hero-copy">
+                <h1 className="po-hero-line" style={{ ['--d' as string]: '70ms' }}>
+                  {greeting()}, <em>{firstName}.</em>
+                </h1>
+                <p className="po-flow-lead po-hero-line" style={{ ['--d' as string]: '140ms' }}>
+                  Your personal health stream at Alverstone Medcity — follow your live consultation
+                  queue, review verified diagnostic results, and manage prescriptions in one calm,
+                  open space.
+                </p>
 
-        <section className="ps-section po-section">
-          <div className="ps-section-head" data-reveal>
-            <p className="ps-kicker ps-kicker-dark">Snapshot</p>
-            <h2>Your care at a glance</h2>
-            <p>Live counts from your account — visits and lab work in one place.</p>
-          </div>
-          <div className="po-stat-grid" data-reveal>
-            <article className="po-stat-card po-stat-card--teal">
-              <em>Upcoming</em>
-              <strong>{loading ? '—' : upcoming}</strong>
-              <span>{upcoming === 1 ? 'visit scheduled' : 'visits scheduled'}</span>
-            </article>
-            <article className="po-stat-card po-stat-card--navy">
-              <em>Completed</em>
-              <strong>{loading ? '—' : completed}</strong>
-              <span>{completed === 1 ? 'past visit' : 'past visits'}</span>
-            </article>
-            <article className="po-stat-card po-stat-card--mist">
-              <em>Laboratory</em>
-              <strong>{loading ? '—' : labHighlight.count}</strong>
-              <span>
-                {labHighlight.label === 'reports ready'
-                  ? (labHighlight.count === 1 ? 'result ready' : 'results ready')
-                  : (labHighlight.count === 1 ? 'result pending' : 'results pending')}
-              </span>
-            </article>
-          </div>
-        </section>
-
-        <section className="ps-section po-section po-visit-section">
-          <div className="ps-section-head" data-reveal>
-            <p className="ps-kicker ps-kicker-dark">Today&apos;s visit</p>
-            <h2>{featured || showQueueHero ? 'Current appointment' : 'Plan your next visit'}</h2>
-            <p>
-              {featured || showQueueHero
-                ? 'Status, token, and doctor details for your active booking.'
-                : 'Choose a department and doctor when you are ready.'}
-            </p>
-          </div>
-
-          <article
-            className={`po-visit-card${isMissedFeature ? ' is-missed' : ''}${
-              featuredIsQueued ? ' is-live' : ''
-            }`}
-            data-reveal
-          >
-            {featured || showQueueHero ? (
-              <>
-                <div className="po-visit-top">
-                  <span className={`po-pill${isMissedFeature ? ' is-warn' : ''}`}>
-                    <IconCheck size={14} />
-                    {isMissedFeature
-                      ? 'Missed'
-                      : featuredIsQueued
-                        ? queueStatusLabel
-                        : featuredStatusLabel}
-                  </span>
-                  {tokenCode && (
-                    <div className="po-token">
-                      <em>Token</em>
-                      <strong>{tokenCode}</strong>
-                    </div>
-                  )}
-                </div>
-                <div className="po-visit-body">
-                  <div className="po-visit-copy">
-                    <h3>{visitTitle}</h3>
-                    <p>
-                      <IconClock size={15} /> {visitMeta}
-                    </p>
-                    {isMissedFeature && (
-                      <p className="po-visit-note">
-                        This visit was missed. Please reschedule or cancel the booking.
-                      </p>
-                    )}
-                  </div>
-                  <div className="po-doctor">
-                    <div className="po-doctor-avatar">{(visitDoctor?.name || 'D').charAt(0)}</div>
-                    <div>
-                      <strong>{visitDoctor?.name || 'Doctor'}</strong>
-                      <span>{visitDoctor?.specialization || 'General consultation'}</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="po-visit-actions">
-                  {!featuredIsQueued && featured && (
-                    <button type="button" className="ps-btn" onClick={() => openReschedule(featured)}>
-                      Reschedule
-                    </button>
-                  )}
-                  {isMissedFeature ? (
-                    <button
-                      type="button"
-                      className="ps-btn-outline"
-                      onClick={handleCancelFeatured}
-                      disabled={cancelling}
-                    >
-                      {cancelling ? 'Cancelling…' : 'Cancel'}
-                    </button>
-                  ) : (
-                    <Link to="/patient/appointments" className="ps-btn-outline">
-                      View details <span aria-hidden>→</span>
-                    </Link>
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="po-visit-top">
-                  <span className="po-pill">No visit yet</span>
-                </div>
-                <div className="po-visit-body">
-                  <div className="po-visit-copy">
-                    <h3>Schedule your next check-up</h3>
-                    <p>Choose department, doctor, and an available slot online.</p>
-                  </div>
-                </div>
-                <div className="po-visit-actions">
-                  <Link to="/patient/book" className="ps-btn">
-                    Book appointment
+                <div className="po-flow-actions po-hero-line" style={{ ['--d' as string]: '200ms' }}>
+                  <Link to="/patient/book" className="po-pill-primary">
+                    <IconCalendar size={17} />
+                    <span>Schedule a Consultation</span>
+                  </Link>
+                  <Link to="/patient/appointments" className="po-pill-ghost">
+                    <IconQueue size={17} />
+                    <span>Live Queue & Visits</span>
                   </Link>
                 </div>
-              </>
-            )}
-          </article>
-        </section>
+              </div>
 
-        <section className="ps-section po-section">
-          <div className="ps-section-head" data-reveal>
-            <p className="ps-kicker ps-kicker-dark">Patient tools</p>
-            <h2>Continue your care</h2>
-            <p>The same tools from the homepage — ready for your account.</p>
-          </div>
-          <div className="ps-service-grid po-tools-grid">
-            <Link
-              to="/patient/book"
-              className="ps-service-card ps-service-card--navy"
-              data-reveal
-              style={{ ['--d' as string]: '0ms' }}
-            >
-              <div className="ps-service-card-top">
-                <span className="ps-service-index">01</span>
-                <span className="ps-service-icon" aria-hidden><IconCalendar size={26} /></span>
-              </div>
-              <h3>Book a visit</h3>
-              <p>Pick department, doctor, and a convenient slot.</p>
-              <span className="ps-service-cta">Open booking <span aria-hidden>→</span></span>
-            </Link>
-            <Link
-              to="/patient/appointments"
-              className="ps-service-card ps-service-card--green"
-              data-reveal
-              style={{ ['--d' as string]: '80ms' }}
-            >
-              <div className="ps-service-card-top">
-                <span className="ps-service-index">02</span>
-                <span className="ps-service-icon" aria-hidden><IconClock size={26} /></span>
-              </div>
-              <h3>My visits</h3>
-              <p>Upcoming, queued, and past appointments.</p>
-              <span className="ps-service-cta">View visits <span aria-hidden>→</span></span>
-            </Link>
-            <Link
-              to="/patient/lab-reports"
-              className="ps-service-card ps-service-card--mist"
-              data-reveal
-              style={{ ['--d' as string]: '160ms' }}
-            >
-              <div className="ps-service-card-top">
-                <span className="ps-service-index">03</span>
-                <span className="ps-service-icon" aria-hidden><IconFlask size={26} /></span>
-              </div>
-              <h3>Lab reports</h3>
-              <p>Pending orders and completed results.</p>
-              <span className="ps-service-cta">Open labs <span aria-hidden>→</span></span>
-            </Link>
-            <Link
-              to="/patient/prescriptions"
-              className="ps-service-card ps-service-card--leaf"
-              data-reveal
-              style={{ ['--d' as string]: '240ms' }}
-            >
-              <div className="ps-service-card-top">
-                <span className="ps-service-index">04</span>
-                <span className="ps-service-icon" aria-hidden><IconPill size={26} /></span>
-              </div>
-              <h3>Prescriptions</h3>
-              <p>Medicines from your clinic visits.</p>
-              <span className="ps-service-cta">View Rx <span aria-hidden>→</span></span>
-            </Link>
-          </div>
-        </section>
+              {/* Open Typographic Metric Stream (Zero Boxes — Pure Numbers & Hairlines) */}
+              <div className="po-flow-metrics po-hero-line" style={{ ['--d' as string]: '240ms' }}>
+                <Link to="/patient/appointments" className="po-flow-stat">
+                  <span className="po-flow-stat-num">
+                    {loading ? '—' : String(upcoming).padStart(2, '0')}
+                  </span>
+                  <span className="po-flow-stat-label">Upcoming Visits</span>
+                  <small>{upcoming === 1 ? '1 active slot' : `${upcoming} scheduled`}</small>
+                </Link>
 
-        <section className="ps-section po-section po-bottom">
-          <div className="po-bottom-grid">
-            <div className="po-panel" data-reveal>
-              <div className="po-panel-head">
-                <div>
-                  <p className="ps-kicker ps-kicker-dark">Schedule</p>
-                  <h3>Appointments</h3>
-                </div>
-                <Link to="/patient/appointments" className="po-panel-link">
-                  View all →
+                <Link to="/patient/appointments" className="po-flow-stat">
+                  <span className="po-flow-stat-num">
+                    {loading ? '—' : tokenCode ? tokenCode : featuredIsQueued ? 'LIVE' : '—'}
+                  </span>
+                  <span className="po-flow-stat-label">Queue Token</span>
+                  <small>{featuredIsQueued ? queueStatusLabel : 'Standby'}</small>
+                </Link>
+
+                <Link to="/patient/lab-reports" className="po-flow-stat">
+                  <span className="po-flow-stat-num">
+                    {loading ? '—' : String(labHighlight.count).padStart(2, '0')}
+                  </span>
+                  <span className="po-flow-stat-label">Lab Reports</span>
+                  <small>
+                    {pendingLabsCount > 0
+                      ? `${pendingLabsCount} processing`
+                      : readyLabsCount > 0
+                        ? `${readyLabsCount} verified`
+                        : 'All clear'}
+                  </small>
+                </Link>
+
+                <Link to="/patient/prescriptions" className="po-flow-stat">
+                  <span className="po-flow-stat-num">
+                    {loading ? '—' : String(prescriptions.length).padStart(2, '0')}
+                  </span>
+                  <span className="po-flow-stat-label">Prescriptions</span>
+                  <small>{activeRx.length > 0 ? `${activeRx.length} active Rx` : `${completed} past visits`}</small>
                 </Link>
               </div>
+            </div>
+          </div>
+
+          {/* Organic Curved Wave Transition into Canvas */}
+          <svg
+            className="po-flow-wave"
+            viewBox="0 0 1440 56"
+            fill="none"
+            preserveAspectRatio="none"
+            aria-hidden
+          >
+            <path
+              d="M0 56H1440V18C1240 52 980 58 720 38C460 18 200 2 0 28V56Z"
+              fill="#faf6f2"
+            />
+          </svg>
+        </section>
+
+        <div className="po-flow-canvas">
+          {actionError && (
+            <div className="ph-alert ph-alert-error" style={{ marginBottom: '2rem' }}>
+              {actionError}
+            </div>
+          )}
+
+          {/* ==================================================================
+              2. OPEN ACTIVE CONSULTATION STAGE (BORDERLESS EDITORIAL SPLIT)
+              ================================================================== */}
+          <section className="po-stage" data-reveal>
+            <div className="po-stage-left">
+              <div className="po-stage-kicker-row">
+                <span className="po-stage-eyebrow">
+                  {featured || showQueueHero ? 'Active Consultation Stage' : 'Next Consultation'}
+                </span>
+                {(featured || showQueueHero) && (
+                  <span className={`po-stage-status ${isMissedFeature ? 'is-warn' : featuredIsQueued ? 'is-live' : ''}`}>
+                    <IconCheck size={13} />
+                    {isMissedFeature ? 'Missed Slot' : featuredIsQueued ? queueStatusLabel : featuredStatusLabel}
+                  </span>
+                )}
+                {tokenCode && <span className="po-stage-token">Token {tokenCode}</span>}
+              </div>
+
+              <h2 className="po-stage-title">{visitTitle}</h2>
+              <p className="po-stage-sub">
+                <IconClock size={16} />
+                <span>{visitMeta}</span>
+              </p>
+
+              {isMissedFeature && (
+                <p className="po-stage-missed-note">
+                  This scheduled time slot has passed. Please pick a new time slot or cancel the visit.
+                </p>
+              )}
+
+              {/* Borderless Continuous Line Progress Track */}
+              {(featured || showQueueHero) && !isMissedFeature && (
+                <div className="po-line-progress" aria-label="Consultation progress">
+                  <div className="po-line-track">
+                    <div
+                      className="po-line-fill"
+                      style={{ width: `${Math.min(100, Math.max(15, ((journeyStep - 1) / 3) * 100))}%` }}
+                    />
+                  </div>
+                  <div className="po-line-steps">
+                    {[
+                      { step: 1, label: 'Slot Booked' },
+                      { step: 2, label: 'Token Issued' },
+                      { step: 3, label: 'In Queue' },
+                      { step: 4, label: 'With Doctor' },
+                    ].map((s) => {
+                      const isDone = journeyStep > s.step
+                      const isCurrent = journeyStep === s.step
+                      return (
+                        <div
+                          key={s.step}
+                          className={`po-line-node ${isDone ? 'is-done' : ''} ${isCurrent ? 'is-current' : ''}`}
+                        >
+                          <span className="po-line-dot">
+                            {isDone ? <IconCheck size={11} /> : s.step}
+                          </span>
+                          <span className="po-line-label">{s.label}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Quick Department Pills when no appointment */}
+              {!featured && !showQueueHero && (
+                <div className="po-stage-depts">
+                  {QUICK_SPECIALTIES.map((s) => (
+                    <Link
+                      key={s.label}
+                      to={`/patient/book?dept=${encodeURIComponent(s.dept)}`}
+                      className="po-stage-dept-pill"
+                    >
+                      <IconStethoscope size={14} />
+                      <span>{s.label}</span>
+                      <span aria-hidden>→</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+
+              <div className="po-stage-actions">
+                {featured || showQueueHero ? (
+                  <>
+                    {!featuredIsQueued && featured && (
+                      <button type="button" className="ps-btn" onClick={() => openReschedule(featured)}>
+                        <IconCalendar size={15} /> Reschedule Slot
+                      </button>
+                    )}
+                    {isMissedFeature ? (
+                      <button
+                        type="button"
+                        className="ps-btn-outline"
+                        onClick={handleCancelFeatured}
+                        disabled={cancelling}
+                      >
+                        {cancelling ? 'Cancelling…' : 'Cancel Booking'}
+                      </button>
+                    ) : (
+                      <Link to="/patient/appointments" className="po-link-arrow">
+                        <span>Open full visit pass</span>
+                        <span aria-hidden>→</span>
+                      </Link>
+                    )}
+                  </>
+                ) : (
+                  <Link to="/patient/book" className="ps-btn">
+                    <IconCalendar size={16} /> Book an Appointment
+                  </Link>
+                )}
+              </div>
+            </div>
+
+            {/* Right: Sculpted Circular Doctor Lockup (No Box) */}
+            <div className="po-stage-right">
+              {featured || showQueueHero ? (
+                <div className="po-doctor-halo">
+                  <div className="po-doctor-halo-ring">
+                    <DoctorAvatar
+                      doctorId={visitDoctor?.id}
+                      name={visitDoctor?.name}
+                      photoUrl={visitDoctor?.photo_url}
+                      className="po-doctor-halo-avatar"
+                    />
+                  </div>
+                  <div className="po-doctor-halo-copy">
+                    <span className="po-stage-eyebrow">Consulting Specialist</span>
+                    <strong>{visitDoctor?.name || 'Assigned Physician'}</strong>
+                    <em>{visitDoctor?.specialization || 'Multispecialty OPD'}</em>
+                  </div>
+                </div>
+              ) : (
+                <div className="po-doctor-halo">
+                  <div className="po-doctor-halo-ring is-soft">
+                    <IconStethoscope size={28} />
+                  </div>
+                  <div className="po-doctor-halo-copy">
+                    <span className="po-stage-eyebrow"> Walk-In or Online</span>
+                    <strong>8+ Clinical Specialties</strong>
+                    <em>Same-day slots & live queue tracking</em>
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+
+          <hr className="po-canvas-divider" />
+
+          {/* ==================================================================
+              3. FLOWING EDITORIAL CARE INDEX (REPLACES THE 4 SERVICE BOXES)
+              ================================================================== */}
+          <section className="po-index-section" data-reveal>
+            <div className="po-index-intro">
+              <span className="po-stage-eyebrow">Patient Care Pathways</span>
+              <h2>Navigate your healthcare</h2>
+            </div>
+
+            <div className="po-index-rows">
+              <Link to="/patient/book" className="po-index-row">
+                <span className="po-index-num">01</span>
+                <span className="po-index-icon">
+                  <IconCalendar size={20} />
+                </span>
+                <div className="po-index-main">
+                  <h3>Book a Consultation</h3>
+                  <p>Choose a specialist, select your preferred time slot, and receive an instant queue token.</p>
+                </div>
+                <span className="po-index-meta">Instant Slot</span>
+                <span className="po-index-arrow" aria-hidden>→</span>
+              </Link>
+
+              <Link to="/patient/appointments" className="po-index-row">
+                <span className="po-index-num">02</span>
+                <span className="po-index-icon">
+                  <IconClock size={20} />
+                </span>
+                <div className="po-index-main">
+                  <h3>My Visits & Live Queue</h3>
+                  <p>Track real-time consultation room progress, reschedule upcoming visits, or review past logs.</p>
+                </div>
+                <span className="po-index-meta">{upcoming} Upcoming</span>
+                <span className="po-index-arrow" aria-hidden>→</span>
+              </Link>
+
+              <Link to="/patient/lab-reports" className="po-index-row">
+                <span className="po-index-num">03</span>
+                <span className="po-index-icon">
+                  <IconFlask size={20} />
+                </span>
+                <div className="po-index-main">
+                  <h3>NABL Diagnostic Reports</h3>
+                  <p>Access verified blood panels, pathology findings, and printable laboratory receipts online.</p>
+                </div>
+                <span className="po-index-meta">
+                  {pendingLabsCount > 0 ? `${pendingLabsCount} Processing` : `${readyLabsCount} Verified`}
+                </span>
+                <span className="po-index-arrow" aria-hidden>→</span>
+              </Link>
+
+              <Link to="/patient/prescriptions" className="po-index-row">
+                <span className="po-index-num">04</span>
+                <span className="po-index-icon">
+                  <IconPill size={20} />
+                </span>
+                <div className="po-index-main">
+                  <h3>Digital Prescriptions & Pharmacy</h3>
+                  <p>Review prescribed medicines, daily dosage schedules, and itemized clinical pharmacy bills.</p>
+                </div>
+                <span className="po-index-meta">{prescriptions.length} Records</span>
+                <span className="po-index-arrow" aria-hidden>→</span>
+              </Link>
+            </div>
+          </section>
+
+          <hr className="po-canvas-divider" />
+
+          {/* ==================================================================
+              4. OPEN VERTICAL TIMELINE & BORDERLESS CLINICAL LEDGER
+              ================================================================== */}
+          <section className="po-open-split" data-reveal>
+            {/* Left: Open Vertical Consultation Timeline (No Outer Box) */}
+            <div className="po-open-timeline-col">
+              <div className="po-open-col-head">
+                <div>
+                  <span className="po-stage-eyebrow">Chronological Care Log</span>
+                  <h2>Visits & Consultation Timeline</h2>
+                </div>
+                <Link to="/patient/appointments" className="po-link-arrow">
+                  <span>Full schedule</span>
+                  <span aria-hidden>→</span>
+                </Link>
+              </div>
+
               <VisitsSection patientId={patientId} variant="timeline" />
             </div>
 
-            <aside className="po-side" data-reveal style={{ ['--d' as string]: '100ms' }}>
-              <div className="po-panel po-side-card">
-                <div className="po-side-row">
-                  <span className="po-side-ico"><IconUser size={18} /></span>
+            {/* Right: Borderless Clinical Ledger (Diagnostics, Rx, Continuity) */}
+            <aside className="po-open-ledger">
+              {/* Diagnostics Stream */}
+              <div className="po-ledger-group">
+                <div className="po-ledger-head">
+                  <span className="po-ledger-ico">
+                    <IconFlask size={17} />
+                  </span>
                   <div>
-                    <strong>Patient record</strong>
-                    <em>Profile, allergies, insurance</em>
+                    <span className="po-stage-eyebrow">Pathology & Lab</span>
+                    <h3>Latest Diagnostic Status</h3>
                   </div>
+                  <Link to="/patient/lab-reports" className="po-ledger-link">
+                    Open →
+                  </Link>
                 </div>
-                <dl className="po-facts">
-                  <div>
-                    <dt>Patient ID</dt>
-                    <dd>{patient?.patient_code || '—'}</dd>
-                  </div>
-                  <div>
-                    <dt>Blood group</dt>
-                    <dd>{patient?.blood_group || '—'}</dd>
-                  </div>
-                </dl>
-                <Link to="/patient/profile" className="po-panel-link">Update profile →</Link>
-              </div>
 
-              <div className="po-panel po-side-card">
-                <div className="po-side-row">
-                  <span className="po-side-ico is-lab"><IconFlask size={18} /></span>
-                  <div>
-                    <strong>Laboratory</strong>
-                    <em>
-                      {loading
-                        ? 'Loading…'
-                        : pendingLab
-                          ? `${labHighlight.count} result${labHighlight.count === 1 ? '' : 's'} pending · ordered ${formatShortDate(pendingLab.created_at)}`
-                          : labHighlight.count > 0 && labHighlight.label === 'reports ready'
-                            ? `${labHighlight.count} report${labHighlight.count === 1 ? '' : 's'} ready`
-                            : 'No pending lab work'}
-                    </em>
+                {latestLab ? (
+                  <div className="po-ledger-body">
+                    <div className="po-ledger-line">
+                      <strong>Lab Order #{latestLab.id}</strong>
+                      <span className={`po-ledger-status ${labOrderHasResults(latestLab) ? 'is-ready' : ''}`}>
+                        {labOrderHasResults(latestLab) ? 'Verified Ready' : 'In Progress'}
+                      </span>
+                    </div>
+                    <p className="po-ledger-sub">
+                      Ordered {formatShortDate(latestLab.created_at)} ·{' '}
+                      {(latestLab.items || []).length || 1} test panel
+                      {(latestLab.items || []).length === 1 ? '' : 's'}
+                    </p>
+                    <div className="po-ledger-bar">
+                      <span style={{ width: labOrderHasResults(latestLab) ? '100%' : '55%' }} />
+                    </div>
                   </div>
-                </div>
-                <Link to="/patient/lab-reports" className="po-panel-link">Open lab reports →</Link>
-              </div>
-
-              <div className="po-panel po-side-card">
-                <div className="po-side-row">
-                  <span className="po-side-ico is-clock"><IconClock size={18} /></span>
-                  <div>
-                    <strong>Last visit</strong>
-                    <em>
-                      {lastVisit
-                        ? `${formatShortDate(lastVisit.appointment_date)} · ${lastVisit.doctor?.name || 'Clinic visit'}`
-                        : 'No completed visits yet'}
-                    </em>
-                  </div>
-                </div>
-              </div>
-
-              <div className="po-panel po-side-card">
-                <div className="po-panel-head po-panel-head-compact">
-                  <div>
-                    <p className="ps-kicker ps-kicker-dark">Medicines</p>
-                    <h3>Prescriptions</h3>
-                  </div>
-                  <Link to="/patient/prescriptions" className="po-panel-link">View all →</Link>
-                </div>
-                {activeRx.length === 0 ? (
-                  <p className="po-empty">Nothing active yet. Prescriptions from visits will show here.</p>
                 ) : (
-                  <ul className="po-rx-list">
+                  <p className="po-ledger-sub">No pending diagnostic orders at this time.</p>
+                )}
+              </div>
+
+              {/* Active Prescriptions Stream */}
+              <div className="po-ledger-group">
+                <div className="po-ledger-head">
+                  <span className="po-ledger-ico">
+                    <IconPill size={17} />
+                  </span>
+                  <div>
+                    <span className="po-stage-eyebrow">Clinical Pharmacy</span>
+                    <h3>Active Medications</h3>
+                  </div>
+                  <Link to="/patient/prescriptions" className="po-ledger-link">
+                    All Rx →
+                  </Link>
+                </div>
+
+                {activeRx.length === 0 ? (
+                  <p className="po-ledger-sub">
+                    Prescriptions issued during your consultations appear here automatically.
+                  </p>
+                ) : (
+                  <ul className="po-ledger-list">
                     {activeRx.map((rx) => (
                       <li key={rx.id}>
                         <div>
-                          <strong>Rx #{rx.id}</strong>
-                          <span>{rx.doctor?.name || 'Doctor'} · {rx.status}</span>
+                          <strong>Prescription #{rx.id}</strong>
+                          <span>{rx.doctor?.name || 'Doctor'}</span>
                         </div>
-                        <em>{rx.items?.length || 0} medicine{(rx.items?.length || 0) === 1 ? '' : 's'}</em>
+                        <em>
+                          {rx.items?.length || 0} med{(rx.items?.length || 0) === 1 ? '' : 's'}
+                        </em>
                       </li>
                     ))}
                   </ul>
                 )}
               </div>
+
+              {/* Care Continuity & Medical Record Stream */}
+              <div className="po-ledger-group">
+                <div className="po-ledger-head">
+                  <span className="po-ledger-ico">
+                    <IconHeart size={17} />
+                  </span>
+                  <div>
+                    <span className="po-stage-eyebrow">Continuity & File</span>
+                    <h3>Patient Record & Follow-Up</h3>
+                  </div>
+                  <Link to="/patient/profile" className="po-ledger-link">
+                    Edit →
+                  </Link>
+                </div>
+
+                <div className="po-ledger-facts">
+                  <div>
+                    <span>Last Consultation</span>
+                    <strong>
+                      {lastVisit
+                        ? `${formatShortDate(lastVisit.appointment_date)} · ${lastVisit.doctor?.name || 'Clinic'}`
+                        : 'No completed visits yet'}
+                    </strong>
+                  </div>
+                  <div>
+                    <span>Current Medications</span>
+                    <strong>{patient?.current_medications || 'None recorded'}</strong>
+                  </div>
+                  <div>
+                    <span>Registered Phone</span>
+                    <strong>{patient?.phone || '—'}</strong>
+                  </div>
+                </div>
+              </div>
+
+              {/* 24/7 Helpline Ribbon */}
+              <div className="po-ledger-helpline">
+                <div>
+                  <span className="po-stage-eyebrow">24/7 Emergency Dispatch</span>
+                  <strong>Need immediate assistance?</strong>
+                </div>
+                <a href={`tel:${CLINIC.phone.replace(/\s/g, '')}`} className="po-helpline-pill">
+                  <IconPhone size={15} />
+                  <span>{CLINIC.phone}</span>
+                </a>
+              </div>
             </aside>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
 
       <RescheduleModal

@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import StaffLogin from './pages/StaffLogin'
 import PatientLanding from './pages/patient/Landing'
 import PatientAbout from './pages/patient/About'
+import SpecialtyPage from './pages/patient/SpecialtyPage'
 import PatientLogin from './pages/patient/Login'
 import PatientRegister from './pages/patient/Register'
 import PatientDashboard from './pages/patient/Dashboard'
@@ -39,18 +40,34 @@ import AdminMedicines from './pages/admin/Medicines'
 import AdminLab from './pages/admin/Lab'
 import TvDisplay from './pages/TvDisplay'
 import TvDisplayManager from './pages/receptionist/TvDisplayManager'
+import ScrollToTop from './components/ScrollToTop'
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* Default Starting Domain Page = Patient Homepage */}
+          <Route path="/" element={<PatientLanding />} />
+          <Route path="/patient" element={<PatientLanding />} />
+          <Route path="/about" element={<PatientAbout />} />
+          <Route path="/patient/about" element={<PatientAbout />} />
+          <Route path="/specialties" element={<SpecialtyPage />} />
+          <Route path="/specialties/:slug" element={<SpecialtyPage />} />
+          <Route path="/patient/specialties" element={<SpecialtyPage />} />
+          <Route path="/patient/specialties/:slug" element={<SpecialtyPage />} />
+          <Route path="/contact" element={<Navigate to={{ pathname: '/', hash: 'contact' }} replace />} />
+          <Route path="/patient/contact" element={<Navigate to={{ pathname: '/', hash: 'contact' }} replace />} />
+
+          {/* Clinic Operations & Staff Hub */}
+          <Route path="/dashboard" element={<Home />} />
+          <Route path="/portal" element={<Home />} />
+          <Route path="/portals" element={<Home />} />
+          <Route path="/staff" element={<Home />} />
+
           <Route path="/tv" element={<TvDisplay />} />
           <Route path="/tv-display" element={<TvDisplay />} />
-          <Route path="/patient" element={<PatientLanding />} />
-          <Route path="/patient/about" element={<PatientAbout />} />
-          <Route path="/patient/contact" element={<Navigate to={{ pathname: '/patient', hash: 'contact' }} replace />} />
           <Route path="/patient/register" element={<PatientRegister />} />
           <Route path="/patient/login" element={<PatientLogin />} />
           <Route path="/receptionist/login" element={<StaffLogin role="receptionist" redirect="/receptionist/dashboard" title="Reception sign in" />} />

@@ -1,28 +1,28 @@
 /* ========== Patient portal login / landing ========== */
 
 .pp-portal {
-  --pp-sage: #5a7d62;
-  --pp-sage-deep: #3a5542;
-  --pp-sage-mid: #6f9478;
-  --pp-sage-soft: #d7e6db;
-  --pp-mist: #eef4ef;
-  --pp-fog: #f5f8f5;
-  --pp-ink: #1f2e25;
-  --pp-muted: #5a6d60;
-  --pp-line: #c9d7cc;
+  --pp-sage: #7f5539;
+  --pp-sage-deep: #543825;
+  --pp-sage-mid: #9c6644;
+  --pp-sage-soft: #ede0d4;
+  --pp-mist: #e6ccb2;
+  --pp-fog: #faf6f2;
+  --pp-ink: #382417;
+  --pp-muted: #6f5342;
+  --pp-line: #ddb892;
   --pp-surface: #ffffff;
   --pp-danger: #b42318;
-  --pp-ok: #3d6b4a;
+  --pp-ok: #7f5539;
   --pp-radius: 14px;
   --pp-font: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --pp-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --pp-display: 'Sansation', 'Plus Jakarta Sans', system-ui, sans-serif;
   --pp-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --pp-shadow: 0 18px 40px rgba(31, 46, 37, 0.08);
+  --pp-shadow: 0 18px 40px rgba(56, 36, 23, 0.08);
   position: relative;
   background:
-    radial-gradient(ellipse 55% 40% at 0% 0%, rgba(90, 125, 98, 0.12), transparent 55%),
-    radial-gradient(ellipse 45% 35% at 100% 20%, rgba(215, 230, 219, 0.7), transparent 50%),
-    linear-gradient(180deg, var(--pp-fog) 0%, var(--pp-mist) 48%, #e8f0ea 100%);
+    radial-gradient(ellipse 55% 40% at 0% 0%, rgba(127, 85, 57, 0.1), transparent 55%),
+    radial-gradient(ellipse 45% 35% at 100% 20%, rgba(237, 224, 212, 0.7), transparent 50%),
+    linear-gradient(180deg, var(--pp-fog) 0%, #f5eee8 48%, var(--pp-mist) 100%);
   color: var(--pp-ink);
   font-family: var(--pp-font);
 }
@@ -55,9 +55,9 @@
   justify-content: center;
   padding: clamp(2rem, 4vw, 3.5rem) clamp(1.75rem, 4vw, 4rem);
   background:
-    linear-gradient(155deg, rgba(21, 34, 56, 0.92) 0%, rgba(27, 42, 74, 0.88) 55%, rgba(58, 85, 66, 0.9) 100%),
+    linear-gradient(155deg, rgba(61, 39, 25, 0.92) 0%, rgba(84, 56, 37, 0.88) 55%, rgba(127, 85, 57, 0.9) 100%),
     url('/images/staff-hero.jpg') center/cover no-repeat;
-  color: #f8fafc;
+  color: #ede0d4;
   padding-top: clamp(2rem, 4vw, 3.5rem);
 }
 
@@ -67,44 +67,44 @@
 }
 
 .pp-hero-auth .pp-auth-brand .brand-mark-title {
-  color: #f8fafc;
+  color: #ede0d4;
 }
 
 .pp-hero-auth .pp-auth-brand .brand-mark-suite {
-  color: rgba(248, 250, 252, 0.72);
+  color: rgba(237, 224, 212, 0.72);
 }
 
 .pp-hero-auth .pp-headline {
-  color: #f8fafc;
+  color: #ede0d4;
   max-width: 16ch;
 }
 
 .pp-hero-auth .pp-lead {
-  color: rgba(248, 250, 252, 0.88);
+  color: rgba(237, 224, 212, 0.88);
   max-width: 36rem;
 }
 
 .pp-hero-auth .pp-trust {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.14);
-  color: rgba(248, 250, 252, 0.9);
+  color: rgba(237, 224, 212, 0.9);
 }
 
 .pp-hero-auth .pp-trust-icon {
-  color: #a7f3d0;
+  color: #ddb892;
 }
 
 .pp-hero-auth .pp-feature h3 {
-  color: #f8fafc;
+  color: #ede0d4;
 }
 
 .pp-hero-auth .pp-feature p {
-  color: rgba(248, 250, 252, 0.72);
+  color: rgba(237, 224, 212, 0.72);
 }
 
 .pp-hero-auth .pp-feature-mark {
   background: rgba(255, 255, 255, 0.12);
-  color: #d1fae5;
+  color: #ede0d4;
   border-color: rgba(255, 255, 255, 0.16);
 }
 

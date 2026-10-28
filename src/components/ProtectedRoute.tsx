@@ -21,10 +21,10 @@ export default function ProtectedRoute({ roles }: Props) {
         />
       )
     }
-    return <Navigate to="/" replace state={{ from: location.pathname }} />
+    return <Navigate to="/dashboard" replace state={{ from: location.pathname }} />
   }
   if (roles && !roles.includes(user.role)) {
-    const fallback = user.role === 'patient' ? '/patient/dashboard' : '/'
+    const fallback = user.role === 'patient' ? '/patient/dashboard' : '/dashboard'
     return <Navigate to={fallback} replace />
   }
 

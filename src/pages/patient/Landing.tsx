@@ -4,6 +4,11 @@ import PatientSiteLayout from '../../components/PatientSiteLayout'
 import PatientEnquiryForm from '../../components/PatientEnquiryForm'
 import { useAuth } from '../../context/AuthContext'
 import { usePageTitle } from '../../hooks/usePageTitle'
+import BuildingToReceptionWalkthrough from '../../components/patient/BuildingToReceptionWalkthrough'
+import TrustedDoctorsArc from '../../components/patient/TrustedDoctorsArc'
+import ElderCareSection from '../../components/patient/ElderCareSection'
+import SpecialtyDisciplinesGrid from '../../components/patient/SpecialtyDisciplinesGrid'
+import HeroSlider from '../../components/patient/HeroSlider'
 import { CLINIC } from '../../config/clinic'
 import {
   IconCalendar,
@@ -13,11 +18,11 @@ import {
   IconStethoscope,
   IconPhone,
   IconCheck,
-  IconChevronDown,
   IconStar,
   IconClock,
   IconBuilding,
   IconHeart,
+  IconDroplet,
 } from '../../components/Icons'
 
 const CORE_SERVICES = [
@@ -59,71 +64,9 @@ const CORE_SERVICES = [
   },
 ] as const
 
-const DEPARTMENTS = [
-  {
-    title: 'Pediatrics & Child Wellness',
-    badge: 'Child Care',
-    chips: ['Newborn Care', 'Vaccinations', 'Growth Checks'],
-    text: 'Gentle, attentive outpatient care for infants, children, and adolescents with friendly specialist pediatricians.',
-    image: '/images/dept-pediatrics.jpg',
-  },
-  {
-    title: 'Dermatology & Aesthetics',
-    badge: 'Skin Clinic',
-    chips: ['Acne & Rashes', 'Cosmetology', 'Allergies'],
-    text: 'Specialized consultations for dermatological health, chronic skin allergies, and advanced non-invasive aesthetics.',
-    image: '/images/dept-dermatology.jpg',
-  },
-  {
-    title: 'General & Internal Medicine',
-    badge: 'Primary Care',
-    chips: ['Fever Clinic', 'Diabetes Care', 'Preventive Health'],
-    text: 'Everyday adult health concerns, lifestyle disease monitoring, hypertension checkups, and routine wellness screenings.',
-    image: '/images/dept-general-medicine.jpg',
-  },
-  {
-    title: 'Advanced Diagnostic Pathology',
-    badge: 'Modern Lab',
-    chips: ['Automated Analyzers', 'Home Sample', 'Digital Reports'],
-    text: 'Precision laboratory diagnostics with automated testing machinery and rapid digital report delivery to your portal.',
-    image: '/images/dept-lab-diagnostics.jpg',
-  },
-] as const
 
-const DOCTORS_SHOWCASE = [
-  {
-    name: 'Dr. Sarah Johnson',
-    degree: 'MBBS, MD',
-    specialty: 'Senior General Physician',
-    experience: '14+ Yrs Experience',
-    days: 'Mon – Fri (09:00 AM – 04:00 PM)',
-    tags: ['Adult Health', 'Preventive Care', 'Family Medicine'],
-  },
-  {
-    name: 'Dr. Priya Sharma',
-    degree: 'MD, DM Cardiology',
-    specialty: 'Consultant Cardiologist',
-    experience: '12+ Yrs Experience',
-    days: 'Mon, Wed, Fri (10:00 AM – 02:00 PM)',
-    tags: ['Cardiology', 'ECG Review', 'Heart Health'],
-  },
-  {
-    name: 'Dr. Rajesh Menon',
-    degree: 'MBBS, MD',
-    specialty: 'Internal Medicine Specialist',
-    experience: '16+ Yrs Experience',
-    days: 'Tue, Thu, Sat (09:00 AM – 03:00 PM)',
-    tags: ['Diabetes OP', 'Hypertension', 'Geriatric Care'],
-  },
-  {
-    name: 'Dr. Meera Krishnan',
-    degree: 'MS Orthopedics',
-    specialty: 'Orthopedic Surgeon',
-    experience: '10+ Yrs Experience',
-    days: 'Mon, Wed, Thu (11:00 AM – 05:00 PM)',
-    tags: ['Joint Care', 'Sports Injury', 'Bone Health'],
-  },
-] as const
+
+
 
 export default function PatientLanding() {
   usePageTitle('Patient Care · Modern Multispecialty Healthcare', 'Patient')
@@ -136,118 +79,17 @@ export default function PatientLanding() {
     <PatientSiteLayout>
       <div className="ps-patient-page">
         {/* ==================================================================
-            HERO SECTION - LUXURY SPLIT WITH REAL IMAGERY & FLOATING BADGES
+            1. HERO CAROUSEL SLIDER - RESPONSIVE CINEMATIC HEALTHCARE HIGHLIGHTS
             ================================================================== */}
-        <section className="ps-hero-luxury" data-reveal="hero">
-          <div className="ps-hero-grid">
-            <div className="ps-hero-content">
-              <div className="ps-eyebrow-pill ps-eyebrow-pill--light">
-                <span className="ps-pulse-dot" />
-                <span>Alverstone Medcity · Chandanathope, Kollam · Open 24/7</span>
-              </div>
-
-              <h1 className="ps-hero-title">
-                Healthcare Designed Around Your Life,{' '}
-                <span className="ps-hero-title-accent">Elevated for Peace of Mind.</span>
-              </h1>
-
-              <p className="ps-hero-description">
-                Book board-certified specialists on your exact schedule, track your live queue token from anywhere,
-                and access verified diagnostics and digital prescriptions — all securely in one place.
-              </p>
-
-              <div className="ps-hero-cta-group">
-                <Link to={bookVisitTo} className="ps-btn-primary">
-                  <span>{signedIn ? 'Book an Appointment' : 'Book a Consultation'}</span>
-                  <span aria-hidden>→</span>
-                </Link>
-
-                {signedIn ? (
-                  <Link to="/patient/dashboard" className="ps-btn-glass">
-                    Patient Portal Overview
-                  </Link>
-                ) : (
-                  <Link to="/patient/register?next=%2Fpatient%2Fbook" className="ps-btn-glass">
-                    Create Patient Account
-                  </Link>
-                )}
-
-                <a href={`tel:${CLINIC.phone.replace(/\s/g, '')}`} className="ps-btn-call">
-                  <IconPhone size={18} />
-                  <span>Call: {CLINIC.phone}</span>
-                </a>
-              </div>
-
-              <div className="ps-hero-trust-bar">
-                <div className="ps-trust-item">
-                  <div className="ps-trust-val">
-                    <span>4.9</span>
-                    <span className="star-rating">
-                      <IconStar size={16} />
-                      <IconStar size={16} />
-                      <IconStar size={16} />
-                      <IconStar size={16} />
-                      <IconStar size={16} />
-                    </span>
-                  </div>
-                  <span className="ps-trust-label">1,200+ Verified Patient Reviews</span>
-                </div>
-
-                <div className="ps-trust-item">
-                  <div className="ps-trust-val">15+</div>
-                  <span className="ps-trust-label">Specialist Doctors On Panel</span>
-                </div>
-
-                <div className="ps-trust-item">
-                  <div className="ps-trust-val">0 Min</div>
-                  <span className="ps-trust-label">Lobby Waiting with Digital Queue</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="ps-hero-media-wrap">
-              <div className="ps-hero-media-frame">
-                <div className="ps-hero-img-box">
-                  <img
-                    src="/images/patient-hero-doctors.jpg"
-                    alt="Alverstone Medcity Doctor Team in Modern Clinic Atrium"
-                  />
-                  <div className="ps-hero-img-overlay" />
-                </div>
-
-                {/* Floating Top Badge */}
-                <div className="ps-float-badge ps-float-badge--top">
-                  <div className="ps-badge-icon-box">
-                    <IconStethoscope size={22} />
-                  </div>
-                  <div className="ps-badge-content">
-                    <strong>Specialists On Duty Now</strong>
-                    <span>Walk-ins & scheduled visits active</span>
-                  </div>
-                </div>
-
-                {/* Floating Bottom Badge */}
-                <div className="ps-float-badge ps-float-badge--bottom">
-                  <div className="ps-badge-icon-box">
-                    <IconQueue size={22} />
-                  </div>
-                  <div className="ps-badge-content">
-                    <strong>Live Digital Queue Board</strong>
-                    <span>Check your live turn on your mobile</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <HeroSlider signedIn={signedIn} />
 
         {/* ==================================================================
-            VALUE PROPOSITIONS RIBBON (DIRECTLY UNDER HERO)
+            2. VALUE PROPOSITIONS RIBBON (DIRECTLY UNDER HERO)
             ================================================================== */}
         <section className="ps-values-ribbon">
           <div className="ps-values-grid">
-            <div className="ps-value-card">
-              <div className="ps-value-icon">
+            <div className="ps-value-card ps-value-card--blue" data-reveal style={{ ['--d' as string]: '0ms' }}>
+              <div className="ps-value-icon ps-value-icon--blue">
                 <IconClock size={22} />
               </div>
               <div className="ps-value-info">
@@ -256,8 +98,8 @@ export default function PatientLanding() {
               </div>
             </div>
 
-            <div className="ps-value-card">
-              <div className="ps-value-icon">
+            <div className="ps-value-card ps-value-card--green" data-reveal style={{ ['--d' as string]: '80ms' }}>
+              <div className="ps-value-icon ps-value-icon--green">
                 <IconQueue size={22} />
               </div>
               <div className="ps-value-info">
@@ -266,8 +108,8 @@ export default function PatientLanding() {
               </div>
             </div>
 
-            <div className="ps-value-card">
-              <div className="ps-value-icon">
+            <div className="ps-value-card ps-value-card--amber" data-reveal style={{ ['--d' as string]: '160ms' }}>
+              <div className="ps-value-icon ps-value-icon--amber">
                 <IconBuilding size={22} />
               </div>
               <div className="ps-value-info">
@@ -276,8 +118,8 @@ export default function PatientLanding() {
               </div>
             </div>
 
-            <div className="ps-value-card">
-              <div className="ps-value-icon">
+            <div className="ps-value-card ps-value-card--rose" data-reveal style={{ ['--d' as string]: '240ms' }}>
+              <div className="ps-value-icon ps-value-icon--rose">
                 <IconHeart size={22} />
               </div>
               <div className="ps-value-info">
@@ -289,14 +131,20 @@ export default function PatientLanding() {
         </section>
 
         {/* ==================================================================
-            CORE PATIENT SERVICES - IMAGE-DRIVEN GLOW CARDS
+            3. SPECIALIZED CLINICAL DEPARTMENTS - 8-TILE CHECKERBOARD GRID
+            ================================================================== */}
+        <SpecialtyDisciplinesGrid signedIn={signedIn} />
+
+        {/* ==================================================================
+            4. OUR TRUSTED DOCTORS & SPECIALISTS - 3D PANORAMIC ARC
+            ================================================================== */}
+        <TrustedDoctorsArc signedIn={signedIn} />
+
+        {/* ==================================================================
+            5. CORE PATIENT SERVICES - IMAGE-DRIVEN GLOW CARDS
             ================================================================== */}
         <section className="ps-services-wrapper" id="services">
-          <div className="ps-section-header">
-            <div className="ps-eyebrow-pill">
-              <IconStethoscope size={14} />
-              <span>Patient Convenience</span>
-            </div>
+          <div className="ps-section-header" data-reveal>
             <h2>
               Designed for Speed, <span className="ps-gradient-text">Comfort & Clarity</span>
             </h2>
@@ -306,11 +154,17 @@ export default function PatientLanding() {
           </div>
 
           <div className="ps-services-cards-grid">
-            {CORE_SERVICES.map((s) => {
+            {CORE_SERVICES.map((s, idx) => {
               const Icon = s.icon
               const targetUrl = signedIn ? s.signedInTo : s.guestTo
               return (
-                <Link key={s.title} to={targetUrl} className="ps-service-box">
+                <Link
+                  key={s.title}
+                  to={targetUrl}
+                  className="ps-service-box"
+                  data-reveal
+                  style={{ ['--d' as string]: `${idx * 80}ms` }}
+                >
                   <div className="ps-service-img-wrap">
                     <img src={s.image} alt={s.title} />
                     <span className="ps-service-tag-pill">{s.tag}</span>
@@ -333,57 +187,17 @@ export default function PatientLanding() {
         </section>
 
         {/* ==================================================================
-            SPECIALIZED CLINICAL DEPARTMENTS (RICH CLINICAL PHOTOGRAPHY)
+            6. INTERACTIVE ARRIVAL WALKTHROUGH (BUILDING TO RECEPTION)
+            Silky 60/120fps GPU scroll zoom from exterior facade into reception desk
             ================================================================== */}
-        <section className="ps-dept-section" id="departments">
-          <div className="ps-dept-inner">
-            <div className="ps-section-header">
-              <div className="ps-eyebrow-pill">
-                <IconBuilding size={14} />
-                <span>Specialized Centers of Care</span>
-              </div>
-              <h2>
-                Care Across Our <span className="ps-gradient-text">Specialty Disciplines</span>
-              </h2>
-              <p>
-                From gentle pediatric visits to certified pathology diagnostics, book experienced clinicians dedicated to your health.
-              </p>
-            </div>
-
-            <div className="ps-dept-cards-grid">
-              {DEPARTMENTS.map((d) => (
-                <article key={d.title} className="ps-dept-clinical-card">
-                  <div className="ps-dept-img-container">
-                    <img src={d.image} alt={d.title} />
-                    <span className="ps-dept-img-badge">{d.badge}</span>
-                  </div>
-                  <div className="ps-dept-card-body">
-                    <h3>{d.title}</h3>
-                    <div className="ps-dept-chips">
-                      {d.chips.map((c) => (
-                        <span key={c} className="ps-dept-chip">
-                          {c}
-                        </span>
-                      ))}
-                    </div>
-                    <p>{d.text}</p>
-                    <Link to={bookVisitTo} className="ps-dept-book-btn">
-                      <span>Book Specialist</span>
-                      <span aria-hidden>→</span>
-                    </Link>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+        <BuildingToReceptionWalkthrough signedIn={signedIn} bookVisitTo={bookVisitTo} />
 
         {/* ==================================================================
-            CAMPUS & HOSPITAL EXPERIENCE SPLIT FEATURE
+            7. CAMPUS & HOSPITAL EXPERIENCE SPLIT FEATURE
             ================================================================== */}
         <section className="ps-experience-section">
           <div className="ps-experience-grid">
-            <div className="ps-experience-media-column">
+            <div className="ps-experience-media-column" data-reveal="left">
               <div className="ps-exp-main-img">
                 <img
                   src="/images/patient-site-banner.jpg"
@@ -401,11 +215,7 @@ export default function PatientLanding() {
               </div>
             </div>
 
-            <div className="ps-experience-copy-column">
-              <div className="ps-eyebrow-pill">
-                <IconHeart size={14} />
-                <span>The Alverstone Difference</span>
-              </div>
+            <div className="ps-experience-copy-column" data-reveal="right">
               <h2>
                 A Healthcare Experience <span className="ps-gradient-text">That Respects Your Time</span>
               </h2>
@@ -455,69 +265,15 @@ export default function PatientLanding() {
         </section>
 
         {/* ==================================================================
-            DOCTORS & SPECIALISTS SPOTLIGHT
+            8. ELDER & SENIOR CARE SECTION (STADIUM CAPSULES & CURVED WAVE)
             ================================================================== */}
-        <section className="ps-doctors-panel">
-          <div className="ps-doctors-inner">
-            <div className="ps-section-header">
-              <div className="ps-eyebrow-pill">
-                <IconStethoscope size={14} />
-                <span>Meet Our Clinicians</span>
-              </div>
-              <h2>
-                Experienced Specialists, <span className="ps-gradient-text">Dedicated to You</span>
-              </h2>
-              <p>
-                Our panel brings together accomplished physicians across major medical disciplines, committed to compassionate, evidence-based care.
-              </p>
-            </div>
-
-            <div className="ps-doctors-grid">
-              {DOCTORS_SHOWCASE.map((doc) => {
-                const initials = doc.name
-                  .replace('Dr. ', '')
-                  .split(' ')
-                  .map((n) => n[0])
-                  .join('')
-                return (
-                  <article key={doc.name} className="ps-doc-card">
-                    <div className="ps-doc-avatar-wrap">
-                      <div className="ps-doc-avatar">{initials}</div>
-                      <div className="ps-doc-meta">
-                        <h4>{doc.name}</h4>
-                        <span className="ps-doc-spec">{doc.specialty}</span>
-                      </div>
-                    </div>
-
-                    <div className="ps-doc-tags">
-                      <span className="ps-doc-badge">{doc.degree}</span>
-                      <span className="ps-doc-badge">{doc.experience}</span>
-                    </div>
-
-                    <p className="ps-doc-detail">
-                      <strong>Consulting:</strong> {doc.days}
-                    </p>
-
-                    <Link to={bookVisitTo} className="ps-doc-action-btn">
-                      <span>Book Consultation</span>
-                      <span aria-hidden>→</span>
-                    </Link>
-                  </article>
-                )
-              })}
-            </div>
-          </div>
-        </section>
+        <ElderCareSection signedIn={signedIn} />
 
         {/* ==================================================================
             PATIENT TESTIMONIALS & REVIEWS
             ================================================================== */}
         <section className="ps-testimonials-section">
-          <div className="ps-section-header">
-            <div className="ps-eyebrow-pill">
-              <IconHeart size={14} />
-              <span>Patient Stories</span>
-            </div>
+          <div className="ps-section-header" data-reveal>
             <h2>
               What Families Say <span className="ps-gradient-text">About Their Care</span>
             </h2>
@@ -525,8 +281,13 @@ export default function PatientLanding() {
           </div>
 
           <div className="ps-testimonials-grid">
-            {CLINIC.testimonials.map((t) => (
-              <div key={t.name} className="ps-testimonial-card">
+            {CLINIC.testimonials.map((t, idx) => (
+              <div
+                key={t.name}
+                className="ps-testimonial-card"
+                data-reveal
+                style={{ ['--d' as string]: `${idx * 90}ms` }}
+              >
                 <div className="ps-stars-row">
                   <IconStar size={18} />
                   <IconStar size={18} />
@@ -550,7 +311,7 @@ export default function PatientLanding() {
         {/* ==================================================================
             EMERGENCY 24/7 CALLOUT STRIP
             ================================================================== */}
-        <section className="ps-emergency-strip">
+        <section className="ps-emergency-strip" data-reveal>
           <div className="ps-emergency-inner">
             <div className="ps-emergency-copy">
               <h3>Need Immediate Medical Attention or Night Walk-in?</h3>
@@ -564,7 +325,7 @@ export default function PatientLanding() {
                 <IconPhone size={20} />
                 <span>Call Emergency: {CLINIC.phone}</span>
               </a>
-              <Link to="/patient#contact" className="ps-btn-glass">
+              <Link to="/#contact" className="ps-btn-secondary">
                 Find Directions
               </Link>
             </div>
@@ -572,117 +333,208 @@ export default function PatientLanding() {
         </section>
 
         {/* ==================================================================
-            INTERACTIVE FAQ ACCORDION
+            INTERACTIVE FAQ ACCORDION - MINIMALIST 2-COLUMN EDITORIAL DESIGN
             ================================================================== */}
-        <section className="ps-faq-section">
-          <div className="ps-section-header">
-            <div className="ps-eyebrow-pill">
-              <IconQueue size={14} />
-              <span>Questions & Answers</span>
+        <section className="ps-faq-section" id="faq">
+          <div className="ps-faq-container">
+            {/* Left Column: Heading & Lead */}
+            <div className="ps-faq-sidebar" data-reveal="left">
+              <h2 className="ps-faq-title">
+                Frequently asked<br />questions
+              </h2>
+              <p className="ps-faq-lead">
+                To help you make informed decisions, we've compiled answers to some of the most commonly asked questions.
+              </p>
+              <div className="ps-faq-sidebar-footer">
+                <span className="ps-faq-footer-label">Have questions about your care?</span>
+                <a href="#contact" className="ps-faq-footer-link">
+                  <span>Speak with our 24/7 care desk</span>
+                  <span className="ps-faq-footer-arrow">→</span>
+                </a>
+              </div>
             </div>
-            <h2>
-              Frequently Asked <span className="ps-gradient-text">Questions</span>
-            </h2>
-            <p>Everything you need to know about booking, queue numbers, test turnaround, and pharmacy.</p>
-          </div>
 
-          <div className="ps-faq-list">
-            {CLINIC.faqs.map((faq, idx) => {
-              const isOpen = openFaq === idx
-              return (
-                <div key={faq.q} className={`ps-faq-item${isOpen ? ' is-open' : ''}`}>
-                  <button
-                    type="button"
-                    className="ps-faq-trigger"
-                    onClick={() => setOpenFaq(isOpen ? null : idx)}
-                    aria-expanded={isOpen}
-                  >
-                    <span>{faq.q}</span>
-                    <span className="ps-faq-chevron">
-                      <IconChevronDown size={20} />
-                    </span>
-                  </button>
-                  {isOpen && <div className="ps-faq-body">{faq.a}</div>}
-                </div>
-              )
-            })}
+            {/* Right Column: Divider Accordion List */}
+            <div className="ps-faq-accordion" data-reveal="right">
+              {CLINIC.faqs.map((faq, idx) => {
+                const isOpen = openFaq === idx
+                return (
+                  <div key={faq.q} className={`ps-faq-row${isOpen ? ' is-open' : ''}`}>
+                    <button
+                      type="button"
+                      className="ps-faq-question-btn"
+                      onClick={() => setOpenFaq(isOpen ? null : idx)}
+                      aria-expanded={isOpen}
+                    >
+                      <span className="ps-faq-question-text">{faq.q}</span>
+                      <span
+                        className="ps-faq-circle-btn"
+                        aria-label={isOpen ? 'Collapse answer' : 'Expand answer'}
+                      >
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="ps-faq-arrow"
+                        >
+                          <line x1="7" y1="17" x2="17" y2="7" />
+                          <polyline points="7 7 17 7 17 17" />
+                        </svg>
+                      </span>
+                    </button>
+                    {isOpen && (
+                      <div className="ps-faq-answer">
+                        <p>{faq.a}</p>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </section>
 
         {/* ==================================================================
-            CONTACT, HOURS & ENQUIRY FORM
+            GET IN TOUCH & CLINICAL ACCESS SECTION
             ================================================================== */}
-        <section className="ps-enquiry-section-modern" id="contact">
-          <div className="ps-enquiry-container">
-            <div className="ps-contact-info-col">
-              <div className="ps-eyebrow-pill">
-                <IconPhone size={14} />
-                <span>Get In Touch</span>
-              </div>
-              <h2>
-                We&apos;re Here to <span className="ps-gradient-text">Support Your Health</span>
+        <section className="ps-contact-section" id="contact">
+          <div className="ps-contact-container">
+            {/* Top Section Header */}
+            <div className="ps-contact-header" data-reveal>
+              <h2 className="ps-contact-title">
+                Get In Touch with <span className="ps-contact-accent">Our Care Team</span>
               </h2>
-              <p>
-                Visit us in Chandanathope, reach out to our front desk, or request a call back for appointments, home lab sample collection, or general guidance.
+              <p className="ps-contact-subtitle">
+                Visit our campus in Chandanathope, call our 24-hour hospital desk directly, or request a priority callback for appointments, home diagnostics, and healthcare queries.
               </p>
-
-              <div className="ps-info-cards-stack">
-                <div className="ps-info-card-item">
-                  <div className="ps-info-icon-box">
-                    <IconBuilding size={20} />
-                  </div>
-                  <div>
-                    <h4>Campus Address</h4>
-                    <p>{CLINIC.address}</p>
-                  </div>
-                </div>
-
-                <div className="ps-info-card-item">
-                  <div className="ps-info-icon-box">
-                    <IconPhone size={20} />
-                  </div>
-                  <div>
-                    <h4>Phone & Emergency</h4>
-                    <p>
-                      <a href={`tel:${CLINIC.phone.replace(/\s/g, '')}`}>{CLINIC.phone}</a>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="ps-info-card-item">
-                  <div className="ps-info-icon-box">
-                    <IconFlask size={20} />
-                  </div>
-                  <div>
-                    <h4>Email Support</h4>
-                    <p>
-                      <a href={`mailto:${CLINIC.email}`}>{CLINIC.email}</a>
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="ps-hours-table-wrap">
-                <h4>
-                  <IconClock size={18} />
-                  <span>Campus Visiting Hours</span>
-                </h4>
-                {CLINIC.hours.map((h) => (
-                  <div key={h.day} className="ps-hours-list-item">
-                    <span>{h.day}</span>
-                    <strong>{h.time}</strong>
-                  </div>
-                ))}
-              </div>
             </div>
 
-            <div className="ps-form-card-glass">
-              <PatientEnquiryForm
-                title="Schedule an Enquiry & Callback"
-                lead="Select a service purpose below and our front desk will get back to you promptly."
-                submitLabel="Send Enquiry Now"
-                compact
-              />
+            {/* 2-Column Split: Info Hub (Left) + Form (Right) */}
+            <div className="ps-contact-grid">
+              {/* Left Column: Direct Access & Channels */}
+              <div className="ps-contact-left-col" data-reveal="left">
+                {/* 24/7 Emergency & Hotline Banner */}
+                <div className="ps-contact-hotline-card">
+                  <div className="ps-hotline-icon-wrap">
+                    <IconPhone size={22} />
+                    <span className="ps-hotline-pulse" />
+                  </div>
+                  <div className="ps-hotline-info">
+                    <div className="ps-hotline-eyebrow">24/7 Immediate Care Desk</div>
+                    <a
+                      href={`tel:${CLINIC.phone.replace(/\s/g, '')}`}
+                      className="ps-hotline-tel"
+                    >
+                      {CLINIC.phone}
+                    </a>
+                    <span className="ps-hotline-sub">Round-the-clock emergency triage & outpatient assistance</span>
+                  </div>
+                </div>
+
+                {/* 2x2 Feature Grid */}
+                <div className="ps-contact-cards-grid">
+                  {/* Card 1: Campus Address */}
+                  <div className="ps-contact-card">
+                    <div className="ps-card-icon-box ps-card-icon--emerald">
+                      <IconBuilding size={20} />
+                    </div>
+                    <div className="ps-card-body">
+                      <h4>Campus Location</h4>
+                      <p>{CLINIC.address}</p>
+                      <a
+                        href="https://maps.google.com/?q=Chandanathope,+Kollam,+Kerala"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ps-card-link"
+                      >
+                        <span>Open in Google Maps</span>
+                        <span>↗</span>
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Card 2: Email Desk */}
+                  <div className="ps-contact-card">
+                    <div className="ps-card-icon-box ps-card-icon--navy">
+                      <IconFlask size={20} />
+                    </div>
+                    <div className="ps-card-body">
+                      <h4>Email Desk</h4>
+                      <p>
+                        <a href={`mailto:${CLINIC.email}`} className="ps-card-email-link">
+                          {CLINIC.email}
+                        </a>
+                      </p>
+                      <span className="ps-card-badge">Direct desk reply</span>
+                    </div>
+                  </div>
+
+                  {/* Card 3: Outpatient & Pharmacy */}
+                  <div className="ps-contact-card">
+                    <div className="ps-card-icon-box ps-card-icon--teal">
+                      <IconStethoscope size={20} />
+                    </div>
+                    <div className="ps-card-body">
+                      <h4>24/7 Services</h4>
+                      <p>Outpatient care, certified emergency room, and campus pharmacy open 24 hours.</p>
+                      <span className="ps-card-badge ps-card-badge--live">Always Open</span>
+                    </div>
+                  </div>
+
+                  {/* Card 4: Diagnostics */}
+                  <div className="ps-contact-card">
+                    <div className="ps-card-icon-box ps-card-icon--purple">
+                      <IconDroplet size={20} />
+                    </div>
+                    <div className="ps-card-body">
+                      <h4>Lab & Diagnostics</h4>
+                      <p>Walk-in blood tests, digital ECG, and home sample collection across Kollam.</p>
+                      <span className="ps-card-badge">Home Pickup Available</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Visiting Hours Table */}
+                <div className="ps-contact-hours-card">
+                  <div className="ps-hours-header">
+                    <IconClock size={18} />
+                    <h4>Campus Working Hours</h4>
+                  </div>
+                  <div className="ps-hours-list">
+                    {CLINIC.hours.map((h) => (
+                      <div key={h.day} className="ps-hours-row">
+                        <span className="ps-hours-day">{h.day}</span>
+                        <span className="ps-hours-time">{h.time}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Facility Trust Perks Strip */}
+                <div className="ps-contact-perks-strip">
+                  <span className="ps-perk-item">✓ Ample Free Parking</span>
+                  <span className="ps-perk-item">✓ Wheelchair Accessible</span>
+                  <span className="ps-perk-item">✓ Touchless Automatic Doors</span>
+                  <span className="ps-perk-item">✓ Ground Floor Pharmacy</span>
+                </div>
+              </div>
+
+              {/* Right Column: High-converting Callback Form */}
+              <div className="ps-contact-right-col" data-reveal="right">
+                <div className="ps-contact-form-wrapper">
+                  <PatientEnquiryForm
+                    title="Request a Priority Call Back"
+                    lead="Leave your details below and our hospital reception desk will reach out to assist you promptly."
+                    submitLabel="Request Priority Call Back"
+                    compact
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </section>

@@ -6,8 +6,9 @@ export function displayDoctorName(name?: string | null): string {
   return `Dr. ${trimmed}`
 }
 
-/** Strip "Dr." prefix for initials / avatars. */
+/** Strip "Dr." prefix and return the first letter of the doctor's first name. */
 export function doctorInitial(name?: string | null): string {
-  const trimmed = displayDoctorName(name).replace(/^dr\.?\s+/i, '').trim()
-  return trimmed.charAt(0).toUpperCase() || 'D'
+  const cleaned = (name ?? '').replace(/^dr\.?\s*/i, '').trim()
+  const firstName = cleaned.split(/\s+/)[0] || ''
+  return firstName.charAt(0).toUpperCase() || 'D'
 }

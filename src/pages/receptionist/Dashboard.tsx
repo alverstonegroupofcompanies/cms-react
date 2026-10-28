@@ -27,6 +27,7 @@ import VisitSourceBadge from '../../components/VisitSourceBadge'
 import { receptionistNav } from '../../config/navigation'
 import type { Appointment, Doctor } from '../../api/types'
 import { localDateString } from '../../utils/slotUtils'
+import { toDateOnlyString } from '../../utils/dateUtils'
 
 /** Fallback when a doctor has no completed-visit history yet. */
 const DEFAULT_CONSULT_MINUTES = 30
@@ -911,7 +912,7 @@ export default function ReceptionistDashboard() {
     const q = patientFilter.trim().toLowerCase()
     return upcoming
       .filter((a) => {
-        const apptDate = String(a.appointment_date).slice(0, 10)
+        const apptDate = toDateOnlyString(a.appointment_date)
         if (apptDate <= date) return false
         if (!['booked', 'checked_in', 'no_show'].includes(a.status)) return false
         if (doctorFilter && String(a.doctor_id) !== doctorFilter) return false
@@ -922,8 +923,8 @@ export default function ReceptionistDashboard() {
         return true
       })
       .sort((a, b) => {
-        const da = `${String(a.appointment_date).slice(0, 10)} ${a.slot_time || ''}`
-        const db = `${String(b.appointment_date).slice(0, 10)} ${b.slot_time || ''}`
+        const da = `${toDateOnlyString(a.appointment_date)} ${a.slot_time || ''}`
+        const db = `${toDateOnlyString(b.appointment_date)} ${b.slot_time || ''}`
         return da.localeCompare(db)
       })
       .slice(0, 12)
@@ -1244,7 +1245,7 @@ export default function ReceptionistDashboard() {
                   </thead>
                   <tbody>
                     {upcomingBeyondBoard.map((a) => {
-                      const apptDate = String(a.appointment_date).slice(0, 10)
+                      const apptDate = toDateOnlyString(a.appointment_date)
                       return (
                         <tr key={a.id}>
                           <td>

@@ -40,7 +40,7 @@ export default function PatientAuthLayout({ title, subtitle, children, footer }:
             {subtitle && <p className="ph-auth-sub">{subtitle}</p>}
             {children}
             {footer}
-            <Link to="/patient" className="ph-auth-back">← Patient home</Link>
+            <Link to="/" className="ph-auth-back">← Hospital home</Link>
           </div>
         </main>
       </div>

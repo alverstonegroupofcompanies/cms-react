@@ -102,7 +102,7 @@ export default function AuthLayout({
       <div className="hop hop-auth page-fade">
         <aside className="hop-brand">
           <div className="hop-brand-top">
-            <BrandLogo to="/" height={52} onDark className="hop-logo" caption="Clinic operations" />
+            <BrandLogo to="/dashboard" height={52} onDark className="hop-logo" caption="Clinic operations" />
           </div>
 
           <div className="hop-brand-mid">
@@ -139,8 +139,8 @@ export default function AuthLayout({
               </div>
             </div>
             {children}
-            <Link to="/" className="hop-auth-back">
-              ← Back to staff home
+            <Link to="/dashboard" className="hop-auth-back">
+              ← Back to staff portal
             </Link>
           </div>
         </main>
@@ -171,8 +171,8 @@ export default function AuthLayout({
           <h2>{title}</h2>
           {subtitle && <p className="auth-subtitle">{subtitle}</p>}
           {children}
-          <Link to="/" className="back-link">
-            ← Back to staff home
+          <Link to="/dashboard" className="back-link">
+            ← Back to staff portal
           </Link>
         </div>
       </div>

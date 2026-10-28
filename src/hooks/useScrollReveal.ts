@@ -32,31 +32,19 @@ export function useScrollReveal(rootSelector = '.ps-site') {
       observer.unobserve(el)
     }
 
-    const isHero = (el: Element) => {
-      const mode = (el as HTMLElement).dataset.reveal
-      return mode === 'hero' || mode === 'immediate'
-    }
-
     const inViewEnough = (entry: IntersectionObserverEntry) =>
-      entry.isIntersecting && entry.intersectionRatio >= 0.18
+      entry.isIntersecting && (entry.intersectionRatio >= 0.08 || entry.boundingClientRect.top < window.innerHeight * 0.92)
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!inViewEnough(entry)) return
-
-          const el = entry.target
-          // Hold below-the-fold / mid-viewport items until the user actually scrolls
-          if (!isHero(el) && !userScrolled) {
-            pending.add(el)
-            return
-          }
-          reveal(el, observer)
+          reveal(entry.target, observer)
         })
       },
       {
-        threshold: [0, 0.18, 0.35, 0.5],
-        rootMargin: '0px 0px -14% 0px',
+        threshold: [0, 0.08, 0.2],
+        rootMargin: '0px 0px -5% 0px',
       },
     )
 

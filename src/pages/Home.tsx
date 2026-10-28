@@ -45,9 +45,9 @@ const portals = [
     accent: false,
   },
   {
-    to: '/patient',
-    title: 'Patient portal',
-    detail: 'View records, appointments & results',
+    to: '/',
+    title: 'Hospital Website & Patient Care',
+    detail: 'Public homepage, appointments & patient care',
     icon: 'user' as const,
     accent: true,
   },
@@ -84,7 +84,7 @@ export default function Home() {
   const navigate = useNavigate()
   const showDevBypass = import.meta.env.DEV
   const [devOpen, setDevOpen] = useState(false)
-  usePageTitle('Staff Home')
+  usePageTitle('Staff Portal · Clinic Operations')
 
   const handleDevLogin = async (role: keyof typeof DEV_REDIRECTS) => {
     try {
@@ -101,7 +101,7 @@ export default function Home() {
     <div className="hop page-fade">
       <aside className="hop-brand">
         <div className="hop-brand-top">
-          <BrandLogo height={52} onDark className="hop-logo" caption="Clinic operations" />
+          <BrandLogo to="/dashboard" height={52} onDark className="hop-logo" caption="Clinic operations" />
         </div>
 
         <div className="hop-brand-mid">

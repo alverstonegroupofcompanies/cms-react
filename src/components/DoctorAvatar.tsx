@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { doctorInitial } from '../utils/doctorName'
 import { getDoctorPhotoUrl } from '../utils/doctorPhoto'
 
@@ -8,21 +9,36 @@ interface Props {
   className?: string
 }
 
-export default function DoctorAvatar({ doctorId, name, photoUrl, className = '' }: Props) {
-  const src = photoUrl || getDoctorPhotoUrl(doctorId, name)
+export default function DoctorAvatar({ name, photoUrl, className = '' }: Props) {
+  const validSrc = getDoctorPhotoUrl(photoUrl)
+  const [imgFailed, setImgFailed] = useState(false)
+
+  useEffect(() => {
+    setImgFailed(false)
+  }, [validSrc])
+
+  const initial = doctorInitial(name)
   const alt = name ? `${name} photo` : 'Doctor photo'
 
+  if (validSrc && !imgFailed) {
+    return (
+      <img
+        className={`doctor-avatar-img ${className}`.trim()}
+        src={validSrc}
+        alt={alt}
+        loading="lazy"
+        onError={() => setImgFailed(true)}
+      />
+    )
+  }
+
   return (
-    <img
-      className={`doctor-avatar-img ${className}`.trim()}
-      src={src}
-      alt={alt}
-      loading="lazy"
-      onError={(e) => {
-        const img = e.currentTarget
-        img.onerror = null
-        img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(doctorInitial(name))}&background=1c1917&color=fff&size=128&bold=true`
-      }}
-    />
+    <span
+      className={`doctor-avatar-initial ${className}`.trim()}
+      role="img"
+      aria-label={alt}
+    >
+      {initial}
+    </span>
   )
 }
