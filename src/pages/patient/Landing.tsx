@@ -8,7 +8,6 @@ import BuildingToReceptionWalkthrough from '../../components/patient/BuildingToR
 import TrustedDoctorsArc from '../../components/patient/TrustedDoctorsArc'
 import ElderCareSection from '../../components/patient/ElderCareSection'
 import SpecialtyDisciplinesGrid from '../../components/patient/SpecialtyDisciplinesGrid'
-import HeroSlider from '../../components/patient/HeroSlider'
 import { CLINIC } from '../../config/clinic'
 import {
   IconCalendar,
@@ -79,9 +78,10 @@ export default function PatientLanding() {
     <PatientSiteLayout>
       <div className="ps-patient-page">
         {/* ==================================================================
-            1. HERO CAROUSEL SLIDER - RESPONSIVE CINEMATIC HEALTHCARE HIGHLIGHTS
+            1. INTERACTIVE AUTO-TOUR HOME BANNER (BUILDING TO RECEPTION)
+            Silky 60/120fps GPU scroll zoom from exterior facade into reception desk
             ================================================================== */}
-        <HeroSlider signedIn={signedIn} />
+        <BuildingToReceptionWalkthrough signedIn={signedIn} bookVisitTo={bookVisitTo} />
 
         {/* ==================================================================
             2. VALUE PROPOSITIONS RIBBON (DIRECTLY UNDER HERO)
@@ -187,13 +187,7 @@ export default function PatientLanding() {
         </section>
 
         {/* ==================================================================
-            6. INTERACTIVE ARRIVAL WALKTHROUGH (BUILDING TO RECEPTION)
-            Silky 60/120fps GPU scroll zoom from exterior facade into reception desk
-            ================================================================== */}
-        <BuildingToReceptionWalkthrough signedIn={signedIn} bookVisitTo={bookVisitTo} />
-
-        {/* ==================================================================
-            7. CAMPUS & HOSPITAL EXPERIENCE SPLIT FEATURE
+            6. CAMPUS & HOSPITAL EXPERIENCE SPLIT FEATURE
             ================================================================== */}
         <section className="ps-experience-section">
           <div className="ps-experience-grid">

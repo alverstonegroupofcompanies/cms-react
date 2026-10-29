@@ -290,16 +290,13 @@ export default function BuildingToReceptionWalkthrough({
     })
   }
 
-  // Skip past the walkthrough directly to the services section
+  // Skip past the walkthrough directly to the next section below the home banner
   const handleSkip = () => {
     setAutoTour(false)
-    const target = document.getElementById('services')
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' })
-    } else if (trackRef.current) {
+    if (trackRef.current) {
       const rect = trackRef.current.getBoundingClientRect()
       window.scrollTo({
-        top: window.scrollY + rect.bottom - 20,
+        top: window.scrollY + rect.bottom - 12,
         behavior: 'smooth',
       })
     }
@@ -425,7 +422,12 @@ export default function BuildingToReceptionWalkthrough({
           <div className="btr-hud-container">
             {/* Top Bar: Kicker + Auto Tour & Skip Buttons */}
             <header className="btr-top-bar">
-              <div className="btr-kicker-group" />
+              <div className="btr-kicker-group">
+                <div className="btr-live-pill">
+                  <span className="btr-pulse-emerald" />
+                  <span>24/7 MULTISPECIALTY HOSPITAL · KOLLAM</span>
+                </div>
+              </div>
 
               <div className="btr-top-actions">
                 <button
@@ -451,9 +453,9 @@ export default function BuildingToReceptionWalkthrough({
                   type="button"
                   className="btr-action-btn btr-skip-btn"
                   onClick={handleSkip}
-                  aria-label="Skip to Core Services"
+                  aria-label="Explore Departments & Services"
                 >
-                  <span>Services</span>
+                  <span>Explore</span>
                   <span aria-hidden>↓</span>
                 </button>
               </div>
@@ -497,15 +499,52 @@ export default function BuildingToReceptionWalkthrough({
                   ))}
                 </div>
 
-                {/* Right: Quick Stepper / Action CTAs */}
+                {/* Right: Quick Stepper + Primary Book CTA */}
                 <div className="btr-console-actions">
-                  {activeScene === 3 ? (
-                    <div className="btr-cta-group">
-                      <Link to={bookVisitTo} className="btr-btn-primary">
-                        <IconCalendar size={15} />
-                        <span>{signedIn ? 'Book an Appointment' : 'Book a Consultation'}</span>
-                        <span aria-hidden>→</span>
-                      </Link>
+                  <div className="btr-stepper-nav">
+                    <button
+                      type="button"
+                      className="btr-arrow-btn"
+                      disabled={activeScene === 0}
+                      onClick={() => goToScene(activeScene - 1)}
+                      aria-label="Previous step"
+                      title="Previous step"
+                    >
+                      ‹
+                    </button>
+                    <div className="btr-dot-track">
+                      {SCENES.map((s, idx) => (
+                        <button
+                          key={s.id}
+                          type="button"
+                          className={`btr-dot-btn ${activeScene === idx ? 'is-active' : ''}`}
+                          onClick={() => goToScene(idx)}
+                          aria-label={`Jump to step ${idx + 1}: ${s.badge}`}
+                          title={s.badge}
+                        >
+                          <span>{idx + 1}</span>
+                        </button>
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      className="btr-arrow-btn"
+                      disabled={activeScene === 3}
+                      onClick={() => goToScene(activeScene + 1)}
+                      aria-label="Next step"
+                      title="Next step"
+                    >
+                      ›
+                    </button>
+                  </div>
+
+                  <div className="btr-cta-group">
+                    <Link to={bookVisitTo} className="btr-btn-primary">
+                      <IconCalendar size={15} />
+                      <span>{signedIn ? 'Book Visit' : 'Book Consultation'}</span>
+                      <span aria-hidden>→</span>
+                    </Link>
+                    {activeScene === 3 && (
                       <a
                         href={`tel:${CLINIC.phone.replace(/\s/g, '')}`}
                         className="btr-btn-phone"
@@ -514,45 +553,8 @@ export default function BuildingToReceptionWalkthrough({
                         <IconPhone size={14} />
                         <span>Call</span>
                       </a>
-                    </div>
-                  ) : (
-                    <div className="btr-stepper-nav">
-                      <button
-                        type="button"
-                        className="btr-arrow-btn"
-                        disabled={activeScene === 0}
-                        onClick={() => goToScene(activeScene - 1)}
-                        aria-label="Previous step"
-                        title="Previous step"
-                      >
-                        ‹
-                      </button>
-                      <div className="btr-dot-track">
-                        {SCENES.map((s, idx) => (
-                          <button
-                            key={s.id}
-                            type="button"
-                            className={`btr-dot-btn ${activeScene === idx ? 'is-active' : ''}`}
-                            onClick={() => goToScene(idx)}
-                            aria-label={`Jump to step ${idx + 1}: ${s.badge}`}
-                            title={s.badge}
-                          >
-                            <span>{idx + 1}</span>
-                          </button>
-                        ))}
-                      </div>
-                      <button
-                        type="button"
-                        className="btr-arrow-btn"
-                        disabled={activeScene === 3}
-                        onClick={() => goToScene(activeScene + 1)}
-                        aria-label="Next step"
-                        title="Next step"
-                      >
-                        ›
-                      </button>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
 

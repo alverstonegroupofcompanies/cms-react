@@ -1,7 +1,19 @@
 import axios from 'axios'
 import type { Patient, RegisterPatientPayload } from './types'
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api'
+function resolveApiBase(): string {
+  const raw = (import.meta.env.VITE_API_URL || import.meta.env.VITE_APP_URL || '').trim()
+  if (raw && raw !== '/api') {
+    const cleaned = raw.replace(/\/+$/, '')
+    return cleaned.endsWith('/api') ? cleaned : `${cleaned}/api`
+  }
+  if (typeof window !== 'undefined' && window.location.hostname.endsWith('.hostingersite.com')) {
+    return 'https://darkgray-bee-717896.hostingersite.com/api'
+  }
+  return raw || '/api'
+}
+
+const API_BASE = resolveApiBase()
 
 const api = axios.create({
   baseURL: API_BASE,
