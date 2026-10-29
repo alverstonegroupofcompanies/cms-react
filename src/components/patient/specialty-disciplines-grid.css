@@ -89,7 +89,12 @@
   overflow: hidden;
   min-height: 270px;
   position: relative;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.32s ease;
+  will-change: transform;
+}
+
+.sdg-tile:active {
+  transform: translateY(-2px) scale(0.99);
 }
 
 /* Image Tiles */
@@ -189,11 +194,13 @@
 }
 
 .sdg-tile-link .sdg-arrow {
-  transition: transform 0.2s ease;
+  display: inline-block;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.sdg-tile--text:hover .sdg-tile-link .sdg-arrow,
 .sdg-tile-link:hover .sdg-arrow {
-  transform: translateX(4px);
+  transform: translateX(5px);
 }
 
 /* ==========================================================================

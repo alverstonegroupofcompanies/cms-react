@@ -20,7 +20,6 @@ import {
   IconStar,
   IconClock,
   IconBuilding,
-  IconHeart,
   IconDroplet,
 } from '../../components/Icons'
 
@@ -121,9 +120,9 @@ export default function PatientLanding() {
                   <div className="ps-service-img-wrap">
                     <img src={s.image} alt={s.title} />
                     <span className="ps-service-tag-pill">{s.tag}</span>
-                    <div className="ps-service-icon-floating">
-                      <Icon size={22} />
-                    </div>
+                  </div>
+                  <div className="ps-service-icon-floating" aria-hidden="true">
+                    <Icon size={22} />
                   </div>
                   <div className="ps-service-body">
                     <h3>{s.title}</h3>

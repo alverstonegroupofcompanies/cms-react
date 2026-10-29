@@ -245,6 +245,15 @@
 }
 
 /* Floating Red Circle with Up-Right Arrow */
+@keyframes ecs-float-breathe {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
 .ecs-floating-arrow-btn {
   position: absolute;
   top: 10px;
@@ -259,8 +268,9 @@
   justify-content: center;
   text-decoration: none;
   box-shadow: 0 6px 16px rgba(139, 30, 43, 0.28);
-  transition: transform 0.25s ease, background-color 0.25s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, box-shadow 0.25s ease;
   z-index: 5;
+  animation: ecs-float-breathe 3.5s ease-in-out infinite;
 }
 
 .ecs-floating-arrow-btn svg {
@@ -273,13 +283,21 @@
 }
 
 .ecs-card:hover .ecs-floating-arrow-btn {
+  animation-play-state: paused;
   background: #6e131e;
   color: #ffffff;
-  transform: scale(1.08);
+  transform: translateY(-2px) scale(1.12);
+  box-shadow: 0 10px 24px rgba(110, 19, 30, 0.4);
+}
+
+.ecs-card--accent:hover .ecs-floating-arrow-btn {
+  background: #ffffff;
+  color: #8b1e2b;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
 }
 
 .ecs-card:hover .ecs-floating-arrow-btn svg {
-  transform: translate(1.5px, -1.5px);
+  transform: translate(2px, -2px);
 }
 
 /* ==========================================================================
