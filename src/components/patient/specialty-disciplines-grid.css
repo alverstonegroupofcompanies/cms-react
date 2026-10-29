@@ -306,11 +306,11 @@
 
 @media (max-width: 640px) {
   .sdg-section {
-    padding: 60px 16px 68px;
+    padding: 50px 16px 58px;
   }
 
   .sdg-title {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .sdg-subtitle {
@@ -322,11 +322,26 @@
     gap: 14px;
   }
 
+  /* Seamless Image -> Text pairing on single-column mobile */
+  .sdg-tile:nth-child(5) {
+    order: 6;
+  }
+  .sdg-tile:nth-child(6) {
+    order: 5;
+  }
+  .sdg-tile:nth-child(7) {
+    order: 8;
+  }
+  .sdg-tile:nth-child(8) {
+    order: 7;
+  }
+
   .sdg-tile {
-    min-height: 230px;
+    min-height: 220px;
+    border-radius: 16px;
   }
 
   .sdg-tile--text {
-    padding: 24px 20px;
+    padding: 22px 18px;
   }
 }
