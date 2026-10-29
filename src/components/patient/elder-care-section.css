@@ -252,13 +252,13 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: #b91c1c;
+  background: #8b1e2b;
   color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  box-shadow: 0 6px 16px rgba(185, 28, 28, 0.28);
+  box-shadow: 0 6px 16px rgba(139, 30, 43, 0.28);
   transition: transform 0.25s ease, background-color 0.25s ease;
   z-index: 5;
 }
@@ -269,11 +269,11 @@
 
 .ecs-card--accent .ecs-floating-arrow-btn {
   background: #ffffff;
-  color: #b91c1c;
+  color: #8b1e2b;
 }
 
 .ecs-card:hover .ecs-floating-arrow-btn {
-  background: #881337;
+  background: #6e131e;
   color: #ffffff;
   transform: scale(1.08);
 }
@@ -311,15 +311,15 @@
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #b91c1c;
+  color: #8b1e2b;
 }
 
 .ecs-strip-pulse {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #b91c1c;
-  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.22);
+  background: #8b1e2b;
+  box-shadow: 0 0 0 3px rgba(139, 30, 43, 0.22);
 }
 
 .ecs-strip-text {
@@ -340,20 +340,20 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  background: linear-gradient(135deg, #8b1e2b 0%, #6e131e 100%);
   color: #FFFFFF;
   text-decoration: none;
   font-size: 13.5px;
   font-weight: 700;
   padding: 10px 18px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(185, 28, 28, 0.22);
+  box-shadow: 0 4px 12px rgba(139, 30, 43, 0.22);
   transition: transform 0.2s ease, background-color 0.2s ease;
   white-space: nowrap;
 }
 
 .ecs-strip-call-btn:hover {
-  background: #881337;
+  background: #6e131e;
   transform: translateY(-2px);
 }
 
@@ -362,7 +362,7 @@
   align-items: center;
   gap: 6px;
   background: #f8fafc;
-  color: #b91c1c;
+  color: #8b1e2b;
   border: 1.5px solid #e2e8f0;
   text-decoration: none;
   font-size: 13.5px;
@@ -374,9 +374,9 @@
 }
 
 .ecs-strip-book-btn:hover {
-  background: #b91c1c;
+  background: #8b1e2b;
   color: #FFFFFF;
-  border-color: #b91c1c;
+  border-color: #8b1e2b;
   transform: translateY(-2px);
 }
 
@@ -424,17 +424,23 @@
 
 @media (max-width: 640px) {
   .ecs-section {
-    padding: 64px 16px 72px;
+    padding: 50px 16px 58px;
   }
 
   .ecs-title {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .ecs-cards-grid {
     grid-template-columns: 1fr;
-    max-width: 320px;
-    margin: 0 auto 36px;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 28px;
+  }
+
+  .ecs-card,
+  .ecs-card--accent {
+    min-height: 430px;
   }
 
   .ecs-photo-circle {
