@@ -84,54 +84,7 @@ export default function PatientLanding() {
         <BuildingToReceptionWalkthrough signedIn={signedIn} bookVisitTo={bookVisitTo} />
 
         {/* ==================================================================
-            2. VALUE PROPOSITIONS RIBBON (DIRECTLY UNDER HERO)
-            ================================================================== */}
-        <section className="ps-values-ribbon">
-          <div className="ps-values-grid">
-            <div className="ps-value-card ps-value-card--blue" data-reveal style={{ ['--d' as string]: '0ms' }}>
-              <div className="ps-value-icon ps-value-icon--blue">
-                <IconClock size={22} />
-              </div>
-              <div className="ps-value-info">
-                <h4>24/7 Walk-in & OP</h4>
-                <p>Always open for acute care, outpatient visits, and emergencies.</p>
-              </div>
-            </div>
-
-            <div className="ps-value-card ps-value-card--green" data-reveal style={{ ['--d' as string]: '80ms' }}>
-              <div className="ps-value-icon ps-value-icon--green">
-                <IconQueue size={22} />
-              </div>
-              <div className="ps-value-info">
-                <h4>Zero Waiting Stress</h4>
-                <p>Real-time slot reservation eliminates crowded waiting rooms.</p>
-              </div>
-            </div>
-
-            <div className="ps-value-card ps-value-card--amber" data-reveal style={{ ['--d' as string]: '160ms' }}>
-              <div className="ps-value-icon ps-value-icon--amber">
-                <IconBuilding size={22} />
-              </div>
-              <div className="ps-value-info">
-                <h4>Everything Under One Roof</h4>
-                <p>Consultations, diagnostics, and 24/7 pharmacy on a single campus.</p>
-              </div>
-            </div>
-
-            <div className="ps-value-card ps-value-card--rose" data-reveal style={{ ['--d' as string]: '240ms' }}>
-              <div className="ps-value-icon ps-value-icon--rose">
-                <IconHeart size={22} />
-              </div>
-              <div className="ps-value-info">
-                <h4>Transparent & Fair Care</h4>
-                <p>Honest consultation rates with zero hidden hospital markups.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ==================================================================
-            3. SPECIALIZED CLINICAL DEPARTMENTS - 8-TILE CHECKERBOARD GRID
+            2. SPECIALIZED CLINICAL DEPARTMENTS - 8-TILE CHECKERBOARD GRID
             ================================================================== */}
         <SpecialtyDisciplinesGrid signedIn={signedIn} />
 

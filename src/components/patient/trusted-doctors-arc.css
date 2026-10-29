@@ -1,17 +1,17 @@
 /* ==========================================================================
-   TRUSTED DOCTORS ARC - 3D PANORAMIC CAROUSEL & CLINICAL SPOTLIGHT (#FF2E2E)
+   TRUSTED DOCTORS ARC - 3D PANORAMIC CAROUSEL & CLINICAL SPOTLIGHT (MEDICAL CRIMSON)
    ========================================================================== */
 
 .tda-section {
   position: relative;
-  background-color: #fffafa;
+  background-color: #fafbfc;
   background-image:
-    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255, 46, 46, 0.05) 0%, transparent 70%),
-    linear-gradient(180deg, #ffffff 0%, #fffafa 40%, #fff5f5 100%);
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(185, 28, 28, 0.04) 0%, transparent 70%),
+    linear-gradient(180deg, #ffffff 0%, #fafbfc 40%, #f8fafc 100%);
   padding: 80px 24px 88px;
   overflow: hidden;
-  border-top: 1px solid #fee2e2;
-  border-bottom: 1px solid #fee2e2;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .tda-container {
@@ -35,23 +35,23 @@
   gap: 8px;
   padding: 6px 14px;
   background: #FFFFFF;
-  border: 1px solid #fecaca;
+  border: 1px solid #e2e8f0;
   border-radius: 9999px;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #FF2E2E;
-  box-shadow: 0 2px 6px rgba(255, 46, 46, 0.05);
+  color: #8b1e2b;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
   margin-bottom: 16px;
 }
 
 .tda-pulse-dot {
   width: 8px;
   height: 8px;
-  background: #FF2E2E;
+  background: #8b1e2b;
   border-radius: 50%;
-  box-shadow: 0 0 0 3px rgba(255, 46, 46, 0.25);
+  box-shadow: 0 0 0 3px rgba(139, 30, 43, 0.2);
   animation: tdaPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
@@ -87,22 +87,22 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: linear-gradient(135deg, #FF2E2E 0%, #e02020 100%);
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
   color: #ffffff;
   text-decoration: none;
   font-size: 14.5px;
   font-weight: 700;
   padding: 12px 24px;
   border-radius: 9999px;
-  box-shadow: 0 4px 14px rgba(255, 46, 46, 0.28);
+  box-shadow: 0 4px 14px rgba(185, 28, 28, 0.25);
   transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .tda-pill-btn:hover {
-  background: #d91e1e;
+  background: #881337;
   color: #FFFFFF;
   transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(217, 30, 30, 0.45);
+  box-shadow: 0 8px 22px rgba(136, 19, 55, 0.35);
 }
 
 .tda-pill-arrow {
@@ -159,21 +159,21 @@
   height: 44px;
   border-radius: 50%;
   background: #FFFFFF;
-  border: 1px solid #fecaca;
-  color: #FF2E2E;
+  border: 1px solid #e2e8f0;
+  color: #b91c1c;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 28;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .tda-nav-btn:hover {
-  background: #FF2E2E;
+  background: #b91c1c;
   color: #FFFFFF;
-  border-color: #FF2E2E;
+  border-color: #b91c1c;
   transform: translateY(-50%) scale(1.08);
 }
 
@@ -290,7 +290,7 @@
 }
 
 .tda-pill-icon {
-  color: #FF2E2E;
+  color: #b91c1c;
   font-size: 10px;
 }
 
@@ -382,10 +382,10 @@
 }
 
 .tda-card--active .tda-card-inner {
-  border: 2px solid #FF2E2E;
+  border: 2px solid #b91c1c;
   box-shadow:
-    0 20px 45px -10px rgba(255, 46, 46, 0.35),
-    0 0 0 3px rgba(255, 46, 46, 0.28);
+    0 20px 45px -10px rgba(185, 28, 28, 0.32),
+    0 0 0 3px rgba(185, 28, 28, 0.2);
 }
 
 .tda-card--active {
@@ -430,7 +430,7 @@
 
 .tda-dot--active {
   width: 26px;
-  background: #FF2E2E;
+  background: #b91c1c;
 }
 
 /* ==========================================================================
@@ -438,7 +438,7 @@
    ========================================================================== */
 .tda-spotlight-bar {
   background: #FFFFFF;
-  border: 1px solid #fee2e2;
+  border: 1px solid #e2e8f0;
   border-radius: 20px;
   padding: 20px 28px;
   margin: 8px 0 52px;
@@ -446,7 +446,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  box-shadow: 0 10px 30px -8px rgba(255, 46, 46, 0.08);
+  box-shadow: 0 10px 30px -8px rgba(15, 23, 42, 0.06);
 }
 
 .tda-spotlight-left {
@@ -460,9 +460,9 @@
   height: 64px;
   border-radius: 16px;
   overflow: hidden;
-  border: 2px solid #FF2E2E;
+  border: 2px solid #b91c1c;
   flex-shrink: 0;
-  box-shadow: 0 4px 10px rgba(255, 46, 46, 0.12);
+  box-shadow: 0 4px 10px rgba(185, 28, 28, 0.15);
 }
 
 .tda-spotlight-avatar img {
@@ -496,11 +496,11 @@
 .tda-spotlight-badge {
   font-size: 11px;
   font-weight: 700;
-  color: #FF2E2E;
-  background: #fff1f1;
+  color: #b91c1c;
+  background: #fef2f2;
   padding: 3px 10px;
   border-radius: 9999px;
-  border: 1px solid #fecaca;
+  border: 1px solid #fee2e2;
 }
 
 .tda-spotlight-rating {
@@ -525,7 +525,7 @@
 }
 
 .tda-exp-accent {
-  color: #FF2E2E;
+  color: #b91c1c;
   font-weight: 700;
 }
 
@@ -547,7 +547,7 @@
 }
 
 .tda-schedule-item svg {
-  color: #FF2E2E;
+  color: #b91c1c;
 }
 
 .tda-spotlight-action {
@@ -558,69 +558,132 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #FF2E2E 0%, #e02020 100%);
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
   color: #FFFFFF;
   text-decoration: none;
   font-size: 14px;
   font-weight: 700;
   padding: 12px 22px;
   border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(255, 46, 46, 0.28);
+  box-shadow: 0 4px 14px rgba(185, 28, 28, 0.25);
   transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   white-space: nowrap;
 }
 
 .tda-spotlight-book-btn:hover {
-  background: #d91e1e;
+  background: #6e131e;
   color: #FFFFFF;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(217, 30, 30, 0.38);
+  box-shadow: 0 6px 18px rgba(110, 19, 30, 0.35);
 }
 
 /* ==========================================================================
-   4. THREE BOTTOM PILLARS
+   4. THREE BOTTOM PILLARS (PREMIUM CLINICAL CARD DESIGN)
    ========================================================================== */
 .tda-pillars-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-  border-top: 1px solid #fee2e2;
+  gap: 24px;
+  border-top: 1px solid #e2e8f0;
   padding-top: 48px;
 }
 
 .tda-pillar-card {
-  text-align: center;
-  padding: 0 12px;
+  text-align: left;
+  padding: 28px 24px 24px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 18px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.03);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+}
+
+.tda-pillar-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(139, 30, 43, 0.3);
+  box-shadow: 0 18px 36px -8px rgba(139, 30, 43, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+}
+
+.tda-pillar-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
 .tda-pillar-icon-box {
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  background: #fff1f1;
-  border: 1.5px solid #fecaca;
-  color: #FF2E2E;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  color: #8b1e2b;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(255, 46, 46, 0.08);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+  flex-shrink: 0;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.tda-pillar-card:hover .tda-pillar-icon-box {
+  background: #8b1e2b;
+  color: #ffffff;
+  border-color: #8b1e2b;
+  transform: scale(1.05);
+}
+
+.tda-pillar-kicker {
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #64748b;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 9999px;
 }
 
 .tda-pillar-title {
   font-family: 'Sansation', 'Outfit', sans-serif;
-  font-size: 17px;
-  font-weight: 700;
-  color: #18181b;
+  font-size: 18px;
+  font-weight: 750;
+  color: #0f172a;
   margin: 0 0 10px;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
 }
 
 .tda-pillar-text {
   font-size: 14px;
   line-height: 1.6;
-  color: #52525b;
-  margin: 0;
+  color: #475569;
+  margin: 0 0 20px;
+  flex: 1;
+}
+
+.tda-pillar-footer {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px dashed #f1f5f9;
+}
+
+.tda-pillar-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: #8b1e2b;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 5px 12px;
+  border-radius: 9999px;
 }
 
 /* ==========================================================================
@@ -651,12 +714,8 @@
   }
 
   .tda-card--active {
-    border: 2px solid #FF2E2E;
+    border: 2px solid #8b1e2b;
     transform: scale(1.03) !important;
-  }
-
-  .tda-edge-fade {
-    display: none;
   }
 }
 
@@ -678,21 +737,12 @@
 
   .tda-pillars-grid {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 18px;
     padding-top: 36px;
   }
 
   .tda-pillar-card {
-    text-align: left;
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-    padding: 0;
-  }
-
-  .tda-pillar-icon-box {
-    margin-bottom: 0;
-    flex-shrink: 0;
+    padding: 22px 20px;
   }
 }
 

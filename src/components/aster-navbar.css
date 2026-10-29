@@ -6,16 +6,16 @@
    ========================================================================== */
 
 :root {
-  --alv-espresso-deep: #7f1010;
-  --alv-espresso: #b91c1c;
-  --alv-toffee-dark: #d91e1e;
-  --alv-toffee: #FF2E2E;
-  --alv-copper: #ff5252;
-  --alv-champagne: #fecaca;
-  --alv-desert: #fee2e2;
-  --alv-almond: #fff1f1;
-  --alv-ivory: #fffafa;
-  --alv-header-shadow: 0 10px 30px -6px rgba(185, 28, 28, 0.24);
+  --alv-espresso-deep: #220509;
+  --alv-espresso: #2e080e;
+  --alv-toffee-dark: #6e131e;
+  --alv-toffee: #8b1e2b;
+  --alv-copper: #a82435;
+  --alv-champagne: #f1f5f9;
+  --alv-desert: #f1f5f9;
+  --alv-almond: #f8fafc;
+  --alv-ivory: #ffffff;
+  --alv-header-shadow: 0 10px 30px -6px rgba(15, 23, 42, 0.16);
 }
 
 /* Base Sticky Header */
@@ -33,9 +33,9 @@
    TIER 1: CONCIERGE RIBBON
    -------------------------------------------------------------------------- */
 .alv-ribbon {
-  background: linear-gradient(90deg, #7f1010 0%, #991b1b 50%, #7f1010 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-  color: var(--alv-almond);
+  background: linear-gradient(90deg, #220509 0%, #2e080e 50%, #220509 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--alv-desert);
   font-size: 0.76rem;
   padding: 0.38rem 0;
 }
@@ -210,8 +210,8 @@
    TIER 2: BOUTIQUE MAIN BAR (KIMSHEALTH #FF2E2E RED)
    -------------------------------------------------------------------------- */
 .alv-mainbar {
-  background: linear-gradient(135deg, #FF2E2E 0%, #e02020 55%, #c81919 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(135deg, #380c13 0%, #4a121a 50%, #2e080e 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   height: 76px;
   display: flex;
   align-items: center;
@@ -296,9 +296,9 @@
 
 .alv-pill-link.active {
   background: #ffffff;
-  color: #FF2E2E;
+  color: #8b1e2b;
   font-weight: 700;
-  box-shadow: 0 2px 10px rgba(127, 16, 16, 0.22);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.16);
 }
 
 .alv-chevron {
@@ -398,7 +398,7 @@
   height: 28px;
   border-radius: 50%;
   background: #ffffff;
-  color: #FF2E2E;
+  color: #8b1e2b;
   font-size: 0.74rem;
   font-weight: 800;
   display: inline-flex;
@@ -414,25 +414,25 @@
   padding: 0.45rem 0.5rem 0.45rem 1.05rem;
   border-radius: 999px;
   background: #ffffff;
-  color: #FF2E2E;
+  color: #8b1e2b;
   font-size: 0.85rem;
   font-weight: 700;
   text-decoration: none;
-  box-shadow: 0 4px 14px rgba(127, 16, 16, 0.25), inset 0 1px 0 #ffffff;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.16), inset 0 1px 0 #ffffff;
   transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .alv-book-cta:hover {
   transform: translateY(-1px);
-  background: #fff5f5;
-  box-shadow: 0 8px 20px rgba(127, 16, 16, 0.34);
+  background: #f8fafc;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.22);
 }
 
 .alv-book-cta-arrow {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: #FF2E2E;
+  background: #8b1e2b;
   color: #ffffff;
   display: inline-flex;
   align-items: center;
@@ -442,7 +442,7 @@
 
 .alv-book-cta:hover .alv-book-cta-arrow {
   transform: translateX(2px);
-  background: #d91e1e;
+  background: #6e131e;
 }
 
 /* --------------------------------------------------------------------------
@@ -472,7 +472,7 @@
   color: #18181b;
   border-radius: 20px;
   box-shadow: 0 24px 54px rgba(24, 24, 27, 0.18), 0 4px 14px rgba(0, 0, 0, 0.06);
-  border: 1.5px solid #fee2e2;
+  border: 1.5px solid #e2e8f0;
   padding: 1.35rem;
   z-index: 1010;
   animation: alv-float-in 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -523,7 +523,7 @@
   justify-content: space-between;
   padding-bottom: 0.85rem;
   margin-bottom: 0.9rem;
-  border-bottom: 1px solid #fee2e2;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .alv-menu-kicker {
@@ -532,7 +532,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #FF2E2E;
+  color: #8b1e2b;
   margin-bottom: 0.15rem;
 }
 
@@ -546,17 +546,17 @@
 .alv-menu-view-all {
   font-size: 0.78rem;
   font-weight: 700;
-  color: #FF2E2E;
+  color: #8b1e2b;
   text-decoration: none;
   padding: 0.28rem 0.65rem;
   border-radius: 999px;
-  background: #fff5f5;
-  border: 1px solid #fecaca;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   transition: all 150ms ease;
 }
 
 .alv-menu-view-all:hover {
-  background: #FF2E2E;
+  background: #8b1e2b;
   color: #ffffff;
 }
 
@@ -573,18 +573,18 @@
   gap: 0.8rem;
   padding: 0.8rem;
   border-radius: 14px;
-  background: #fffafa;
-  border: 1px solid #fee2e2;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   text-decoration: none;
   color: inherit;
   transition: all 170ms ease;
 }
 
 .alv-spec-card:hover {
-  background: #fff1f1;
-  border-color: #fda4af;
+  background: #f8fafc;
+  border-color: #cbd5e1;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 46, 46, 0.1);
+  box-shadow: 0 6px 16px rgba(139, 30, 43, 0.08);
 }
 
 .alv-spec-icon-box {
@@ -592,8 +592,8 @@
   height: 36px;
   border-radius: 10px;
   background: #ffffff;
-  border: 1px solid #fecaca;
-  color: #FF2E2E;
+  border: 1px solid #e2e8f0;
+  color: #8b1e2b;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -622,8 +622,8 @@
 .alv-spec-badge {
   font-size: 0.64rem;
   font-weight: 700;
-  color: #FF2E2E;
-  background: #fff1f1;
+  color: #8b1e2b;
+  background: #f1f5f9;
   padding: 0.1rem 0.45rem;
   border-radius: 999px;
   white-space: nowrap;
@@ -649,16 +649,16 @@
   gap: 0.85rem;
   padding: 0.7rem 0.9rem;
   border-radius: 12px;
-  background: #fffafa;
-  border: 1px solid #fee2e2;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   text-decoration: none;
   color: inherit;
   transition: all 160ms ease;
 }
 
 .alv-doc-item:hover {
-  background: #fff1f1;
-  border-color: #fecaca;
+  background: #f8fafc;
+  border-color: #cbd5e1;
   transform: translateX(3px);
 }
 
@@ -666,7 +666,7 @@
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #FF2E2E 0%, #d91e1e 100%);
+  background: linear-gradient(135deg, #8b1e2b 0%, #6e131e 100%);
   color: #ffffff;
   font-size: 0.84rem;
   font-weight: 800;
@@ -691,7 +691,7 @@
   margin: 0;
   font-size: 0.76rem;
   font-weight: 600;
-  color: #FF2E2E;
+  color: #8b1e2b;
 }
 
 .alv-doc-meta span {
@@ -702,11 +702,11 @@
 .alv-doc-cta {
   font-size: 0.78rem;
   font-weight: 700;
-  color: #FF2E2E;
+  color: #8b1e2b;
   padding: 0.3rem 0.65rem;
   border-radius: 999px;
   background: #ffffff;
-  border: 1px solid #fecaca;
+  border: 1px solid #e2e8f0;
 }
 
 /* Digital Hub List */
@@ -722,16 +722,16 @@
   gap: 0.75rem;
   padding: 0.68rem 0.8rem;
   border-radius: 12px;
-  background: #fffafa;
-  border: 1px solid #fee2e2;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   text-decoration: none;
   color: #18181b;
   transition: all 160ms ease;
 }
 
 .alv-hub-row:hover {
-  background: #fff1f1;
-  border-color: #fecaca;
+  background: #fef2f2;
+  border-color: #fee2e2;
   transform: translateX(2px);
 }
 
@@ -740,8 +740,8 @@
   height: 34px;
   border-radius: 9px;
   background: #ffffff;
-  color: #FF2E2E;
-  border: 1px solid #fecaca;
+  color: #b91c1c;
+  border: 1px solid #fee2e2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -768,14 +768,14 @@
   gap: 0.8rem;
   padding-bottom: 0.85rem;
   margin-bottom: 0.7rem;
-  border-bottom: 1px solid #fee2e2;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .alv-profile-avatar-lg {
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: #FF2E2E;
+  background: #b91c1c;
   color: #ffffff;
   font-weight: 800;
   display: flex;
@@ -815,8 +815,8 @@
 
 .alv-profile-item:hover,
 .alv-profile-item.active {
-  background: #fff1f1;
-  color: #FF2E2E;
+  background: #fef2f2;
+  color: #b91c1c;
 }
 
 .alv-profile-foot {
@@ -868,13 +868,13 @@
   width: 100%;
   max-width: 580px;
   box-shadow: 0 24px 60px rgba(24, 24, 27, 0.35);
-  border: 1.5px solid #fee2e2;
+  border: 1.5px solid #e2e8f0;
   overflow: hidden;
 }
 
 .alv-modal-header {
   padding: 1.2rem 1.5rem;
-  background: linear-gradient(135deg, #FF2E2E 0%, #c81919 100%);
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -919,12 +919,12 @@
   width: 100%;
   padding: 0.9rem 1.1rem 0.9rem 2.85rem;
   border-radius: 12px;
-  border: 2px solid #FF2E2E;
+  border: 2px solid #b91c1c;
   font-size: 0.98rem;
   outline: none;
   font-family: inherit;
   color: #18181b;
-  background: #fffafa;
+  background: #f8fafc;
 }
 
 .alv-search-input-icon {
@@ -932,7 +932,7 @@
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #FF2E2E;
+  color: #b91c1c;
 }
 
 .alv-search-results-list {
@@ -947,16 +947,16 @@
   justify-content: space-between;
   padding: 0.75rem 1rem;
   border-radius: 10px;
-  background: #fffafa;
-  border: 1px solid #fee2e2;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   text-decoration: none;
   color: inherit;
   transition: all 150ms ease;
 }
 
 .alv-search-result-item:hover {
-  background: #fff1f1;
-  border-color: #fecaca;
+  background: #fef2f2;
+  border-color: #fee2e2;
   transform: translateX(3px);
 }
 
@@ -1095,7 +1095,7 @@
 
   .alv-mobile-cta {
     background: #ffffff !important;
-    color: #FF2E2E !important;
+    color: #b91c1c !important;
     font-weight: 700;
   }
 

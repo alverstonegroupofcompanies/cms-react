@@ -388,44 +388,79 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
         </div>
 
         {/* ==================================================================
-            4. THREE BOTTOM PILLARS (EXACT LAYOUT AS USER SCREENSHOT)
+            4. THREE BOTTOM PILLARS (PREMIUM CLINICAL CARD DESIGN)
             ================================================================== */}
         <div className="tda-pillars-grid">
-          <div className="tda-pillar-card">
-            <div className="tda-pillar-icon-box">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
+          <div className="tda-pillar-card" data-reveal style={{ ['--d' as string]: '0ms' }}>
+            <div className="tda-pillar-card-head">
+              <div className="tda-pillar-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <polyline points="9 12 11 14 15 10" />
+                </svg>
+              </div>
+              <span className="tda-pillar-kicker">Verified Faculty</span>
             </div>
             <h4 className="tda-pillar-title">Board-Certified Specialists</h4>
             <p className="tda-pillar-text">
               Every doctor is thoroughly vetted with postgraduate MD/MS accreditations, fellowships, and verified clinical hospital practice.
             </p>
+            <div className="tda-pillar-footer">
+              <span className="tda-pillar-pill">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Postgraduate MD / MS Doctors
+              </span>
+            </div>
           </div>
 
-          <div className="tda-pillar-card">
-            <div className="tda-pillar-icon-box">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2">
-                <rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
+          <div className="tda-pillar-card" data-reveal style={{ ['--d' as string]: '80ms' }}>
+            <div className="tda-pillar-card-head">
+              <div className="tda-pillar-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+                  <path d="M9 14l2 2 4-4" />
+                </svg>
+              </div>
+              <span className="tda-pillar-kicker">Zero Delay</span>
             </div>
             <h4 className="tda-pillar-title">Guaranteed Slot Scheduling</h4>
             <p className="tda-pillar-text">
-              Lock in your exact consultation time online with real-time digital token tracking. Zero chaotic waiting rooms.
+              Lock in your exact consultation time online with real-time digital token tracking. Say goodbye to chaotic, overcrowded waiting rooms.
             </p>
+            <div className="tda-pillar-footer">
+              <span className="tda-pillar-pill">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Live Token Queue Tracking
+              </span>
+            </div>
           </div>
 
-          <div className="tda-pillar-card">
-            <div className="tda-pillar-icon-box">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2">
-                <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6" />
-                <path d="M9 9h.01M15 9h.01M9 13h.01M15 13h.01" />
-              </svg>
+          <div className="tda-pillar-card" data-reveal style={{ ['--d' as string]: '160ms' }}>
+            <div className="tda-pillar-card-head">
+              <div className="tda-pillar-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6" />
+                  <path d="M9 10h.01M15 10h.01M9 14h.01M15 14h.01" />
+                </svg>
+              </div>
+              <span className="tda-pillar-kicker">All-In-One Campus</span>
             </div>
             <h4 className="tda-pillar-title">Unified Campus Care</h4>
             <p className="tda-pillar-text">
-              Consultation suites, NABL pathology diagnostics, and our 24/7 clinical pharmacy operate under one seamless roof.
+              Consultation suites, NABL pathology diagnostics, and our 24/7 clinical pharmacy operate under one seamless, modern roof.
             </p>
+            <div className="tda-pillar-footer">
+              <span className="tda-pillar-pill">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                OPD, Lab & Pharmacy Under 1 Roof
+              </span>
+            </div>
           </div>
         </div>
       </div>

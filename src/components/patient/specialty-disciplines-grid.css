@@ -1,15 +1,15 @@
 /* ==========================================================================
-   SPECIALTY DISCIPLINES GRID - 8-TILE CHECKERBOARD LAYOUT (KIMSHEALTH #FF2E2E)
+   SPECIALTY DISCIPLINES GRID - 8-TILE CHECKERBOARD LAYOUT (CLINICAL CRIMSON)
    Direct tiles on clinical canvas without outer container box or outer white background.
    ========================================================================== */
 
 .sdg-section {
   position: relative;
-  background: linear-gradient(180deg, #fffafa 0%, #fff5f5 50%, #fffafa 100%);
+  background: linear-gradient(180deg, #fafbfc 0%, #ffffff 50%, #fafbfc 100%);
   padding: 84px 24px 96px;
   overflow: hidden;
-  border-top: 1px solid #fee2e2;
-  border-bottom: 1px solid #fee2e2;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .sdg-container {
@@ -34,23 +34,23 @@
   gap: 8px;
   padding: 6px 14px;
   background: #FFFFFF;
-  border: 1px solid #fecaca;
+  border: 1px solid #e2e8f0;
   border-radius: 9999px;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #FF2E2E;
-  box-shadow: 0 2px 6px rgba(255, 46, 46, 0.06);
+  color: #8b1e2b;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
   margin-bottom: 16px;
 }
 
 .sdg-pulse-dot {
   width: 8px;
   height: 8px;
-  background: #FF2E2E;
+  background: #8b1e2b;
   border-radius: 50%;
-  box-shadow: 0 0 0 3px rgba(255, 46, 46, 0.25);
+  box-shadow: 0 0 0 3px rgba(139, 30, 43, 0.2);
 }
 
 .sdg-title {
@@ -64,7 +64,7 @@
 }
 
 .sdg-title-accent {
-  color: #FF2E2E;
+  color: #8b1e2b;
 }
 
 .sdg-subtitle {
@@ -95,7 +95,7 @@
 /* Image Tiles */
 .sdg-tile--image {
   background: #E2E8F0;
-  border: 1px solid #fee2e2;
+  border: 1px solid #e2e8f0;
   box-shadow: 0 10px 28px -6px rgba(15, 23, 42, 0.08);
 }
 
@@ -109,7 +109,7 @@
 
 .sdg-tile--image:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 40px -10px rgba(255, 46, 46, 0.16);
+  box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.16);
 }
 
 .sdg-tile--image:hover img {
@@ -125,11 +125,11 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   background: rgba(255, 255, 255, 0.96);
-  color: #FF2E2E;
+  color: #b91c1c;
   padding: 4px 10px;
   border-radius: 9999px;
-  border: 1px solid #fecaca;
-  box-shadow: 0 2px 8px rgba(24, 24, 27, 0.12);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(24, 24, 27, 0.08);
   pointer-events: none;
 }
 
@@ -197,73 +197,74 @@
 }
 
 /* ==========================================================================
-   TILE COLOR PALETTES (KIMSHEALTH #FF2E2E RED & ROSE PORCELAIN SHADES)
+   TILE COLOR PALETTES (COMFORTABLE CLINICAL CRIMSON & SOFT SLATE SHADES)
    ========================================================================== */
 
-/* 1. Soft Rose Blush Tile (Row 1, Col 2) */
+/* 1. Soft Slate Blush Tile (Row 1, Col 2) */
 .sdg-tile--cream {
-  background: #fff1f1;
+  background: #f8fafc;
   color: #18181b;
-  border: 1.5px solid #fecaca;
-  box-shadow: 0 10px 28px -6px rgba(255, 46, 46, 0.08);
+  border: 1.5px solid #e2e8f0;
+  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06);
 }
 .sdg-tile--cream:hover {
-  box-shadow: 0 20px 42px -10px rgba(255, 46, 46, 0.16);
+  box-shadow: 0 16px 36px -8px rgba(139, 30, 43, 0.1);
+  border-color: #cbd5e1;
 }
 .sdg-tile--cream .sdg-tag {
-  color: #FF2E2E;
+  color: #8b1e2b;
 }
 .sdg-tile--cream .sdg-tile-title {
   color: #18181b;
 }
 .sdg-tile--cream .sdg-tile-desc {
-  color: #3f3f46;
+  color: #475569;
 }
 .sdg-tile--cream .sdg-tile-link {
-  color: #FF2E2E;
+  color: #8b1e2b;
 }
 
-/* 2. Deep Crimson Tile (Row 1, Col 4) */
+/* 2. Deep Velvet Crimson Tile (Row 1, Col 4) */
 .sdg-tile--dark {
-  background: #b91c1c;
+  background: #4a121a;
   color: #ffffff;
-  border: 1.5px solid rgba(254, 202, 202, 0.28);
-  box-shadow: 0 14px 34px -6px rgba(185, 28, 28, 0.32);
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 14px 34px -6px rgba(56, 12, 19, 0.32);
 }
 .sdg-tile--dark:hover {
-  box-shadow: 0 22px 46px -10px rgba(185, 28, 28, 0.44);
+  box-shadow: 0 22px 46px -10px rgba(56, 12, 19, 0.44);
 }
 .sdg-tile--dark .sdg-tag {
-  color: #fecaca;
+  color: #e2e8f0;
 }
 .sdg-tile--dark .sdg-tile-title {
   color: #ffffff;
 }
 .sdg-tile--dark .sdg-tile-desc {
-  color: #fee2e2;
+  color: #f1f5f9;
 }
 .sdg-tile--dark .sdg-tile-link {
   color: #ffffff;
 }
 
-/* 3. Signature #FF2E2E Red Tile (Row 2, Col 1) */
+/* 3. Signature Medical Crimson Tile (Row 2, Col 1) */
 .sdg-tile--slate {
-  background: #FF2E2E;
+  background: #8b1e2b;
   color: #ffffff;
-  border: 1.5px solid rgba(255, 255, 255, 0.28);
-  box-shadow: 0 14px 34px -6px rgba(255, 46, 46, 0.3);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 14px 34px -6px rgba(139, 30, 43, 0.25);
 }
 .sdg-tile--slate:hover {
-  box-shadow: 0 22px 46px -10px rgba(255, 46, 46, 0.42);
+  box-shadow: 0 22px 46px -10px rgba(139, 30, 43, 0.35);
 }
 .sdg-tile--slate .sdg-tag {
-  color: #fff1f1;
+  color: #f1f5f9;
 }
 .sdg-tile--slate .sdg-tile-title {
   color: #ffffff;
 }
 .sdg-tile--slate .sdg-tile-desc {
-  color: #fff5f5;
+  color: #f8fafc;
 }
 .sdg-tile--slate .sdg-tile-link {
   color: #ffffff;
@@ -273,23 +274,24 @@
 .sdg-tile--porcelain {
   background: #ffffff;
   color: #18181b;
-  border: 1.5px solid #fee2e2;
-  box-shadow: 0 10px 28px -6px rgba(24, 24, 27, 0.08);
+  border: 1.5px solid #e2e8f0;
+  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.05);
 }
 .sdg-tile--porcelain:hover {
-  box-shadow: 0 20px 42px -10px rgba(255, 46, 46, 0.14);
+  box-shadow: 0 18px 36px -8px rgba(139, 30, 43, 0.08);
+  border-color: #cbd5e1;
 }
 .sdg-tile--porcelain .sdg-tag {
-  color: #FF2E2E;
+  color: #8b1e2b;
 }
 .sdg-tile--porcelain .sdg-tile-title {
   color: #18181b;
 }
 .sdg-tile--porcelain .sdg-tile-desc {
-  color: #52525b;
+  color: #475569;
 }
 .sdg-tile--porcelain .sdg-tile-link {
-  color: #FF2E2E;
+  color: #8b1e2b;
 }
 
 /* ==========================================================================
