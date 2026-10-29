@@ -1,21 +1,21 @@
 /* ==========================================================================
-   ALVERSTONE MEDCITY — BOUTIQUE CONCIERGE NAVBAR
-   Tier 1: Warm Espresso Concierge Ribbon with Live Emergency Pill & OPD Hours
-   Tier 2: Rich Toffee-Espresso Main Bar with Floating Pill Navigation Track,
-           Inline Search Capsule, Digital Hub Menu & Sculpted Champagne CTA
+   ALVERSTONE MEDCITY — KIMSHEALTH RED (#FF2E2E) CONCIERGE NAVBAR
+   Tier 1: Deep Crimson Concierge Ribbon with Live Emergency Pill & OPD Hours
+   Tier 2: Signature #FF2E2E Main Bar with Floating Pill Navigation Track,
+           Inline Search Capsule, Digital Hub Menu & Crisp White/Crimson CTA
    ========================================================================== */
 
 :root {
-  --alv-espresso-deep: #2b1b11;
-  --alv-espresso: #3d2719;
-  --alv-toffee-dark: #5c3b26;
-  --alv-toffee: #7f5539;
-  --alv-copper: #9c6644;
-  --alv-champagne: #ddb892;
-  --alv-desert: #e6ccb2;
-  --alv-almond: #ede0d4;
-  --alv-ivory: #fbf8f5;
-  --alv-header-shadow: 0 10px 30px -6px rgba(43, 27, 17, 0.28);
+  --alv-espresso-deep: #7f1010;
+  --alv-espresso: #b91c1c;
+  --alv-toffee-dark: #d91e1e;
+  --alv-toffee: #FF2E2E;
+  --alv-copper: #ff5252;
+  --alv-champagne: #fecaca;
+  --alv-desert: #fee2e2;
+  --alv-almond: #fff1f1;
+  --alv-ivory: #fffafa;
+  --alv-header-shadow: 0 10px 30px -6px rgba(185, 28, 28, 0.24);
 }
 
 /* Base Sticky Header */
@@ -33,8 +33,8 @@
    TIER 1: CONCIERGE RIBBON
    -------------------------------------------------------------------------- */
 .alv-ribbon {
-  background: linear-gradient(90deg, #26170e 0%, #382315 50%, #26170e 100%);
-  border-bottom: 1px solid rgba(221, 184, 146, 0.14);
+  background: linear-gradient(90deg, #7f1010 0%, #991b1b 50%, #7f1010 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   color: var(--alv-almond);
   font-size: 0.76rem;
   padding: 0.38rem 0;
@@ -62,17 +62,17 @@
   gap: 0.45rem;
   padding: 0.2rem 0.7rem;
   border-radius: 999px;
-  background: rgba(239, 68, 68, 0.14);
-  border: 1px solid rgba(248, 113, 113, 0.32);
-  color: #fecaca;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  color: #ffffff;
   text-decoration: none;
   font-size: 0.73rem;
   transition: all 180ms ease;
 }
 
 .alv-emergency-pill:hover {
-  background: rgba(239, 68, 68, 0.24);
-  border-color: rgba(248, 113, 113, 0.55);
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.55);
   color: #ffffff;
 }
 
@@ -91,15 +91,15 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #f87171;
-  box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.7);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
   animation: alv-pulse 1.8s infinite;
 }
 
 @keyframes alv-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.7); }
-  70% { box-shadow: 0 0 0 5px rgba(248, 113, 113, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+  70% { box-shadow: 0 0 0 5px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
 }
 
 .alv-ribbon-meta {
@@ -112,15 +112,15 @@
 }
 
 .alv-ribbon-meta svg {
-  color: var(--alv-champagne);
-  opacity: 0.85;
+  color: #ffffff;
+  opacity: 0.9;
 }
 
 .alv-ribbon-divider {
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background-color: rgba(221, 184, 146, 0.38);
+  background-color: rgba(255, 255, 255, 0.38);
   display: inline-block;
 }
 
@@ -163,18 +163,18 @@
   text-decoration: none;
   padding: 0.18rem 0.6rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(237, 224, 212, 0.22);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   transition: all 160ms ease;
 }
 
 .alv-ribbon-signin:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(237, 224, 212, 0.4);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.45);
 }
 
 .alv-ribbon-register {
-  color: var(--alv-champagne);
+  color: #ffffff;
   font-weight: 600;
   font-size: 0.73rem;
   text-decoration: none;
@@ -182,19 +182,19 @@
 }
 
 .alv-ribbon-register:hover {
-  color: #ffffff;
+  color: var(--alv-champagne);
 }
 
 .alv-ribbon-patient-tag {
   font-size: 0.7rem;
-  color: var(--alv-champagne);
+  color: #ffffff;
   font-weight: 600;
 }
 
 .alv-ribbon-signout {
   background: none;
   border: none;
-  color: #fca5a5;
+  color: #fecaca;
   font-size: 0.73rem;
   font-weight: 600;
   cursor: pointer;
@@ -207,11 +207,11 @@
 }
 
 /* --------------------------------------------------------------------------
-   TIER 2: BOUTIQUE MAIN BAR (NO VERTICAL CELL BORDERS — FLOATING TRACK)
+   TIER 2: BOUTIQUE MAIN BAR (KIMSHEALTH #FF2E2E RED)
    -------------------------------------------------------------------------- */
 .alv-mainbar {
-  background: linear-gradient(135deg, #6e472e 0%, #593924 52%, #4a2e1b 100%);
-  border-bottom: 1px solid rgba(221, 184, 146, 0.22);
+  background: linear-gradient(135deg, #FF2E2E 0%, #e02020 55%, #c81919 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
   height: 76px;
   display: flex;
   align-items: center;
@@ -263,9 +263,9 @@
   gap: 0.25rem;
   padding: 0.32rem 0.4rem;
   border-radius: 999px;
-  background: rgba(34, 20, 12, 0.34);
-  border: 1px solid rgba(237, 224, 212, 0.16);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.22);
+  background: rgba(127, 16, 16, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.16);
 }
 
 .alv-pill-link {
@@ -277,7 +277,7 @@
   border-radius: 999px;
   border: none;
   background: transparent;
-  color: var(--alv-almond);
+  color: #ffffff;
   font-family: inherit;
   font-size: 0.86rem;
   font-weight: 600;
@@ -290,19 +290,19 @@
 
 .alv-pill-link:hover,
 .alv-pill-link.is-open {
-  background: rgba(237, 224, 212, 0.13);
+  background: rgba(255, 255, 255, 0.16);
   color: #ffffff;
 }
 
 .alv-pill-link.active {
-  background: var(--alv-almond);
-  color: var(--alv-espresso);
+  background: #ffffff;
+  color: #FF2E2E;
   font-weight: 700;
-  box-shadow: 0 2px 10px rgba(26, 15, 9, 0.25);
+  box-shadow: 0 2px 10px rgba(127, 16, 16, 0.22);
 }
 
 .alv-chevron {
-  opacity: 0.8;
+  opacity: 0.85;
   transition: transform 220ms ease;
 }
 
@@ -325,9 +325,9 @@
   gap: 0.5rem;
   padding: 0.46rem 0.85rem;
   border-radius: 999px;
-  background: rgba(34, 20, 12, 0.28);
-  border: 1px solid rgba(237, 224, 212, 0.2);
-  color: var(--alv-desert);
+  background: rgba(127, 16, 16, 0.26);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  color: #ffffff;
   font-family: inherit;
   font-size: 0.8rem;
   font-weight: 500;
@@ -336,8 +336,8 @@
 }
 
 .alv-search-pill:hover {
-  background: rgba(34, 20, 12, 0.45);
-  border-color: rgba(221, 184, 146, 0.45);
+  background: rgba(127, 16, 16, 0.42);
+  border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff;
 }
 
@@ -355,8 +355,8 @@
   gap: 0.4rem;
   padding: 0.48rem 0.85rem;
   border-radius: 999px;
-  background: rgba(237, 224, 212, 0.1);
-  border: 1px solid rgba(237, 224, 212, 0.22);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   color: #ffffff;
   font-family: inherit;
   font-size: 0.82rem;
@@ -367,8 +367,8 @@
 
 .alv-hub-btn:hover,
 .alv-hub-btn.active {
-  background: rgba(237, 224, 212, 0.22);
-  border-color: var(--alv-champagne);
+  background: rgba(255, 255, 255, 0.26);
+  border-color: #ffffff;
 }
 
 /* Patient Profile Pill */
@@ -378,8 +378,8 @@
   gap: 0.5rem;
   padding: 0.3rem 0.75rem 0.3rem 0.35rem;
   border-radius: 999px;
-  background: rgba(34, 20, 12, 0.36);
-  border: 1px solid rgba(221, 184, 146, 0.3);
+  background: rgba(127, 16, 16, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.32);
   color: #ffffff;
   font-family: inherit;
   font-size: 0.84rem;
@@ -389,16 +389,16 @@
 }
 
 .alv-profile-pill:hover {
-  background: rgba(34, 20, 12, 0.52);
-  border-color: var(--alv-champagne);
+  background: rgba(127, 16, 16, 0.48);
+  border-color: #ffffff;
 }
 
 .alv-profile-avatar {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--alv-champagne);
-  color: var(--alv-espresso-deep);
+  background: #ffffff;
+  color: #FF2E2E;
   font-size: 0.74rem;
   font-weight: 800;
   display: inline-flex;
@@ -413,26 +413,26 @@
   gap: 0.55rem;
   padding: 0.45rem 0.5rem 0.45rem 1.05rem;
   border-radius: 999px;
-  background: linear-gradient(135deg, #fbf8f5 0%, #ede0d4 55%, #ddb892 100%);
-  color: var(--alv-espresso-deep);
+  background: #ffffff;
+  color: #FF2E2E;
   font-size: 0.85rem;
   font-weight: 700;
   text-decoration: none;
-  box-shadow: 0 4px 14px rgba(24, 14, 8, 0.28), inset 0 1px 0 #ffffff;
+  box-shadow: 0 4px 14px rgba(127, 16, 16, 0.25), inset 0 1px 0 #ffffff;
   transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .alv-book-cta:hover {
   transform: translateY(-1px);
-  background: linear-gradient(135deg, #ffffff 0%, #f5ebe1 60%, #e6ccb2 100%);
-  box-shadow: 0 8px 20px rgba(24, 14, 8, 0.36);
+  background: #fff5f5;
+  box-shadow: 0 8px 20px rgba(127, 16, 16, 0.34);
 }
 
 .alv-book-cta-arrow {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: var(--alv-toffee);
+  background: #FF2E2E;
   color: #ffffff;
   display: inline-flex;
   align-items: center;
@@ -442,11 +442,11 @@
 
 .alv-book-cta:hover .alv-book-cta-arrow {
   transform: translateX(2px);
-  background: var(--alv-espresso);
+  background: #d91e1e;
 }
 
 /* --------------------------------------------------------------------------
-   DETACHED FLOATING DROPDOWN CARDS (ROUNDED ALL CORNERS, WARM IVORY)
+   DETACHED FLOATING DROPDOWN CARDS
    -------------------------------------------------------------------------- */
 .alv-dropdown-wrap {
   position: relative;
@@ -454,7 +454,6 @@
   align-items: center;
 }
 
-/* Invisible hover bridge so moving mouse from pill to floating card stays open */
 .alv-dropdown-wrap::after {
   content: '';
   position: absolute;
@@ -470,10 +469,10 @@
   left: 50%;
   transform: translateX(-50%);
   background: #ffffff;
-  color: #382417;
+  color: #18181b;
   border-radius: 20px;
-  box-shadow: 0 24px 54px rgba(43, 27, 17, 0.26), 0 4px 14px rgba(0, 0, 0, 0.06);
-  border: 1.5px solid #e6ccb2;
+  box-shadow: 0 24px 54px rgba(24, 24, 27, 0.18), 0 4px 14px rgba(0, 0, 0, 0.06);
+  border: 1.5px solid #fee2e2;
   padding: 1.35rem;
   z-index: 1010;
   animation: alv-float-in 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -524,7 +523,7 @@
   justify-content: space-between;
   padding-bottom: 0.85rem;
   margin-bottom: 0.9rem;
-  border-bottom: 1px solid #ede0d4;
+  border-bottom: 1px solid #fee2e2;
 }
 
 .alv-menu-kicker {
@@ -533,7 +532,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #9c6644;
+  color: #FF2E2E;
   margin-bottom: 0.15rem;
 }
 
@@ -541,24 +540,24 @@
   margin: 0;
   font-size: 1rem;
   font-weight: 800;
-  color: #382417;
+  color: #18181b;
 }
 
 .alv-menu-view-all {
   font-size: 0.78rem;
   font-weight: 700;
-  color: #7f5539;
+  color: #FF2E2E;
   text-decoration: none;
   padding: 0.28rem 0.65rem;
   border-radius: 999px;
-  background: #fbf8f5;
-  border: 1px solid #e6ccb2;
+  background: #fff5f5;
+  border: 1px solid #fecaca;
   transition: all 150ms ease;
 }
 
 .alv-menu-view-all:hover {
-  background: #ede0d4;
-  color: #382417;
+  background: #FF2E2E;
+  color: #ffffff;
 }
 
 /* Specialties Mega Grid */
@@ -574,18 +573,18 @@
   gap: 0.8rem;
   padding: 0.8rem;
   border-radius: 14px;
-  background: #fbf8f5;
-  border: 1px solid #ede0d4;
+  background: #fffafa;
+  border: 1px solid #fee2e2;
   text-decoration: none;
   color: inherit;
   transition: all 170ms ease;
 }
 
 .alv-spec-card:hover {
-  background: #f4ebe2;
-  border-color: #ddb892;
+  background: #fff1f1;
+  border-color: #fda4af;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(127, 85, 57, 0.1);
+  box-shadow: 0 6px 16px rgba(255, 46, 46, 0.1);
 }
 
 .alv-spec-icon-box {
@@ -593,8 +592,8 @@
   height: 36px;
   border-radius: 10px;
   background: #ffffff;
-  border: 1px solid #e6ccb2;
-  color: #7f5539;
+  border: 1px solid #fecaca;
+  color: #FF2E2E;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -617,14 +616,14 @@
 .alv-spec-title {
   font-size: 0.84rem;
   font-weight: 700;
-  color: #382417;
+  color: #18181b;
 }
 
 .alv-spec-badge {
   font-size: 0.64rem;
   font-weight: 700;
-  color: #7f5539;
-  background: #ede0d4;
+  color: #FF2E2E;
+  background: #fff1f1;
   padding: 0.1rem 0.45rem;
   border-radius: 999px;
   white-space: nowrap;
@@ -633,7 +632,7 @@
 .alv-spec-desc {
   margin: 0;
   font-size: 0.74rem;
-  color: #6f5342;
+  color: #52525b;
   line-height: 1.35;
 }
 
@@ -650,16 +649,16 @@
   gap: 0.85rem;
   padding: 0.7rem 0.9rem;
   border-radius: 12px;
-  background: #fbf8f5;
-  border: 1px solid #ede0d4;
+  background: #fffafa;
+  border: 1px solid #fee2e2;
   text-decoration: none;
   color: inherit;
   transition: all 160ms ease;
 }
 
 .alv-doc-item:hover {
-  background: #f4ebe2;
-  border-color: #ddb892;
+  background: #fff1f1;
+  border-color: #fecaca;
   transform: translateX(3px);
 }
 
@@ -667,8 +666,8 @@
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #7f5539 0%, #543825 100%);
-  color: #ede0d4;
+  background: linear-gradient(135deg, #FF2E2E 0%, #d91e1e 100%);
+  color: #ffffff;
   font-size: 0.84rem;
   font-weight: 800;
   display: flex;
@@ -685,29 +684,29 @@
   margin: 0 0 0.1rem 0;
   font-size: 0.88rem;
   font-weight: 700;
-  color: #382417;
+  color: #18181b;
 }
 
 .alv-doc-meta p {
   margin: 0;
   font-size: 0.76rem;
   font-weight: 600;
-  color: #9c6644;
+  color: #FF2E2E;
 }
 
 .alv-doc-meta span {
   font-size: 0.71rem;
-  color: #6f5342;
+  color: #52525b;
 }
 
 .alv-doc-cta {
   font-size: 0.78rem;
   font-weight: 700;
-  color: #7f5539;
+  color: #FF2E2E;
   padding: 0.3rem 0.65rem;
   border-radius: 999px;
   background: #ffffff;
-  border: 1px solid #e6ccb2;
+  border: 1px solid #fecaca;
 }
 
 /* Digital Hub List */
@@ -723,16 +722,16 @@
   gap: 0.75rem;
   padding: 0.68rem 0.8rem;
   border-radius: 12px;
-  background: #fbf8f5;
-  border: 1px solid #ede0d4;
+  background: #fffafa;
+  border: 1px solid #fee2e2;
   text-decoration: none;
-  color: #382417;
+  color: #18181b;
   transition: all 160ms ease;
 }
 
 .alv-hub-row:hover {
-  background: #ede0d4;
-  border-color: #ddb892;
+  background: #fff1f1;
+  border-color: #fecaca;
   transform: translateX(2px);
 }
 
@@ -741,8 +740,8 @@
   height: 34px;
   border-radius: 9px;
   background: #ffffff;
-  color: #7f5539;
-  border: 1px solid #e6ccb2;
+  color: #FF2E2E;
+  border: 1px solid #fecaca;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -753,13 +752,13 @@
   display: block;
   font-size: 0.83rem;
   font-weight: 700;
-  color: #382417;
+  color: #18181b;
 }
 
 .alv-hub-row span {
   display: block;
   font-size: 0.72rem;
-  color: #6f5342;
+  color: #52525b;
 }
 
 /* Profile Menu */
@@ -769,15 +768,15 @@
   gap: 0.8rem;
   padding-bottom: 0.85rem;
   margin-bottom: 0.7rem;
-  border-bottom: 1px solid #ede0d4;
+  border-bottom: 1px solid #fee2e2;
 }
 
 .alv-profile-avatar-lg {
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: #7f5539;
-  color: #ede0d4;
+  background: #FF2E2E;
+  color: #ffffff;
   font-weight: 800;
   display: flex;
   align-items: center;
@@ -787,12 +786,12 @@
 .alv-profile-fullname {
   font-size: 0.92rem;
   font-weight: 700;
-  color: #382417;
+  color: #18181b;
 }
 
 .alv-profile-sub {
   font-size: 0.74rem;
-  color: #6f5342;
+  color: #52525b;
 }
 
 .alv-profile-list {
@@ -809,21 +808,21 @@
   border-radius: 10px;
   font-size: 0.84rem;
   font-weight: 600;
-  color: #382417;
+  color: #18181b;
   text-decoration: none;
   transition: background 150ms ease;
 }
 
 .alv-profile-item:hover,
 .alv-profile-item.active {
-  background: #ede0d4;
-  color: #7f5539;
+  background: #fff1f1;
+  color: #FF2E2E;
 }
 
 .alv-profile-foot {
   margin-top: 0.7rem;
   padding-top: 0.7rem;
-  border-top: 1px solid #ede0d4;
+  border-top: 1px solid #fee2e2;
 }
 
 .alv-signout-btn {
@@ -848,7 +847,7 @@
 .alv-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(24, 14, 8, 0.62);
+  background: rgba(24, 24, 27, 0.62);
   backdrop-filter: blur(5px);
   z-index: 10000;
   display: flex;
@@ -868,15 +867,15 @@
   border-radius: 20px;
   width: 100%;
   max-width: 580px;
-  box-shadow: 0 24px 60px rgba(24, 14, 8, 0.35);
-  border: 1.5px solid #e6ccb2;
+  box-shadow: 0 24px 60px rgba(24, 24, 27, 0.35);
+  border: 1.5px solid #fee2e2;
   overflow: hidden;
 }
 
 .alv-modal-header {
   padding: 1.2rem 1.5rem;
-  background: linear-gradient(135deg, #6e472e 0%, #4a2e1b 100%);
-  color: #ede0d4;
+  background: linear-gradient(135deg, #FF2E2E 0%, #c81919 100%);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -889,7 +888,7 @@
 }
 
 .alv-modal-close-btn {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.18);
   border: none;
   color: #ffffff;
   width: 30px;
@@ -902,7 +901,7 @@
 }
 
 .alv-modal-close-btn:hover {
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.32);
 }
 
 .alv-modal-body {
@@ -920,12 +919,12 @@
   width: 100%;
   padding: 0.9rem 1.1rem 0.9rem 2.85rem;
   border-radius: 12px;
-  border: 2px solid #7f5539;
+  border: 2px solid #FF2E2E;
   font-size: 0.98rem;
   outline: none;
   font-family: inherit;
-  color: #382417;
-  background: #fbf8f5;
+  color: #18181b;
+  background: #fffafa;
 }
 
 .alv-search-input-icon {
@@ -933,7 +932,7 @@
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #7f5539;
+  color: #FF2E2E;
 }
 
 .alv-search-results-list {
@@ -948,16 +947,16 @@
   justify-content: space-between;
   padding: 0.75rem 1rem;
   border-radius: 10px;
-  background: #fbf8f5;
-  border: 1px solid #e6ccb2;
+  background: #fffafa;
+  border: 1px solid #fee2e2;
   text-decoration: none;
   color: inherit;
   transition: all 150ms ease;
 }
 
 .alv-search-result-item:hover {
-  background: #ede0d4;
-  border-color: #ddb892;
+  background: #fff1f1;
+  border-color: #fecaca;
   transform: translateX(3px);
 }
 
@@ -966,8 +965,8 @@
    -------------------------------------------------------------------------- */
 .alv-mobile-toggle {
   display: none;
-  background: rgba(237, 224, 212, 0.12);
-  border: 1px solid rgba(237, 224, 212, 0.24);
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 10px;
   color: #ffffff;
   width: 40px;
@@ -1038,8 +1037,8 @@
     bottom: 0;
     width: 320px;
     max-width: 85vw;
-    background: #3d2719;
-    color: #ede0d4;
+    background: #991b1b;
+    color: #ffffff;
     z-index: 10001;
     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.35);
     overflow-y: auto;
@@ -1057,7 +1056,7 @@
     align-items: center;
     justify-content: space-between;
     padding-bottom: 1.15rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
     margin-bottom: 1.15rem;
   }
 
@@ -1073,7 +1072,7 @@
     justify-content: space-between;
     padding: 0.8rem 1rem;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.1);
     color: #ffffff;
     text-decoration: none;
     font-weight: 600;
@@ -1081,7 +1080,7 @@
   }
 
   .alv-mobile-link:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.2);
   }
 
   .alv-mobile-user-card {
@@ -1089,21 +1088,21 @@
     align-items: center;
     gap: 0.75rem;
     padding: 0.75rem 1rem;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.14);
     border-radius: 10px;
     margin-bottom: 0.4rem;
   }
 
   .alv-mobile-cta {
-    background: linear-gradient(135deg, #ede0d4 0%, #ddb892 100%) !important;
-    color: #2b1b11 !important;
+    background: #ffffff !important;
+    color: #FF2E2E !important;
     font-weight: 700;
   }
 
   .alv-mobile-logout {
-    background: rgba(239, 68, 68, 0.18) !important;
-    color: #fca5a5 !important;
-    border: 1px solid rgba(239, 68, 68, 0.35);
+    background: rgba(0, 0, 0, 0.22) !important;
+    color: #fecaca !important;
+    border: 1px solid rgba(255, 255, 255, 0.25);
     cursor: pointer;
   }
 }

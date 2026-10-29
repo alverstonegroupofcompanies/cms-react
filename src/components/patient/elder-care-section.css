@@ -1,19 +1,17 @@
 /* ==========================================================================
-   ELDER CARE SECTION - TAILORED SENIOR & GERIATRIC HEALTHCARE
-   Exact reproduction of asymmetrical arched top (36px 170px) and concentric
-   circular bottom (140px 140px) with circular photo dock and floating action button.
+   ELDER CARE SECTION - TAILORED SENIOR & GERIATRIC HEALTHCARE (#FF2E2E THEME)
    ========================================================================== */
 
 .ecs-section {
   position: relative;
-  background-color: #FAF6F2;
+  background-color: #fffafa;
   padding: 92px 24px 104px;
   overflow: hidden;
-  border-bottom: 1px solid #E6CCB2;
+  border-bottom: 1px solid #fee2e2;
 }
 
 /* ==========================================================================
-   BACKGROUND TWO-TONE ORGANIC WAVE (MATCHING SCREENSHOT)
+   BACKGROUND TWO-TONE ORGANIC WAVE
    ========================================================================== */
 .ecs-wave-container {
   position: absolute;
@@ -40,7 +38,7 @@
 }
 
 /* ==========================================================================
-   1. SECTION HEADER (CLASSIC EDITORIAL SERIF)
+   1. SECTION HEADER
    ========================================================================== */
 .ecs-header {
   text-align: center;
@@ -54,7 +52,7 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #8C8275;
+  color: #FF2E2E;
   margin-bottom: 14px;
 }
 
@@ -63,7 +61,7 @@
   font-size: clamp(32px, 4vw, 48px);
   font-weight: 600;
   letter-spacing: -0.015em;
-  color: #382417;
+  color: #18181b;
   line-height: 1.18;
   margin: 0 0 16px;
 }
@@ -71,13 +69,13 @@
 .ecs-subtitle {
   font-size: clamp(15px, 1.5vw, 16.5px);
   line-height: 1.65;
-  color: #6f5342;
+  color: #52525b;
   margin: 0 auto;
   font-weight: 400;
 }
 
 /* ==========================================================================
-   2. FOUR CARDS GRID - EXACT ASYMMETRICAL SILHOUETTE
+   2. FOUR CARDS GRID - ASYMMETRICAL SILHOUETTE
    ========================================================================== */
 .ecs-cards-grid {
   display: grid;
@@ -93,8 +91,6 @@
   }
 }
 
-/* Base Card Shape - Exact Match to user reference image:
-   Top-left: 36px, Top-right: 170px, Bottom-right: 140px, Bottom-left: 140px */
 .ecs-card {
   background: #FFFFFF;
   border-radius: 36px 170px 140px 140px;
@@ -104,9 +100,9 @@
   flex-direction: column;
   justify-content: space-between;
   box-shadow:
-    0 18px 40px -10px rgba(56, 36, 23, 0.12),
+    0 18px 40px -10px rgba(24, 24, 27, 0.1),
     0 2px 6px rgba(0, 0, 0, 0.04);
-  border: 1px solid #E6CCB2;
+  border: 1px solid #fee2e2;
   transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.32s ease;
   position: relative;
 }
@@ -114,34 +110,32 @@
 .ecs-card:hover {
   transform: translateY(-8px);
   box-shadow:
-    0 26px 52px -10px rgba(56, 36, 23, 0.2),
+    0 26px 52px -10px rgba(255, 46, 46, 0.18),
     0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
-/* Accent Card 4: Deep Espresso Coffee Bean */
+/* Accent Card 4: KIMSHEALTH Red */
 .ecs-card--accent {
-  background: #543825;
+  background: linear-gradient(160deg, #FF2E2E 0%, #c81919 100%);
   border-radius: 36px 170px 140px 140px;
-  border: 1px solid rgba(221, 184, 146, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow:
-    0 22px 48px -10px rgba(56, 36, 23, 0.4),
+    0 22px 48px -10px rgba(255, 46, 46, 0.38),
     0 3px 8px rgba(0, 0, 0, 0.12);
 }
 
 .ecs-card--accent:hover {
   box-shadow:
-    0 30px 60px -10px rgba(56, 36, 23, 0.5),
+    0 30px 60px -10px rgba(255, 46, 46, 0.48),
     0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Card Upper Body */
 .ecs-card-body {
   text-align: left;
   display: flex;
   flex-direction: column;
 }
 
-/* 2x2 Dot Grid Accent (matches screenshot top-left) */
 .ecs-dot-grid {
   display: inline-grid;
   grid-template-columns: repeat(2, 4.5px);
@@ -154,14 +148,13 @@
   width: 4.5px;
   height: 4.5px;
   border-radius: 50%;
-  background: #9E9689;
+  background: #FF2E2E;
 }
 
 .ecs-card--accent .ecs-dot-grid span {
-  background: #A8C995;
+  background: #ffffff;
 }
 
-/* Two-Line Typographic Title (matches screenshot exact typographic contrast) */
 .ecs-card-title {
   margin: 0 0 16px;
   display: flex;
@@ -172,7 +165,7 @@
   font-family: 'Absans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 17px;
   font-weight: 500;
-  color: #4B453A;
+  color: #52525b;
   letter-spacing: -0.01em;
   margin-bottom: 2px;
   line-height: 1.25;
@@ -182,36 +175,34 @@
   font-family: 'Sansation', 'Outfit', sans-serif;
   font-size: 34px;
   font-weight: 600;
-  color: #1E2819;
+  color: #18181b;
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
 
 .ecs-card--accent .ecs-title-line1 {
-  color: #DCE3D5;
+  color: #fee2e2;
 }
 
 .ecs-card--accent .ecs-title-line2 {
   color: #FFFFFF;
 }
 
-/* Card Description */
 .ecs-card-desc {
   font-size: 13.5px;
   line-height: 1.6;
-  color: #6B655A;
+  color: #52525b;
   margin: 0;
   font-weight: 400;
   max-width: 95%;
 }
 
 .ecs-card--accent .ecs-card-desc {
-  color: #C8D1C2;
+  color: #fff1f1;
 }
 
 /* ==========================================================================
    CIRCULAR PHOTO DOCK AT THE BOTTOM OF THE CARD
-   Concentric with bottom rounded corners (140px)
    ========================================================================== */
 .ecs-photo-dock {
   position: relative;
@@ -231,13 +222,13 @@
   overflow: hidden;
   border: 4px solid #FFFFFF;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
-  background: #E5E0D5;
+  background: #fee2e2;
   flex-shrink: 0;
   position: relative;
 }
 
 .ecs-card--accent .ecs-photo-circle {
-  border-color: rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 255, 255, 0.32);
 }
 
 .ecs-photo-circle img {
@@ -253,7 +244,7 @@
   transform: scale(1.08);
 }
 
-/* Floating Green Circle with Up-Right Arrow (overlapping top-right of circle) */
+/* Floating Red Circle with Up-Right Arrow */
 .ecs-floating-arrow-btn {
   position: absolute;
   top: 10px;
@@ -261,13 +252,13 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: #7f5539;
+  background: #FF2E2E;
   color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  box-shadow: 0 6px 16px rgba(56, 36, 23, 0.35);
+  box-shadow: 0 6px 16px rgba(255, 46, 46, 0.35);
   transition: transform 0.25s ease, background-color 0.25s ease;
   z-index: 5;
 }
@@ -277,11 +268,13 @@
 }
 
 .ecs-card--accent .ecs-floating-arrow-btn {
-  background: #9c6644;
+  background: #ffffff;
+  color: #FF2E2E;
 }
 
 .ecs-card:hover .ecs-floating-arrow-btn {
-  background: #543825;
+  background: #d91e1e;
+  color: #ffffff;
   transform: scale(1.08);
 }
 
@@ -293,15 +286,15 @@
    3. DEDICATED SENIOR CARE ASSISTANCE STRIP
    ========================================================================== */
 .ecs-assistance-strip {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #E6CCB2;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #fecaca;
   border-radius: 20px;
   padding: 20px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  box-shadow: 0 10px 28px -6px rgba(56, 36, 23, 0.12);
+  box-shadow: 0 10px 28px -6px rgba(24, 24, 27, 0.12);
 }
 
 .ecs-strip-info {
@@ -318,20 +311,20 @@
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #7f5539;
+  color: #FF2E2E;
 }
 
 .ecs-strip-pulse {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #7f5539;
-  box-shadow: 0 0 0 3px rgba(127, 85, 57, 0.25);
+  background: #FF2E2E;
+  box-shadow: 0 0 0 3px rgba(255, 46, 46, 0.25);
 }
 
 .ecs-strip-text {
   font-size: 14px;
-  color: #4A453A;
+  color: #3f3f46;
   margin: 0;
   line-height: 1.5;
 }
@@ -347,20 +340,20 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #7f5539 0%, #9c6644 100%);
+  background: linear-gradient(135deg, #FF2E2E 0%, #e02020 100%);
   color: #FFFFFF;
   text-decoration: none;
   font-size: 13.5px;
   font-weight: 700;
   padding: 10px 18px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(127, 85, 57, 0.25);
+  box-shadow: 0 4px 12px rgba(255, 46, 46, 0.25);
   transition: transform 0.2s ease, background-color 0.2s ease;
   white-space: nowrap;
 }
 
 .ecs-strip-call-btn:hover {
-  background: #543825;
+  background: #d91e1e;
   transform: translateY(-2px);
 }
 
@@ -368,9 +361,9 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #ede0d4;
-  color: #543825;
-  border: 1.5px solid #ddb892;
+  background: #fff1f1;
+  color: #FF2E2E;
+  border: 1.5px solid #fecaca;
   text-decoration: none;
   font-size: 13.5px;
   font-weight: 700;
@@ -381,9 +374,9 @@
 }
 
 .ecs-strip-book-btn:hover {
-  background: #7f5539;
+  background: #FF2E2E;
   color: #FFFFFF;
-  border-color: #7f5539;
+  border-color: #FF2E2E;
   transform: translateY(-2px);
 }
 

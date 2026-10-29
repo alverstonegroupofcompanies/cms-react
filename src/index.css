@@ -11339,11 +11339,11 @@ a.ps-btn-outline:hover {
   margin-top: auto;
   overflow: hidden;
   background: #24160e;
-  color: #ede0d4;
+  color: #fff1f1;
   padding: 4.5rem 1.75rem 2rem;
   min-height: 20rem;
-  border-top: 3px solid #7f5539;
-  box-shadow: inset 0 1px 0 rgba(221, 184, 146, 0.22);
+  border-top: 3px solid #FF2E2E;
+  box-shadow: inset 0 1px 0 rgba(254, 202, 202, 0.22);
 }
 .ps-footer-bg,
 .ps-footer::before,
@@ -11368,7 +11368,7 @@ a.ps-btn-outline:hover {
   margin-top: 1.15rem;
   font-size: 1.05rem;
   font-weight: 700;
-  color: #ede0d4;
+  color: #fff1f1;
   letter-spacing: -0.01em;
   line-height: 1.4;
 }
@@ -11377,12 +11377,12 @@ a.ps-btn-outline:hover {
   max-width: 24rem;
   line-height: 1.6;
   font-size: 0.95rem;
-  color: #ede0d4;
+  color: #fff1f1;
 }
 .ps-footer-brand-note {
   margin-top: 0.5rem !important;
   font-size: 0.88rem !important;
-  color: #e6ccb2 !important;
+  color: #fee2e2 !important;
   opacity: 0.88;
   line-height: 1.6;
   max-width: 24rem;
@@ -11399,9 +11399,9 @@ a.ps-btn-outline:hover {
   gap: 0.5rem;
   padding: 0.5rem 1.1rem;
   border-radius: 999px;
-  background: rgba(127, 85, 57, 0.32);
-  border: 1px solid rgba(221, 184, 146, 0.32);
-  color: #ede0d4 !important;
+  background: rgba(255, 46, 46, 0.32);
+  border: 1px solid rgba(254, 202, 202, 0.32);
+  color: #fff1f1 !important;
   font-size: 0.86rem !important;
   font-weight: 600;
   text-decoration: none;
@@ -11409,12 +11409,12 @@ a.ps-btn-outline:hover {
   margin-bottom: 0 !important;
 }
 .ps-footer-contact-pills a svg {
-  color: #ddb892;
+  color: #fecaca;
   flex-shrink: 0;
 }
 .ps-footer-contact-pills a:hover {
-  background: #7f5539;
-  border-color: #ddb892;
+  background: #FF2E2E;
+  border-color: #fecaca;
   color: #ffffff !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
@@ -11425,14 +11425,14 @@ a.ps-btn-outline:hover {
   gap: 2rem 1.75rem;
 }
 .ps-footer-cols h4 {
-  color: #ddb892;
+  color: #fecaca;
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 1.15rem;
   padding-bottom: 0.4rem;
-  border-bottom: 2px solid rgba(221, 184, 146, 0.22);
+  border-bottom: 2px solid rgba(254, 202, 202, 0.22);
   display: inline-block;
 }
 .ps-footer-links {
@@ -11444,7 +11444,7 @@ a.ps-btn-outline:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  color: #e6ccb2;
+  color: #fee2e2;
   text-decoration: none;
   font-size: 0.92rem;
   line-height: 1.45;
@@ -11456,7 +11456,7 @@ a.ps-btn-outline:hover {
   transform: translateX(4px);
 }
 .ps-footer-muted {
-  color: #e6ccb2 !important;
+  color: #fee2e2 !important;
   opacity: 0.8;
   font-size: 0.88rem !important;
   line-height: 1.5;
@@ -11478,11 +11478,11 @@ a.ps-btn-outline:hover {
   padding: 0.45rem 0.75rem;
   border-radius: 8px;
   background: rgba(61, 39, 25, 0.45);
-  border: 1px solid rgba(221, 184, 146, 0.16);
+  border: 1px solid rgba(254, 202, 202, 0.16);
   font-size: 0.84rem;
 }
 .ps-footer-hours span {
-  color: #e6ccb2;
+  color: #fee2e2;
 }
 .ps-footer-hours strong {
   color: #ffffff;
@@ -11493,11 +11493,11 @@ a.ps-btn-outline:hover {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-  background: rgba(221, 184, 146, 0.08);
-  border: 1px solid rgba(221, 184, 146, 0.18);
+  background: rgba(254, 202, 202, 0.08);
+  border: 1px solid rgba(254, 202, 202, 0.18);
   border-radius: 8px;
   padding: 0.55rem 0.75rem;
-  color: #e6ccb2;
+  color: #fee2e2;
   font-size: 0.82rem;
   line-height: 1.45;
   margin: 0;
@@ -11505,7 +11505,7 @@ a.ps-btn-outline:hover {
 .ps-footer-address svg {
   flex-shrink: 0;
   margin-top: 0.15rem;
-  color: #ddb892;
+  color: #fecaca;
 }
 .ps-footer-policies {
   list-style: none;
@@ -11522,15 +11522,15 @@ a.ps-btn-outline:hover {
   padding: 0.5rem 0.7rem;
   border-radius: 8px;
   background: rgba(61, 39, 25, 0.35);
-  border: 1px solid rgba(221, 184, 146, 0.12);
+  border: 1px solid rgba(254, 202, 202, 0.12);
 }
 .ps-footer-policies strong {
-  color: #ede0d4;
+  color: #fff1f1;
   font-size: 0.86rem;
   font-weight: 700;
 }
 .ps-footer-policies span {
-  color: #e6ccb2;
+  color: #fee2e2;
   opacity: 0.82;
   font-size: 0.78rem;
   line-height: 1.4;
@@ -11539,7 +11539,7 @@ a.ps-btn-outline:hover {
   max-width: 1280px;
   margin: 0 auto;
   padding-top: 1.75rem;
-  border-top: 1px solid rgba(221, 184, 146, 0.16);
+  border-top: 1px solid rgba(254, 202, 202, 0.16);
 }
 .ps-footer-bottom-inner {
   display: flex;
@@ -11549,7 +11549,7 @@ a.ps-btn-outline:hover {
   gap: 1rem;
 }
 .ps-footer-copy {
-  color: #b08968;
+  color: #FF2E2E;
   font-size: 0.84rem;
   margin: 0;
 }
@@ -11559,11 +11559,11 @@ a.ps-btn-outline:hover {
   gap: 0.4rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #ddb892;
-  background: rgba(221, 184, 146, 0.1);
+  color: #fecaca;
+  background: rgba(254, 202, 202, 0.1);
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
-  border: 1px solid rgba(221, 184, 146, 0.2);
+  border: 1px solid rgba(254, 202, 202, 0.2);
 }
 @media (max-width: 900px) {
   .ps-menu-toggle { display: inline-flex; }

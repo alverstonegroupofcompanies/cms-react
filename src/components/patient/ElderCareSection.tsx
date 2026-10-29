@@ -77,7 +77,7 @@ export default function ElderCareSection({ signedIn = false }: ElderCareSectionP
         >
           <path
             d="M0,200 C320,160 460,270 760,240 C1060,210 1200,90 1440,130 L1440,380 L0,380 Z"
-            fill="#543825"
+            fill="#FF2E2E"
           />
         </svg>
       </div>
