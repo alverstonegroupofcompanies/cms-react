@@ -25,21 +25,21 @@
   }
 }
 
-/* Sticky Viewport: Stays locked in viewport while parent track scrolls */
+/* Sticky Viewport: Stays locked cleanly below the sticky navbar while parent track scrolls */
 .btr-sticky-viewport {
   position: -webkit-sticky;
   position: sticky;
-  top: 0;
+  top: var(--btr-nav-h, 108px);
   left: 0;
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
+  height: calc(100vh - var(--btr-nav-h, 108px));
+  height: calc(100dvh - var(--btr-nav-h, 108px));
   z-index: 50;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #f1f5f9;
+  background-color: #dbeafe;
   touch-action: pan-y;
   user-select: none;
   box-sizing: border-box;
@@ -60,17 +60,34 @@
 
 .btr-scene-layer {
   position: absolute;
-  inset: -3%;
-  width: 106%;
-  height: 106%;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: center 22%;
+  transform-origin: center 42%;
   will-change: transform, opacity;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transition: filter 350ms ease;
+}
+
+.btr-scene-layer[data-scene="0"] {
+  background-position: center 14%;
+}
+
+.btr-scene-layer[data-scene="1"] {
+  background-position: center 30%;
+}
+
+.btr-scene-layer[data-scene="2"] {
+  background-position: center 35%;
+}
+
+.btr-scene-layer[data-scene="3"] {
+  background-position: center 26%;
 }
 
 /* Responsive focal point adjustments */

@@ -160,6 +160,12 @@ interface Props {
   bookVisitTo?: string
 }
 
+function getHeaderOffset(): number {
+  if (typeof document === 'undefined') return 108
+  const header = document.querySelector('.alv-header') as HTMLElement | null
+  return header ? header.offsetHeight : 108
+}
+
 export default function BuildingToReceptionWalkthrough({
   signedIn = false,
   bookVisitTo = '/patient/book',
@@ -168,6 +174,7 @@ export default function BuildingToReceptionWalkthrough({
   const [progress, setProgress] = useState(0)
   const [activeScene, setActiveScene] = useState(0)
   const [autoTour, setAutoTour] = useState(false)
+  const [navOffset, setNavOffset] = useState(108)
   const currentProgressRef = useRef(0)
   const targetProgressRef = useRef(0)
   const animFrameRef = useRef<number | null>(null)
@@ -184,18 +191,22 @@ export default function BuildingToReceptionWalkthrough({
     })
   }, [])
 
-  // Calculate scroll progress relative to the track container
+  // Calculate scroll progress relative to the track container below the sticky navbar
   const handleScroll = useCallback(() => {
+    const headerH = getHeaderOffset()
+    setNavOffset((prev) => (prev !== headerH ? headerH : prev))
+
     if (!trackRef.current) return
     const rect = trackRef.current.getBoundingClientRect()
     const trackHeight = rect.height
     const viewportHeight = window.innerHeight || 800
-    const scrollTravel = trackHeight - viewportHeight
+    const stickyHeight = Math.max(320, viewportHeight - headerH)
+    const scrollTravel = trackHeight - stickyHeight
 
     if (scrollTravel <= 0) return
 
-    // rect.top is 0 when the top of track reaches the top of viewport
-    const scrolledPx = -rect.top
+    // rect.top equals headerH when the top of the track sits right under the sticky navbar
+    const scrolledPx = headerH - rect.top
     const rawProgress = Math.max(0, Math.min(1, scrolledPx / scrollTravel))
     targetProgressRef.current = rawProgress
   }, [])
@@ -222,9 +233,11 @@ export default function BuildingToReceptionWalkthrough({
 
       // If Auto Tour is active, steadily advance scroll position
       if (autoTourRef.current && trackRef.current) {
+        const headerH = getHeaderOffset()
         const rect = trackRef.current.getBoundingClientRect()
         const viewportHeight = window.innerHeight || 800
-        const scrollTravel = rect.height - viewportHeight
+        const stickyHeight = Math.max(320, viewportHeight - headerH)
+        const scrollTravel = rect.height - stickyHeight
 
         if (scrollTravel > 0) {
           const scrollStep = (scrollTravel / 6000) * delta // Completes in ~6 seconds
@@ -275,14 +288,16 @@ export default function BuildingToReceptionWalkthrough({
   const goToScene = (index: number) => {
     setAutoTour(false)
     if (!trackRef.current) return
+    const headerH = getHeaderOffset()
     const rect = trackRef.current.getBoundingClientRect()
     const viewportHeight = window.innerHeight || 800
-    const scrollTravel = rect.height - viewportHeight
-    const currentAbsoluteTop = window.scrollY + rect.top
+    const stickyHeight = Math.max(320, viewportHeight - headerH)
+    const scrollTravel = rect.height - stickyHeight
+    const currentAbsoluteTop = window.scrollY + rect.top - headerH
 
     // Target waypoint offsets
     const offsets = [0, 0.32, 0.62, 0.95]
-    const targetScrollY = currentAbsoluteTop + scrollTravel * offsets[index]
+    const targetScrollY = Math.max(0, currentAbsoluteTop + scrollTravel * offsets[index])
 
     window.scrollTo({
       top: targetScrollY,
@@ -294,9 +309,10 @@ export default function BuildingToReceptionWalkthrough({
   const handleSkip = () => {
     setAutoTour(false)
     if (trackRef.current) {
+      const headerH = getHeaderOffset()
       const rect = trackRef.current.getBoundingClientRect()
       window.scrollTo({
-        top: window.scrollY + rect.bottom - 12,
+        top: window.scrollY + rect.bottom - headerH,
         behavior: 'smooth',
       })
     }
@@ -316,7 +332,7 @@ export default function BuildingToReceptionWalkthrough({
     let scale = 1
 
     if (index === 0) {
-      // Scene 1: Campus Exterior (0.00 to 0.30)
+      // Scene 1: Campus Exterior (0.00 to 0.30) — starts at 1.00 scale so roof/top is never cropped
       if (p <= 0.2) {
         opacity = 1
       } else if (p <= 0.32) {
@@ -324,7 +340,7 @@ export default function BuildingToReceptionWalkthrough({
       } else {
         opacity = 0
       }
-      scale = 1 + p * 0.45
+      scale = 1 + p * 0.28
     } else if (index === 1) {
       // Scene 2: Grand Glass Entrance (0.20 to 0.58)
       if (p < 0.2) {
@@ -339,7 +355,7 @@ export default function BuildingToReceptionWalkthrough({
         opacity = 0
       }
       const localP = Math.max(0, Math.min(1, (p - 0.2) / 0.38))
-      scale = 0.94 + localP * 0.28
+      scale = 1 + localP * 0.18
     } else if (index === 2) {
       // Scene 3: Atrium & Live Queue Screens (0.48 to 0.84)
       if (p < 0.48) {
@@ -354,7 +370,7 @@ export default function BuildingToReceptionWalkthrough({
         opacity = 0
       }
       const localP = Math.max(0, Math.min(1, (p - 0.48) / 0.36))
-      scale = 0.94 + localP * 0.25
+      scale = 1 + localP * 0.16
     } else if (index === 3) {
       // Scene 4: Reception Desk & Check-in (0.74 to 1.00)
       if (p < 0.74) {
@@ -365,7 +381,7 @@ export default function BuildingToReceptionWalkthrough({
         opacity = 1
       }
       const localP = Math.max(0, Math.min(1, (p - 0.74) / 0.26))
-      scale = 0.96 + localP * 0.12
+      scale = 1 + localP * 0.08
     }
 
     return {
@@ -386,12 +402,16 @@ export default function BuildingToReceptionWalkthrough({
   const pctDisplay = Math.round(progress * 100)
 
   return (
-    <section className="btr-section" aria-label="Interactive Arrival Experience">
+    <section
+      className="btr-section"
+      aria-label="Interactive Arrival Experience"
+      style={{ ['--btr-nav-h' as string]: `${navOffset}px` }}
+    >
       {/* Outer Scroll Track */}
       <div className="btr-scroll-track" ref={trackRef}>
-        {/* Sticky Viewport pinned across the scroll */}
+        {/* Sticky Viewport pinned cleanly below the navbar */}
         <div className="btr-sticky-viewport">
-          {/* Layered Background Scenes (100% Unobstructed Clean View) */}
+          {/* Layered Background Scenes (100% Unobstructed Full-Fit View) */}
           <div className="btr-canvas-stage" aria-hidden>
             {SCENES.map((scene, i) => (
               <div
@@ -417,7 +437,7 @@ export default function BuildingToReceptionWalkthrough({
 
           {/* ==============================================================
               HEADS-UP DISPLAY (HUD)
-              Top Bar + Clean Bottom Console (NO Square Card Inside Image)
+              Top Bar + Clean Bottom Console neatly fitted below Navbar
               ============================================================== */}
           <div className="btr-hud-container">
             {/* Top Bar: Kicker + Auto Tour & Skip Buttons */}
@@ -478,7 +498,7 @@ export default function BuildingToReceptionWalkthrough({
                 />
               </div>
 
-              {/* Unified Bottom Console (Replaces square in image & separate 4-step bar) */}
+              {/* Unified Bottom Console */}
               <div className="btr-console-bar" key={activeSceneData.id}>
                 {/* Left: Step Tag & Clean Title */}
                 <div className="btr-console-identity">
@@ -489,7 +509,7 @@ export default function BuildingToReceptionWalkthrough({
                   <h3 className="btr-console-title">{activeSceneData.title}</h3>
                 </div>
 
-                {/* Center: Visual Icon Feature Badges (Icons instead of walls of text) */}
+                {/* Center: Visual Icon Feature Badges */}
                 <div className="btr-console-features">
                   {activeSceneData.features.map((feat, idx) => (
                     <span key={idx} className="btr-feature-chip">
@@ -557,14 +577,6 @@ export default function BuildingToReceptionWalkthrough({
                   </div>
                 </div>
               </div>
-
-              {/* Micro Scroll Hint (Disappears once scrolling begins) */}
-              {progress < 0.08 && (
-                <div className="btr-scroll-hint" aria-hidden>
-                  <span>Scroll or swipe down to walk inside</span>
-                  <span>↓</span>
-                </div>
-              )}
             </footer>
           </div>
         </div>
