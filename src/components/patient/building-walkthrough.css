@@ -19,9 +19,14 @@
   overflow: visible !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 860px) {
   .btr-scroll-track {
     height: 320vh;
+  }
+  .btr-sticky-viewport {
+    top: var(--btr-nav-h, 64px);
+    height: calc(100vh - var(--btr-nav-h, 64px));
+    height: calc(100dvh - var(--btr-nav-h, 64px));
   }
 }
 

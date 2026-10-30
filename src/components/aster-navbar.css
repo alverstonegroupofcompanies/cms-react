@@ -1162,18 +1162,13 @@
   }
 }
 
-@media (max-width: 680px) {
+@media (max-width: 860px) {
   .alv-ribbon {
-    padding: 0.28rem 0;
+    display: none !important;
   }
-  .alv-ribbon-inner {
-    padding: 0 0.85rem;
-    justify-content: center;
-  }
-  .alv-ribbon-left {
-    width: 100%;
-    justify-content: center;
-  }
+}
+
+@media (max-width: 680px) {
   .alv-mainbar {
     height: 64px;
   }
