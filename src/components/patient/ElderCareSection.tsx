@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import { CLINIC } from '../../config/clinic'
+import Reveal from '../motion/Reveal'
+import SplitText from '../motion/SplitText'
 import './elder-care-section.css'
 
 export interface ElderCareService {
@@ -86,26 +88,26 @@ export default function ElderCareSection({ signedIn = false }: ElderCareSectionP
         {/* ==================================================================
             1. HEADER WITH CLASSIC EDITORIAL SERIF
             ================================================================== */}
-        <div className="ecs-header" data-reveal>
-          <h2 id="ecs-main-title" className="ecs-title">
+        <div className="ecs-header">
+          <SplitText as="h2" id="ecs-main-title" className="ecs-title">
             Home Care That&apos;s Tailored to Your Needs
-          </h2>
-          <p className="ecs-subtitle">
-            Dignified, unhurried healthcare and compassionate bedside support designed to keep senior loved ones safe,
-            healthy, and cherished in the comfort of their home or at our campus.
-          </p>
+          </SplitText>
+          <Reveal direction="up" distance={14} delay={0.12} duration={0.75}>
+            <p className="ecs-subtitle">
+              Dignified, unhurried healthcare and compassionate bedside support designed to keep senior loved ones safe,
+              healthy, and cherished in the comfort of their home or at our campus.
+            </p>
+          </Reveal>
         </div>
 
         {/* ==================================================================
             2. THE FOUR ASYMMETRICAL ARCHED CARDS (EXACT SHAPE FINISH)
             ================================================================== */}
-        <div className="ecs-cards-grid">
-          {ELDER_SERVICES.map((srv, idx) => (
+        <Reveal direction="up" distance={26} stagger={0.08} className="ecs-cards-grid">
+          {ELDER_SERVICES.map((srv) => (
             <article
               key={srv.id}
               className={`ecs-card ${srv.isAccent ? 'ecs-card--accent' : ''}`}
-              data-reveal
-              style={{ ['--d' as string]: `${idx * 90}ms` }}
             >
               {/* Card Upper Body */}
               <div className="ecs-card-body">
@@ -154,7 +156,7 @@ export default function ElderCareSection({ signedIn = false }: ElderCareSectionP
               </div>
             </article>
           ))}
-        </div>
+        </Reveal>
 
         {/* ==================================================================
             3. DEDICATED SENIOR CARE ASSISTANCE STRIP

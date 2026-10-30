@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
+import Reveal from '../motion/Reveal'
+import SplitText from '../motion/SplitText'
+import AnimatedCounter from '../motion/AnimatedCounter'
 import './trusted-doctors-arc.css'
 
 export interface TrustedDoctor {
@@ -178,15 +181,19 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
         {/* ==================================================================
             1. TOP HEADER (MATCHING USER SCREENSHOT ARCHITECTURE)
             ================================================================== */}
-        <div className="tda-header" data-reveal>
-          <h2 className="tda-title">Our Trusted Doctors</h2>
+        <div className="tda-header">
+          <SplitText as="h2" className="tda-title">
+            Our Trusted Doctors
+          </SplitText>
 
-          <p className="tda-subtitle">
-            Experienced medical specialists across all major clinical disciplines — dedicated to clear diagnosis,
-            unhurried consultations, and patient-first care.
-          </p>
+          <Reveal direction="up" distance={14} delay={0.12} duration={0.75}>
+            <p className="tda-subtitle">
+              Experienced medical specialists across all major clinical disciplines — dedicated to clear diagnosis,
+              unhurried consultations, and patient-first care.
+            </p>
+          </Reveal>
 
-          <div className="tda-cta-wrap">
+          <Reveal direction="up" distance={16} delay={0.2} duration={0.75} className="tda-cta-wrap">
             <Link to={bookBaseUrl} className="tda-pill-btn">
               <span>Book a Consultation</span>
               <span className="tda-pill-arrow" aria-hidden>
@@ -195,7 +202,7 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
                 </svg>
               </span>
             </Link>
-          </div>
+          </Reveal>
         </div>
 
         {/* ==================================================================
@@ -300,7 +307,9 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
                           <div className="tda-card-meta-row">
                             <span className="tda-card-degree">{doc.degree.split(',')[0]}</span>
                             <span className="tda-card-dot">•</span>
-                            <span className="tda-card-exp-highlight">{doc.experienceYears} Yrs Practice</span>
+                            <span className="tda-card-exp-highlight">
+                              <AnimatedCounter value={doc.experienceYears} suffix=" Yrs Practice" />
+                            </span>
                           </div>
                         </div>
 
@@ -348,12 +357,16 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" strokeWidth="2">
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                   </svg>
-                  <span>{activeDoc.rating}</span>
-                  <small>({activeDoc.reviewsCount} patients)</small>
+                  <span>
+                    <AnimatedCounter value={activeDoc.rating} decimals={1} duration={1.2} />
+                  </span>
+                  <small>
+                    <AnimatedCounter value={activeDoc.reviewsCount} prefix="(" suffix=" patients)" duration={1.4} />
+                  </small>
                 </span>
               </div>
               <p className="tda-spotlight-dept">
-                <strong>{activeDoc.department}</strong> · {activeDoc.degree} · <span className="tda-exp-accent">{activeDoc.experience}</span>
+                <strong>{activeDoc.department}</strong> · {activeDoc.degree} · <span className="tda-exp-accent"><AnimatedCounter value={activeDoc.experienceYears} suffix="+ Years Exp" duration={1.2} /></span>
               </p>
               <div className="tda-spotlight-schedule">
                 <span className="tda-schedule-item">
@@ -390,8 +403,8 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
         {/* ==================================================================
             4. THREE BOTTOM PILLARS (PREMIUM CLINICAL CARD DESIGN)
             ================================================================== */}
-        <div className="tda-pillars-grid">
-          <div className="tda-pillar-card" data-reveal style={{ ['--d' as string]: '0ms' }}>
+        <Reveal direction="up" distance={24} stagger={0.08} className="tda-pillars-grid">
+          <div className="tda-pillar-card">
             <div className="tda-pillar-card-head">
               <div className="tda-pillar-icon-box">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
@@ -415,7 +428,7 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
             </div>
           </div>
 
-          <div className="tda-pillar-card" data-reveal style={{ ['--d' as string]: '80ms' }}>
+          <div className="tda-pillar-card">
             <div className="tda-pillar-card-head">
               <div className="tda-pillar-icon-box">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
@@ -439,7 +452,7 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
             </div>
           </div>
 
-          <div className="tda-pillar-card" data-reveal style={{ ['--d' as string]: '160ms' }}>
+          <div className="tda-pillar-card">
             <div className="tda-pillar-card-head">
               <div className="tda-pillar-icon-box">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
@@ -462,7 +475,7 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
               </span>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   )

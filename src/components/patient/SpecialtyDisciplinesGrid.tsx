@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import Reveal from '../motion/Reveal'
+import SplitText from '../motion/SplitText'
 import './specialty-disciplines-grid.css'
 
 interface SpecialtyDisciplinesGridProps {
@@ -14,21 +16,23 @@ export default function SpecialtyDisciplinesGrid({ signedIn = false }: Specialty
         {/* ==================================================================
             1. SECTION HEADER
             ================================================================== */}
-        <div className="sdg-header" data-reveal>
-          <h2 className="sdg-title">
+        <div className="sdg-header">
+          <SplitText as="h2" className="sdg-title">
             Care Across Our <span className="sdg-title-accent">Specialty Disciplines</span>
-          </h2>
+          </SplitText>
 
-          <p className="sdg-subtitle">
-            From gentle pediatric visits to certified pathology diagnostics, book experienced clinicians dedicated to
-            your health.
-          </p>
+          <Reveal direction="up" distance={14} delay={0.12} duration={0.75}>
+            <p className="sdg-subtitle">
+              From gentle pediatric visits to certified pathology diagnostics, book experienced clinicians dedicated to
+              your health.
+            </p>
+          </Reveal>
         </div>
 
         {/* ==================================================================
             2. 8-TILE CHECKERBOARD GRID
             ================================================================== */}
-        <div className="sdg-tiles-grid" data-reveal style={{ ['--d' as string]: '80ms' }}>
+        <Reveal direction="up" distance={24} stagger={0.07} className="sdg-tiles-grid">
             {/* ROW 1 */}
             {/* Tile 1: IMAGE (Pediatrics) */}
             <div className="sdg-tile sdg-tile--image">
@@ -134,7 +138,7 @@ export default function SpecialtyDisciplinesGrid({ signedIn = false }: Specialty
               />
               <span className="sdg-img-badge">Modern Lab</span>
             </div>
-          </div>
+          </Reveal>
       </div>
     </section>
   )

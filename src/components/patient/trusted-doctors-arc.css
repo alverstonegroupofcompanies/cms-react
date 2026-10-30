@@ -6,7 +6,8 @@
   position: relative;
   background-color: #fafbfc;
   background-image:
-    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(185, 28, 28, 0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(139, 30, 43, 0.045) 0%, transparent 70%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%238b1e2b' stroke-width='1' stroke-opacity='0.035'%3E%3Ccircle cx='30' cy='30' r='18'/%3E%3Ccircle cx='30' cy='30' r='29'/%3E%3C/g%3E%3C/svg%3E"),
     linear-gradient(180deg, #ffffff 0%, #fafbfc 40%, #f8fafc 100%);
   padding: 80px 24px 88px;
   overflow: hidden;
@@ -249,6 +250,12 @@
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 12px 28px -8px rgba(24, 24, 27, 0.22);
   background: #18181b;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+}
+
+.tda-card:hover .tda-card-inner {
+  box-shadow: 0 22px 48px -10px rgba(0, 0, 0, 0.38), 0 6px 16px rgba(139, 30, 43, 0.15);
+  border-color: rgba(255, 255, 255, 0.7);
 }
 
 .tda-card-photo-box {
@@ -264,11 +271,12 @@
   object-fit: cover;
   object-position: top center;
   display: block;
-  transition: transform 0.45s ease;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 .tda-card:hover .tda-card-photo {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .tda-card-top-pill {

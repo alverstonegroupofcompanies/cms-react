@@ -4,6 +4,7 @@ import PatientSiteLayout from '../../components/PatientSiteLayout'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { CLINIC } from '../../config/clinic'
 import { IconChevronDown, IconQuote, iconMap } from '../../components/Icons'
+import ExpandableImage from '../../components/motion/ExpandableImage'
 
 const GALLERY = [
   { src: '/images/patient-hero.jpg', alt: 'Consultation room', span: 'tall' as const },
@@ -120,7 +121,12 @@ export default function PatientAbout() {
               data-reveal
               style={{ ['--d' as string]: `${i * 80}ms` }}
             >
-              <img src={shot.src} alt={shot.alt} loading="lazy" />
+              <ExpandableImage
+                src={shot.src}
+                alt={shot.alt}
+                caption={`Alverstone Medcity - ${shot.alt}`}
+                loading="lazy"
+              />
               <figcaption>{shot.alt}</figcaption>
             </figure>
           ))}

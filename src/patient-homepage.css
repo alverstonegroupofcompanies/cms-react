@@ -678,10 +678,112 @@
    CORE PATIENT SERVICES SECTION (CLEAN CLINICAL SERVICE CARDS)
    -------------------------------------------------------------------------- */
 
+/* ==========================================================================
+   DESIGNED FOR SPEED, COMFORT & CLARITY SECTION
+   BRAND: primary maroon #8B1A32, soft blush #FDF2F4, warm white #FFFBFB, pale blush #FFF5F6
+   ========================================================================== */
+
+.ps-services-section {
+  position: relative;
+  width: 100%;
+  padding: 6rem 1.5rem 6.5rem;
+  background-color: #FFFBFB;
+  /* Very soft vertical gradient from warm white (#FFFBFB) to pale blush (#FFF5F6) */
+  /* with faint dotted grid made fainter */
+  background-image:
+    radial-gradient(circle, rgba(139, 26, 50, 0.022) 1.2px, transparent 1.2px),
+    linear-gradient(180deg, #FFFBFB 0%, #FFF5F6 100%);
+  background-size: 36px 36px, 100% 100%;
+  border-top: 1px solid rgba(139, 26, 50, 0.08);
+  border-bottom: 1px solid rgba(139, 26, 50, 0.08);
+  overflow: hidden;
+}
+
+/* Background visual depth layer - pointer-events-none & z-index below content */
+.ps-services-bg-decorations {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* 2 Large Blurred Gradient Blobs */
+.ps-blob {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(100px);
+  -webkit-filter: blur(100px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Maroon at 8% opacity (#8B1A32) top-left behind heading */
+.ps-blob-top-left {
+  top: -80px;
+  left: -80px;
+  background: radial-gradient(circle, rgba(139, 26, 50, 0.08) 0%, rgba(139, 26, 50, 0) 70%);
+}
+
+/* Soft rose at 10% opacity bottom-right behind 4th card */
+.ps-blob-bottom-right {
+  bottom: -100px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(244, 114, 182, 0.10) 0%, rgba(225, 29, 72, 0.08) 45%, transparent 70%);
+}
+
+/* Faint ECG / Heartbeat Line crossing behind the heading at ~6% opacity */
+.ps-decor-ecg {
+  position: absolute;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  max-width: 95vw;
+  height: 120px;
+  pointer-events: none;
+}
+
+/* Small scattered plus signs and circles at 10-15% opacity */
+.ps-decor-motifs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ps-motif {
+  position: absolute;
+  pointer-events: none;
+  transition: transform 600ms ease;
+}
+
+.ps-motif-plus-1 { top: 8%; left: 9%; }
+.ps-motif-plus-2 { top: 14%; right: 12%; }
+.ps-motif-plus-3 { top: 52%; right: 5%; }
+.ps-motif-plus-4 { top: 78%; left: 6%; }
+.ps-motif-circle-1 { top: 18%; left: 24%; }
+.ps-motif-circle-2 { top: 48%; left: 4%; }
+.ps-motif-circle-3 { top: 68%; right: 15%; }
+
+/* Large faint abstract wave/curve SVG running across the bottom (maroon at 5% opacity) */
+.ps-decor-bottom-wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 180px;
+  pointer-events: none;
+}
+
+.ps-services-container,
 .ps-services-wrapper {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 5rem 1.5rem;
+  position: relative;
+  z-index: 2;
 }
 
 .ps-services-cards-grid {
@@ -690,31 +792,33 @@
   gap: 1.5rem;
 }
 
+/* CARDS: Keep white, add soft maroon-tinted shadow */
 .ps-service-box {
   position: relative;
   display: flex;
   flex-direction: column;
   background: #ffffff;
-  border: 1.5px solid #e2e8f0;
+  border: 1.5px solid rgba(139, 26, 50, 0.08);
   border-radius: 20px;
   overflow: hidden;
   text-decoration: none;
   color: inherit;
-  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 20px 50px -20px rgba(139, 26, 50, 0.25);
   transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 320ms cubic-bezier(0.16, 1, 0.3, 1),
               border-color 320ms cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform;
+  will-change: transform, box-shadow;
 }
 
+/* On hover: lift 6px and increase the shadow */
 .ps-service-box:hover {
-  transform: translateY(-8px);
-  border-color: rgba(139, 30, 43, 0.35);
-  box-shadow: 0 24px 48px -12px rgba(139, 30, 43, 0.16), 0 4px 12px rgba(15, 23, 42, 0.04);
+  transform: translateY(-6px);
+  border-color: rgba(139, 26, 50, 0.32);
+  box-shadow: 0 30px 60px -15px rgba(139, 26, 50, 0.35), 0 10px 24px -5px rgba(139, 26, 50, 0.12);
 }
 
 .ps-service-box:active {
-  transform: translateY(-4px) scale(0.99);
+  transform: translateY(-2px) scale(0.99);
 }
 
 .ps-service-img-wrap {
@@ -991,9 +1095,25 @@
    -------------------------------------------------------------------------- */
 
 .ps-experience-section {
+  position: relative;
+  width: 100%;
+  padding: 5.5rem 1.5rem;
+  background-color: #f8fafc;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(139, 30, 43, 0.035) 0%, transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(15, 23, 42, 0.03) 0%, transparent 45%),
+    url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h48v48H0z' fill='none' stroke='%23475569' stroke-width='0.75' stroke-opacity='0.04' stroke-dasharray='3 3'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #fafbfc 0%, #ffffff 50%, #f8fafc 100%);
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.ps-experience-container {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 5.5rem 1.5rem;
+  position: relative;
+  z-index: 2;
 }
 
 .ps-experience-grid {
@@ -1229,9 +1349,24 @@
    -------------------------------------------------------------------------- */
 
 .ps-testimonials-section {
+  position: relative;
+  width: 100%;
+  padding: 5.5rem 1.5rem;
+  background-color: #fafbfc;
+  background-image:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(139, 30, 43, 0.035) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='32' cy='32' r='2' fill='%238b1e2b' fill-opacity='0.045'/%3E%3Ccircle cx='32' cy='32' r='14' fill='none' stroke='%238b1e2b' stroke-width='0.75' stroke-opacity='0.025'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #f8fafc 0%, #ffffff 50%, #fafbfc 100%);
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.ps-testimonials-container {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 5.5rem 1.5rem;
+  position: relative;
+  z-index: 2;
 }
 
 .ps-testimonials-grid {
@@ -1378,12 +1513,21 @@
    -------------------------------------------------------------------------- */
 
 .ps-faq-section {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 3.5rem 1.5rem 5.5rem;
+  position: relative;
+  width: 100%;
+  padding: 5rem 1.5rem 6.5rem;
+  background-color: #f8fafc;
+  background-image:
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(139, 30, 43, 0.04) 0%, transparent 65%),
+    url("data:image/svg+xml,%3Csvg width='36' height='36' viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 18h36M18 0v36' fill='none' stroke='%230f172a' stroke-width='0.5' stroke-opacity='0.035' stroke-dasharray='1 5'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 50%, #ffffff 100%);
+  border-top: 1px solid #e2e8f0;
+  overflow: hidden;
 }
 
 .ps-faq-container {
+  max-width: 1240px;
+  margin: 0 auto;
   background: #ffffff;
   border: 1px solid rgba(21, 34, 56, 0.08);
   border-radius: 28px;
@@ -1623,13 +1767,15 @@
    -------------------------------------------------------------------------- */
 .ps-contact-section {
   position: relative;
-  background:
-    radial-gradient(ellipse 65% 50% at 10% 15%, rgba(61, 155, 74, 0.08), transparent 60%),
-    radial-gradient(ellipse 55% 45% at 90% 85%, rgba(21, 34, 56, 0.04), transparent 60%),
-    #f8faf8;
+  background-color: #fafbfc;
+  background-image:
+    radial-gradient(ellipse 65% 50% at 10% 15%, rgba(139, 30, 43, 0.045), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 90% 85%, rgba(15, 23, 42, 0.035), transparent 60%),
+    url("data:image/svg+xml,%3Csvg width='44' height='44' viewBox='0 0 44 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22 19v6m-3-3h6' stroke='%238b1e2b' stroke-width='1' stroke-opacity='0.035' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #ffffff 0%, #fafbfc 50%, #ffffff 100%);
   padding: 6rem 1.75rem;
-  border-top: 1px solid rgba(21, 34, 56, 0.08);
-  border-bottom: 1px solid rgba(21, 34, 56, 0.08);
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
   overflow: hidden;
 }
 
@@ -2284,6 +2430,20 @@
     grid-template-columns: 1fr;
   }
 
+  /* Mobile responsive: hide large background shapes below 768px */
+  .ps-blob,
+  .ps-decor-bottom-wave,
+  .ps-decor-ecg {
+    display: none !important;
+  }
+
+  .ps-services-section,
+  .ps-experience-section,
+  .ps-testimonials-section,
+  .ps-faq-section {
+    padding: 3.5rem 1.15rem;
+  }
+
   .ps-services-cards-grid,
   .ps-dept-cards-grid,
   .ps-doctors-grid,
@@ -2793,10 +2953,10 @@
 }
 
 .ps-sidebar-icon-btn.active {
-  background: linear-gradient(135deg, #e02020 0%, #FF2E2E 100%);
+  background: linear-gradient(135deg, #8b1e2b 0%, #6e131e 100%);
   color: #ffffff;
   border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45);
+  box-shadow: 0 6px 18px rgba(139, 30, 43, 0.35);
 }
 
 /* Glowing active pill indicator on left edge */
@@ -2887,7 +3047,7 @@
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #e02020 0%, #b91c1c 100%);
+  background: linear-gradient(135deg, #8b1e2b 0%, #6e131e 100%);
   border: 2px solid rgba(255, 255, 255, 0.4);
   color: #ffffff;
   font-family: var(--ph-font-display);

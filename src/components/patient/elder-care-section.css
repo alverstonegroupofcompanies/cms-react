@@ -4,7 +4,11 @@
 
 .ecs-section {
   position: relative;
-  background-color: #ffffff;
+  background-color: #fcfbfb;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(139, 30, 43, 0.04) 0%, transparent 70%),
+    url("data:image/svg+xml,%3Csvg width='56' height='56' viewBox='0 0 56 56' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 28 Q 14 14, 28 28 T 56 28' fill='none' stroke='%238b1e2b' stroke-width='1' stroke-opacity='0.03'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #ffffff 0%, #faf8f8 60%, #fefcfc 100%);
   padding: 92px 24px 104px;
   overflow: hidden;
   border-bottom: 1px solid #e2e8f0;

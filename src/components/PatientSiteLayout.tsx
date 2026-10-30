@@ -6,6 +6,9 @@ import { useAuth } from '../context/AuthContext'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { iconMap } from './Icons'
 import AsterNavbar from './AsterNavbar'
+import SmoothScroll from './motion/SmoothScroll'
+import PageTransition from './motion/PageTransition'
+import StickyCTA from './motion/StickyCTA'
 
 interface Props {
   children: React.ReactNode
@@ -44,10 +47,15 @@ export default function PatientSiteLayout({ children, portal = false }: Props) {
   }, [location.pathname, location.hash])
 
   return (
-    <div className={`ps-site ph-app page-fade${portal ? ' is-portal' : ''}`}>
-      <AsterNavbar />
+    <SmoothScroll>
+      <div className={`ps-site ph-app page-fade${portal ? ' is-portal' : ''}`}>
+        <AsterNavbar />
 
-      <main className={`ps-main${portal ? ' ps-main-portal' : ''}`}>{children}</main>
+        <main className={`ps-main${portal ? ' ps-main-portal' : ''}`}>
+          <PageTransition>{children}</PageTransition>
+        </main>
+
+        <StickyCTA to={isPatient ? '/patient/book' : '/patient/login?next=%2Fpatient%2Fbook'} />
 
       {isPatient && (
         <nav className="ps-bottom-nav" aria-label="Patient portal">
@@ -231,5 +239,6 @@ export default function PatientSiteLayout({ children, portal = false }: Props) {
         </div>
       </footer>
     </div>
+    </SmoothScroll>
   )
 }

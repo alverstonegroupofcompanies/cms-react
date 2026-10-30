@@ -5,6 +5,7 @@ import './clinic-theme.css'
 import './patient-hub.css'
 import './patient-portal.css'
 import './patient-homepage.css'
+import './components/motion/motion.css'
 import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(

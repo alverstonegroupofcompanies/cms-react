@@ -1,0 +1,284 @@
+/* ==========================================================================
+   MOTION LAYER STYLING - CALM, REASSURING CLINICAL ANIMATIONS
+   ========================================================================== */
+
+/* Hardware accelerated transform layer */
+.motion-reveal {
+  will-change: transform, opacity;
+}
+
+.motion-split-text {
+  overflow: visible;
+}
+
+.motion-word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.motion-word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.motion-section-bg {
+  position: relative;
+  transition: background-color 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Ensure no content is hidden if JavaScript or animation fails */
+@media (prefers-reduced-motion: reduce) {
+  .motion-reveal,
+  .motion-reveal > *,
+  .motion-word {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Lenis smooth scroll document styling */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   EXPANDABLE IMAGE LIGHTBOX (FRAMER MOTION LAYOUT ID)
+   ========================================================================== */
+.ps-expandable-img-trigger {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: zoom-in;
+  border-radius: inherit;
+  overflow: hidden;
+  text-align: left;
+}
+
+.ps-expandable-img-trigger img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ps-expandable-badge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 220ms ease, transform 220ms ease;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.ps-expandable-img-trigger:hover .ps-expandable-badge,
+.ps-expandable-img-trigger:focus-visible .ps-expandable-badge {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ps-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.ps-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.ps-lightbox-content {
+  position: relative;
+  z-index: 100000;
+  max-width: 90vw;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ps-lightbox-img {
+  max-width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 25px 65px -15px rgba(0, 0, 0, 0.55);
+}
+
+.ps-lightbox-caption {
+  color: #f1f5f9;
+  font-size: 0.92rem;
+  margin-top: 0.85rem;
+  text-align: center;
+  max-width: 600px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.ps-lightbox-close-btn {
+  position: absolute;
+  top: -46px;
+  right: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 200ms ease, transform 200ms ease;
+}
+
+.ps-lightbox-close-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: scale(1.08);
+}
+
+/* ==========================================================================
+   FLOATING CLINICAL MOTIFS & CURSOR PARALLAX
+   ========================================================================== */
+.ps-floating-motifs-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ps-floating-item {
+  position: absolute;
+  color: #8b1e2b;
+  opacity: 0.055;
+  will-change: transform;
+  display: inline-flex;
+}
+
+.ps-floating-item-0 { top: 12%; left: 5%; }
+.ps-floating-item-1 { top: 22%; right: 7%; }
+.ps-floating-item-2 { top: 68%; left: 8%; }
+.ps-floating-item-3 { top: 82%; right: 10%; }
+.ps-floating-item-4 { top: 45%; left: 3%; }
+.ps-floating-item-5 { top: 52%; right: 4%; }
+.ps-floating-item-6 { top: 34%; left: 48%; }
+
+/* ==========================================================================
+   PAGE TRANSITION CONTAINER
+   ========================================================================== */
+.ps-page-transition-wrap {
+  width: 100%;
+}
+
+/* ==========================================================================
+   STICKY FLOATING CLINICAL CTA
+   ========================================================================== */
+.ps-sticky-cta-container {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 80;
+  pointer-events: auto;
+}
+
+.ps-sticky-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1.4rem;
+  background: linear-gradient(135deg, #8b1e2b 0%, #6e131e 100%);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  border-radius: 9999px;
+  text-decoration: none;
+  box-shadow: 0 12px 32px -4px rgba(139, 30, 43, 0.42), 0 4px 12px rgba(15, 23, 42, 0.1);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ps-sticky-cta-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 18px 40px -4px rgba(139, 30, 43, 0.52), 0 6px 16px rgba(15, 23, 42, 0.12);
+  color: #ffffff;
+}
+
+.ps-sticky-cta-btn:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+.ps-sticky-cta-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ps-sticky-cta-arrow {
+  transition: transform 220ms ease;
+  font-weight: 800;
+}
+
+.ps-sticky-cta-btn:hover .ps-sticky-cta-arrow {
+  transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+  .ps-sticky-cta-container {
+    bottom: 80px; /* Stay clear of mobile bottom navigation dock */
+    right: 18px;
+  }
+
+  .ps-sticky-cta-btn {
+    padding: 0.65rem 1.15rem;
+    font-size: 0.86rem;
+  }
+}
+
+
+
