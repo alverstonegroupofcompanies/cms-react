@@ -312,7 +312,7 @@
 /* ==========================================================================
    RESPONSIVENESS (TABLETS & MOBILE)
    ========================================================================== */
-@media (max-width: 1024px) {
+@media (max-width: 1180px) {
   .sdg-tiles-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;

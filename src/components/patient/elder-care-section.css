@@ -405,7 +405,7 @@
 /* ==========================================================================
    RESPONSIVE DESIGN (TABLETS & MOBILE)
    ========================================================================== */
-@media (max-width: 1080px) {
+@media (max-width: 1180px) {
   .ecs-cards-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 28px;

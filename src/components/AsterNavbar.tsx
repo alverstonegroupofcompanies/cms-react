@@ -135,6 +135,23 @@ export default function AsterNavbar() {
     setHelpOpen(false)
   }, [location.pathname])
 
+  // Lock body scroll and handle ESC key when mobile drawer is open
+  useEffect(() => {
+    if (!mobileOpen) return
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileOpen(false)
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.body.style.overflow = prevOverflow
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [mobileOpen])
+
   // Close dropdowns on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -695,17 +712,6 @@ export default function AsterNavbar() {
               </div>
             )}
 
-            {/* Primary Sculpted CTA Pill: Book Appointment */}
-            <Link to="/patient/book" className="alv-book-cta" id="aster-nav-book-btn">
-              <span>Book Appointment</span>
-              <span className="alv-book-cta-arrow" aria-hidden="true">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </span>
-            </Link>
-
             {/* Mobile Hamburger Button */}
             <button
               type="button"
@@ -721,8 +727,15 @@ export default function AsterNavbar() {
       </div>
 
       {/* ==================================================================
-          MOBILE NAVIGATION DRAWER
+          MOBILE NAVIGATION DRAWER & BACKDROP
           ================================================================== */}
+      {mobileOpen && (
+        <div
+          className="alv-mobile-backdrop"
+          onClick={() => setMobileOpen(false)}
+          aria-hidden="true"
+        />
+      )}
       <div className={`alv-mobile-drawer ${mobileOpen ? 'open' : ''}`}>
         <div className="alv-mobile-drawer-header">
           <Link to="/" onClick={() => setMobileOpen(false)}>

@@ -571,7 +571,7 @@
    RESPONSIVE DESIGN FOR CONSOLE BAR (TABLET & MOBILE)
    ========================================================================== */
 
-@media (max-width: 960px) {
+@media (max-width: 1120px) {
   .btr-console-bar {
     flex-wrap: wrap;
     gap: 0.75rem;

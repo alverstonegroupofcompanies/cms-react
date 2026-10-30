@@ -703,7 +703,7 @@
 /* ==========================================================================
    RESPONSIVENESS (MOBILE & TABLET ADAPTATION)
    ========================================================================== */
-@media (max-width: 1080px) {
+@media (max-width: 1180px) {
   .tda-arc-stage {
     overflow-x: auto;
     overflow-y: hidden;
