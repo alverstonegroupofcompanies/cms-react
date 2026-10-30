@@ -1,17 +1,18 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import Reveal from '../motion/Reveal'
 import SplitText from '../motion/SplitText'
 import AnimatedCounter from '../motion/AnimatedCounter'
 import ExpandableImage from '../motion/ExpandableImage'
-import { IconBuilding, IconCheck } from '../Icons'
+import { IconBuilding, IconFlask, IconPill, IconStethoscope, IconClock, IconCheck } from '../Icons'
 import './infrastructure-spotlight.css'
 
 export interface FacilityItem {
   id: string
   tabLabel: string
   subLabel: string
+  icon: ReactNode
   tag: string
   name: string
   location: string
@@ -53,6 +54,7 @@ export const FACILITIES_DATA: FacilityItem[] = [
     id: 'campus',
     tabLabel: 'Integrated Campus',
     subLabel: 'Central Complex',
+    icon: <IconBuilding size={17} />,
     tag: 'INTEGRATED CAMPUS',
     name: 'Alverstone Medcity Healthcare Campus',
     location: 'Chandanathope, Kollam · Central Campus',
@@ -100,6 +102,7 @@ export const FACILITIES_DATA: FacilityItem[] = [
     id: 'lab',
     tabLabel: 'Diagnostic Lab',
     subLabel: 'NABL Certified',
+    icon: <IconFlask size={17} />,
     tag: 'NABL ACCREDITED',
     name: 'Automated Diagnostic Pathology & Lab',
     location: 'Ground Floor · Wing B Diagnostic Suite',
@@ -147,6 +150,7 @@ export const FACILITIES_DATA: FacilityItem[] = [
     id: 'pharmacy',
     tabLabel: '24/7 Pharmacy',
     subLabel: 'In-House Dispensary',
+    icon: <IconPill size={17} />,
     tag: '24/7 DISPENSARY',
     name: 'Hospital Clinical Pharmacy Counter',
     location: 'Central Entrance Atrium · 24 Hours Open',
@@ -192,6 +196,7 @@ export const FACILITIES_DATA: FacilityItem[] = [
     id: 'suites',
     tabLabel: 'Consultation Suites',
     subLabel: 'Private OPD Rooms',
+    icon: <IconStethoscope size={17} />,
     tag: 'PRIVATE CLINICAL SUITES',
     name: 'Specialist Outpatient Consultation Suites',
     location: 'Floors 1 & 2 · Clinical Consultation Wing',
@@ -238,6 +243,7 @@ export const FACILITIES_DATA: FacilityItem[] = [
     id: 'lounge',
     tabLabel: 'Patient Lounge',
     subLabel: 'Quiet Waiting Space',
+    icon: <IconClock size={17} />,
     tag: 'HOSPITALITY COMFORT',
     name: 'Hospitality-Grade Reception & Waiting Lounge',
     location: 'Ground Floor Atrium · Reception Plaza',
@@ -330,8 +336,10 @@ export default function InfrastructureSpotlight({ signedIn = false }: Infrastruc
                   className={`is-tab-btn ${isActive ? 'is-active' : ''}`}
                   onClick={() => setActiveTabId(fac.id)}
                 >
+                  <span className="is-tab-icon" aria-hidden="true">
+                    {fac.icon}
+                  </span>
                   <span className="is-tab-name">{fac.tabLabel}</span>
-                  <span className="is-tab-sub">{fac.subLabel}</span>
                 </button>
               )
             })}

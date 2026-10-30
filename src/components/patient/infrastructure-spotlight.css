@@ -89,9 +89,7 @@
 
 .is-title-accent {
   color: #8b1e2b;
-  background: linear-gradient(135deg, #8b1e2b 0%, #b91c1c 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  display: inline;
 }
 
 .is-subtitle {
@@ -101,42 +99,60 @@
   margin: 0 0 32px;
 }
 
-/* Tabs Switcher */
+/* Tabs Switcher - Balanced single-row segmented control with icons */
 .is-tabs-row {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 10px;
+  margin: 8px auto 0;
+  max-width: 100%;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 6px 4px 14px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.is-tabs-row::-webkit-scrollbar {
+  display: none;
 }
 
 .is-tab-btn {
   display: inline-flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  padding: 10px 22px;
-  background: rgba(255, 255, 255, 0.92);
+  gap: 9px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1.5px solid rgba(226, 232, 240, 0.9);
+  border: 1.5px solid rgba(226, 232, 240, 0.95);
   border-radius: 9999px;
   cursor: pointer;
-  transition: all 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.is-tab-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(139, 30, 43, 0.08);
+  color: #8b1e2b;
+  flex-shrink: 0;
+  transition: all 0.22s ease;
 }
 
 .is-tab-name {
   font-size: 13.5px;
   font-weight: 700;
   color: #1e293b;
-  transition: color 0.2s ease;
-}
-
-.is-tab-sub {
-  font-size: 11px;
-  font-weight: 500;
-  color: #64748b;
   transition: color 0.2s ease;
 }
 
@@ -147,6 +163,10 @@
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
 }
 
+.is-tab-btn:hover .is-tab-icon {
+  background: rgba(139, 30, 43, 0.14);
+}
+
 .is-tab-btn.is-active {
   background: #8b1e2b;
   border-color: #8b1e2b;
@@ -154,35 +174,32 @@
   transform: translateY(-2px);
 }
 
+.is-tab-btn.is-active .is-tab-icon {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
 .is-tab-btn.is-active .is-tab-name {
   color: #ffffff;
 }
 
-.is-tab-btn.is-active .is-tab-sub {
-  color: #fecdd3;
-}
-
 /* ==========================================================================
-   2. SHOWCASE STAGE - HIGH CONTRAST FROSTED GLASS CONTAINER BOX
-   Clear visible definition against the colorful section background
+   2. SHOWCASE STAGE - SEAMLESS CANVAS (NO CONFINING OUTER BOX)
+   Contents sit directly on the colorful ambient background
    ========================================================================== */
 .is-showcase-wrapper {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border: 2px solid rgba(255, 255, 255, 0.95);
-  border-radius: 36px;
-  padding: 48px;
-  box-shadow:
-    0 32px 75px -15px rgba(15, 23, 42, 0.15),
-    0 12px 28px -6px rgba(139, 30, 43, 0.10),
-    0 0 0 1px rgba(255, 255, 255, 0.85) inset;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 16px 0 0;
 }
 
 .is-showcase-grid {
   display: grid;
   grid-template-columns: 480px 1fr;
-  gap: 56px;
+  gap: 60px;
   align-items: center;
 }
 
@@ -591,7 +608,7 @@
   }
 
   .is-showcase-wrapper {
-    padding: 36px 24px;
+    padding: 0;
   }
 }
 
@@ -601,8 +618,8 @@
   }
 
   .is-showcase-wrapper {
-    padding: 24px 16px;
-    border-radius: 26px;
+    padding: 0;
+    border-radius: 0;
   }
 
   .is-portrait-card {
