@@ -204,28 +204,26 @@
   pointer-events: auto;
 }
 
-.btr-kicker-group {
+.btr-top-meta {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
 }
 
-/* Pure Porcelain Kicker Pill */
-.btr-live-pill {
+.btr-meta-location {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  background: #ffffff;
-  border: 1.5px solid #e2e8f0;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  padding: 0.45rem 1rem;
-  border-radius: 9999px;
-  font-size: 0.78rem;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.38rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  color: #8b1e2b;
-  box-shadow: 0 4px 16px rgba(15, 30, 23, 0.08);
+  color: #1e293b;
+  letter-spacing: -0.01em;
+  box-shadow: 0 4px 12px rgba(15, 30, 23, 0.06);
 }
 
 .btr-pulse-emerald {
@@ -373,10 +371,9 @@
   min-width: 190px;
 }
 
-.btr-step-pill {
+.btr-step-label {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.06em;
@@ -571,25 +568,42 @@
    RESPONSIVE DESIGN FOR CONSOLE BAR (TABLET & MOBILE)
    ========================================================================== */
 
-@media (max-width: 1120px) {
+@media (max-width: 1024px) {
   .btr-console-bar {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "identity stepper"
+      "features features"
+      "cta cta";
     gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    border-radius: 16px;
+    padding: 0.85rem 1.15rem;
+    border-radius: 18px;
   }
 
   .btr-console-identity {
-    min-width: auto;
+    grid-area: identity;
+    min-width: 0;
+  }
+
+  .btr-console-actions {
+    display: contents;
+  }
+
+  .btr-stepper-nav {
+    grid-area: stepper;
+    align-self: center;
+    justify-self: end;
   }
 
   .btr-console-features {
-    order: 3;
+    grid-area: features;
     width: 100%;
     justify-content: flex-start;
     overflow-x: auto;
     flex-wrap: nowrap;
-    padding-bottom: 2px;
+    padding: 2px 0 4px;
+    gap: 0.5rem;
     scrollbar-width: none;
   }
 
@@ -597,8 +611,16 @@
     display: none;
   }
 
-  .btr-console-actions {
-    margin-left: auto;
+  .btr-cta-group {
+    grid-area: cta;
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .btr-btn-primary {
+    flex: 1;
+    justify-content: center;
   }
 }
 
@@ -608,35 +630,36 @@
   }
 
   .btr-console-bar {
-    padding: 0.55rem 0.75rem;
+    padding: 0.7rem 0.85rem;
     border-radius: 14px;
-    gap: 0.45rem;
+    gap: 0.55rem;
   }
 
   .btr-console-title {
-    font-size: 0.92rem;
+    font-size: 0.95rem;
+    white-space: normal;
   }
 
   .btr-feature-chip {
-    padding: 0.3rem 0.65rem;
-    font-size: 0.74rem;
+    padding: 0.32rem 0.7rem;
+    font-size: 0.75rem;
   }
 
   .btr-btn-primary {
-    padding: 0.5rem 0.85rem;
-    font-size: 0.78rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.82rem;
     border-radius: 10px;
   }
 
   .btr-btn-phone {
-    padding: 0.5rem 0.65rem;
-    font-size: 0.78rem;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 440px) {
   .btr-console-title {
-    font-size: 0.84rem;
+    font-size: 0.88rem;
   }
 
   .btr-dot-track {
@@ -644,17 +667,13 @@
   }
 
   .btr-stepper-nav {
-    padding: 0.15rem 0.25rem;
+    padding: 0.2rem 0.35rem;
   }
 
   .btr-arrow-btn {
-    width: 24px;
-    height: 24px;
-    font-size: 1rem;
-  }
-
-  .btr-btn-primary span:last-child {
-    display: none;
+    width: 26px;
+    height: 26px;
+    font-size: 1.1rem;
   }
 }
 

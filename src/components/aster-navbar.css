@@ -1068,6 +1068,19 @@
     display: inline-flex;
   }
 
+  .alv-ribbon-right {
+    display: none;
+  }
+
+  .alv-ribbon-inner {
+    justify-content: center;
+  }
+
+  .alv-ribbon-meta,
+  .alv-ribbon-divider {
+    display: none;
+  }
+
   .alv-mobile-drawer {
     display: block;
     position: fixed;
@@ -1150,6 +1163,17 @@
 }
 
 @media (max-width: 680px) {
+  .alv-ribbon {
+    padding: 0.28rem 0;
+  }
+  .alv-ribbon-inner {
+    padding: 0 0.85rem;
+    justify-content: center;
+  }
+  .alv-ribbon-left {
+    width: 100%;
+    justify-content: center;
+  }
   .alv-mainbar {
     height: 64px;
   }

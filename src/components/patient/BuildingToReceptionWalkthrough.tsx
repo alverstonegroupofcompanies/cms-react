@@ -440,13 +440,10 @@ export default function BuildingToReceptionWalkthrough({
               Top Bar + Clean Bottom Console neatly fitted below Navbar
               ============================================================== */}
           <div className="btr-hud-container">
-            {/* Top Bar: Kicker + Auto Tour & Skip Buttons */}
+            {/* Top Bar: Location / Campus Tag + Auto Tour & Skip Buttons */}
             <header className="btr-top-bar">
-              <div className="btr-kicker-group">
-                <div className="btr-live-pill">
-                  <span className="btr-pulse-emerald" />
-                  <span>24/7 MULTISPECIALTY HOSPITAL · KOLLAM</span>
-                </div>
+              <div className="btr-top-meta">
+                <span className="btr-meta-location">Chandanathope, Kollam</span>
               </div>
 
               <div className="btr-top-actions">
@@ -502,9 +499,8 @@ export default function BuildingToReceptionWalkthrough({
               <div className="btr-console-bar" key={activeSceneData.id}>
                 {/* Left: Step Tag & Clean Title */}
                 <div className="btr-console-identity">
-                  <div className="btr-step-pill">
-                    <span className="btr-pulse-emerald" />
-                    <span>STEP {activeSceneData.stepNumber} / 04</span>
+                  <div className="btr-step-label">
+                    <span>STEP {activeSceneData.stepNumber} OF 04</span>
                   </div>
                   <h3 className="btr-console-title">{activeSceneData.title}</h3>
                 </div>

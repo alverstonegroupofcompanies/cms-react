@@ -444,38 +444,77 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .ecs-section {
-    padding: 50px 16px 58px;
+    padding: 56px 16px 64px;
   }
 
   .ecs-title {
-    font-size: 26px;
+    font-size: clamp(24px, 5.5vw, 30px);
   }
 
   .ecs-cards-grid {
     grid-template-columns: 1fr;
     width: 100%;
-    max-width: 400px;
-    margin: 0 auto 28px;
+    max-width: 440px;
+    margin: 0 auto 32px;
+    gap: 20px;
   }
 
+  /* Adapted, comfortable card shape for mobile */
   .ecs-card,
   .ecs-card--accent {
-    min-height: 430px;
+    border-radius: 28px;
+    padding: 26px 20px 18px;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
   }
 
+  .ecs-photo-dock {
+    width: 100%;
+    position: relative;
+    padding-top: 6px;
+    margin-top: auto;
+    display: block;
+  }
+
+  /* Wide rounded photo fitting the bottom with neat padding instead of isolated circle */
   .ecs-photo-circle {
-    width: 170px;
-    height: 170px;
+    width: 100%;
+    height: 190px;
+    max-width: 100%;
+    border-radius: 20px;
+    border: 3px solid #ffffff;
+    box-shadow: 0 8px 24px rgba(24, 24, 27, 0.08);
+    background: #fee2e2;
+    overflow: hidden;
   }
 
+  .ecs-photo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
+  /* Sleek floating arrow button in the top-right corner of the photo */
   .ecs-floating-arrow-btn {
-    right: calc(50% - 82px);
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    left: auto;
+    bottom: auto;
+    width: 42px;
+    height: 42px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
   }
 
   .ecs-strip-actions {
     flex-direction: column;
+    width: 100%;
   }
 
   .ecs-strip-call-btn,
