@@ -8,6 +8,17 @@ import ExpandableImage from '../motion/ExpandableImage'
 import { IconBuilding, IconFlask, IconPill, IconStethoscope, IconClock, IconCheck } from '../Icons'
 import './infrastructure-spotlight.css'
 
+export interface FacilityBadge {
+  id: string
+  label: string
+  value?: number
+  prefix?: string
+  suffix?: string
+  textValue?: string
+  positionClass: string
+  colorTheme: 'indigo' | 'cyan' | 'teal' | 'rose' | 'amber'
+}
+
 export interface FacilityItem {
   id: string
   tabLabel: string
@@ -20,27 +31,7 @@ export interface FacilityItem {
   imageAlt: string
   caption: string
   gradient: string
-  statTop: {
-    label: string
-    value?: number
-    prefix?: string
-    suffix?: string
-    textValue?: string
-  }
-  statLeft: {
-    label: string
-    value?: number
-    prefix?: string
-    suffix?: string
-    textValue?: string
-  }
-  statRight: {
-    label: string
-    value?: number
-    prefix?: string
-    suffix?: string
-    textValue?: string
-  }
+  badges: FacilityBadge[]
   heading: string
   description: string
   checklist: {
@@ -62,20 +53,31 @@ export const FACILITIES_DATA: FacilityItem[] = [
     imageAlt: 'Alverstone Medcity Integrated Healthcare Campus Building in Chandanathope, Kollam',
     caption: 'Alverstone Medcity Modern Campus Building with Landscaped Grounds and Wide Ramps',
     gradient: 'linear-gradient(145deg, #fef08a 0%, #f97316 55%, #dc2626 100%)',
-    statTop: {
-      label: 'Campus Space',
-      value: 45000,
-      suffix: '+ Sq.Ft',
-    },
-    statLeft: {
-      label: 'Parking & Transit',
-      value: 120,
-      suffix: '+ Bays',
-    },
-    statRight: {
-      label: 'Campus Access',
-      textValue: '24/7 Open',
-    },
+    badges: [
+      {
+        id: 'b-space',
+        label: 'Campus Space',
+        value: 45000,
+        suffix: '+ Sq.Ft',
+        positionClass: 'is-pos-top-left',
+        colorTheme: 'indigo',
+      },
+      {
+        id: 'b-parking',
+        label: 'Parking & Transit',
+        value: 120,
+        suffix: '+ Bays',
+        positionClass: 'is-pos-mid-right',
+        colorTheme: 'cyan',
+      },
+      {
+        id: 'b-access',
+        label: 'Campus Access',
+        textValue: '24/7 Open',
+        positionClass: 'is-pos-bot-left',
+        colorTheme: 'teal',
+      },
+    ],
     heading: 'A Healthcare Experience That Respects Your Time',
     description:
       'We believe medical visits should feel organized and reassuring, not stressful. Alverstone Medcity was founded to eliminate long waits and fragmented care through smart scheduling and campus integration in Chandanathope, Kollam.',
@@ -110,20 +112,31 @@ export const FACILITIES_DATA: FacilityItem[] = [
     imageAlt: 'NABL automated hematology and clinical biochemistry analyzers in modern laboratory',
     caption: 'Automated Clinical Biochemistry Analyzers and High-Precision Diagnostic Suites',
     gradient: 'linear-gradient(145deg, #fed7aa 0%, #ea580c 50%, #b91c1c 100%)',
-    statTop: {
-      label: 'Test Accuracy',
-      value: 99.8,
-      suffix: '%',
-    },
-    statLeft: {
-      label: 'Daily Panels',
-      value: 450,
-      suffix: '+ Tests',
-    },
-    statRight: {
-      label: 'Digital TAT',
-      textValue: '< 2 Hours',
-    },
+    badges: [
+      {
+        id: 'b-accuracy',
+        label: 'Test Accuracy',
+        value: 99.8,
+        suffix: '%',
+        positionClass: 'is-pos-top-right',
+        colorTheme: 'indigo',
+      },
+      {
+        id: 'b-panels',
+        label: 'Daily Panels',
+        value: 450,
+        suffix: '+ Tests',
+        positionClass: 'is-pos-mid-left',
+        colorTheme: 'cyan',
+      },
+      {
+        id: 'b-tat',
+        label: 'Digital TAT',
+        textValue: '< 2 Hours',
+        positionClass: 'is-pos-bot-right',
+        colorTheme: 'teal',
+      },
+    ],
     heading: 'Certified Diagnostic Accuracy on Campus',
     description:
       'Equipped with automated biochemistry analyzers and hematology suites, our on-campus diagnostic wing ensures samples never need transport across town, delivering verified results directly to your doctor’s screen.',
@@ -158,18 +171,29 @@ export const FACILITIES_DATA: FacilityItem[] = [
     imageAlt: 'Indian clinical pharmacist counseling patient at organized hospital pharmacy counter',
     caption: '24/7 In-House Clinical Pharmacy with Temperature-Monitored Medicine Shelving',
     gradient: 'linear-gradient(145deg, #fde68a 0%, #d97706 50%, #991b1b 100%)',
-    statTop: {
-      label: 'Formulations',
-      textValue: '100% Genuine',
-    },
-    statLeft: {
-      label: 'Dispense Speed',
-      textValue: '< 3 Mins',
-    },
-    statRight: {
-      label: 'Service Hours',
-      textValue: '24 × 7 Always',
-    },
+    badges: [
+      {
+        id: 'b-meds',
+        label: 'Formulations',
+        textValue: '100% Genuine',
+        positionClass: 'is-pos-top-center',
+        colorTheme: 'amber',
+      },
+      {
+        id: 'b-speed',
+        label: 'Dispense Speed',
+        textValue: '< 3 Mins',
+        positionClass: 'is-pos-mid-left',
+        colorTheme: 'cyan',
+      },
+      {
+        id: 'b-hours',
+        label: 'Service Hours',
+        textValue: '24 × 7 Always',
+        positionClass: 'is-pos-bot-right',
+        colorTheme: 'rose',
+      },
+    ],
     heading: 'Zero-Wait Prescription Dispensing Under One Roof',
     description:
       'Step directly from your consultation into our fully stocked, temperature-monitored clinical pharmacy. Prescriptions sent digitally by your doctor are verified and assembled before you reach the desk.',
@@ -204,19 +228,30 @@ export const FACILITIES_DATA: FacilityItem[] = [
     imageAlt: 'Sunlit modern doctor consultation room with desk, stethoscope and diagnostic display',
     caption: 'Private Specialist Consultation Room with Acoustic Isolation and Natural Daylight',
     gradient: 'linear-gradient(145deg, #fbcfe8 0%, #f43f5e 50%, #e11d48 100%)',
-    statTop: {
-      label: 'Private Suites',
-      value: 18,
-      suffix: '+ Rooms',
-    },
-    statLeft: {
-      label: 'Average Wait',
-      textValue: '< 8 Mins',
-    },
-    statRight: {
-      label: 'Sanitization',
-      textValue: '100% Clean',
-    },
+    badges: [
+      {
+        id: 'b-suites',
+        label: 'Private Suites',
+        value: 18,
+        suffix: '+ Rooms',
+        positionClass: 'is-pos-top-right',
+        colorTheme: 'indigo',
+      },
+      {
+        id: 'b-hygiene',
+        label: 'Sanitization',
+        textValue: '100% Clean',
+        positionClass: 'is-pos-mid-left',
+        colorTheme: 'teal',
+      },
+      {
+        id: 'b-wait',
+        label: 'Average Wait',
+        textValue: '< 8 Mins',
+        positionClass: 'is-pos-bot-left',
+        colorTheme: 'cyan',
+      },
+    ],
     heading: 'Unhurried, Private Care with Senior Clinicians',
     description:
       'Every consulting suite is engineered for acoustic privacy, natural light, and patient dignity. Consultation rooms feature digital diagnostic displays, ergonomic examination beds, and quiet ambiance.',
@@ -251,19 +286,30 @@ export const FACILITIES_DATA: FacilityItem[] = [
     imageAlt: 'Calm sunlit clinic corridor and patient waiting lounge with comfortable seating',
     caption: 'Sunlit Patient Lounge with Ergonomic Armchairs and Live Queue Displays',
     gradient: 'linear-gradient(145deg, #fed7aa 0%, #f97316 50%, #c2410c 100%)',
-    statTop: {
-      label: 'Lounge Seating',
-      value: 80,
-      suffix: '+ Guests',
-    },
-    statLeft: {
-      label: 'Queue Status',
-      textValue: 'Live Sync',
-    },
-    statRight: {
-      label: 'Air Quality',
-      textValue: 'HEPA Clean',
-    },
+    badges: [
+      {
+        id: 'b-seating',
+        label: 'Lounge Seating',
+        value: 80,
+        suffix: '+ Guests',
+        positionClass: 'is-pos-top-left',
+        colorTheme: 'indigo',
+      },
+      {
+        id: 'b-air',
+        label: 'Air Quality',
+        textValue: 'HEPA Clean',
+        positionClass: 'is-pos-mid-right',
+        colorTheme: 'teal',
+      },
+      {
+        id: 'b-queue',
+        label: 'Queue Status',
+        textValue: 'Live Sync',
+        positionClass: 'is-pos-bot-left',
+        colorTheme: 'cyan',
+      },
+    ],
     heading: 'A Calm, Welcoming Environment Before Your Turn',
     description:
       'Say goodbye to noisy, crowded hospital waiting halls. Our reception lounge offers comfortable ergonomic armchairs, live token displays, and dedicated elder concierge assistance in a sunlit atrium.',
@@ -309,7 +355,7 @@ export default function InfrastructureSpotlight({ signedIn = false }: Infrastruc
 
       <div className="is-container">
         {/* ==================================================================
-            1. SECTION HEADER WITH FACILITY TABS
+            1. SECTION HEADER
             ================================================================== */}
         <div className="is-header">
           <SplitText as="h2" className="is-title">
@@ -322,8 +368,10 @@ export default function InfrastructureSpotlight({ signedIn = false }: Infrastruc
               and precision diagnostics are housed together to eliminate waits and travel delays.
             </p>
           </Reveal>
+        </div>
 
-          {/* Interactive Facility Switcher Tabs */}
+        {/* Interactive Facility Switcher Tabs */}
+        <div className="is-tabs-wrapper">
           <div className="is-tabs-row" role="tablist" aria-label="Select a campus facility">
             {FACILITIES_DATA.map((fac) => {
               const isActive = fac.id === currentFacility.id
@@ -374,67 +422,30 @@ export default function InfrastructureSpotlight({ signedIn = false }: Infrastruc
                     />
                   </div>
 
-                  {/* Floating Frosted Stat 1: Top (Indigo / Purple in screenshot) */}
-                  <div className="is-floating-badge is-badge-top">
-                    <span className="is-badge-label">{currentFacility.statTop.label}</span>
-                    <span className="is-badge-value">
-                      {currentFacility.statTop.value !== undefined ? (
-                        <AnimatedCounter
-                          value={currentFacility.statTop.value}
-                          prefix={currentFacility.statTop.prefix}
-                          suffix={currentFacility.statTop.suffix}
-                          duration={1.2}
-                        />
-                      ) : (
-                        currentFacility.statTop.textValue
-                      )}
-                    </span>
-                  </div>
-
-                  {/* Floating Frosted Stat 2: Left (Cyan / Sky Blue in screenshot) */}
-                  <div className="is-floating-badge is-badge-left">
-                    <span className="is-badge-label">{currentFacility.statLeft.label}</span>
-                    <span className="is-badge-value">
-                      {currentFacility.statLeft.value !== undefined ? (
-                        <AnimatedCounter
-                          value={currentFacility.statLeft.value}
-                          prefix={currentFacility.statLeft.prefix}
-                          suffix={currentFacility.statLeft.suffix}
-                          duration={1.3}
-                        />
-                      ) : (
-                        currentFacility.statLeft.textValue
-                      )}
-                    </span>
-                  </div>
-
-                  {/* Floating Frosted Stat 3: Right (Teal / Emerald in screenshot) */}
-                  <div className="is-floating-badge is-badge-right">
-                    <span className="is-badge-label">{currentFacility.statRight.label}</span>
-                    <span className="is-badge-value">
-                      {currentFacility.statRight.value !== undefined ? (
-                        <AnimatedCounter
-                          value={currentFacility.statRight.value}
-                          prefix={currentFacility.statRight.prefix}
-                          suffix={currentFacility.statRight.suffix}
-                          duration={1.1}
-                        />
-                      ) : (
-                        currentFacility.statRight.textValue
-                      )}
-                    </span>
-                  </div>
-
-                  {/* Frosted Glass Name Badge (Docked across the bottom of the card) */}
-                  <div className="is-name-dock">
-                    <div className="is-dock-icon" aria-hidden="true">
-                      <IconBuilding size={18} />
-                    </div>
-                    <div className="is-dock-texts">
-                      <h3 className="is-dock-name">{currentFacility.name}</h3>
-                      <p className="is-dock-role">{currentFacility.location}</p>
-                    </div>
-                  </div>
+                  {/* Dynamic Floating Frosted Stat Badges with unique positions per slide */}
+                  {currentFacility.badges.map((badge, idx) => (
+                    <motion.div
+                      key={badge.id}
+                      initial={{ opacity: 0, scale: 0.84, y: 12 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      transition={{ duration: 0.38, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                      className={`is-floating-badge ${badge.positionClass} is-theme-${badge.colorTheme}`}
+                    >
+                      <span className="is-badge-label">{badge.label}</span>
+                      <span className="is-badge-value">
+                        {badge.value !== undefined ? (
+                          <AnimatedCounter
+                            value={badge.value}
+                            prefix={badge.prefix}
+                            suffix={badge.suffix}
+                            duration={1.2}
+                          />
+                        ) : (
+                          badge.textValue
+                        )}
+                      </span>
+                    </motion.div>
+                  ))}
                 </div>
               </div>
 

@@ -1834,19 +1834,152 @@ body {
    -------------------------------------------------------------------------- */
 .ps-contact-section {
   position: relative;
-  background-color: #fafbfc;
+  background-color: #fdf5f6;
   background-image:
-    radial-gradient(ellipse 65% 50% at 10% 15%, rgba(139, 30, 43, 0.045), transparent 60%),
-    radial-gradient(ellipse 55% 45% at 90% 85%, rgba(15, 23, 42, 0.035), transparent 60%),
-    url("data:image/svg+xml,%3Csvg width='44' height='44' viewBox='0 0 44 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22 19v6m-3-3h6' stroke='%238b1e2b' stroke-width='1' stroke-opacity='0.035' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"),
-    linear-gradient(180deg, #ffffff 0%, #fafbfc 50%, #ffffff 100%);
-  padding: 6rem 1.75rem;
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
+    radial-gradient(ellipse 70% 60% at 8% 18%, rgba(220, 38, 38, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 65% 55% at 92% 22%, rgba(14, 165, 233, 0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 50% 90%, rgba(245, 158, 11, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 45% at 85% 82%, rgba(139, 26, 50, 0.08) 0%, transparent 55%),
+    url("data:image/svg+xml,%3Csvg width='56' height='56' viewBox='0 0 56 56' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%238b1a32' stroke-width='1' stroke-opacity='0.04'%3E%3Cpath d='M28 24v8M24 28h8' stroke-linecap='round'/%3E%3Ccircle cx='28' cy='28' r='1.5' fill='%238b1a32' fill-opacity='0.03' stroke='none'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(155deg, #fff2f4 0%, #f6f9fe 38%, #fff8f5 72%, #fef3f5 100%);
+  padding: 6.5rem 1.75rem 7rem;
+  border-top: 1px solid rgba(139, 26, 50, 0.08);
+  border-bottom: 1px solid rgba(139, 26, 50, 0.08);
   overflow: hidden;
 }
 
+/* Ambient Background Blobs & Floating Motifs */
+.ps-contact-bg-decorations {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.ps-contact-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(65px);
+  opacity: 0.65;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.ps-contact-blob-1 {
+  top: -80px;
+  left: -60px;
+  width: 460px;
+  height: 460px;
+  background: radial-gradient(circle, rgba(220, 38, 38, 0.24) 0%, rgba(244, 63, 94, 0.08) 60%, transparent 80%);
+  animation: psContactBlobFloat1 18s ease-in-out infinite alternate;
+}
+
+.ps-contact-blob-2 {
+  top: 25%;
+  right: -90px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.22) 0%, rgba(56, 189, 248, 0.07) 60%, transparent 80%);
+  animation: psContactBlobFloat2 22s ease-in-out infinite alternate;
+}
+
+.ps-contact-blob-3 {
+  bottom: -60px;
+  left: 20%;
+  width: 440px;
+  height: 440px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.18) 0%, rgba(251, 191, 36, 0.05) 60%, transparent 80%);
+  animation: psContactBlobFloat3 20s ease-in-out infinite alternate;
+}
+
+.ps-contact-blob-4 {
+  top: 50%;
+  left: 50%;
+  width: 380px;
+  height: 380px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(139, 26, 50, 0.14) 0%, transparent 70%);
+  animation: psContactBlobPulse 12s ease-in-out infinite;
+}
+
+.ps-contact-motifs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ps-c-motif {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.ps-c-motif-1 {
+  top: 10%;
+  left: 6%;
+  animation: psContactMotifFloat 14s ease-in-out infinite;
+}
+
+.ps-c-motif-2 {
+  top: 18%;
+  right: 8%;
+  animation: psContactMotifFloat 18s ease-in-out infinite 2s;
+}
+
+.ps-c-motif-3 {
+  bottom: 22%;
+  left: 10%;
+  animation: psContactMotifFloat 16s ease-in-out infinite 1s;
+}
+
+.ps-c-motif-4 {
+  bottom: 12%;
+  right: 7%;
+  animation: psContactMotifFloat 20s ease-in-out infinite 3s;
+}
+
+.ps-c-motif-5 {
+  top: 52%;
+  left: 3%;
+  animation: psContactMotifFloat 15s ease-in-out infinite 2.5s;
+}
+
+@keyframes psContactBlobFloat1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(45px, 35px) scale(1.08); }
+  100% { transform: translate(-25px, 55px) scale(0.94); }
+}
+
+@keyframes psContactBlobFloat2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-55px, -35px) scale(1.1); }
+  100% { transform: translate(-25px, 45px) scale(0.92); }
+}
+
+@keyframes psContactBlobFloat3 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(35px, -45px) scale(1.06); }
+  100% { transform: translate(-45px, -25px) scale(0.96); }
+}
+
+@keyframes psContactBlobPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.85; }
+}
+
+@keyframes psContactMotifFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(14deg);
+  }
+}
+
 .ps-contact-container {
+  position: relative;
+  z-index: 1;
   max-width: 1320px;
   margin: 0 auto;
 }
@@ -1924,21 +2057,27 @@ body {
 /* 24/7 Hotline Card */
 .ps-contact-hotline-card {
   position: relative;
-  background: linear-gradient(135deg, rgba(254, 242, 242, 0.95) 0%, rgba(255, 255, 255, 0.98) 100%);
-  border: 1.5px solid rgba(220, 38, 38, 0.28);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(254, 242, 242, 0.95) 100%);
+  border: 1.5px solid rgba(220, 38, 38, 0.35);
   border-radius: 20px;
   padding: 1.4rem 1.75rem;
   display: flex;
   align-items: center;
   gap: 1.25rem;
-  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 12px 32px rgba(220, 38, 38, 0.1),
+    0 2px 8px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
   transition: all 260ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ps-contact-hotline-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(220, 38, 38, 0.45);
-  box-shadow: 0 14px 32px rgba(220, 38, 38, 0.16);
+  transform: translateY(-3px);
+  border-color: rgba(220, 38, 38, 0.55);
+  box-shadow:
+    0 18px 40px rgba(220, 38, 38, 0.18),
+    0 4px 12px rgba(15, 23, 42, 0.06);
 }
 
 .ps-hotline-icon-wrap {
@@ -1952,7 +2091,7 @@ body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
 }
 
 .ps-hotline-pulse {
@@ -2011,11 +2150,14 @@ body {
 
 .ps-contact-card {
   position: relative;
-  background: #ffffff;
-  border: 1.5px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: 18px;
   padding: 1.35rem 1.4rem;
-  box-shadow: 0 4px 18px rgba(24, 24, 27, 0.035);
+  box-shadow:
+    0 8px 24px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
@@ -2023,9 +2165,11 @@ body {
 }
 
 .ps-contact-card:hover {
-  transform: translateY(-3px);
-  border-color: #b91c1c;
-  box-shadow: 0 14px 30px rgba(185, 28, 28, 0.1);
+  transform: translateY(-4px);
+  border-color: rgba(185, 28, 28, 0.45);
+  box-shadow:
+    0 16px 36px rgba(139, 26, 50, 0.12),
+    0 4px 10px rgba(15, 23, 42, 0.04);
 }
 
 .ps-card-icon-box {
@@ -2084,7 +2228,7 @@ body {
   gap: 0.35rem;
   font-family: var(--font-ui, 'Absans', sans-serif);
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 750;
   color: #b91c1c;
   text-decoration: none;
   transition: all 180ms ease;
@@ -2104,36 +2248,33 @@ body {
 }
 
 .ps-card-email-link:hover {
-  color: #1f7a3a;
+  color: #b91c1c;
 }
 
 .ps-card-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.74rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 0.2rem 0.55rem;
-  border-radius: 999px;
-  background: rgba(21, 34, 56, 0.06);
-  color: #475569;
+  letter-spacing: 0.02em;
+  color: #8b1e2b;
+  margin-top: 0.15rem;
 }
 
 .ps-card-badge--live {
-  background: #f0fdf4;
   color: #15803d;
-  border: 1px solid rgba(22, 163, 74, 0.22);
 }
 
 /* Visiting Hours Card */
 .ps-contact-hours-card {
-  background: #ffffff;
-  border: 1.5px solid rgba(21, 34, 56, 0.08);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: 18px;
   padding: 1.35rem 1.6rem;
-  box-shadow: 0 4px 18px rgba(21, 34, 56, 0.035);
+  box-shadow:
+    0 8px 24px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
 .ps-hours-header {
@@ -2178,7 +2319,7 @@ body {
 }
 
 .ps-hours-time {
-  color: #1f7a3a;
+  color: #8b1e2b;
   font-weight: 750;
 }
 
@@ -2194,13 +2335,14 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.38rem 0.85rem;
-  border-radius: 999px;
-  background: rgba(31, 122, 58, 0.08);
-  border: 1px solid rgba(31, 122, 58, 0.18);
-  color: #1f7a3a;
+  padding: 0.35rem 0.8rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(139, 26, 50, 0.12);
+  color: #7a1528;
   font-size: 0.8rem;
   font-weight: 650;
+  backdrop-filter: blur(8px);
 }
 
 /* Right Column: Callback Form */
@@ -2210,35 +2352,15 @@ body {
 }
 
 .ps-contact-form-wrapper {
-  background: #ffffff;
-  border: 1.5px solid rgba(21, 34, 56, 0.1);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 252, 250, 0.98) 100%);
+  border: 1.5px solid rgba(139, 26, 50, 0.15);
   border-radius: 24px;
   padding: 2.35rem 2.25rem;
   box-shadow:
-    0 24px 60px -12px rgba(21, 34, 56, 0.09),
-    0 4px 18px rgba(21, 34, 56, 0.04),
+    0 24px 60px -12px rgba(139, 26, 50, 0.1),
+    0 6px 20px rgba(15, 23, 42, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 0.95);
-}
-
-.ps-form-badge-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.3rem 0.75rem;
-  border-radius: 999px;
-  background: #fef2f2;
-  border: 1px solid #fee2e2;
-  color: #b91c1c;
-  font-size: 0.75rem;
-  font-weight: 750;
-  margin-bottom: 0.95rem;
-}
-
-.ps-form-badge-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #b91c1c;
+  backdrop-filter: blur(16px);
 }
 
 .ps-contact-form-wrapper h2 {

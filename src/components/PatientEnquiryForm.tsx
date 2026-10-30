@@ -93,10 +93,6 @@ export default function PatientEnquiryForm({
 
   return (
     <>
-      <div className="ps-form-badge-pill">
-        <span className="ps-form-badge-dot" />
-        <span>Average callback response: &lt; 15 mins</span>
-      </div>
       <h2>{title}</h2>
       <p className="ps-form-lead">{lead}</p>
       <form className={`ps-form${compact ? ' ps-form-compact' : ''}`} onSubmit={handleSubmit}>
@@ -194,3 +190,4 @@ export default function PatientEnquiryForm({
     </>
   )
 }
+

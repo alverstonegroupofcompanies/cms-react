@@ -387,6 +387,33 @@ export default function PatientLanding() {
             GET IN TOUCH & CLINICAL ACCESS SECTION
             ================================================================== */}
         <section className="ps-contact-section" id="contact">
+          {/* Ambient background colorful glow blobs and floating motifs */}
+          <div className="ps-contact-bg-decorations" aria-hidden="true">
+            <div className="ps-contact-blob ps-contact-blob-1" />
+            <div className="ps-contact-blob ps-contact-blob-2" />
+            <div className="ps-contact-blob ps-contact-blob-3" />
+            <div className="ps-contact-blob ps-contact-blob-4" />
+
+            {/* Subtle floating medical motifs in the background */}
+            <div className="ps-contact-motifs">
+              <svg className="ps-c-motif ps-c-motif-1" width="26" height="26" viewBox="0 0 26 26" fill="none">
+                <path d="M13 4V22M4 13H22" stroke="#8B1A32" strokeWidth="2.5" strokeLinecap="round" strokeOpacity="0.15" />
+              </svg>
+              <svg className="ps-c-motif ps-c-motif-2" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <circle cx="11" cy="11" r="9" stroke="#8B1A32" strokeWidth="2" strokeOpacity="0.12" />
+              </svg>
+              <svg className="ps-c-motif ps-c-motif-3" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 3V17M3 10H17" stroke="#0284c7" strokeWidth="2.2" strokeLinecap="round" strokeOpacity="0.13" />
+              </svg>
+              <svg className="ps-c-motif ps-c-motif-4" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="#0284c7" strokeWidth="2" strokeOpacity="0.11" />
+              </svg>
+              <svg className="ps-c-motif ps-c-motif-5" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <path d="M11 3V19M3 11H19" stroke="#8B1A32" strokeWidth="2.2" strokeLinecap="round" strokeOpacity="0.12" />
+              </svg>
+            </div>
+          </div>
+
           <div className="ps-contact-container">
             {/* Top Section Header */}
             <div className="ps-contact-header">

@@ -74,7 +74,7 @@
 .is-header {
   text-align: center;
   max-width: 820px;
-  margin: 0 auto 52px;
+  margin: 0 auto 36px;
 }
 
 .is-title {
@@ -96,34 +96,35 @@
   font-size: clamp(15px, 1.5vw, 17px);
   line-height: 1.65;
   color: #475569;
-  margin: 0 0 32px;
+  margin: 0;
 }
 
-/* Tabs Switcher - Balanced single-row segmented control with icons */
+/* Tabs Switcher - Responsive Segmented Control */
+.is-tabs-wrapper {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto 46px;
+  display: flex;
+  justify-content: center;
+}
+
 .is-tabs-row {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 10px;
-  margin: 8px auto 0;
+  margin: 0 auto;
   max-width: 100%;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  padding: 6px 4px 14px;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.is-tabs-row::-webkit-scrollbar {
-  display: none;
+  padding: 4px 8px 8px;
 }
 
 .is-tab-btn {
   display: inline-flex;
   flex-direction: row;
   align-items: center;
-  gap: 9px;
-  padding: 10px 20px;
+  gap: 8px;
+  padding: 9px 18px;
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -140,8 +141,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 8px;
   background: rgba(139, 30, 43, 0.08);
   color: #8b1e2b;
@@ -270,12 +271,12 @@
 }
 
 /* ==========================================================================
-   4. FLOATING FROSTED GLASS BADGES
-   High-contrast, crystal frosted glass with vibrant typography
+   4. DYNAMIC FLOATING FROSTED GLASS BADGES (UNIQUE POSITIONS PER SLIDE)
+   High-contrast, crystal frosted glass with varied placement per slide
    ========================================================================== */
 .is-floating-badge {
   position: absolute;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 2px solid #ffffff;
@@ -308,107 +309,83 @@
   letter-spacing: -0.01em;
 }
 
-/* Top Badge: Indigo / Purple */
-.is-badge-top {
-  top: -24px;
-  right: -16px;
-  animation: isFloat1 5.5s ease-in-out infinite;
+/* Position Variations (Unique per Slide) */
+.is-pos-top-left {
+  top: -22px;
+  left: -16px;
+  animation: isFloat1 5.4s ease-in-out infinite;
 }
 
-.is-badge-top .is-badge-value {
+.is-pos-top-right {
+  top: -22px;
+  right: -16px;
+  animation: isFloat2 5.8s ease-in-out infinite;
+}
+
+.is-pos-top-center {
+  top: -24px;
+  left: 28%;
+  animation: isFloat3 5.6s ease-in-out infinite;
+}
+
+.is-pos-mid-left {
+  top: 36%;
+  left: -32px;
+  animation: isFloat2 6.2s ease-in-out infinite 0.6s;
+}
+
+.is-pos-mid-right {
+  top: 38%;
+  right: -30px;
+  animation: isFloat1 5.7s ease-in-out infinite 0.9s;
+}
+
+.is-pos-bot-left {
+  bottom: 18px;
+  left: -22px;
+  animation: isFloat3 6.0s ease-in-out infinite 1.2s;
+}
+
+.is-pos-bot-right {
+  bottom: 20px;
+  right: -24px;
+  animation: isFloat2 5.5s ease-in-out infinite 1.4s;
+}
+
+/* Color Themes */
+.is-theme-indigo .is-badge-value {
   color: #4338ca;
   background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Left Badge: Cyan / Sky Blue */
-.is-badge-left {
-  top: 36%;
-  left: -32px;
-  animation: isFloat2 6.2s ease-in-out infinite 0.8s;
-}
-
-.is-badge-left .is-badge-value {
+.is-theme-cyan .is-badge-value {
   color: #0369a1;
   background: linear-gradient(135deg, #0369a1 0%, #0ea5e9 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Right Badge: Teal / Emerald */
-.is-badge-right {
-  top: 48%;
-  right: -30px;
-  animation: isFloat3 5.8s ease-in-out infinite 1.4s;
-}
-
-.is-badge-right .is-badge-value {
+.is-theme-teal .is-badge-value {
   color: #0f766e;
   background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Bottom Frosted Name Dock */
-.is-name-dock {
-  position: absolute;
-  bottom: 14px;
-  left: 14px;
-  right: 14px;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 2px solid #ffffff;
-  box-shadow:
-    0 16px 36px -6px rgba(15, 23, 42, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
-  border-radius: 20px;
-  padding: 13px 18px;
-  z-index: 7;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.is-theme-rose .is-badge-value {
+  color: #be123c;
+  background: linear-gradient(135deg, #be123c 0%, #f43f5e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.is-dock-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  background: #fdf2f4;
-  color: #8b1e2b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(139, 30, 43, 0.12);
-}
-
-.is-dock-texts {
-  min-width: 0;
-  flex: 1;
-}
-
-.is-dock-name {
-  font-family: 'Sansation', 'Outfit', sans-serif;
-  font-size: 15.5px;
-  font-weight: 800;
-  color: #0f172a;
-  margin: 0 0 2px;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.is-dock-role {
-  font-size: 12px;
-  font-weight: 500;
-  color: #64748b;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.is-theme-amber .is-badge-value {
+  color: #b45309;
+  background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Floating Animations */
@@ -593,6 +570,33 @@
 /* ==========================================================================
    6. RESPONSIVE MEDIA QUERIES
    ========================================================================== */
+@media (max-width: 860px) {
+  .is-tabs-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    justify-content: flex-start;
+    padding: 0 8px;
+    margin-bottom: 36px;
+  }
+
+  .is-tabs-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .is-tabs-row {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    padding: 6px 12px 14px;
+    gap: 8px;
+  }
+
+  .is-tab-btn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
+
 @media (max-width: 1040px) {
   .is-showcase-grid {
     grid-template-columns: 1fr;
@@ -648,33 +652,13 @@
     font-size: 16px;
   }
 
-  .is-badge-top {
-    top: -18px;
-    right: -10px;
-  }
-
-  .is-badge-left {
-    left: -14px;
-  }
-
-  .is-badge-right {
-    right: -14px;
-  }
-
-  .is-name-dock {
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    padding: 10px 14px;
-  }
-
-  .is-dock-name {
-    font-size: 13.5px;
-  }
-
-  .is-dock-role {
-    font-size: 11px;
-  }
+  .is-pos-top-left { top: -14px; left: -10px; }
+  .is-pos-top-right { top: -14px; right: -10px; }
+  .is-pos-top-center { top: -16px; left: 16%; }
+  .is-pos-mid-left { top: 32%; left: -14px; }
+  .is-pos-mid-right { top: 34%; right: -14px; }
+  .is-pos-bot-left { bottom: 12px; left: -10px; }
+  .is-pos-bot-right { bottom: 14px; right: -10px; }
 
   .is-btn-primary,
   .is-btn-secondary {
