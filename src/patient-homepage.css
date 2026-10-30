@@ -764,6 +764,35 @@ body {
   max-width: 95vw;
   height: 120px;
   pointer-events: none;
+  overflow: visible;
+}
+
+.ps-ecg-track {
+  stroke-opacity: 0.08;
+}
+
+.ps-ecg-pulse {
+  stroke-dasharray: 220 1100;
+  stroke-dashoffset: 220;
+  animation: psEcgPulseFlow 4.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  filter: drop-shadow(0 0 6px rgba(185, 28, 28, 0.45));
+}
+
+@keyframes psEcgPulseFlow {
+  0% {
+    stroke-dashoffset: 220;
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.95;
+  }
+  85% {
+    opacity: 0.95;
+  }
+  100% {
+    stroke-dashoffset: -1100;
+    opacity: 0;
+  }
 }
 
 /* Small scattered plus signs and circles at 10-15% opacity */
@@ -796,6 +825,24 @@ body {
   width: 100%;
   height: 180px;
   pointer-events: none;
+  overflow: hidden;
+}
+
+.ps-decor-bottom-wave path {
+  animation: psWaveSway 12s ease-in-out infinite alternate;
+  transform-origin: bottom center;
+}
+
+@keyframes psWaveSway {
+  0% {
+    transform: scaleY(1) translateY(0);
+  }
+  50% {
+    transform: scaleY(1.08) translateY(-4px);
+  }
+  100% {
+    transform: scaleY(0.96) translateY(2px);
+  }
 }
 
 .ps-services-container,

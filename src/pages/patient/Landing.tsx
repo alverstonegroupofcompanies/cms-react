@@ -6,11 +6,11 @@ import { useAuth } from '../../context/AuthContext'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import BuildingToReceptionWalkthrough from '../../components/patient/BuildingToReceptionWalkthrough'
 import TrustedDoctorsArc from '../../components/patient/TrustedDoctorsArc'
+import InfrastructureSpotlight from '../../components/patient/InfrastructureSpotlight'
 import ElderCareSection from '../../components/patient/ElderCareSection'
 import SpecialtyDisciplinesGrid from '../../components/patient/SpecialtyDisciplinesGrid'
 import Reveal from '../../components/motion/Reveal'
 import SplitText from '../../components/motion/SplitText'
-import ExpandableImage from '../../components/motion/ExpandableImage'
 import FloatingMotifs from '../../components/motion/FloatingMotifs'
 import { CLINIC } from '../../config/clinic'
 import {
@@ -20,7 +20,6 @@ import {
   IconPill,
   IconStethoscope,
   IconPhone,
-  IconCheck,
   IconStar,
   IconClock,
   IconBuilding,
@@ -106,21 +105,40 @@ export default function PatientLanding() {
             <div className="ps-blob ps-blob-top-left" />
             <div className="ps-blob ps-blob-bottom-right" />
 
-            {/* 2. Faint ECG / Heartbeat Line crossing behind the heading */}
+            {/* 2. Animated Medical ECG / Heartbeat Pulse Wave crossing behind heading */}
             <svg
               className="ps-decor-ecg"
               viewBox="0 0 900 120"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               preserveAspectRatio="none"
+              aria-hidden="true"
             >
+              <defs>
+                <linearGradient id="psEcgPulseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#8B1A32" stopOpacity="0" />
+                  <stop offset="40%" stopColor="#8B1A32" stopOpacity="0.4" />
+                  <stop offset="85%" stopColor="#b91c1c" stopOpacity="0.9" />
+                  <stop offset="100%" stopColor="#ef4444" stopOpacity="1" />
+                </linearGradient>
+              </defs>
+              {/* Static faint baseline track */}
               <path
+                className="ps-ecg-track"
                 d="M0 60 L 260 60 L 290 60 L 305 40 L 320 85 L 340 15 L 360 100 L 378 45 L 392 68 L 405 60 L 900 60"
                 stroke="#8B1A32"
                 strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeOpacity="0.06"
+              />
+              {/* Animated glowing heartbeat pulse line flowing across */}
+              <path
+                className="ps-ecg-pulse"
+                d="M0 60 L 260 60 L 290 60 L 305 40 L 320 85 L 340 15 L 360 100 L 378 45 L 392 68 L 405 60 L 900 60"
+                stroke="url(#psEcgPulseGrad)"
+                strokeWidth="3.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
 
@@ -223,80 +241,9 @@ export default function PatientLanding() {
         </section>
 
         {/* ==================================================================
-            6. CAMPUS & HOSPITAL EXPERIENCE SPLIT FEATURE
+            6. CAMPUS & HOSPITAL INFRASTRUCTURE SPOTLIGHT (FROSTED GLASS SHOWCASE)
             ================================================================== */}
-        <section className="ps-experience-section">
-          <FloatingMotifs density="minimal" />
-          <div className="ps-experience-container">
-            <div className="ps-experience-grid">
-              <Reveal direction="left" distance={30} duration={0.85} className="ps-experience-media-column">
-                <div className="ps-exp-main-img">
-                  <ExpandableImage
-                    src="/images/patient-site-banner.jpg"
-                    alt="Alverstone Medcity Healthcare Campus Building in Kollam"
-                    caption="Alverstone Medcity Integrated Campus in Chandanathope, Kollam"
-                  />
-                </div>
-                <div className="ps-exp-floating-card">
-                  <div className="card-head">
-                    <IconBuilding size={18} />
-                    <span>Integrated Campus</span>
-                  </div>
-                  <p>
-                    Pharmacy, pathology laboratory, and consultation suites all housed together in Chandanathope, Kollam.
-                  </p>
-                </div>
-              </Reveal>
-
-              <Reveal direction="right" distance={30} duration={0.85} className="ps-experience-copy-column">
-                <SplitText as="h2">
-                  A Healthcare Experience <span className="ps-gradient-text">That Respects Your Time</span>
-                </SplitText>
-                <p>
-                  We believe medical visits should feel organized and reassuring, not stressful. Alverstone Medcity was founded
-                  to eliminate long waits and fragmented care through smart scheduling and campus integration.
-                </p>
-
-                <ul className="ps-exp-checklist">
-                  <li className="ps-exp-check-item">
-                    <div className="ps-exp-check-icon">
-                      <IconCheck size={18} />
-                    </div>
-                    <div className="ps-exp-check-text">
-                      <strong>Smart Slot Scheduling</strong>
-                      <span>Pick a slot that fits your day and walk in knowing your doctor is ready for you.</span>
-                    </div>
-                  </li>
-
-                  <li className="ps-exp-check-item">
-                    <div className="ps-exp-check-icon">
-                      <IconCheck size={18} />
-                    </div>
-                    <div className="ps-exp-check-text">
-                      <strong>Diagnostics & Pharmacy On Campus</strong>
-                      <span>Collect medicines and provide lab samples without traveling across town.</span>
-                    </div>
-                  </li>
-
-                  <li className="ps-exp-check-item">
-                    <div className="ps-exp-check-icon">
-                      <IconCheck size={18} />
-                    </div>
-                    <div className="ps-exp-check-text">
-                      <strong>Unified Electronic Patient Account</strong>
-                      <span>Your prescriptions, doctor notes, and lab reports stay organized and accessible 24/7.</span>
-                    </div>
-                  </li>
-                </ul>
-
-                <Link to="/patient/about" className="ps-btn-primary">
-                  <span>Learn More About Us</span>
-                  <span aria-hidden>→</span>
-                </Link>
-              </Reveal>
-            </div>
-          </div>
-        </section>
+        <InfrastructureSpotlight signedIn={signedIn} />
 
         {/* ==================================================================
             8. ELDER & SENIOR CARE SECTION (STADIUM CAPSULES & CURVED WAVE)

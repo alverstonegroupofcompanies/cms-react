@@ -1,0 +1,673 @@
+/* ==========================================================================
+   INFRASTRUCTURE SPOTLIGHT - FROSTED GLASSMORPHISM CAMPUS SHOWCASE
+   Rich colorful section background with crisp frosted glass container and warm sunset photo frame
+   ========================================================================== */
+
+.is-section {
+  position: relative;
+  /* Rich, colorful healthcare gradient with multi-tone depth */
+  background-color: #f1f5f9;
+  background-image:
+    radial-gradient(at 5% 15%, rgba(139, 30, 43, 0.10) 0px, transparent 50%),
+    radial-gradient(at 95% 18%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
+    radial-gradient(at 85% 85%, rgba(13, 148, 136, 0.10) 0px, transparent 50%),
+    radial-gradient(at 12% 82%, rgba(249, 115, 22, 0.10) 0px, transparent 55%),
+    radial-gradient(at 50% 50%, rgba(244, 63, 94, 0.06) 0px, transparent 65%),
+    url("data:image/svg+xml,%3Csvg width='36' height='36' viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='18' cy='18' r='1.25' fill='%238b1e2b' fill-opacity='0.035'/%3E%3C/svg%3E"),
+    linear-gradient(145deg, #f8fafc 0%, #fdf2f4 30%, #f0f7ff 65%, #f5f3ff 100%);
+  padding: 96px 24px 110px;
+  overflow: hidden;
+  border-top: 1px solid rgba(139, 30, 43, 0.12);
+  border-bottom: 1px solid rgba(139, 30, 43, 0.12);
+}
+
+/* Ambient Soft Vibrant Background Glowing Blobs */
+.is-ambient-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.is-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.75;
+}
+
+.is-blob-1 {
+  width: 580px;
+  height: 580px;
+  top: -120px;
+  left: -80px;
+  background: radial-gradient(circle, rgba(186, 230, 253, 0.95) 0%, rgba(125, 211, 252, 0.4) 45%, transparent 70%);
+}
+
+.is-blob-2 {
+  width: 620px;
+  height: 620px;
+  bottom: -140px;
+  right: -100px;
+  background: radial-gradient(circle, rgba(254, 215, 170, 0.95) 0%, rgba(253, 186, 116, 0.4) 45%, transparent 70%);
+}
+
+.is-blob-3 {
+  width: 520px;
+  height: 520px;
+  top: 30%;
+  left: 40%;
+  background: radial-gradient(circle, rgba(254, 205, 211, 0.85) 0%, rgba(253, 164, 175, 0.35) 45%, transparent 70%);
+}
+
+.is-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* ==========================================================================
+   1. SECTION HEADER & TABS
+   ========================================================================== */
+.is-header {
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto 52px;
+}
+
+.is-title {
+  font-family: 'Sansation', 'Outfit', sans-serif;
+  font-size: clamp(32px, 4vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  line-height: 1.18;
+  margin: 0 0 16px;
+}
+
+.is-title-accent {
+  color: #8b1e2b;
+  background: linear-gradient(135deg, #8b1e2b 0%, #b91c1c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.is-subtitle {
+  font-size: clamp(15px, 1.5vw, 17px);
+  line-height: 1.65;
+  color: #475569;
+  margin: 0 0 32px;
+}
+
+/* Tabs Switcher */
+.is-tabs-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.is-tab-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 22px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(226, 232, 240, 0.9);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+
+.is-tab-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1e293b;
+  transition: color 0.2s ease;
+}
+
+.is-tab-sub {
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
+  transition: color 0.2s ease;
+}
+
+.is-tab-btn:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+.is-tab-btn.is-active {
+  background: #8b1e2b;
+  border-color: #8b1e2b;
+  box-shadow: 0 8px 24px rgba(139, 30, 43, 0.3);
+  transform: translateY(-2px);
+}
+
+.is-tab-btn.is-active .is-tab-name {
+  color: #ffffff;
+}
+
+.is-tab-btn.is-active .is-tab-sub {
+  color: #fecdd3;
+}
+
+/* ==========================================================================
+   2. SHOWCASE STAGE - HIGH CONTRAST FROSTED GLASS CONTAINER BOX
+   Clear visible definition against the colorful section background
+   ========================================================================== */
+.is-showcase-wrapper {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  border-radius: 36px;
+  padding: 48px;
+  box-shadow:
+    0 32px 75px -15px rgba(15, 23, 42, 0.15),
+    0 12px 28px -6px rgba(139, 30, 43, 0.10),
+    0 0 0 1px rgba(255, 255, 255, 0.85) inset;
+}
+
+.is-showcase-grid {
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+/* ==========================================================================
+   3. VISUAL COLUMN: DUAL-LAYER WARM SUNSET FRAME & FLOATING BADGES
+   The warm sunset gradient is now clearly visible framing the photo!
+   ========================================================================== */
+.is-visual-col {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding: 32px 20px;
+}
+
+.is-portrait-card {
+  position: relative;
+  width: 100%;
+  max-width: 410px;
+  aspect-ratio: 4 / 3.4;
+  border-radius: 30px;
+}
+
+/* Warm Sunset Rounded Frame extending out to create the glowing border effect */
+.is-portrait-backdrop {
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  right: -14px;
+  bottom: -14px;
+  border-radius: 36px;
+  opacity: 1;
+  box-shadow:
+    0 24px 50px -10px rgba(249, 115, 22, 0.35),
+    0 10px 24px -5px rgba(220, 38, 38, 0.25);
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Soft shimmer overlay inside backdrop */
+.is-portrait-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Image Box with clean white inner bezel */
+.is-portrait-img-box {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.18);
+  z-index: 2;
+  background: #f8fafc;
+}
+
+.is-portrait-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ==========================================================================
+   4. FLOATING FROSTED GLASS BADGES
+   High-contrast, crystal frosted glass with vibrant typography
+   ========================================================================== */
+.is-floating-badge {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid #ffffff;
+  box-shadow:
+    0 20px 42px -8px rgba(15, 23, 42, 0.18),
+    0 6px 16px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+  border-radius: 22px;
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 6;
+  pointer-events: none;
+  min-width: 120px;
+}
+
+.is-badge-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.is-badge-value {
+  font-family: 'Sansation', 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/* Top Badge: Indigo / Purple */
+.is-badge-top {
+  top: -24px;
+  right: -16px;
+  animation: isFloat1 5.5s ease-in-out infinite;
+}
+
+.is-badge-top .is-badge-value {
+  color: #4338ca;
+  background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Left Badge: Cyan / Sky Blue */
+.is-badge-left {
+  top: 36%;
+  left: -32px;
+  animation: isFloat2 6.2s ease-in-out infinite 0.8s;
+}
+
+.is-badge-left .is-badge-value {
+  color: #0369a1;
+  background: linear-gradient(135deg, #0369a1 0%, #0ea5e9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Right Badge: Teal / Emerald */
+.is-badge-right {
+  top: 48%;
+  right: -30px;
+  animation: isFloat3 5.8s ease-in-out infinite 1.4s;
+}
+
+.is-badge-right .is-badge-value {
+  color: #0f766e;
+  background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Bottom Frosted Name Dock */
+.is-name-dock {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 2px solid #ffffff;
+  box-shadow:
+    0 16px 36px -6px rgba(15, 23, 42, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  border-radius: 20px;
+  padding: 13px 18px;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.is-dock-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: #fdf2f4;
+  color: #8b1e2b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(139, 30, 43, 0.12);
+}
+
+.is-dock-texts {
+  min-width: 0;
+  flex: 1;
+}
+
+.is-dock-name {
+  font-family: 'Sansation', 'Outfit', sans-serif;
+  font-size: 15.5px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 2px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.is-dock-role {
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Floating Animations */
+@keyframes isFloat1 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+@keyframes isFloat2 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-1deg);
+  }
+}
+
+@keyframes isFloat3 {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.8deg);
+  }
+}
+
+/* ==========================================================================
+   5. CONTENT COLUMN: HEADINGS, CHECKLIST & ACTIONS
+   ========================================================================== */
+.is-content-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.is-about-block {
+  margin-bottom: 22px;
+}
+
+.is-about-heading {
+  font-family: 'Sansation', 'Outfit', sans-serif;
+  font-size: clamp(23px, 2.5vw, 29px);
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 12px;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.is-about-desc {
+  font-size: 15.5px;
+  line-height: 1.68;
+  color: #334155;
+  margin: 0;
+}
+
+/* The Checklist */
+.is-checklist-block {
+  margin-bottom: 26px;
+}
+
+.is-checklist-heading {
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  margin: 0 0 14px;
+}
+
+.is-checklist-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.is-check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.is-check-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: #fdf2f4;
+  color: #8b1e2b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  box-shadow: 0 2px 6px rgba(139, 30, 43, 0.12);
+  border: 1px solid rgba(139, 30, 43, 0.12);
+}
+
+.is-check-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.is-check-text strong {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.is-check-text span {
+  font-size: 13.5px;
+  color: #475569;
+  line-height: 1.48;
+}
+
+/* Actions */
+.is-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.is-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #8b1e2b;
+  color: #ffffff;
+  font-size: 14.5px;
+  font-weight: 700;
+  padding: 13px 26px;
+  border-radius: 9999px;
+  text-decoration: none;
+  box-shadow: 0 8px 24px -4px rgba(139, 30, 43, 0.38);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.is-btn-primary:hover {
+  background: #731823;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -4px rgba(139, 30, 43, 0.48);
+}
+
+.is-btn-primary .is-btn-arrow {
+  display: inline-block;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.is-btn-primary:hover .is-btn-arrow {
+  transform: translateX(4px);
+}
+
+.is-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  color: #1e293b;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 13px 22px;
+  border-radius: 9999px;
+  text-decoration: none;
+  border: 1.5px solid #cbd5e1;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  transition: all 0.2s ease;
+}
+
+.is-btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+/* ==========================================================================
+   6. RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 1040px) {
+  .is-showcase-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .is-visual-col {
+    padding: 32px 32px;
+  }
+
+  .is-portrait-card {
+    max-width: 440px;
+  }
+
+  .is-showcase-wrapper {
+    padding: 36px 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .is-section {
+    padding: 64px 16px 80px;
+  }
+
+  .is-showcase-wrapper {
+    padding: 24px 16px;
+    border-radius: 26px;
+  }
+
+  .is-portrait-card {
+    max-width: 320px;
+    aspect-ratio: 4 / 3.6;
+  }
+
+  .is-portrait-backdrop {
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 28px;
+  }
+
+  .is-floating-badge {
+    padding: 8px 12px;
+    min-width: 90px;
+  }
+
+  .is-badge-label {
+    font-size: 9.5px;
+  }
+
+  .is-badge-value {
+    font-size: 16px;
+  }
+
+  .is-badge-top {
+    top: -18px;
+    right: -10px;
+  }
+
+  .is-badge-left {
+    left: -14px;
+  }
+
+  .is-badge-right {
+    right: -14px;
+  }
+
+  .is-name-dock {
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    padding: 10px 14px;
+  }
+
+  .is-dock-name {
+    font-size: 13.5px;
+  }
+
+  .is-dock-role {
+    font-size: 11px;
+  }
+
+  .is-btn-primary,
+  .is-btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-floating-badge {
+    animation: none !important;
+  }
+}

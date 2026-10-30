@@ -8,7 +8,7 @@ interface SpecialtyDisciplinesGridProps {
 }
 
 export default function SpecialtyDisciplinesGrid({ signedIn = false }: SpecialtyDisciplinesGridProps) {
-  const bookVisitTo = signedIn ? '/patient/book' : '/patient/login?next=%2Fpatient%2Fbook'
+  void signedIn
 
   return (
     <section className="sdg-section" id="departments" aria-label="Care Across Our Specialty Disciplines">
@@ -35,14 +35,14 @@ export default function SpecialtyDisciplinesGrid({ signedIn = false }: Specialty
         <Reveal direction="up" distance={24} stagger={0.07} className="sdg-tiles-grid">
             {/* ROW 1 */}
             {/* Tile 1: IMAGE (Pediatrics) */}
-            <div className="sdg-tile sdg-tile--image">
+            <Link to="/specialties/pediatrics" className="sdg-tile sdg-tile--image" aria-label="Pediatrics & Child Wellness Department">
               <img
                 src="/images/dept-pediatrics.jpg"
                 alt="Friendly specialist pediatrician examining a young child in modern colorful clinic"
                 loading="lazy"
               />
               <span className="sdg-img-badge">Child Care</span>
-            </div>
+            </Link>
 
             {/* Tile 2: LIGHT TEXT (Pediatrics - Warm Cream) */}
             <div className="sdg-tile sdg-tile--text sdg-tile--cream">
@@ -54,21 +54,21 @@ export default function SpecialtyDisciplinesGrid({ signedIn = false }: Specialty
                   pediatricians and routine developmental milestones.
                 </p>
               </div>
-              <Link to={`${bookVisitTo}?dept=Pediatrics`} className="sdg-tile-link">
+              <Link to="/specialties/pediatrics" className="sdg-tile-link">
                 <span>More Information</span>
                 <span className="sdg-arrow" aria-hidden="true">→</span>
               </Link>
             </div>
 
             {/* Tile 3: IMAGE (General Medicine) */}
-            <div className="sdg-tile sdg-tile--image">
+            <Link to="/specialties/general-medicine" className="sdg-tile sdg-tile--image" aria-label="General & Internal Medicine Department">
               <img
                 src="/images/dept-general-medicine.jpg"
                 alt="Senior internal medicine specialist doctor reviewing patient wellness charts on tablet"
                 loading="lazy"
               />
               <span className="sdg-img-badge">Primary Care</span>
-            </div>
+            </Link>
 
             {/* Tile 4: DARK TEXT (General Medicine - Midnight Forest) */}
             <div className="sdg-tile sdg-tile--text sdg-tile--dark">
@@ -80,7 +80,7 @@ export default function SpecialtyDisciplinesGrid({ signedIn = false }: Specialty
                   preventive wellness screenings.
                 </p>
               </div>
-              <Link to={`${bookVisitTo}?dept=General+Medicine`} className="sdg-tile-link">
+              <Link to="/specialties/general-medicine" className="sdg-tile-link">
                 <span>More Information</span>
                 <span className="sdg-arrow" aria-hidden="true">→</span>
               </Link>
@@ -97,21 +97,21 @@ export default function SpecialtyDisciplinesGrid({ signedIn = false }: Specialty
                   clinical aesthetics.
                 </p>
               </div>
-              <Link to={`${bookVisitTo}?dept=Dermatology`} className="sdg-tile-link">
+              <Link to="/specialties/dermatology" className="sdg-tile-link">
                 <span>More Information</span>
                 <span className="sdg-arrow" aria-hidden="true">→</span>
               </Link>
             </div>
 
             {/* Tile 6: IMAGE (Dermatology) */}
-            <div className="sdg-tile sdg-tile--image">
+            <Link to="/specialties/dermatology" className="sdg-tile sdg-tile--image" aria-label="Dermatology & Aesthetics Department">
               <img
                 src="/images/dept-dermatology.jpg"
                 alt="Doctor performing advanced digital skin analysis in dermatology consultation suite"
                 loading="lazy"
               />
               <span className="sdg-img-badge">Skin Clinic</span>
-            </div>
+            </Link>
 
             {/* Tile 7: LIGHT TEXT (Diagnostic Pathology - Soft Porcelain) */}
             <div className="sdg-tile sdg-tile--text sdg-tile--porcelain">
@@ -123,21 +123,21 @@ export default function SpecialtyDisciplinesGrid({ signedIn = false }: Specialty
                   your portal.
                 </p>
               </div>
-              <Link to={`${bookVisitTo}?dept=Pathology`} className="sdg-tile-link">
+              <Link to="/specialties/pathology" className="sdg-tile-link">
                 <span>More Information</span>
                 <span className="sdg-arrow" aria-hidden="true">→</span>
               </Link>
             </div>
 
             {/* Tile 8: IMAGE (Diagnostic Pathology) */}
-            <div className="sdg-tile sdg-tile--image">
+            <Link to="/specialties/pathology" className="sdg-tile sdg-tile--image" aria-label="Advanced Diagnostic Pathology Department">
               <img
                 src="/images/dept-lab-diagnostics.jpg"
                 alt="Precision clinical automated laboratory analyzers and testing equipment"
                 loading="lazy"
               />
               <span className="sdg-img-badge">Modern Lab</span>
-            </div>
+            </Link>
           </Reveal>
       </div>
     </section>

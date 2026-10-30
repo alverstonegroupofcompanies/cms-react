@@ -393,6 +393,117 @@ export const SPECIALTIES_DATA: Record<string, SpecialtyContent> = {
     },
   },
 
+  dermatology: {
+    slug: 'dermatology',
+    name: 'Dermatology & Clinical Aesthetics',
+    bookingDept: 'Dermatology & Aesthetics',
+    kicker: 'Skin & Aesthetic Medicine',
+    tagline: 'Precision medical dermatology, chronic skin barrier therapy, and evidence-based aesthetic care.',
+    heroImage: '/images/dept-dermatology.jpg',
+    heroImageAlt: 'Doctor performing advanced digital skin analysis in dermatology consultation suite',
+    secondaryImage: '/images/dept-dermatology.jpg',
+    secondaryImageAlt: 'Modern dermatology consultation room with diagnostic imaging equipment',
+    heroQuote: {
+      text: 'Healthy skin is a reflection of overall metabolic vitality — we treat the root cause beneath the surface with precision, science, and gentleness.',
+      author: 'Department of Dermatology & Aesthetics',
+      role: 'Alverstone Medcity Skin Clinic',
+    },
+    overview:
+      'The skin is the body’s largest organ and first barrier of defense. At Alverstone Medcity’s Dermatology & Aesthetics department, our clinical specialists treat acute and chronic dermatological conditions—from stubborn acne, psoriasis, and eczema to allergic dermatitis and pigmentation disorders—alongside medically supervised, non-invasive clinical aesthetic therapies.',
+    awarenessTitle: 'Skin Health Awareness: Early Detection & Gentle Barrier Care',
+    awarenessLead:
+      'Many skin conditions arise from environmental pollution, climate changes, internal hormonal imbalances, or allergic triggers. Timely evaluation prevents chronic scarring, preserves the skin barrier, and detects atypical moles or lesions before they progress.',
+    warningSigns: [
+      'Persistent acne, cystic breakouts, or post-inflammatory hyperpigmentation that resists routine skincare',
+      'Sudden itchy rashes, red patches, hives, or eczema flare-ups triggered by climate or allergens',
+      'Unusual changes in the shape, size, or color of existing moles or newly emerging pigmented spots',
+      'Scalp inflammation, dandruff flare-ups, or accelerated diffuse hair thinning requiring trichology care',
+      'Chronic dry, cracked skin, flaking, or suspected fungal infections needing targeted dermatological care',
+    ],
+    clinicalServices: [
+      {
+        title: 'Medical Dermatology & Allergy Management',
+        detail: 'Diagnostic patch testing, eczema, psoriasis, vitiligo, and chronic urticaria treatment regimens.',
+      },
+      {
+        title: 'Acne & Pigmentation Clinic',
+        detail: 'Customized hormonal, topical, and mild dermatological peel protocols to clear active blemishes and scars.',
+      },
+      {
+        title: 'Trichology & Scalp Care',
+        detail: 'Advanced microscopic hair-follicle analysis, targeted hair-fall therapy, and restorative scalp solutions.',
+      },
+      {
+        title: 'Non-Invasive Clinical Aesthetics',
+        detail: 'Dermatologist-administered hydration therapy, gentle micro-resurfacing, and barrier-restoring clinical facials.',
+      },
+    ],
+    nutritionIntro:
+      'Dermatological nutrition prioritizes essential fatty acids, hydration, Vitamin C, zinc, and antioxidants that calm inflammation and build resilient collagen.',
+    foodsToEat: [
+      {
+        name: 'Antioxidant & Polyphenol-Rich Fruits (Pomegranates, Berries, Amla, Oranges)',
+        benefit: 'Provides natural bioflavonoids and Vitamin C required for skin collagen synthesis and photoprotection.',
+      },
+      {
+        name: 'Omega-3 Fatty Acids & Healthy Seeds (Flaxseeds, Chia Seeds, Walnuts, Fish)',
+        benefit: 'Restores the epidermal lipid moisture barrier, calming eczema, dry skin, and systemic inflammation.',
+      },
+      {
+        name: 'Zinc & Biotin Sources (Pumpkin Seeds, Lentils, Eggs, Whole Grains)',
+        benefit: 'Accelerates skin wound recovery, regulates epidermal oil production, and strengthens hair roots.',
+      },
+      {
+        name: 'Adequate Hydration & Herbal Infusions (2.5L Water, Tender Coconut Water)',
+        benefit: 'Flushes metabolic waste and maintains optimal cellular turgor for radiant, hydrated skin.',
+      },
+    ],
+    foodsToLimit: [
+      'High-glycemic refined carbohydrates and sugary drinks that trigger insulin spikes and aggravate acne',
+      'Excessive cow’s milk and ultra-processed dairy in individuals prone to hormonal breakouts',
+      'Deep-fried and heavily spiced foods that exacerbate rosacea and inflammatory redness',
+      'Unregulated over-the-counter steroid creams which cause irreversible skin thinning and rebound flare-ups',
+    ],
+    healthHabits: [
+      {
+        title: 'Daily Broad-Spectrum Sun Protection',
+        practice: 'Apply a broad-spectrum SPF 30+ sunscreen every morning, even on cloudy days, to shield skin from UV-induced premature aging and dark spots.',
+        cadence: 'Daily Morning',
+      },
+      {
+        title: 'Gentle, pH-Balanced Cleansing',
+        practice: 'Wash face twice daily using a lukewarm water rinse and mild soap-free cleanser to avoid stripping natural protective lipids.',
+        cadence: 'Twice Daily',
+      },
+      {
+        title: 'Avoid Unverified OTC Steroid Formulations',
+        practice: 'Never apply quick-fairness creams containing unprescribed steroids; always consult a certified dermatologist for safe brightening protocols.',
+        cadence: 'Always',
+      },
+      {
+        title: 'Annual Full-Body Skin & Mole Check',
+        practice: 'Have a dermatologist inspect any changing moles, birthmarks, or persistent sun spots once a year for total peace of mind.',
+        cadence: 'Every 12 Months',
+      },
+    ],
+    secondaryQuotes: [
+      {
+        quote: 'Your skin is an intelligent living ecosystem; treat it with gentle consistency, not aggressive quick fixes.',
+        context: 'Alverstone Dermatology Practice Standard',
+      },
+      {
+        quote: 'Behind radiant skin lies attentive clinical science, barrier protection, and genuine self-care.',
+        context: 'Clinical Aesthetics Council',
+      },
+    ],
+    specialistNote: {
+      doctor: 'Alverstone Dermatology & Aesthetics Wing',
+      credentials: 'MD (Dermatology, Venereology & Leprosy) · Suite 208',
+      message:
+        'The most common mistake we see is using multiple strong active ingredients at once, which damages the skin barrier. Bring your current products to your consultation, and we will tailor a streamlined, scientifically proven regimen.',
+    },
+  },
+
   geriatrics: {
     slug: 'geriatrics',
     name: 'Geriatrics & Elder Care',
@@ -731,6 +842,7 @@ export const SPECIALTIES_LIST: SpecialtyContent[] = [
   SPECIALTIES_DATA['general-medicine'],
   SPECIALTIES_DATA['cardiology'],
   SPECIALTIES_DATA['pediatrics'],
+  SPECIALTIES_DATA['dermatology'],
   SPECIALTIES_DATA['geriatrics'],
   SPECIALTIES_DATA['pathology'],
   SPECIALTIES_DATA['pharmacy'],
@@ -746,6 +858,7 @@ function renderDeptIcon(slug: string, size = 22) {
       return <IconPill size={size} />
     case 'geriatrics':
       return <IconClock size={size} />
+    case 'dermatology':
     case 'pediatrics':
     case 'general-medicine':
     default:
