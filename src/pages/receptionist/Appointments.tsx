@@ -13,6 +13,7 @@ import { receptionistNav } from '../../config/navigation'
 import VisitSourceBadge from '../../components/VisitSourceBadge'
 import type { Appointment, Doctor } from '../../api/types'
 import { toDateOnlyString } from '../../utils/dateUtils'
+import { formatDoctorOptionLabel } from '../../utils/doctorAvailability'
 
 export default function ReceptionistAppointments() {
   const [searchParams] = useSearchParams()
@@ -126,7 +127,7 @@ export default function ReceptionistAppointments() {
             <select value={doctorId} onChange={(e) => setDoctorId(e.target.value)}>
               <option value="">All doctors</option>
               {doctors.map((d) => (
-                <option key={d.id} value={d.id}>{d.name} — {d.specialization}</option>
+                <option key={d.id} value={d.id}>{formatDoctorOptionLabel(d)}</option>
               ))}
             </select>
           </div>

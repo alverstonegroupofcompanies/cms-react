@@ -23,7 +23,11 @@ import type {
   Patient,
 } from '../../api/types'
 import { filterPastSlotsForToday } from '../../utils/slotUtils'
-import { filterDoctorsAvailableOnDate } from '../../utils/doctorAvailability'
+import {
+  filterDoctorsAvailableOnDate,
+  formatDoctorOptionLabel,
+} from '../../utils/doctorAvailability'
+import DoctorDayTrack from '../../components/DoctorDayTrack'
 import {
   afterSelectValue,
   focusField,
@@ -32,14 +36,7 @@ import {
   selectEnterNav,
 } from '../../utils/formNav'
 
-const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const GMAIL_RE = /^[^\s@]+@gmail\.com$/i
-
-function formatWorkingDays(availability?: Doctor['availability']): string {
-  if (!availability?.length) return 'Not set'
-  const days = [...new Set(availability.map((a) => a.day_of_week))].sort((a, b) => a - b)
-  return days.map((d) => DAY_NAMES[d]).join(', ')
-}
 
 function splitName(full: string) {
   const parts = full.trim().split(/\s+/).filter(Boolean)
@@ -434,7 +431,7 @@ export default function ReceptionistBookAppointment() {
               </option>
               {walkInDoctors.map((d) => (
                 <option key={d.id} value={d.id}>
-                  {d.name} — {d.specialization}
+                  {formatDoctorOptionLabel(d)}
                 </option>
               ))}
             </select>
@@ -567,7 +564,7 @@ export default function ReceptionistBookAppointment() {
               <option value="">Select doctor</option>
               {doctors.map((d) => (
                 <option key={d.id} value={d.id}>
-                  {d.name} — {d.specialization} ({formatWorkingDays(d.availability)})
+                  {formatDoctorOptionLabel(d)}
                 </option>
               ))}
             </select>
@@ -575,9 +572,13 @@ export default function ReceptionistBookAppointment() {
         </div>
 
         {selectedDoctor && (
-          <p className="muted" style={{ marginBottom: '0.75rem' }}>
-            Lunch break: {selectedDoctor.lunch_start?.slice(0, 5) || '—'}–{selectedDoctor.lunch_end?.slice(0, 5) || '—'}
-          </p>
+          <div className="staff-doctor-schedule-preview" style={{ margin: '0.5rem 0 0.85rem', display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+            <span className="muted" style={{ fontSize: '0.82rem' }}>Weekly days:</span>
+            <DoctorDayTrack availability={selectedDoctor.availability} showSummary />
+            <span className="muted" style={{ fontSize: '0.82rem' }}>
+              · Lunch: {selectedDoctor.lunch_start?.slice(0, 5) || '—'}–{selectedDoctor.lunch_end?.slice(0, 5) || '—'}
+            </span>
+          </div>
         )}
 
         {availableDates.length > 0 && (

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PatientLayout from '../../components/PatientLayout'
 import DoctorAvatar from '../../components/DoctorAvatar'
+import DoctorDayTrack from '../../components/DoctorDayTrack'
 import {
   bookAppointment,
   getClinics,
@@ -14,6 +15,10 @@ import { useAuth } from '../../context/AuthContext'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import type { AvailableDate, BookingConfirmation, Clinic, Department, Doctor, Slot } from '../../api/types'
 import { filterPastSlotsForToday } from '../../utils/slotUtils'
+import {
+  formatDoctorOptionLabel,
+  formatWorkingDaysSummary,
+} from '../../utils/doctorAvailability'
 import {
   IconBuilding,
   IconCalendar,
@@ -30,14 +35,6 @@ import {
 import { formatAppointmentDate, toDateOnlyString } from '../../utils/dateUtils'
 
 const STEPS = ['Department', 'Doctor', 'Date', 'Slot', 'Confirm'] as const
-
-const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-
-function formatWorkingDays(availability?: Doctor['availability']): string {
-  if (!availability?.length) return 'Schedule not set'
-  const days = [...new Set(availability.map((a) => a.day_of_week))].sort((a, b) => a - b)
-  return days.map((d) => DAY_NAMES[d]).join(', ')
-}
 
 function formatSlotTime(slotTime?: string | null): string {
   if (!slotTime) return '—'
@@ -421,33 +418,73 @@ export default function BookAppointment() {
               )}
 
               {step === 2 && (
-                <div className="pb-doctor-grid">
-                  {doctors.length === 0 ? (
-                    <p className="pb-muted">No doctors available in this department.</p>
-                  ) : (
-                    doctors.map((d) => (
-                      <button
-                        key={d.id}
-                        type="button"
-                        className={`pb-doctor-card${doctorId === String(d.id) ? ' is-on' : ''}`}
-                        onClick={() => setDoctorId(String(d.id))}
-                      >
-                        <DoctorAvatar doctorId={d.id} name={d.name} photoUrl={d.photo_url} className="pb-doctor-photo" />
-                        <div className="pb-doctor-copy">
-                          <strong>{d.name}</strong>
-                          <span>{d.specialization}</span>
-                          <span className="pb-doctor-meta">
-                            <IconCalendar size={13} /> {formatWorkingDays(d.availability)}
-                          </span>
-                        </div>
-                      </button>
-                    ))
-                  )}
+                <div className="pb-doctor-step-wrap">
+                  <div className="pb-doctor-dropdown-card">
+                    <label htmlFor="pb-doctor-select" className="pb-doctor-dropdown-label">
+                      <span>Quick select doctor</span>
+                      <small>Weekly days [M T W T F · ·]</small>
+                    </label>
+                    <select
+                      id="pb-doctor-select"
+                      className="pb-doctor-select"
+                      value={doctorId}
+                      onChange={(e) => setDoctorId(e.target.value)}
+                    >
+                      <option value="">— Select doctor from dropdown —</option>
+                      {doctors.map((d) => (
+                        <option key={d.id} value={d.id}>
+                          {formatDoctorOptionLabel(d)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="pb-doctor-cards-divider">
+                    <span>or choose doctor card below</span>
+                  </div>
+
+                  <div className="pb-doctor-grid">
+                    {doctors.length === 0 ? (
+                      <p className="pb-muted">No doctors available in this department.</p>
+                    ) : (
+                      doctors.map((d) => (
+                        <button
+                          key={d.id}
+                          type="button"
+                          className={`pb-doctor-card${doctorId === String(d.id) ? ' is-on' : ''}`}
+                          onClick={() => setDoctorId(String(d.id))}
+                        >
+                          <DoctorAvatar doctorId={d.id} name={d.name} photoUrl={d.photo_url} className="pb-doctor-photo" />
+                          <div className="pb-doctor-copy">
+                            <strong>{d.name}</strong>
+                            <span>{d.specialization}</span>
+                            <span className="pb-doctor-meta">
+                              <IconCalendar size={13} /> {formatWorkingDaysSummary(d.availability)}
+                            </span>
+                          </div>
+                          <div className="pb-doctor-days-col">
+                            <DoctorDayTrack availability={d.availability} showSummary={false} />
+                          </div>
+                        </button>
+                      ))
+                    )}
+                  </div>
                 </div>
               )}
 
               {step === 3 && (
                 <>
+                  {selectedDoctor && (
+                    <div className="pb-doctor-schedule-hint">
+                      <div className="pb-doctor-schedule-meta">
+                        <span className="pb-hint-title">
+                          Available consultation days for <strong>{selectedDoctor.name}</strong>:
+                        </span>
+                        <span className="pb-hint-spec">{selectedDoctor.specialization}</span>
+                      </div>
+                      <DoctorDayTrack availability={selectedDoctor.availability} showSummary />
+                    </div>
+                  )}
                   {loadingDates ? (
                     <p className="pb-muted">Loading available dates…</p>
                   ) : availableDates.length === 0 ? (

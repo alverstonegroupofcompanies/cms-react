@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getAppointmentCalendar, getDoctors } from '../api/client'
 import type { AppointmentCalendarResponse, CalendarDaySummary, Doctor } from '../api/types'
+import { formatDoctorOptionLabel } from '../utils/doctorAvailability'
 
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
@@ -134,7 +135,7 @@ export default function PatientMonthCalendar({ showDoctorFilter = false, onSelec
               <option value="">All doctors</option>
               {doctors.map((d) => (
                 <option key={d.id} value={d.id}>
-                  {d.name}
+                  {formatDoctorOptionLabel(d)}
                 </option>
               ))}
             </select>

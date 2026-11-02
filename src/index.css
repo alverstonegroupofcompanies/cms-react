@@ -13139,3 +13139,74 @@ a.ps-btn-outline:hover {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   DOCTOR DAY TRACK & PILLS (M T W T F S S)
+   ========================================================================== */
+.doc-day-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: inherit;
+  flex-wrap: wrap;
+}
+
+.doc-day-track-pills {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22rem;
+}
+
+.doc-day-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  letter-spacing: -0.02em;
+  user-select: none;
+  box-sizing: border-box;
+  transition: all 160ms ease;
+}
+
+.doc-day-pill.is-active {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  box-shadow: 0 1px 2px rgba(16, 185, 129, 0.08);
+}
+
+.doc-day-pill.is-off {
+  background: #f4f4f5;
+  color: #a1a1aa;
+  border: 1px solid #e4e4e7;
+  font-weight: 600;
+  opacity: 0.65;
+}
+
+.doc-day-track--sm .doc-day-pill {
+  width: 18px;
+  height: 18px;
+  font-size: 0.64rem;
+  border-radius: 4px;
+}
+
+.doc-day-track--lg .doc-day-pill {
+  width: 28px;
+  height: 28px;
+  font-size: 0.85rem;
+  border-radius: 8px;
+}
+
+.doc-day-track-summary {
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: #475569;
+}
+
