@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import PatientPage from '../../components/PatientPage'
 import PasswordInput from '../../components/PasswordInput'
 import { getMe, getMyProfile, getMyRoyalPoints, resetPassword, updateMyProfile } from '../../api/client'
 import type { Patient, RoyalPointsData, User } from '../../api/types'
 import { useAuth } from '../../context/AuthContext'
+import { storageUrl } from '../../utils/storageUrl'
 import {
   BLOOD_GROUPS,
   MARITAL_STATUSES,
@@ -13,6 +14,15 @@ import {
   formatDob,
   genderLabel,
 } from '../../utils/patientForm'
+
+function IconCamera({ size = 15 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+      <circle cx="12" cy="13" r="4" />
+    </svg>
+  )
+}
 
 type ProfileForm = {
   first_name: string
@@ -72,6 +82,10 @@ export default function PatientProfile() {
   const [profilePatient, setProfilePatient] = useState<Patient | null>(user?.patient || null)
   const [pointsData, setPointsData] = useState<RoyalPointsData | null>(null)
   const [meta, setMeta] = useState<{ patient_code: string; email: string } | null>(null)
+  const [photoFile, setPhotoFile] = useState<File | null>(null)
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null)
+  const [removePhoto, setRemovePhoto] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
@@ -106,6 +120,97 @@ export default function PatientProfile() {
     setMessage('')
   }
 
+  const handlePhotoSelect = (file: File | null) => {
+    if (!file) return
+    if (!file.type.startsWith('image/')) {
+      setError('Please select a valid image file (JPG, PNG, WEBP)')
+      return
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image file size must be under 5MB')
+      return
+    }
+    setPhotoFile(file)
+    setRemovePhoto(false)
+    setPhotoPreview(URL.createObjectURL(file))
+    setError('')
+    setMessage('')
+  }
+
+  const handleRemovePhoto = () => {
+    setPhotoFile(null)
+    setPhotoPreview(null)
+    setRemovePhoto(true)
+    if (fileInputRef.current) fileInputRef.current.value = ''
+  }
+
+  const handleDirectPhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file || !form) return
+    if (!file.type.startsWith('image/')) {
+      setError('Please select a valid image file (JPG, PNG, WEBP)')
+      return
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image file size must be under 5MB')
+      return
+    }
+
+    setSaving(true)
+    setError('')
+    setMessage('')
+    try {
+      const fd = new FormData()
+      fd.append('photo', file)
+
+      const { data } = await updateMyProfile(fd)
+      const updatedUser = data as User
+      updateUser(updatedUser)
+      if (updatedUser.patient) {
+        setProfilePatient(updatedUser.patient)
+        setForm(patientToForm(updatedUser.patient))
+      }
+      setPhotoFile(null)
+      setPhotoPreview(null)
+      setRemovePhoto(false)
+      setMessage('Profile photo updated successfully')
+    } catch (err: unknown) {
+      const res = (err as { response?: { data?: { message?: string } } })?.response?.data
+      setError(res?.message || 'Failed to upload photo')
+    } finally {
+      setSaving(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
+  }
+
+  const handleDirectPhotoRemove = async () => {
+    if (!window.confirm('Are you sure you want to remove your profile photo?')) return
+    setSaving(true)
+    setError('')
+    setMessage('')
+    try {
+      const fd = new FormData()
+      fd.append('remove_photo', '1')
+
+      const { data } = await updateMyProfile(fd)
+      const updatedUser = data as User
+      updateUser(updatedUser)
+      if (updatedUser.patient) {
+        setProfilePatient(updatedUser.patient)
+        setForm(patientToForm(updatedUser.patient))
+      }
+      setPhotoFile(null)
+      setPhotoPreview(null)
+      setRemovePhoto(false)
+      setMessage('Profile photo removed')
+    } catch (err: unknown) {
+      const res = (err as { response?: { data?: { message?: string } } })?.response?.data
+      setError(res?.message || 'Failed to remove photo')
+    } finally {
+      setSaving(false)
+    }
+  }
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!form) return
@@ -113,29 +218,46 @@ export default function PatientProfile() {
     setError('')
     setMessage('')
     try {
-      const { data } = await updateMyProfile({
-        first_name: form.first_name.trim(),
-        last_name: form.last_name.trim(),
-        dob: form.dob,
-        gender: form.gender,
-        phone: form.phone.replace(/\D/g, '').slice(-10),
-        address_street: form.address_street.trim() || null,
-        address_line2: form.address_line2.trim() || null,
-        city: form.city.trim() || null,
-        state: form.state.trim() || null,
-        postal_code: form.postal_code.trim() || null,
-        blood_group: form.blood_group || null,
-        marital_status: form.marital_status || null,
-        symptoms: form.symptoms.trim() || null,
-        taking_medications: form.taking_medications === 'yes' ? true : form.taking_medications === 'no' ? false : null,
-        current_medications: form.current_medications.trim() || null,
-        emergency_contact_first_name: form.emergency_contact_first_name.trim() || null,
-        emergency_contact_last_name: form.emergency_contact_last_name.trim() || null,
-        emergency_contact_relationship: form.emergency_contact_relationship.trim() || null,
-        emergency_contact_phone: form.emergency_contact_phone.replace(/\D/g, '').slice(-10) || null,
-      })
-      updateUser(data as User)
-      setForm(patientToForm(data.patient!))
+      const fd = new FormData()
+      fd.append('first_name', form.first_name.trim())
+      if (form.last_name.trim()) fd.append('last_name', form.last_name.trim())
+      if (form.dob) fd.append('dob', form.dob)
+      if (form.gender) fd.append('gender', form.gender)
+      fd.append('phone', form.phone.replace(/\D/g, '').slice(-10))
+      if (form.address_street.trim()) fd.append('address_street', form.address_street.trim())
+      if (form.address_line2.trim()) fd.append('address_line2', form.address_line2.trim())
+      if (form.city.trim()) fd.append('city', form.city.trim())
+      if (form.state.trim()) fd.append('state', form.state.trim())
+      if (form.postal_code.trim()) fd.append('postal_code', form.postal_code.trim())
+      if (form.blood_group) fd.append('blood_group', form.blood_group)
+      if (form.marital_status) fd.append('marital_status', form.marital_status)
+      if (form.symptoms.trim()) fd.append('symptoms', form.symptoms.trim())
+      if (form.taking_medications) {
+        fd.append('taking_medications', form.taking_medications === 'yes' ? '1' : '0')
+      }
+      if (form.current_medications.trim()) fd.append('current_medications', form.current_medications.trim())
+      if (form.emergency_contact_first_name.trim()) fd.append('emergency_contact_first_name', form.emergency_contact_first_name.trim())
+      if (form.emergency_contact_last_name.trim()) fd.append('emergency_contact_last_name', form.emergency_contact_last_name.trim())
+      if (form.emergency_contact_relationship.trim()) fd.append('emergency_contact_relationship', form.emergency_contact_relationship.trim())
+      if (form.emergency_contact_phone) fd.append('emergency_contact_phone', form.emergency_contact_phone.replace(/\D/g, '').slice(-10))
+
+      if (photoFile) {
+        fd.append('photo', photoFile)
+      } else if (removePhoto) {
+        fd.append('remove_photo', '1')
+      }
+
+      const { data } = await updateMyProfile(fd)
+      const updatedUser = data as User
+      updateUser(updatedUser)
+      if (updatedUser.patient) {
+        setProfilePatient(updatedUser.patient)
+        setForm(patientToForm(updatedUser.patient))
+      }
+      setPhotoFile(null)
+      setPhotoPreview(null)
+      setRemovePhoto(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
       setEditing(false)
       setMessage('Profile updated successfully')
     } catch (err: unknown) {
@@ -148,6 +270,10 @@ export default function PatientProfile() {
 
   const handleCancel = () => {
     if (user?.patient) setForm(patientToForm(user.patient))
+    setPhotoFile(null)
+    setPhotoPreview(null)
+    setRemovePhoto(false)
+    if (fileInputRef.current) fileInputRef.current.value = ''
     setEditing(false)
     setError('')
   }
@@ -194,6 +320,15 @@ export default function PatientProfile() {
   const age = calcAge(form.dob)
   const fullName = `${form.first_name} ${form.last_name}`.trim()
   const initials = fullName.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()
+  const currentPhotoSrc = removePhoto
+    ? null
+    : photoPreview
+    ? photoPreview
+    : profilePatient?.photo_url
+    ? storageUrl(profilePatient.photo_url)
+    : user?.patient?.photo_url
+    ? storageUrl(user.patient.photo_url)
+    : null
 
   return (
     <PatientPage
@@ -225,10 +360,62 @@ export default function PatientProfile() {
       {message && <div className="ph-alert ph-alert-success">{message}</div>}
       {error && <div className="ph-alert ph-alert-error">{error}</div>}
 
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={editing ? (e) => handlePhotoSelect(e.target.files?.[0] || null) : handleDirectPhotoUpload}
+      />
+
       <div className="ph-profile-hero ph-page-panel">
-        <div className="ph-profile-hero-avatar">{initials}</div>
+        <div className="ph-profile-hero-avatar-wrap">
+          <div className="ph-profile-hero-avatar">
+            {currentPhotoSrc ? (
+              <img src={currentPhotoSrc} alt={fullName} />
+            ) : (
+              initials
+            )}
+          </div>
+          <button
+            type="button"
+            className="ph-avatar-badge-btn"
+            onClick={() => fileInputRef.current?.click()}
+            title={currentPhotoSrc ? 'Change profile photo' : 'Upload profile photo'}
+            aria-label="Upload profile photo"
+          >
+            <IconCamera size={14} />
+          </button>
+        </div>
         <div className="ph-profile-hero-info">
-          <h2>{fullName || 'Patient'}</h2>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <h2 style={{ margin: 0 }}>{fullName || 'Patient'}</h2>
+            {!editing && (
+              <div style={{ display: 'flex', gap: '0.45rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  className="ph-btn ph-btn-outline"
+                  style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={saving}
+                >
+                  <IconCamera size={14} />
+                  <span style={{ marginLeft: '0.35rem' }}>{currentPhotoSrc ? 'Change photo' : 'Add photo'}</span>
+                </button>
+                {currentPhotoSrc && (
+                  <button
+                    type="button"
+                    className="ph-btn ph-btn-outline"
+                    style={{ padding: '0.35rem 0.65rem', fontSize: '0.8rem', color: '#dc2626', borderColor: '#fca5a5' }}
+                    onClick={handleDirectPhotoRemove}
+                    disabled={saving}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
           <span className="ph-profile-id">{meta.patient_code}</span>
           <p className="ph-muted">{meta.email}</p>
           {age && <p className="ph-muted">Age: {formatAge(age)}</p>}
@@ -312,6 +499,61 @@ export default function PatientProfile() {
             </dl>
           ) : (
             <div className="ph-form-grid">
+              <div className="ph-form-group ph-full" style={{ marginBottom: '0.5rem' }}>
+                <label className="ph-label-form">Profile Photo</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginTop: '0.4rem', flexWrap: 'wrap' }}>
+                  <div
+                    style={{
+                      width: 60,
+                      height: 60,
+                      borderRadius: '50%',
+                      overflow: 'hidden',
+                      background: 'var(--ph-teal)',
+                      color: '#fff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.2rem',
+                      fontWeight: 700,
+                      flexShrink: 0,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                      border: '2px solid #fff',
+                    }}
+                  >
+                    {currentPhotoSrc ? (
+                      <img src={currentPhotoSrc} alt={fullName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                      initials
+                    )}
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      <button
+                        type="button"
+                        className="ph-btn ph-btn-outline"
+                        onClick={() => fileInputRef.current?.click()}
+                        style={{ padding: '0.35rem 0.75rem', fontSize: '0.82rem' }}
+                      >
+                        <IconCamera size={14} />
+                        <span style={{ marginLeft: '0.35rem' }}>{currentPhotoSrc ? 'Change photo' : 'Upload photo'}</span>
+                      </button>
+                      {currentPhotoSrc && (
+                        <button
+                          type="button"
+                          className="ph-btn ph-btn-outline"
+                          onClick={handleRemovePhoto}
+                          style={{ padding: '0.35rem 0.75rem', fontSize: '0.82rem', color: '#b91c1c', borderColor: '#fca5a5' }}
+                        >
+                          Remove photo
+                        </button>
+                      )}
+                    </div>
+                    <span className="ph-hint" style={{ margin: 0, fontSize: '0.78rem' }}>
+                      {photoFile ? `Selected: ${photoFile.name}` : 'JPG, PNG, or WEBP (Max 5MB)'}
+                    </span>
+                  </div>
+                </div>
+              </div>
               <div className="ph-form-group"><label className="ph-label-form">First Name</label><input className="ph-input" value={form.first_name} onChange={(e) => update('first_name', e.target.value)} required /></div>
               <div className="ph-form-group"><label className="ph-label-form">Last Name</label><input className="ph-input" value={form.last_name} onChange={(e) => update('last_name', e.target.value)} required /></div>
               <div className="ph-form-group"><label className="ph-label-form">Date of Birth</label><input className="ph-input" type="date" value={form.dob} onChange={(e) => update('dob', e.target.value)} max={new Date().toISOString().split('T')[0]} required />{age && <span className="ph-hint">Age: {formatAge(age)}</span>}</div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { CLINIC } from '../config/clinic'
 import { useAuth } from '../context/AuthContext'
+import { storageUrl } from '../utils/storageUrl'
 import './aster-navbar.css'
 
 interface SpecialtyItem {
@@ -126,6 +127,8 @@ export default function AsterNavbar() {
       .join('')
       .slice(0, 2)
       .toUpperCase() ?? 'PT'
+
+  const patientPhotoUrl = user?.patient?.photo_url ? storageUrl(user.patient.photo_url) : null
 
   // Close menus on page navigation
   useEffect(() => {
@@ -578,7 +581,13 @@ export default function AsterNavbar() {
                   aria-expanded={activeDropdown === 'profile'}
                   id="aster-nav-profile-toggle"
                 >
-                  <span className="alv-profile-avatar">{initials}</span>
+                  <span className="alv-profile-avatar">
+                    {patientPhotoUrl ? (
+                      <img src={patientPhotoUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                    ) : (
+                      initials
+                    )}
+                  </span>
                   <span className="alv-profile-name">{user?.name?.split(' ')[0]}</span>
                   <svg className="alv-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <polyline points="6 9 12 15 18 9" />
@@ -588,7 +597,13 @@ export default function AsterNavbar() {
                 {activeDropdown === 'profile' && (
                   <div className="alv-floating-menu alv-menu-profile">
                     <div className="alv-profile-card-head">
-                      <div className="alv-profile-avatar-lg">{initials}</div>
+                      <div className="alv-profile-avatar-lg">
+                        {patientPhotoUrl ? (
+                          <img src={patientPhotoUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                        ) : (
+                          initials
+                        )}
+                      </div>
                       <div>
                         <div className="alv-profile-fullname">{user?.name}</div>
                         <div className="alv-profile-sub">{user?.email || 'Verified Patient'}</div>
@@ -759,7 +774,13 @@ export default function AsterNavbar() {
           {isPatient ? (
             <>
               <div className="alv-mobile-user-card">
-                <div className="alv-profile-avatar">{initials}</div>
+                <div className="alv-profile-avatar">
+                  {patientPhotoUrl ? (
+                    <img src={patientPhotoUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                  ) : (
+                    initials
+                  )}
+                </div>
                 <div>
                   <strong>{user?.name}</strong>
                   <div style={{ fontSize: '0.74rem', opacity: 0.8 }}>Patient Portal Account</div>

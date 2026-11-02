@@ -1,8 +1,13 @@
 export function storageUrl(path?: string | null): string {
   if (!path) return ''
-  if (path.startsWith('http://') || path.startsWith('https://')) return path
-  const base = import.meta.env.VITE_API_URL || 'http://localhost:8000'
-  const root = base.replace(/\/api\/?$/, '')
-  return `${root}/storage/${path.replace(/^\//, '')}`
+  const trimmed = path.trim()
+  if (!trimmed) return ''
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('data:') || trimmed.startsWith('blob:')) {
+    return trimmed
+  }
+  const cleanPath = trimmed.replace(/^\/?(storage\/)?/, '')
+  const base = import.meta.env.VITE_API_URL || ''
+  const root = base ? base.replace(/\/api\/?$/, '') : ''
+  return root ? `${root}/storage/${cleanPath}` : `/storage/${cleanPath}`
 }
 

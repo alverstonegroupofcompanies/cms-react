@@ -401,7 +401,7 @@ export default function PatientDashboard() {
         <section
           className="po-flow-hero"
           data-reveal="hero"
-          style={{ backgroundImage: "url('/images/patient-care-banner.jpg')" }}
+          style={{ backgroundImage: "url('/images/patient-care-banner.jpg?v=2')" }}
         >
           <div className="po-flow-hero-veil" aria-hidden />
 

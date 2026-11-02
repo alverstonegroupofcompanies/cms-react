@@ -78,6 +78,9 @@ export default function DoctorPatient() {
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
+  const [editPhoto, setEditPhoto] = useState<File | null>(null)
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null)
+  const [removePhoto, setRemovePhoto] = useState(false)
 
   const [form, setForm] = useState({
     first_name: '',
@@ -94,6 +97,9 @@ export default function DoctorPatient() {
 
   const hydrate = (p: Patient) => {
     const [first, ...rest] = (p.name || '').trim().split(/\s+/)
+    setEditPhoto(null)
+    setPhotoPreview(null)
+    setRemovePhoto(false)
     setForm({
       first_name: p.first_name || first || '',
       last_name: p.last_name || rest.join(' ') || '',
@@ -218,18 +224,24 @@ export default function DoctorPatient() {
     setSaving(true)
     setError('')
     try {
-      const { data } = await updatePatient(patient.id, {
-        first_name: form.first_name,
-        last_name: form.last_name || undefined,
-        phone: form.phone,
-        email: form.email || undefined,
-        gender: form.gender || undefined,
-        dob: form.dob || undefined,
-        blood_group: form.blood_group || undefined,
-        emergency_contact: form.emergency_contact || undefined,
-        emergency_contact_phone: form.emergency_contact_phone || undefined,
-        address: form.address || undefined,
-      })
+      const fd = new FormData()
+      fd.append('first_name', form.first_name)
+      if (form.last_name) fd.append('last_name', form.last_name)
+      fd.append('phone', form.phone)
+      if (form.email) fd.append('email', form.email)
+      if (form.gender) fd.append('gender', form.gender)
+      if (form.dob) fd.append('dob', form.dob)
+      if (form.blood_group) fd.append('blood_group', form.blood_group)
+      if (form.emergency_contact) fd.append('emergency_contact', form.emergency_contact)
+      if (form.emergency_contact_phone) fd.append('emergency_contact_phone', form.emergency_contact_phone)
+      if (form.address) fd.append('address', form.address)
+      if (editPhoto) {
+        fd.append('photo', editPhoto)
+      } else if (removePhoto) {
+        fd.append('remove_photo', '1')
+      }
+
+      const { data } = await updatePatient(patient.id, fd)
       setPatient(data)
       hydrate(data)
       setMessage('Patient details saved')
@@ -410,6 +422,47 @@ export default function DoctorPatient() {
                   <p>Demographics and contact for this chart</p>
                 </div>
                 <form onSubmit={save} className="dph-edit-form">
+                  <div className="form-group" style={{ gridColumn: '1 / -1', marginBottom: '0.75rem' }}>
+                    <label>Profile photo</label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.35rem' }}>
+                      <div style={{ width: 52, height: 52, borderRadius: '50%', overflow: 'hidden', background: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontWeight: 700, color: '#475569' }}>
+                        {photoPreview ? (
+                          <img src={photoPreview} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        ) : !removePhoto && patient.photo_url ? (
+                          <img src={patient.photo_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        ) : (
+                          initials(patient.name)
+                        )}
+                      </div>
+                      <div style={{ display: 'flex', gap: '0.65rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const f = e.target.files?.[0]
+                            if (f) {
+                              setEditPhoto(f)
+                              setPhotoPreview(URL.createObjectURL(f))
+                              setRemovePhoto(false)
+                            }
+                          }}
+                        />
+                        {((!removePhoto && patient.photo_url) || photoPreview) && (
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-secondary"
+                            onClick={() => {
+                              setEditPhoto(null)
+                              setPhotoPreview(null)
+                              setRemovePhoto(true)
+                            }}
+                          >
+                            Remove photo
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                   <div className="form-row">
                     <div className="form-group">
                       <label>First name</label>

@@ -130,7 +130,10 @@ export const deletePatient = (id: number) =>
 export const issuePatientLogin = (id: number) => api.post(`/patients/${id}/issue-login`)
 export const getPatient = (id: number) => api.get(`/patients/${id}`)
 export const getMyProfile = () => api.get('/patients/me')
-export const updateMyProfile = (data: object) => api.patch('/patients/me', data)
+export const updateMyProfile = (data: FormData | object) =>
+  data instanceof FormData
+    ? api.post('/patients/me', data, { headers: { 'Content-Type': 'multipart/form-data' } })
+    : api.patch('/patients/me', data)
 
 // Clinics & Departments
 export const getClinics = () => api.get('/clinics')
