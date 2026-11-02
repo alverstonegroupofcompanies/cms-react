@@ -450,7 +450,6 @@ export default function ReceptionistBookAppointment() {
         {selectedDoctor && walkInDoctors.some((d) => String(d.id) === doctorId) && (
           <p className="muted walkin-doctor-hint">
             Queue for <strong>{selectedDoctor.name}</strong> only · {selectedDoctor.specialization}
-            {selectedDoctor.consultation_fee != null ? ` · Fee ₹${selectedDoctor.consultation_fee}` : ''}
           </p>
         )}
 
@@ -577,8 +576,7 @@ export default function ReceptionistBookAppointment() {
 
         {selectedDoctor && (
           <p className="muted" style={{ marginBottom: '0.75rem' }}>
-            Fee ₹{selectedDoctor.consultation_fee ?? '—'} · Lunch{' '}
-            {selectedDoctor.lunch_start?.slice(0, 5) || '—'}–{selectedDoctor.lunch_end?.slice(0, 5) || '—'}
+            Lunch break: {selectedDoctor.lunch_start?.slice(0, 5) || '—'}–{selectedDoctor.lunch_end?.slice(0, 5) || '—'}
           </p>
         )}
 

@@ -44,11 +44,6 @@ function formatSlotTime(slotTime?: string | null): string {
   return String(slotTime).slice(0, 5)
 }
 
-function formatFee(n?: number | null) {
-  if (n == null) return null
-  return `₹${Number(n).toLocaleString('en-IN', { maximumFractionDigits: 0 })}`
-}
-
 function IconDropletSafe({ size = 20, className = '' }: { size?: number; className?: string }) {
   return (
     <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -267,9 +262,6 @@ export default function BookAppointment() {
                   <div><dt>Clinic</dt><dd>{appointment.clinic?.name ?? clinic?.name ?? '—'}</dd></div>
                   <div><dt>Date</dt><dd>{formatAppointmentDate(appointment.appointment_date)}</dd></div>
                   <div><dt>Time</dt><dd>{formatSlotTime(appointment.slot_time)}</dd></div>
-                  {doctor?.consultation_fee != null && (
-                    <div><dt>Fee</dt><dd className="pb-fee">{formatFee(doctor.consultation_fee)}</dd></div>
-                  )}
                   <div>
                     <dt>Status</dt>
                     <dd>
@@ -448,9 +440,6 @@ export default function BookAppointment() {
                             <IconCalendar size={13} /> {formatWorkingDays(d.availability)}
                           </span>
                         </div>
-                        {d.consultation_fee != null && (
-                          <em className="pb-doctor-fee">{formatFee(d.consultation_fee)}</em>
-                        )}
                       </button>
                     ))
                   )}
@@ -522,12 +511,6 @@ export default function BookAppointment() {
                         {selectedDateMeta?.label || formatAppointmentDate(date)} · {formatSlotTime(selectedSlot)}
                       </strong>
                     </div>
-                    {selectedDoctor?.consultation_fee != null && (
-                      <div className="pb-ready-row">
-                        <em>Fee</em>
-                        <strong className="pb-fee">{formatFee(selectedDoctor.consultation_fee)}</strong>
-                      </div>
-                    )}
                   </div>
                   <button
                     type="button"
@@ -575,11 +558,6 @@ export default function BookAppointment() {
                     </div>
                   </li>
                 </ul>
-                {selectedDoctor?.consultation_fee != null && (
-                  <p className="pb-aside-fee">
-                    Consultation fee <strong>{formatFee(selectedDoctor.consultation_fee)}</strong>
-                  </p>
-                )}
               </div>
               <div className="pb-aside-tip">
                 <span className="pb-aside-tip-ico" aria-hidden>
