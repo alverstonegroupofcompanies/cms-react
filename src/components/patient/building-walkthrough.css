@@ -80,7 +80,7 @@
 }
 
 .btr-scene-layer[data-scene="0"] {
-  background-position: 72% 38%;
+  background-position: center 14%;
 }
 
 .btr-scene-layer[data-scene="1"] {
@@ -98,7 +98,7 @@
 /* Responsive focal point adjustments */
 @media (max-width: 768px) {
   .btr-scene-layer[data-scene="0"] {
-    background-position: 78% 38%;
+    background-position: 52% 45%;
   }
   .btr-scene-layer[data-scene="1"] {
     background-position: 50% 50%;

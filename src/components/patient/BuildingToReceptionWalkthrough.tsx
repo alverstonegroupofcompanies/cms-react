@@ -4,6 +4,7 @@ import { CLINIC } from '../../config/clinic'
 import {
   IconPhone,
   IconCalendar,
+  IconBuilding,
   IconTv,
   IconDroplet,
   IconStethoscope,
@@ -30,6 +31,27 @@ function IconAutoDoor({ size = 18 }: { size?: number }) {
       <line x1="12" y1="3" x2="12" y2="21" strokeDasharray="2 2" />
       <polyline points="7 10 9 12 7 14" />
       <polyline points="17 10 15 12 17 14" />
+    </svg>
+  )
+}
+
+function IconParking({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <rect x="3" y="3" width="18" height="18" rx="4" />
+      <path d="M9 17V7h4a3 3 0 0 1 0 6H9" />
+    </svg>
+  )
+}
+
+function IconAmbulance({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <rect x="2" y="7" width="15" height="11" rx="2" />
+      <path d="M17 10h4l2 3v5h-6" />
+      <circle cx="7" cy="18" r="2" />
+      <circle cx="17" cy="18" r="2" />
+      <path d="M9 10v4M7 12h4" />
     </svg>
   )
 }
@@ -82,17 +104,17 @@ interface SceneData {
 
 const SCENES: SceneData[] = [
   {
-    id: 'consultation',
+    id: 'campus',
     stepNumber: '01',
-    badge: 'Doctor Consultation & Care',
-    title: 'Caring Doctors & Happy Patients',
+    badge: 'Hospital Campus',
+    title: 'Hospital Campus & Parking',
     features: [
-      { icon: <IconStethoscope size={18} />, label: 'Experienced Doctors' },
-      { icon: <IconCalendar size={18} />, label: 'Instant Appointments' },
-      { icon: <IconFastCheck size={18} />, label: 'Compassionate Care' },
+      { icon: <IconParking size={18} />, label: 'Free Patient Parking' },
+      { icon: <IconAmbulance size={18} />, label: '24/7 Covered Drop-off' },
+      { icon: <IconBuilding size={18} />, label: 'Spacious Green Campus' },
     ],
-    image: '/images/patient-care-banner.jpg?v=2',
-    alt: 'Smiling compassionate doctor consulting happy patient at Alverstone Medcity',
+    image: '/images/walkthrough/01-building.jpg',
+    alt: 'Alverstone Medcity Hospital Exterior Architecture',
   },
   {
     id: 'entrance',
