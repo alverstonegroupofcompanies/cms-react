@@ -24,11 +24,6 @@ function orderHasResults(o: LabOrder): boolean {
   })
 }
 
-function storageUrl(path: string) {
-  const base = (import.meta.env.VITE_API_URL || '/api').replace(/\/api\/?$/, '')
-  return `${base}/storage/${path}`
-}
-
 function formatOrderDate(iso?: string) {
   if (!iso) return '—'
   const d = new Date(iso)
@@ -152,7 +147,24 @@ function CompletedReportCard({ order }: { order: LabOrder }) {
                   </table>
                 </div>
               ) : (
-                <p className="ph-muted">No numeric results listed for this test.</p>
+                <div className="ph-lab-report-table-wrap">
+                  <table className="ph-lab-report-table">
+                    <thead>
+                      <tr>
+                        <th>Investigation</th>
+                        <th>Status</th>
+                        <th>Laboratory Assessment</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>{item.lab_test?.name || 'Investigation'}</strong></td>
+                        <td><span className="badge badge-completed">Verified</span></td>
+                        <td>{order.report?.result_summary || 'Completed & verified by laboratory pathology'}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               )}
             </section>
           ))}
@@ -160,21 +172,9 @@ function CompletedReportCard({ order }: { order: LabOrder }) {
       )}
 
       <footer className="ph-lab-report-foot">
-        {order.report ? (
-          <a
-            href={storageUrl(order.report.file_path)}
-            target="_blank"
-            rel="noreferrer"
-            className="ph-btn ph-btn-primary"
-          >
-            Open PDF report
-          </a>
-        ) : (
-          <p className="ph-lab-report-note">Official values as recorded by the laboratory.</p>
-        )}
-        <button type="button" className="ph-btn ph-btn-outline" onClick={() => window.print()}>
-          Print / save
-        </button>
+        <p className="ph-lab-report-note">
+          Official verified clinical laboratory results recorded by Alverstone Medcity Diagnostics.
+        </p>
       </footer>
     </article>
   )

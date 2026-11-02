@@ -804,6 +804,7 @@ export default function ReceptionistPatients() {
               <>
                 <dl className="rp-detail-grid">
                   <div><dt>Patient ID</dt><dd>{selected.patient_code}</dd></div>
+                  <div><dt>Royal Points</dt><dd><strong style={{ color: '#b45309' }}>👑 {selected.royal_points || 0} pts</strong> <span style={{ color: '#059669', fontSize: '0.85em', fontWeight: 600 }}>(₹{Math.round(((selected.royal_points || 0) / 4) * 100) / 100})</span></dd></div>
                   <div><dt>Phone</dt><dd>{selected.phone || '—'}</dd></div>
                   <div><dt>Email</dt><dd>{selected.email || '—'}</dd></div>
                   <div><dt>Gender</dt><dd>{selected.gender || '—'}</dd></div>

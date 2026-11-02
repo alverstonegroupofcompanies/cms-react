@@ -373,7 +373,7 @@ export default function PharmacyDashboard() {
                   >
                     <div className="staff-doctor-card-body" style={{ paddingTop: '1rem' }}>
                       <h4 className="staff-doctor-card-name">{b.patient?.name || 'Patient'}</h4>
-                      <p className="staff-doctor-card-spec">{b.bill_code}</p>
+                      <p className="staff-doctor-card-spec">{b.worksheet?.worksheet_code || b.bill_code}</p>
                       <p className="staff-doctor-card-meta">
                         {b.doctor?.name ? displayDoctorName(b.doctor.name) : 'Doctor'}
                       </p>

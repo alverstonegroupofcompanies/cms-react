@@ -75,7 +75,7 @@ export default function LabBillPrint({ bill, lines, mode = 'invoice' }: Props) {
       <div className="pharm-print-title-row">
         <h1>{mode === 'report' ? 'Laboratory Report' : 'Lab Tax Invoice / Bill'}</h1>
         <div className="pharm-print-meta">
-          <div><span>Bill No.</span><strong>{bill.bill_code}</strong></div>
+          <div><span>Worksheet / Bill</span><strong>{bill.worksheet?.worksheet_code || bill.bill_code}</strong></div>
           <div><span>Date</span><strong>{formatDate(bill.created_at)}</strong></div>
         </div>
       </div>
@@ -189,10 +189,22 @@ export default function LabBillPrint({ bill, lines, mode = 'invoice' }: Props) {
                 <td>SGST @ 6%</td>
                 <td className="num">{formatInr(sgst)}</td>
               </tr>
+              {bill.points_discount && bill.points_discount > 0 ? (
+                <tr style={{ color: '#059669', fontWeight: 600 }}>
+                  <td>Royal Points Discount ({bill.points_redeemed || 0} pts)</td>
+                  <td className="num">-{formatInr(bill.points_discount)}</td>
+                </tr>
+              ) : null}
               <tr className="pharm-print-grand">
-                <td>Grand total</td>
-                <td className="num">{formatInr(grand)}</td>
+                <td>{bill.points_discount && bill.points_discount > 0 ? 'Net Payable' : 'Grand total'}</td>
+                <td className="num">{formatInr(Math.max(0, grand - (bill.points_discount || 0)))}</td>
               </tr>
+              {bill.points_earned && bill.points_earned > 0 ? (
+                <tr style={{ fontSize: '0.8rem', color: '#b45309', fontWeight: 600 }}>
+                  <td>Royal Points Earned</td>
+                  <td className="num">+{bill.points_earned} pts</td>
+                </tr>
+              ) : null}
             </tbody>
           </table>
         </div>

@@ -97,6 +97,7 @@ function isMissedAppointment(a: Appointment): boolean {
 
 function isUpcomingAppointment(a: Appointment): boolean {
   if (['cancelled', 'completed', 'no_show'].includes(a.status)) return false
+  if (a.queue_token?.status === 'completed') return false
   if (isMissedAppointment(a)) return false
   return appointmentStart(a).getTime() >= Date.now() || (a.status === 'checked_in' && isToday(a.appointment_date))
 }
@@ -107,6 +108,7 @@ function appointmentToVisit(a: Appointment, _index: number): VisitItem {
   const range = formatTimeRange(slot, 30)
   const accent = 'clinical' as const
   const missed = isMissedAppointment(a)
+  const isCompleted = a.status === 'completed' || a.queue_token?.status === 'completed'
   return {
     id: `appt-${a.id}`,
     kind: 'appointment',
@@ -120,22 +122,24 @@ function appointmentToVisit(a: Appointment, _index: number): VisitItem {
     roomNumber: a.doctor?.room_number ? `OPD Room ${a.doctor.room_number}` : 'Main Campus OPD',
     doctorId: a.doctor_id,
     doctorPhotoUrl: getDoctorPhotoUrl(a.doctor?.photo_url),
-    status: a.status === 'cancelled' ? 'cancelled' : missed ? 'missed' : a.status,
+    status: a.status === 'cancelled' ? 'cancelled' : missed ? 'missed' : isCompleted ? 'completed' : a.status,
     statusLabel:
       a.status === 'cancelled'
         ? 'Cancelled'
         : missed
           ? 'Missed'
-          : a.status === 'checked_in'
-            ? (a.queue_token?.status === 'in_consultation' ? 'With doctor' : 'In queue')
-            : isToday(date) && a.status === 'booked' && a.queue_token
-              ? 'In queue'
-              : isToday(date) && a.status === 'booked'
-                ? 'Today'
-                : (STATUS_LABELS[a.status] || a.status),
+          : isCompleted
+            ? 'Completed'
+            : a.status === 'checked_in'
+              ? (a.queue_token?.status === 'in_consultation' ? 'With doctor' : 'In queue')
+              : isToday(date) && a.status === 'booked' && a.queue_token && ['waiting', 'in_consultation'].includes(a.queue_token.status)
+                ? (a.queue_token.status === 'in_consultation' ? 'With doctor' : 'In queue')
+                : isToday(date) && a.status === 'booked'
+                  ? 'Today'
+                  : (STATUS_LABELS[a.status] || a.status),
     accent,
     appointmentId: a.id,
-    cancellable: ['booked', 'no_show', 'checked_in'].includes(a.status),
+    cancellable: !isCompleted && ['booked', 'no_show', 'checked_in'].includes(a.status),
   }
 }
 

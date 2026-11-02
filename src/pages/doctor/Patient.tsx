@@ -18,6 +18,7 @@ import {
   visitHistoryHasContent,
 } from '../../utils/clinicalData'
 import { doseFrequencyShort } from '../../utils/doseSchedule'
+import { storageUrl } from '../../utils/storageUrl'
 import type { LabOrder, Patient, Prescription, VisitBill, Worksheet } from '../../api/types'
 
 const BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', 'unknown']
@@ -347,6 +348,9 @@ export default function DoctorPatient() {
                     {patient.blood_group && patient.blood_group !== 'unknown' && (
                       <span className="dph-blood">{patient.blood_group}</span>
                     )}
+                    <span className="dph-pill" style={{ background: '#fef3c7', color: '#92400e', border: '1px solid #fde68a', fontWeight: 700 }}>
+                      👑 {patient.royal_points || 0} pts (₹{Math.round(((patient.royal_points || 0) / 4) * 100) / 100})
+                    </span>
                   </p>
                 </div>
               </div>
@@ -371,6 +375,10 @@ export default function DoctorPatient() {
                 <div>
                   <dt>Bills</dt>
                   <dd>{bills.length}</dd>
+                </div>
+                <div style={{ background: 'rgba(245, 158, 11, 0.12)', borderRadius: '8px' }}>
+                  <dt style={{ color: '#b45309', fontWeight: 700 }}>👑 Points</dt>
+                  <dd style={{ color: '#b45309', fontWeight: 800 }}>{patient.royal_points || 0}</dd>
                 </div>
               </dl>
               <div className="dph-contact-strip">
@@ -647,6 +655,19 @@ export default function DoctorPatient() {
                             ))
                           )}
                         </div>
+                        {o.report && (
+                          <div style={{ marginTop: '0.4rem' }}>
+                            <a
+                              href={storageUrl(o.report.file_path)}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="dph-link"
+                              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.85rem' }}
+                            >
+                              📄 View PDF Report ({o.report.file_name || 'Report'})
+                            </a>
+                          </div>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -677,6 +698,8 @@ export default function DoctorPatient() {
                       worksheetCode={viewBill.worksheet?.worksheet_code || `WS #${viewBill.worksheet_id}`}
                       lines={billLinesFromVisitBill(viewBill)}
                       consultFee={viewBill.consultation_fee}
+                      patientRoyalPoints={patient.royal_points || 0}
+                      initialPointsRedeemed={viewBill.points_redeemed || 0}
                     />
                   </>
                 ) : bills.length === 0 ? (

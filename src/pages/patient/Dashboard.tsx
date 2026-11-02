@@ -12,7 +12,6 @@ import {
   IconHeart,
   IconPhone,
   IconPill,
-  IconQueue,
   IconStethoscope,
 } from '../../components/Icons'
 import { useAuth } from '../../context/AuthContext'
@@ -102,11 +101,13 @@ function isMissedAppointment(a: Appointment): boolean {
 
 function isUpcomingAppointment(a: Appointment): boolean {
   if (['cancelled', 'completed', 'no_show'].includes(a.status)) return false
+  if (a.queue_token?.status === 'completed') return false
   if (isMissedAppointment(a)) return false
   return appointmentStart(a).getTime() >= Date.now() || (a.status === 'checked_in' && isTodayDate(a.appointment_date))
 }
 
 function appointmentStatusLabel(a: Appointment) {
+  if (a.status === 'completed' || a.queue_token?.status === 'completed') return 'Completed'
   if (a.status === 'checked_in') {
     return a.queue_token?.status === 'in_consultation' ? 'With doctor' : 'In queue'
   }
@@ -114,7 +115,6 @@ function appointmentStatusLabel(a: Appointment) {
     return a.queue_token.status === 'in_consultation' ? 'With doctor' : 'In queue'
   }
   if (a.status === 'booked') return 'Scheduled'
-  if (a.status === 'completed') return 'Completed'
   if (a.status === 'cancelled') return 'Cancelled'
   if (a.status === 'no_show') return 'Missed'
   return a.status.replace(/_/g, ' ')
@@ -131,7 +131,7 @@ function labOrderHasResults(o: LabOrder): boolean {
 }
 
 function isQueuedAppointment(a: Appointment) {
-  if (isMissedAppointment(a) || a.status === 'cancelled' || a.status === 'completed') return false
+  if (isMissedAppointment(a) || a.status === 'cancelled' || a.status === 'completed' || a.queue_token?.status === 'completed') return false
   if (!isTodayDate(a.appointment_date)) return false
   return (
     a.status === 'checked_in' ||
@@ -225,12 +225,13 @@ export default function PatientDashboard() {
     latestLab,
     nextAppt,
     missedAppt,
+    todayCompletedAppt,
     lastVisit,
     activeRx,
   } = useMemo(() => {
     const upcomingList = appointments.filter(isUpcomingAppointment)
     const missedList = appointments.filter(isMissedAppointment)
-    const completedList = appointments.filter((a) => a.status === 'completed')
+    const completedList = appointments.filter((a) => a.status === 'completed' || a.queue_token?.status === 'completed')
     const activeLabs = labOrders.filter((o) => o.status !== 'cancelled')
     const pendingLabs = activeLabs.filter((o) => !labOrderHasResults(o))
     const ready = activeLabs.filter((o) => labOrderHasResults(o)).length
@@ -245,6 +246,9 @@ export default function PatientDashboard() {
     const missed = [...missedList].sort(
       (a, b) => appointmentStart(b).getTime() - appointmentStart(a).getTime()
     )[0]
+    const todayCompleted = [...completedList]
+      .filter((a) => isTodayDate(a.appointment_date))
+      .sort((a, b) => appointmentStart(b).getTime() - appointmentStart(a).getTime())[0]
     const last = [...completedList].sort(
       (a, b) => appointmentStart(b).getTime() - appointmentStart(a).getTime()
     )[0]
@@ -273,6 +277,7 @@ export default function PatientDashboard() {
       latestLab: pendingLabOrder || sortedLabs[0] || null,
       nextAppt: next || null,
       missedAppt: missed || null,
+      todayCompletedAppt: todayCompleted || null,
       lastVisit: last || null,
       activeRx: rxActive.slice(0, 3),
     }
@@ -282,20 +287,34 @@ export default function PatientDashboard() {
     return formatAppointmentDate(a.appointment_date)
   }
 
-  const featured = missedAppt || nextAppt
-  const isMissedFeature = Boolean(missedAppt) && !activeQueue
+  const isTodayUpcoming = nextAppt && isTodayDate(nextAppt.appointment_date)
+  const featured = missedAppt || (isTodayUpcoming ? nextAppt : (todayCompletedAppt || nextAppt))
+  const isCompletedToday = Boolean(
+    !activeQueue &&
+    featured &&
+    (featured.status === 'completed' || featured.queue_token?.status === 'completed') &&
+    isTodayDate(featured.appointment_date)
+  )
+  const isMissedFeature = Boolean(missedAppt) && !activeQueue && !isCompletedToday
   const showQueueHero = Boolean(activeQueue) && !isMissedFeature
   const queueDoctor = activeQueue?.token?.doctor
   const queueStatusLabel =
     activeQueue?.status_label || (activeQueue?.status === 'in_consultation' ? 'With doctor' : 'In queue')
-  const featuredStatusLabel = featured ? appointmentStatusLabel(featured) : 'Scheduled'
-  const featuredIsQueued = featured ? (!isMissedFeature && isQueuedAppointment(featured)) || showQueueHero : showQueueHero
+  const featuredStatusLabel = isCompletedToday
+    ? 'Visit Complete'
+    : featured
+      ? appointmentStatusLabel(featured)
+      : 'Scheduled'
+  const featuredIsQueued = featured
+    ? (!isMissedFeature && !isCompletedToday && isQueuedAppointment(featured)) || showQueueHero
+    : showQueueHero
   const tokenCode =
     (showQueueHero && (activeQueue?.display_code || activeQueue?.token?.display_code)) ||
     (!isMissedFeature ? featured?.queue_token?.display_code : null) ||
     null
 
   const journeyStep = useMemo(() => {
+    if (isCompletedToday) return 5
     if (!featured && !showQueueHero) return 0
     if (activeQueue?.status === 'in_consultation' || featured?.queue_token?.status === 'in_consultation') {
       return 4
@@ -303,7 +322,7 @@ export default function PatientDashboard() {
     if (featuredIsQueued) return 3
     if (tokenCode) return 2
     return 1
-  }, [featured, showQueueHero, activeQueue, featuredIsQueued, tokenCode])
+  }, [isCompletedToday, featured, showQueueHero, activeQueue, featuredIsQueued, tokenCode])
 
   const openReschedule = (a: Appointment) => {
     setActionError('')
@@ -354,9 +373,11 @@ export default function PatientDashboard() {
     ? activeQueue?.status === 'in_consultation'
       ? 'Doctor is ready for your consultation'
       : "You are checked into today's live queue"
-    : featured
-      ? formatApptDate(featured)
-      : 'Ready when you need care'
+    : isCompletedToday
+      ? 'Consultation Complete · Records Ready'
+      : featured
+        ? formatApptDate(featured)
+        : 'Ready when you need care'
   const visitMeta = showQueueHero
     ? activeQueue?.status === 'waiting' && activeQueue.position != null
       ? `Queue Position #${activeQueue.position}${
@@ -365,9 +386,11 @@ export default function PatientDashboard() {
             : ''
         }`
       : queueStatusLabel
-    : featured
-      ? `${formatSlotAmPm(featured.slot_time)} · 30 min specialist consultation`
-      : 'Choose a department below or open the slot calendar to reserve your visit.'
+    : isCompletedToday
+      ? `Completed with Dr. ${visitDoctor?.name || 'Specialist'} · Prescriptions and diagnostic advice recorded`
+      : featured
+        ? `${formatSlotAmPm(featured.slot_time)} · 30 min specialist consultation`
+        : 'Choose a department below or open the slot calendar to reserve your visit.'
 
   return (
     <PatientLayout>
@@ -378,13 +401,13 @@ export default function PatientDashboard() {
         <section
           className="po-flow-hero"
           data-reveal="hero"
-          style={{ backgroundImage: "url('/images/patient-site-banner.jpg')" }}
+          style={{ backgroundImage: "url('/images/patient-care-banner.jpg')" }}
         >
           <div className="po-flow-hero-veil" aria-hidden />
 
           <div className="po-flow-hero-inner">
             {/* Inline Patient Identity Strip (Borderless) */}
-            <div className="po-flow-meta-bar po-hero-line" style={{ ['--d' as string]: '0ms' }}>
+            <div className="po-flow-meta-bar">
               <span className="po-flow-date">{todayFormatted()}</span>
               <span className="po-flow-dot" />
               <span className="po-flow-id">
@@ -404,68 +427,202 @@ export default function PatientDashboard() {
               </Link>
             </div>
 
-            <div className="po-flow-hero-main">
-              <div className="po-flow-hero-copy">
-                <h1 className="po-hero-line" style={{ ['--d' as string]: '70ms' }}>
-                  {greeting()}, <em>{firstName}.</em>
-                </h1>
-                <p className="po-flow-lead po-hero-line" style={{ ['--d' as string]: '140ms' }}>
-                  Your personal health stream at Alverstone Medcity — follow your live consultation
-                  queue, review verified diagnostic results, and manage prescriptions in one calm,
-                  open space.
+            {/* Content directly placed on the banner */}
+            <div className="po-banner-content">
+              <div className="po-stage-left">
+                <div className="po-stage-kicker-row">
+                  <span className="po-stage-eyebrow">
+                    {greeting()}, {firstName} · {isCompletedToday ? 'Consultation Stage' : featured || showQueueHero ? 'Active Consultation Stage' : 'Next Consultation'}
+                  </span>
+                  {(featured || showQueueHero) && (
+                    <span className={`po-stage-status ${isCompletedToday ? 'is-completed' : isMissedFeature ? 'is-warn' : featuredIsQueued ? 'is-live' : ''}`}>
+                      <IconCheck size={13} />
+                      {isMissedFeature ? 'Missed Slot' : featuredIsQueued ? queueStatusLabel : featuredStatusLabel}
+                    </span>
+                  )}
+                  {tokenCode && <span className="po-stage-token">Token {tokenCode}</span>}
+                </div>
+
+                <h1 className="po-stage-title">{visitTitle}</h1>
+                <p className="po-stage-sub">
+                  <IconClock size={16} />
+                  <span>{visitMeta}</span>
                 </p>
 
-                <div className="po-flow-actions po-hero-line" style={{ ['--d' as string]: '200ms' }}>
-                  <Link to="/patient/book" className="po-pill-primary">
-                    <IconCalendar size={17} />
-                    <span>Schedule a Consultation</span>
-                  </Link>
-                  <Link to="/patient/appointments" className="po-pill-ghost">
-                    <IconQueue size={17} />
-                    <span>Live Queue & Visits</span>
-                  </Link>
+                {isMissedFeature && (
+                  <p className="po-stage-missed-note">
+                    This scheduled time slot has passed. Please pick a new time slot or cancel the visit.
+                  </p>
+                )}
+
+                {/* Borderless Continuous Line Progress Track directly on banner */}
+                {(featured || showQueueHero) && !isMissedFeature && (
+                  <div className="po-line-progress" aria-label="Consultation progress">
+                    <div className="po-line-track">
+                      <div
+                        className="po-line-fill"
+                        style={{ width: `${Math.min(100, Math.max(15, ((journeyStep - 1) / 4) * 100))}%` }}
+                      />
+                    </div>
+                    <div className="po-line-steps">
+                      {[
+                        { step: 1, label: 'Slot Booked' },
+                        { step: 2, label: 'Token Issued' },
+                        { step: 3, label: 'In Queue' },
+                        { step: 4, label: 'With Doctor' },
+                        { step: 5, label: 'Visit Complete' },
+                      ].map((s) => {
+                        const isDone = journeyStep > s.step || (isCompletedToday && journeyStep >= s.step)
+                        const isCurrent = journeyStep === s.step && !isCompletedToday
+                        return (
+                          <div
+                            key={s.step}
+                            className={`po-line-node ${isDone ? 'is-done' : ''} ${isCurrent ? 'is-current' : ''}`}
+                          >
+                            <span className="po-line-dot">
+                              {isDone ? <IconCheck size={11} /> : s.step}
+                            </span>
+                            <span className="po-line-label">{s.label}</span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Quick Department Pills when no appointment */}
+                {!featured && !showQueueHero && (
+                  <div className="po-stage-depts">
+                    {QUICK_SPECIALTIES.map((s) => (
+                      <Link
+                        key={s.label}
+                        to={`/patient/book?dept=${encodeURIComponent(s.dept)}`}
+                        className="po-stage-dept-pill"
+                      >
+                        <IconStethoscope size={14} />
+                        <span>{s.label}</span>
+                        <span aria-hidden>→</span>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+
+                <div className="po-stage-actions">
+                  {isCompletedToday ? (
+                    <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                      <Link to="/patient/prescriptions" className="ps-btn">
+                        <IconPill size={15} /> View Prescriptions
+                      </Link>
+                      <Link to="/patient/labs" className="ps-btn-outline">
+                        <IconFlask size={15} /> Lab Reports
+                      </Link>
+                      <Link to="/patient/appointments" className="po-link-arrow">
+                        <span>All Visits & Records</span>
+                        <span aria-hidden>→</span>
+                      </Link>
+                    </div>
+                  ) : featured || showQueueHero ? (
+                    <>
+                      {!featuredIsQueued && featured && !isCompletedToday && (
+                        <button type="button" className="ps-btn" onClick={() => openReschedule(featured)}>
+                          <IconCalendar size={15} /> Reschedule Slot
+                        </button>
+                      )}
+                      {isMissedFeature ? (
+                        <button
+                          type="button"
+                          className="ps-btn-outline"
+                          onClick={handleCancelFeatured}
+                          disabled={cancelling}
+                        >
+                          {cancelling ? 'Cancelling…' : 'Cancel Booking'}
+                        </button>
+                      ) : (
+                        <Link to="/patient/appointments" className="po-link-arrow">
+                          <span>Open full visit pass</span>
+                          <span aria-hidden>→</span>
+                        </Link>
+                      )}
+                    </>
+                  ) : (
+                    <Link to="/patient/book" className="ps-btn">
+                      <IconCalendar size={16} /> Book an Appointment
+                    </Link>
+                  )}
                 </div>
               </div>
 
-              {/* Open Typographic Metric Stream (Zero Boxes — Pure Numbers & Hairlines) */}
-              <div className="po-flow-metrics po-hero-line" style={{ ['--d' as string]: '240ms' }}>
-                <Link to="/patient/appointments" className="po-flow-stat">
-                  <span className="po-flow-stat-num">
-                    {loading ? '—' : String(upcoming).padStart(2, '0')}
-                  </span>
-                  <span className="po-flow-stat-label">Upcoming Visits</span>
-                  <small>{upcoming === 1 ? '1 active slot' : `${upcoming} scheduled`}</small>
-                </Link>
+              {/* Right: Sculpted Circular Doctor Lockup & Quick Metrics directly on banner */}
+              <div className="po-banner-right">
+                {featured || showQueueHero ? (
+                  <div className="po-doctor-halo">
+                    <div className="po-doctor-halo-ring">
+                      <DoctorAvatar
+                        doctorId={visitDoctor?.id}
+                        name={visitDoctor?.name}
+                        photoUrl={visitDoctor?.photo_url}
+                        className="po-doctor-halo-avatar"
+                      />
+                    </div>
+                    <div className="po-doctor-halo-copy">
+                      <span className="po-stage-eyebrow">Consulting Specialist</span>
+                      <strong>{visitDoctor?.name || 'Assigned Physician'}</strong>
+                      <em>{visitDoctor?.specialization || 'Multispecialty OPD'}</em>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="po-doctor-halo">
+                    <div className="po-doctor-halo-ring is-soft">
+                      <IconStethoscope size={28} />
+                    </div>
+                    <div className="po-doctor-halo-copy">
+                      <span className="po-stage-eyebrow"> Walk-In or Online</span>
+                      <strong>8+ Clinical Specialties</strong>
+                      <em>Same-day slots & live queue tracking</em>
+                    </div>
+                  </div>
+                )}
 
-                <Link to="/patient/appointments" className="po-flow-stat">
-                  <span className="po-flow-stat-num">
-                    {loading ? '—' : tokenCode ? tokenCode : featuredIsQueued ? 'LIVE' : '—'}
-                  </span>
-                  <span className="po-flow-stat-label">Queue Token</span>
-                  <small>{featuredIsQueued ? queueStatusLabel : 'Standby'}</small>
-                </Link>
+                {/* Open Typographic Metric Stream directly on banner */}
+                <div className="po-banner-metrics">
+                  <Link to="/patient/appointments" className="po-banner-stat">
+                    <span className="po-banner-stat-num">
+                      {loading ? '—' : String(upcoming).padStart(2, '0')}
+                    </span>
+                    <span className="po-banner-stat-label">Upcoming Visits</span>
+                    <small>{upcoming === 1 ? '1 active slot' : `${upcoming} scheduled`}</small>
+                  </Link>
 
-                <Link to="/patient/lab-reports" className="po-flow-stat">
-                  <span className="po-flow-stat-num">
-                    {loading ? '—' : String(labHighlight.count).padStart(2, '0')}
-                  </span>
-                  <span className="po-flow-stat-label">Lab Reports</span>
-                  <small>
-                    {pendingLabsCount > 0
-                      ? `${pendingLabsCount} processing`
-                      : readyLabsCount > 0
-                        ? `${readyLabsCount} verified`
-                        : 'All clear'}
-                  </small>
-                </Link>
+                  <Link to="/patient/appointments" className="po-banner-stat">
+                    <span className="po-banner-stat-num">
+                      {loading ? '—' : tokenCode ? tokenCode : featuredIsQueued ? 'LIVE' : '—'}
+                    </span>
+                    <span className="po-banner-stat-label">Queue Token</span>
+                    <small>{featuredIsQueued ? queueStatusLabel : 'Standby'}</small>
+                  </Link>
 
-                <Link to="/patient/prescriptions" className="po-flow-stat">
-                  <span className="po-flow-stat-num">
-                    {loading ? '—' : String(prescriptions.length).padStart(2, '0')}
-                  </span>
-                  <span className="po-flow-stat-label">Prescriptions</span>
-                  <small>{activeRx.length > 0 ? `${activeRx.length} active Rx` : `${completed} past visits`}</small>
-                </Link>
+                  <Link to="/patient/lab-reports" className="po-banner-stat">
+                    <span className="po-banner-stat-num">
+                      {loading ? '—' : String(labHighlight.count).padStart(2, '0')}
+                    </span>
+                    <span className="po-banner-stat-label">Lab Reports</span>
+                    <small>
+                      {pendingLabsCount > 0
+                        ? `${pendingLabsCount} processing`
+                        : readyLabsCount > 0
+                          ? `${readyLabsCount} verified`
+                          : 'All clear'}
+                    </small>
+                  </Link>
+
+                  <Link to="/patient/prescriptions" className="po-banner-stat">
+                    <span className="po-banner-stat-num">
+                      {loading ? '—' : String(prescriptions.length).padStart(2, '0')}
+                    </span>
+                    <span className="po-banner-stat-label">Prescriptions</span>
+                    <small>{activeRx.length > 0 ? `${activeRx.length} active Rx` : `${completed} past visits`}</small>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -480,7 +637,7 @@ export default function PatientDashboard() {
           >
             <path
               d="M0 56H1440V18C1240 52 980 58 720 38C460 18 200 2 0 28V56Z"
-              fill="#faf6f2"
+              fill="var(--ph-bg, #fcfbfb)"
             />
           </svg>
         </section>
@@ -492,153 +649,76 @@ export default function PatientDashboard() {
             </div>
           )}
 
-          {/* ==================================================================
-              2. OPEN ACTIVE CONSULTATION STAGE (BORDERLESS EDITORIAL SPLIT)
-              ================================================================== */}
-          <section className="po-stage" data-reveal>
-            <div className="po-stage-left">
-              <div className="po-stage-kicker-row">
-                <span className="po-stage-eyebrow">
-                  {featured || showQueueHero ? 'Active Consultation Stage' : 'Next Consultation'}
-                </span>
-                {(featured || showQueueHero) && (
-                  <span className={`po-stage-status ${isMissedFeature ? 'is-warn' : featuredIsQueued ? 'is-live' : ''}`}>
-                    <IconCheck size={13} />
-                    {isMissedFeature ? 'Missed Slot' : featuredIsQueued ? queueStatusLabel : featuredStatusLabel}
-                  </span>
-                )}
-                {tokenCode && <span className="po-stage-token">Token {tokenCode}</span>}
+          {/* Royal Points Loyalty Banner */}
+          <section
+            style={{
+              background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 60%, #fde68a 100%)',
+              border: '1px solid rgba(245, 158, 11, 0.3)',
+              borderRadius: '16px',
+              padding: '1.25rem 1.5rem',
+              marginBottom: '2rem',
+              boxShadow: '0 4px 15px rgba(245, 158, 11, 0.08)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '1rem',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+              <div
+                style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '12px',
+                  background: '#f59e0b',
+                  color: '#fff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.4rem',
+                  boxShadow: '0 2px 8px rgba(245, 158, 11, 0.4)',
+                }}
+              >
+                👑
               </div>
-
-              <h2 className="po-stage-title">{visitTitle}</h2>
-              <p className="po-stage-sub">
-                <IconClock size={16} />
-                <span>{visitMeta}</span>
-              </p>
-
-              {isMissedFeature && (
-                <p className="po-stage-missed-note">
-                  This scheduled time slot has passed. Please pick a new time slot or cancel the visit.
+              <div>
+                <div style={{ fontWeight: 800, color: '#92400e', fontSize: '1.05rem' }}>
+                  Royal Points Loyalty Program
+                </div>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: '#78350f' }}>
+                  Earn <strong>4 pts per ₹100 spent</strong> on consultations, labs & medicines · Redeem <strong>4 pts = ₹1</strong> directly at billing
                 </p>
-              )}
-
-              {/* Borderless Continuous Line Progress Track */}
-              {(featured || showQueueHero) && !isMissedFeature && (
-                <div className="po-line-progress" aria-label="Consultation progress">
-                  <div className="po-line-track">
-                    <div
-                      className="po-line-fill"
-                      style={{ width: `${Math.min(100, Math.max(15, ((journeyStep - 1) / 3) * 100))}%` }}
-                    />
-                  </div>
-                  <div className="po-line-steps">
-                    {[
-                      { step: 1, label: 'Slot Booked' },
-                      { step: 2, label: 'Token Issued' },
-                      { step: 3, label: 'In Queue' },
-                      { step: 4, label: 'With Doctor' },
-                    ].map((s) => {
-                      const isDone = journeyStep > s.step
-                      const isCurrent = journeyStep === s.step
-                      return (
-                        <div
-                          key={s.step}
-                          className={`po-line-node ${isDone ? 'is-done' : ''} ${isCurrent ? 'is-current' : ''}`}
-                        >
-                          <span className="po-line-dot">
-                            {isDone ? <IconCheck size={11} /> : s.step}
-                          </span>
-                          <span className="po-line-label">{s.label}</span>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Quick Department Pills when no appointment */}
-              {!featured && !showQueueHero && (
-                <div className="po-stage-depts">
-                  {QUICK_SPECIALTIES.map((s) => (
-                    <Link
-                      key={s.label}
-                      to={`/patient/book?dept=${encodeURIComponent(s.dept)}`}
-                      className="po-stage-dept-pill"
-                    >
-                      <IconStethoscope size={14} />
-                      <span>{s.label}</span>
-                      <span aria-hidden>→</span>
-                    </Link>
-                  ))}
-                </div>
-              )}
-
-              <div className="po-stage-actions">
-                {featured || showQueueHero ? (
-                  <>
-                    {!featuredIsQueued && featured && (
-                      <button type="button" className="ps-btn" onClick={() => openReschedule(featured)}>
-                        <IconCalendar size={15} /> Reschedule Slot
-                      </button>
-                    )}
-                    {isMissedFeature ? (
-                      <button
-                        type="button"
-                        className="ps-btn-outline"
-                        onClick={handleCancelFeatured}
-                        disabled={cancelling}
-                      >
-                        {cancelling ? 'Cancelling…' : 'Cancel Booking'}
-                      </button>
-                    ) : (
-                      <Link to="/patient/appointments" className="po-link-arrow">
-                        <span>Open full visit pass</span>
-                        <span aria-hidden>→</span>
-                      </Link>
-                    )}
-                  </>
-                ) : (
-                  <Link to="/patient/book" className="ps-btn">
-                    <IconCalendar size={16} /> Book an Appointment
-                  </Link>
-                )}
               </div>
             </div>
 
-            {/* Right: Sculpted Circular Doctor Lockup (No Box) */}
-            <div className="po-stage-right">
-              {featured || showQueueHero ? (
-                <div className="po-doctor-halo">
-                  <div className="po-doctor-halo-ring">
-                    <DoctorAvatar
-                      doctorId={visitDoctor?.id}
-                      name={visitDoctor?.name}
-                      photoUrl={visitDoctor?.photo_url}
-                      className="po-doctor-halo-avatar"
-                    />
-                  </div>
-                  <div className="po-doctor-halo-copy">
-                    <span className="po-stage-eyebrow">Consulting Specialist</span>
-                    <strong>{visitDoctor?.name || 'Assigned Physician'}</strong>
-                    <em>{visitDoctor?.specialization || 'Multispecialty OPD'}</em>
-                  </div>
-                </div>
-              ) : (
-                <div className="po-doctor-halo">
-                  <div className="po-doctor-halo-ring is-soft">
-                    <IconStethoscope size={28} />
-                  </div>
-                  <div className="po-doctor-halo-copy">
-                    <span className="po-stage-eyebrow"> Walk-In or Online</span>
-                    <strong>8+ Clinical Specialties</strong>
-                    <em>Same-day slots & live queue tracking</em>
-                  </div>
-                </div>
-              )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+              <div style={{ textAlign: 'right' }}>
+                <span style={{ fontSize: '0.78rem', color: '#78350f', fontWeight: 600, display: 'block' }}>Your Balance</span>
+                <span style={{ fontSize: '1.45rem', fontWeight: 900, color: '#92400e', lineHeight: 1 }}>
+                  {patient?.royal_points || 0} <small style={{ fontSize: '0.85rem' }}>pts</small>
+                </span>
+                <span style={{ fontSize: '0.8rem', color: '#059669', fontWeight: 700, display: 'block' }}>
+                  ≈ ₹{Math.round(((patient?.royal_points || 0) / 4) * 100) / 100} cash value
+                </span>
+              </div>
+              <Link
+                to="/patient/profile"
+                className="ps-btn"
+                style={{
+                  padding: '0.45rem 0.85rem',
+                  fontSize: '0.82rem',
+                  background: '#92400e',
+                  borderColor: '#92400e',
+                  color: '#fff',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                }}
+              >
+                View Account
+              </Link>
             </div>
           </section>
-
-          <hr className="po-canvas-divider" />
 
           {/* ==================================================================
               3. FLOWING EDITORIAL CARE INDEX (REPLACES THE 4 SERVICE BOXES)

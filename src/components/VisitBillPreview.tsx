@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { LabTest, Medicine, Worksheet } from '../api/types'
 
 export type BillLine = {
@@ -164,6 +165,9 @@ type Props = {
   readOnly?: boolean
   billCode?: string | null
   hidePrices?: boolean
+  patientRoyalPoints?: number
+  initialPointsRedeemed?: number
+  onRedeemPoints?: (points: number) => Promise<void> | void
   onBack?: () => void
   onConfirm?: () => void
 }
@@ -177,16 +181,26 @@ export default function VisitBillPreview({
   readOnly,
   billCode,
   hidePrices = false,
+  patientRoyalPoints = 0,
+  initialPointsRedeemed = 0,
+  onRedeemPoints,
   onBack,
   onConfirm,
 }: Props) {
   const pharmacy = lines.filter((l) => l.section === 'pharmacy')
   const labs = lines.filter((l) => l.section === 'lab')
   const fee = Number(consultFee) || 0
-  const pharmacyTotal = pharmacy.reduce((s, l) => s + l.amount, 0)
   const labTotal = labs.reduce((s, l) => s + l.amount, 0)
-  const grand = fee + pharmacyTotal + labTotal
+  const grand = fee + labTotal
   const hasPending = lines.some((l) => l.pending)
+
+  const [pointsToRedeem, setPointsToRedeem] = useState<number>(initialPointsRedeemed || 0)
+
+  const availablePoints = Math.max(0, Number(patientRoyalPoints) || 0)
+  const maxPointsPossible = Math.min(availablePoints, Math.floor(grand * 4))
+  const pointsDiscount = Math.round((pointsToRedeem / 4) * 100) / 100
+  const netPayable = Math.max(0, grand - pointsDiscount)
+  const estimatedEarnedPoints = Math.floor(netPayable / 100) * 4
 
   return (
     <div className="ws-bill" role="dialog" aria-labelledby="ws-bill-title">
@@ -224,8 +238,6 @@ export default function VisitBillPreview({
                     <th>Medicine</th>
                     <th>Detail</th>
                     <th className="num">Qty</th>
-                    {!hidePrices && <th className="num">Rate</th>}
-                    {!hidePrices && <th className="num">Amount</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -237,20 +249,13 @@ export default function VisitBillPreview({
                       </td>
                       <td>{l.detail || '—'}</td>
                       <td className="num">{l.qty}</td>
-                      {!hidePrices && <td className="num">{inr(l.unitPrice)}</td>}
-                      {!hidePrices && <td className="num">{inr(l.amount)}</td>}
                     </tr>
                   ))}
                 </tbody>
-                {!hidePrices && (
-                  <tfoot>
-                    <tr>
-                      <td colSpan={4}>Pharmacy subtotal</td>
-                      <td className="num">{inr(pharmacyTotal)}</td>
-                    </tr>
-                  </tfoot>
-                )}
               </table>
+              <p className="ws-bill-note" style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.5rem', fontStyle: 'italic' }}>
+                * Pharmacy medicines are dispensed and billed separately at the pharmacy counter.
+              </p>
             </div>
           )}
         </section>
@@ -299,6 +304,106 @@ export default function VisitBillPreview({
         </section>
 
         {!hidePrices && (
+          <section className="ws-bill-section ws-royal-points-section">
+            <div
+              style={{
+                background: 'linear-gradient(135deg, rgba(254, 243, 199, 0.5) 0%, rgba(253, 230, 138, 0.25) 100%)',
+                border: '1px solid #fcd34d',
+                borderRadius: '12px',
+                padding: '1rem',
+                margin: '0.75rem 0',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.65rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, color: '#92400e', fontSize: '0.95rem' }}>
+                  <span>👑</span> Royal Points Rewards
+                </div>
+                <div style={{ fontSize: '0.78rem', background: '#fef3c7', padding: '0.2rem 0.5rem', borderRadius: '6px', color: '#78350f', fontWeight: 600 }}>
+                  Earn 4 pts / ₹100 · Redeem 4 pts = ₹1
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                  <span style={{ fontSize: '0.8rem', color: '#78350f', display: 'block' }}>Patient Available Balance</span>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#92400e' }}>
+                    {availablePoints} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>points</span>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#059669', marginLeft: '0.6rem' }}>
+                      (Worth {inr(Math.round(availablePoints / 4))})
+                    </span>
+                  </div>
+                </div>
+
+                {!readOnly && availablePoints > 0 ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#78350f', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      Redeem:
+                      <input
+                        type="number"
+                        min={0}
+                        max={maxPointsPossible}
+                        step={4}
+                        value={pointsToRedeem || ''}
+                        placeholder="Points"
+                        style={{
+                          width: '90px',
+                          padding: '0.35rem 0.5rem',
+                          borderRadius: '6px',
+                          border: '1px solid #d97706',
+                          background: '#fff',
+                          fontWeight: 700,
+                          textAlign: 'center',
+                        }}
+                        onChange={(e) => {
+                          const val = Math.max(0, Math.min(Number(e.target.value) || 0, maxPointsPossible))
+                          setPointsToRedeem(val)
+                          if (onRedeemPoints) void onRedeemPoints(val)
+                        }}
+                      />
+                      <span style={{ fontSize: '0.8rem', color: '#059669', fontWeight: 700 }}>
+                        (-{inr(pointsDiscount)})
+                      </span>
+                    </label>
+                    <button
+                      type="button"
+                      className="ws-btn ws-btn-sm ws-btn-outline"
+                      style={{ fontSize: '0.78rem', padding: '0.35rem 0.6rem' }}
+                      onClick={() => {
+                        setPointsToRedeem(maxPointsPossible)
+                        if (onRedeemPoints) void onRedeemPoints(maxPointsPossible)
+                      }}
+                    >
+                      Use Max ({maxPointsPossible} pts)
+                    </button>
+                    {pointsToRedeem > 0 && (
+                      <button
+                        type="button"
+                        className="ws-btn ws-btn-sm ws-btn-ghost"
+                        style={{ fontSize: '0.78rem', padding: '0.35rem 0.5rem' }}
+                        onClick={() => {
+                          setPointsToRedeem(0)
+                          if (onRedeemPoints) void onRedeemPoints(0)
+                        }}
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                ) : pointsDiscount > 0 ? (
+                  <div style={{ fontSize: '0.9rem', color: '#059669', fontWeight: 700 }}>
+                    Redeemed: {pointsToRedeem} pts (-{inr(pointsDiscount)})
+                  </div>
+                ) : (
+                  <div style={{ fontSize: '0.8rem', color: '#92400e', fontStyle: 'italic' }}>
+                    Will earn <strong>+{estimatedEarnedPoints} Royal Points</strong> on payment
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {!hidePrices && (
           <div className="ws-bill-totals">
             {fee > 0 && (
               <div className="ws-bill-total-row">
@@ -307,16 +412,25 @@ export default function VisitBillPreview({
               </div>
             )}
             <div className="ws-bill-total-row">
-              <span>Pharmacy</span>
-              <strong>{inr(pharmacyTotal)}</strong>
-            </div>
-            <div className="ws-bill-total-row">
               <span>Lab</span>
               <strong>{inr(labTotal)}</strong>
             </div>
-            <div className="ws-bill-total-row is-grand">
-              <span>Total</span>
+            <div className="ws-bill-total-row">
+              <span>Subtotal</span>
               <strong>{inr(grand)}</strong>
+            </div>
+            {pointsDiscount > 0 && (
+              <div className="ws-bill-total-row" style={{ color: '#059669', fontWeight: 700 }}>
+                <span>👑 Royal Points Discount ({pointsToRedeem} pts)</span>
+                <strong>-{inr(pointsDiscount)}</strong>
+              </div>
+            )}
+            <div className="ws-bill-total-row is-grand">
+              <span>Net Payable</span>
+              <strong>{inr(netPayable)}</strong>
+            </div>
+            <div style={{ marginTop: '0.45rem', fontSize: '0.82rem', color: '#b45309', textAlign: 'right', fontWeight: 600 }}>
+              ⭐ Patient earns <strong>+{estimatedEarnedPoints} Royal Points</strong> on payment (4 pts per ₹100 spent)
             </div>
           </div>
         )}

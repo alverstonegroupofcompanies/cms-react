@@ -53,6 +53,8 @@ export interface Patient {
   emergency_contact_last_name?: string
   emergency_contact_relationship?: string
   emergency_contact_phone?: string
+  royal_points?: number
+  royal_points_value?: number
   photo_path?: string | null
   photo_url?: string | null
   visit_count?: number
@@ -417,6 +419,13 @@ export interface Worksheet {
       lab_test_id?: number
       lab_test?: { id: number; name: string; code: string; price?: number }
     }>
+    report?: {
+      id: number
+      file_path: string
+      file_name?: string
+      result_summary?: string | null
+      uploaded_at?: string
+    } | null
   }>
 }
 
@@ -447,6 +456,10 @@ export interface VisitBill {
   pharmacy_subtotal: number
   lab_subtotal: number
   grand_total: number
+  points_earned?: number
+  points_redeemed?: number
+  points_discount?: number
+  payable_amount?: number
   status: string
   pharmacy_status: string
   lab_status: string
@@ -486,4 +499,28 @@ export interface PharmacySalesReport {
   }
   by_date: PharmacySalesDay[]
   by_medicine: PharmacySalesMedicineRow[]
+}
+
+export interface RoyalPointTransaction {
+  id: number
+  patient_id: number
+  visit_bill_id?: number | null
+  points: number
+  type: 'earned' | 'redeemed' | 'refund' | 'adjusted' | string
+  description?: string | null
+  created_at: string
+  visit_bill?: {
+    id: number
+    bill_code: string
+    grand_total: number
+    created_at: string
+  } | null
+}
+
+export interface RoyalPointsData {
+  points: number
+  value_inr: number
+  conversion_rate: string
+  earn_rate: string
+  transactions: RoyalPointTransaction[]
 }

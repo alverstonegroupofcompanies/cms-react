@@ -15,6 +15,7 @@ import { labNav } from '../../config/navigation'
 import type { LabOrder, VisitBill, VisitBillItem } from '../../api/types'
 import { displayDoctorName } from '../../utils/doctorName'
 import { emptyResultsForCode, labResultFieldsForCode } from '../../utils/labResultFields'
+import { storageUrl } from '../../utils/storageUrl'
 
 type Filter = 'pending' | 'done' | 'all'
 type PrintMode = 'invoice' | 'report'
@@ -226,7 +227,7 @@ export default function LabDashboard() {
 
   const completeLab = async () => {
     if (!selected) return
-    const code = selected.bill_code
+    const code = selected.worksheet?.worksheet_code || selected.bill_code
     setSaving(true)
     setError('')
     try {
@@ -246,8 +247,24 @@ export default function LabDashboard() {
   const uploadForOrder = async (orderId: number, file: File) => {
     const fd = new FormData()
     fd.append('report', file)
-    fd.append('result_summary', 'Report uploaded')
+    fd.append('result_summary', 'Laboratory PDF report verified & uploaded')
     await uploadLabReport(orderId, fd)
+  }
+
+  const handleUploadFile = async (orderId: number, file: File) => {
+    setSaving(true)
+    setError('')
+    try {
+      await uploadForOrder(orderId, file)
+      setMessage(`PDF report uploaded successfully for Order #${orderId}`)
+      const { data: updatedOrder } = await getLabOrder(orderId)
+      setOrders((prev) => prev.map((o) => (o.id === orderId ? updatedOrder : o)))
+      await load(filter)
+    } catch {
+      setError('Upload failed — please ensure file is under 10MB (PDF/JPG/PNG)')
+    } finally {
+      setSaving(false)
+    }
   }
 
   const handlePrint = (mode: PrintMode) => {
@@ -273,7 +290,7 @@ export default function LabDashboard() {
           <div className="card">
             <div className="card-header">
               <h3>
-                {selected.bill_code} · {patient?.name || 'Patient'}
+                {selected.worksheet?.worksheet_code || selected.bill_code} · {patient?.name || 'Patient'}
               </h3>
               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                 <button type="button" className="btn btn-sm btn-secondary" onClick={() => setShowPreview((v) => !v)}>
@@ -381,26 +398,48 @@ export default function LabDashboard() {
               orders.map((order) => (
                 <div key={order.id} className="lab-result-order">
                   <div className="lab-result-order-head">
-                    <strong>Order #{order.id}</strong>
+                    <div>
+                      <strong>Order #{order.id}</strong>
+                      {order.worksheet?.worksheet_code && (
+                        <span className="muted" style={{ marginLeft: '0.5rem', fontWeight: 'normal' }}>
+                          · {order.worksheet.worksheet_code}
+                        </span>
+                      )}
+                    </div>
                     <span className={labOrderStatusBadgeClass(order.status)}>
                       {labOrderStatusLabel(order.status)}
                     </span>
-                    {canEdit && (
-                      <label className="lab-upload-inline">
-                        Upload report file
-                        <input
-                          type="file"
-                          accept=".pdf,.jpg,.png"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0]
-                            if (!file) return
-                            uploadForOrder(order.id, file)
-                              .then(() => setMessage(`Report uploaded for order #${order.id}`))
-                              .catch(() => setError('Upload failed'))
-                          }}
-                        />
-                      </label>
-                    )}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      {order.report && (
+                        <a
+                          href={storageUrl(order.report.file_path)}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="btn btn-sm btn-secondary"
+                          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', textDecoration: 'none' }}
+                        >
+                          📄 View PDF ({order.report.file_name || 'Report'})
+                        </a>
+                      )}
+                      {canEdit && (
+                        <label
+                          className="btn btn-sm btn-primary"
+                          style={{ cursor: 'pointer', margin: 0, display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
+                        >
+                          <span>{order.report ? 'Replace PDF' : 'Upload PDF Report'}</span>
+                          <input
+                            type="file"
+                            accept=".pdf,.jpg,.jpeg,.png"
+                            style={{ display: 'none' }}
+                            onChange={(e) => {
+                              const file = e.target.files?.[0]
+                              if (!file) return
+                              handleUploadFile(order.id, file)
+                            }}
+                          />
+                        </label>
+                      )}
+                    </div>
                   </div>
                   {(order.items || []).map((item) => {
                     const fields = labResultFieldsForCode(item.lab_test?.code)
@@ -495,7 +534,7 @@ export default function LabDashboard() {
                   <article key={b.id} className="staff-doctor-card is-clickable" onClick={() => openBill(b)}>
                     <div className="staff-doctor-card-body" style={{ paddingTop: '1rem' }}>
                       <h4 className="staff-doctor-card-name">{b.patient?.name || 'Patient'}</h4>
-                      <p className="staff-doctor-card-spec">{b.bill_code}</p>
+                      <p className="staff-doctor-card-spec">{b.worksheet?.worksheet_code || b.bill_code}</p>
                       <p className="staff-doctor-card-meta">
                         Doctor: {b.doctor?.name ? displayDoctorName(b.doctor.name) : '—'}
                       </p>

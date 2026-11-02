@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import PatientPage from '../../components/PatientPage'
 import PasswordInput from '../../components/PasswordInput'
-import { getMe, getMyProfile, resetPassword, updateMyProfile } from '../../api/client'
-import type { Patient, User } from '../../api/types'
+import { getMe, getMyProfile, getMyRoyalPoints, resetPassword, updateMyProfile } from '../../api/client'
+import type { Patient, RoyalPointsData, User } from '../../api/types'
 import { useAuth } from '../../context/AuthContext'
 import {
   BLOOD_GROUPS,
@@ -69,6 +69,8 @@ export default function PatientProfile() {
   const isWelcome = searchParams.get('welcome') === '1'
   const [editing, setEditing] = useState(isWelcome)
   const [form, setForm] = useState<ProfileForm | null>(null)
+  const [profilePatient, setProfilePatient] = useState<Patient | null>(user?.patient || null)
+  const [pointsData, setPointsData] = useState<RoyalPointsData | null>(null)
   const [meta, setMeta] = useState<{ patient_code: string; email: string } | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -84,6 +86,7 @@ export default function PatientProfile() {
   useEffect(() => {
     Promise.all([getMyProfile(), getMe()])
       .then(([profileRes, meRes]) => {
+        setProfilePatient(profileRes.data)
         setForm(patientToForm(profileRes.data))
         setMeta({
           patient_code: profileRes.data.patient_code,
@@ -93,6 +96,8 @@ export default function PatientProfile() {
       })
       .catch(() => setError('Could not load profile'))
       .finally(() => setLoading(false))
+
+    getMyRoyalPoints().then(({ data }) => setPointsData(data)).catch(() => {})
   }, [user?.email])
 
   const update = (field: keyof ProfileForm, value: string) => {
@@ -229,6 +234,65 @@ export default function PatientProfile() {
           {age && <p className="ph-muted">Age: {formatAge(age)}</p>}
         </div>
       </div>
+
+      {/* Royal Points Rewards Card with live points and activity */}
+      <section
+        className="ph-page-panel"
+        style={{
+          background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
+          border: '1px solid #fde68a',
+          borderRadius: '16px',
+          padding: '1.25rem 1.5rem',
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontWeight: 800, color: '#92400e', fontSize: '1.15rem', marginBottom: '0.25rem' }}>
+              <span>👑</span> Royal Points Balance
+            </div>
+            <p style={{ margin: 0, fontSize: '0.85rem', color: '#78350f' }}>
+              Earn <strong>4 points for every ₹100</strong> spent · Redeem <strong>4 points = ₹1</strong> discount at billing
+            </p>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: '2rem', fontWeight: 900, color: '#b45309', lineHeight: 1 }}>
+              {pointsData?.points ?? (profilePatient?.royal_points ?? (user?.patient?.royal_points || 0))} <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>pts</span>
+            </div>
+            <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#059669', display: 'block', marginTop: '0.25rem' }}>
+              Cash Value: ₹{pointsData?.value_inr ?? Math.round(((profilePatient?.royal_points ?? (user?.patient?.royal_points || 0)) / 4) * 100) / 100}
+            </span>
+          </div>
+        </div>
+
+        {pointsData?.transactions && pointsData.transactions.length > 0 && (
+          <div style={{ marginTop: '1.25rem', borderTop: '1px solid rgba(245, 158, 11, 0.25)', paddingTop: '1rem' }}>
+            <h4 style={{ margin: '0 0 0.5rem', fontSize: '0.9rem', color: '#92400e', fontWeight: 700 }}>
+              Recent Points Activity
+            </h4>
+            <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+              {pointsData.transactions.slice(0, 5).map((t) => (
+                <li
+                  key={t.id}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    background: 'rgba(255, 255, 255, 0.7)',
+                    padding: '0.45rem 0.75rem',
+                    borderRadius: '8px',
+                    fontSize: '0.82rem',
+                  }}
+                >
+                  <span style={{ color: '#451a03' }}>{t.description || `${t.type} points`}</span>
+                  <strong style={{ color: t.points > 0 ? '#059669' : '#dc2626' }}>
+                    {t.points > 0 ? `+${t.points}` : t.points} pts
+                  </strong>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
 
       <form id="profile-form" onSubmit={handleSave} className="ph-profile-sections">
         <section className="ph-page-panel ph-profile-section">

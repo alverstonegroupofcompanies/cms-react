@@ -3,6 +3,7 @@ import Layout from '../../components/Layout'
 import { getLabOrders, getLabTests, uploadLabReport } from '../../api/client'
 import { adminNav } from '../../config/navigation'
 import type { LabOrder, LabTest } from '../../api/types'
+import { storageUrl } from '../../utils/storageUrl'
 
 export default function AdminLab() {
   const [tests, setTests] = useState<LabTest[]>([])
@@ -53,6 +54,19 @@ export default function AdminLab() {
                 <span className="rx-bill-id">Order #{o.id}</span>
               </div>
               <span className="text-muted"> — {o.items?.map((i) => i.lab_test.name).join(', ')}</span>
+              {o.report && (
+                <div style={{ marginTop: '0.4rem' }}>
+                  <a
+                    href={storageUrl(o.report.file_path)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-primary"
+                    style={{ fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
+                  >
+                    📄 View PDF Report ({o.report.file_name || 'Report'})
+                  </a>
+                </div>
+              )}
               <div style={{ marginTop: '0.75rem' }}>
                 <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => e.target.files?.[0] && handleUpload(o.id, e.target.files[0])} />
               </div>

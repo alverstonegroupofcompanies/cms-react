@@ -294,7 +294,7 @@ function BoardPatientRow({
           <div className="rdm-patient">
             <span className="rdm-name">{t.doctor?.name || '—'}</span>
             {t.doctor?.specialization && (
-              <span className="rdm-meta">{t.doctor.specialization}</span>
+              <span className="rdm-doc-spec">{t.doctor.specialization}</span>
             )}
           </div>
         </td>

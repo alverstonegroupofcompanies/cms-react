@@ -42,6 +42,7 @@ import {
   isEmptyDoseSchedule,
   suggestedQuantity,
 } from '../../utils/doseSchedule'
+import { storageUrl } from '../../utils/storageUrl'
 import {
   normalizeClinicalData,
   suggestLocalTemplate,
@@ -485,7 +486,8 @@ export default function DoctorWorksheet() {
         medicines,
         labTests,
       })
-      const total = fee + lines.reduce((s, l) => s + l.amount, 0)
+      const labLines = lines.filter((l) => l.section === 'lab')
+      const total = fee + labLines.reduce((s, l) => s + l.amount, 0)
       setLastBillTotal(total)
 
       await checkOutQueueToken(worksheet.queue_token_id)
@@ -603,6 +605,7 @@ export default function DoctorWorksheet() {
             lines={billLines}
             consultFee={user?.doctor?.consultation_fee}
             confirming={checkingOut}
+            patientRoyalPoints={patient?.royal_points || 0}
             onBack={() => setVisitPhase('work')}
             onConfirm={handleConfirmFinalSubmit}
           />
@@ -674,6 +677,8 @@ export default function DoctorWorksheet() {
                   worksheetCode={worksheet.worksheet_code}
                   lines={billLinesFromVisitBill(savedBill)}
                   consultFee={savedBill.consultation_fee}
+                  patientRoyalPoints={patient?.royal_points || 0}
+                  initialPointsRedeemed={savedBill.points_redeemed || 0}
                 />
               </div>
             )}
@@ -1160,6 +1165,26 @@ export default function DoctorWorksheet() {
                             <p className="ws-lab-names">
                               {order.items?.map((i) => i.lab_test?.name).filter(Boolean).join(', ')}
                             </p>
+                            {order.report && (
+                              <div style={{ marginTop: '0.45rem' }}>
+                                <a
+                                  href={storageUrl(order.report.file_path)}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="ws-btn ws-btn-sm ws-btn-outline"
+                                  style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '0.35rem',
+                                    textDecoration: 'none',
+                                    fontSize: '0.85rem',
+                                    padding: '0.3rem 0.65rem',
+                                  }}
+                                >
+                                  📄 View PDF Report ({order.report.file_name || 'Report'})
+                                </a>
+                              </div>
+                            )}
                           </li>
                         ))}
                       </ul>
