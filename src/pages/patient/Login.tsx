@@ -18,39 +18,6 @@ function maskEmail(email: string) {
 type Mode = 'password' | 'otp' | 'forgot'
 type ForgotStep = 'email' | 'code' | 'password'
 
-const FEATURES = [
-  {
-    title: 'Book and manage visits',
-    text: 'Choose a department and doctor, reserve a convenient slot, and reschedule or cancel when plans change — without calling the front desk.',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <rect x="3" y="5" width="18" height="16" rx="2" />
-        <path d="M16 3v4M8 3v4M3 11h18" />
-      </svg>
-    ),
-  },
-  {
-    title: 'See your visit history',
-    text: 'Look back at past appointments, prescriptions, and notes from your care team so you always know what was discussed and what comes next.',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
-        <path d="M14 2v6h6M9 13h6M9 17h4" />
-      </svg>
-    ),
-  },
-  {
-    title: 'Access lab results',
-    text: 'When your tests are ready, open clear reports online and share them with your doctor — no extra trip to collect paper copies.',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <path d="M9 3h6M10 3v5.5L5.5 18a2.5 2.5 0 0 0 2.2 3.5h8.6a2.5 2.5 0 0 0 2.2-3.5L14 8.5V3" />
-        <path d="M8.5 14h7" />
-      </svg>
-    ),
-  },
-] as const
-
 export default function PatientLogin() {
   usePageTitle('Patient sign in', 'Patient')
 
@@ -309,30 +276,32 @@ export default function PatientLogin() {
 
       <section className="pp-hero pp-hero-auth">
         <div className="pp-hero-copy">
-          <BrandLogo brand="clinic" to="/" height={40} className="pp-auth-brand" />
-          <h1 className="pp-headline">Your care, ready when you are</h1>
-          <p className="pp-lead">
-            Book visits, review history, and open lab results in one calm place —
-            securely, whenever you need them.
-          </p>
+          <div className="pp-auth-hero-watermark" aria-hidden="true">
+            <img src="/brand/alverstone-medcity-logo-white.png?v=2" alt="" />
+          </div>
 
-          <ul className="pp-features">
-            {FEATURES.map((f) => (
-              <li key={f.title} className="pp-feature">
-                <span className="pp-feature-mark" aria-hidden>
-                  {f.icon}
-                </span>
-                <div>
-                  <h3>{f.title}</h3>
-                  <p>{f.text}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <div className="pp-auth-hero-header">
+            <BrandLogo brand="clinic" to="/" height={44} onDark className="pp-auth-brand" />
+            <span className="pp-auth-badge">Patient Portal</span>
+          </div>
 
-          <Link to="/" className="pp-auth-back">
-            ← Back to hospital site
-          </Link>
+          <div className="pp-auth-hero-bottom">
+            <div className="pp-auth-glass-card">
+              <span className="pp-auth-tagline-kicker">Caring Doctors · Happy Patients</span>
+              <h2 className="pp-auth-hero-heading">Healthcare that puts your family first</h2>
+              <p className="pp-auth-hero-sub">
+                Book appointments, track live queue updates, and view your medical records in one calm, friendly place.
+              </p>
+            </div>
+
+            <Link to="/" className="pp-auth-back">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="19" y1="12" x2="5" y2="12" />
+                <polyline points="12 19 5 12 12 5" />
+              </svg>
+              <span>Back to hospital site</span>
+            </Link>
+          </div>
         </div>
 
         <div className="pp-hero-form-wrap" id="sign-in">

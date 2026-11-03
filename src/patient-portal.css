@@ -50,78 +50,147 @@
 }
 
 .pp-hero-auth .pp-hero-copy {
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: clamp(2rem, 4vw, 3.5rem) clamp(1.75rem, 4vw, 4rem);
+  justify-content: space-between;
+  padding: clamp(2rem, 4vw, 3.25rem) clamp(1.75rem, 4vw, 3.5rem);
   background:
-    linear-gradient(155deg, rgba(46, 8, 14, 0.94) 0%, rgba(110, 19, 30, 0.9) 55%, rgba(139, 30, 43, 0.92) 100%),
-    url('/images/staff-hero.jpg') center/cover no-repeat;
+    linear-gradient(
+      180deg,
+      rgba(35, 10, 16, 0.6) 0%,
+      rgba(20, 7, 12, 0.12) 28%,
+      rgba(20, 7, 12, 0.24) 62%,
+      rgba(35, 10, 16, 0.88) 100%
+    ),
+    url('/images/patient-care-banner.jpg') center 20% / cover no-repeat;
   color: #ffffff;
-  padding-top: clamp(2rem, 4vw, 3.5rem);
+  overflow: hidden;
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+.pp-auth-hero-watermark {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(340px, 78%);
+  pointer-events: none;
+  opacity: 0.13;
+  z-index: 1;
+  filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.45));
+}
+
+.pp-auth-hero-watermark img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.pp-auth-hero-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .pp-hero-auth .pp-auth-brand {
-  margin-bottom: 1.75rem;
-  align-self: flex-start;
+  margin-bottom: 0;
+  display: inline-flex;
+  align-items: center;
 }
 
-.pp-hero-auth .pp-auth-brand .brand-mark-title {
+.pp-auth-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.38rem 0.9rem;
+  border-radius: 9999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
-.pp-hero-auth .pp-auth-brand .brand-mark-suite {
-  color: rgba(254, 226, 226, 0.72);
+.pp-auth-hero-bottom {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: auto;
+  padding-top: 2rem;
 }
 
-.pp-hero-auth .pp-headline {
+.pp-auth-glass-card {
+  padding: 1.5rem 1.75rem;
+  background: rgba(22, 7, 11, 0.64);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 16px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.38);
+}
+
+.pp-auth-tagline-kicker {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fbcfe8;
+  margin-bottom: 0.5rem;
+}
+
+.pp-auth-hero-heading {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  font-weight: 700;
+  line-height: 1.22;
   color: #ffffff;
-  max-width: 16ch;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.01em;
 }
 
-.pp-hero-auth .pp-lead {
-  color: rgba(254, 226, 226, 0.88);
-  max-width: 36rem;
-}
-
-.pp-hero-auth .pp-trust {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.14);
-  color: rgba(254, 226, 226, 0.9);
-}
-
-.pp-hero-auth .pp-trust-icon {
-  color: #fecdd3;
-}
-
-.pp-hero-auth .pp-feature h3 {
-  color: #ffffff;
-}
-
-.pp-hero-auth .pp-feature p {
-  color: rgba(254, 226, 226, 0.72);
-}
-
-.pp-hero-auth .pp-feature-mark {
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.16);
+.pp-auth-hero-sub {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0;
+  max-width: 44ch;
 }
 
 .pp-auth-back {
-  margin-top: auto;
-  padding-top: 2rem;
   display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   align-self: flex-start;
-  color: rgba(248, 250, 252, 0.82);
+  color: rgba(255, 255, 255, 0.92);
   font-weight: 650;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   text-decoration: none;
+  padding: 0.45rem 0.95rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
 }
 
 .pp-auth-back:hover {
-  color: #fff;
-  text-decoration: underline;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateX(-3px);
 }
 
 .pp-hero-auth .pp-hero-form-wrap {
@@ -833,17 +902,18 @@
   }
 
   .pp-hero-auth .pp-hero-copy {
-    min-height: auto;
-    padding: 2rem 1.25rem 1.5rem;
+    min-height: 340px;
+    padding: 2rem 1.25rem;
+    gap: 2rem;
   }
 
-  .pp-hero-auth .pp-features {
-    display: none;
+  .pp-auth-hero-watermark {
+    width: 65%;
+    opacity: 0.1;
   }
 
-  .pp-hero-auth .pp-auth-back {
-    margin-top: 1.25rem;
-    padding-top: 0;
+  .pp-auth-glass-card {
+    padding: 1.15rem 1.25rem;
   }
 
   .pp-hero-auth .pp-hero-form-wrap {
