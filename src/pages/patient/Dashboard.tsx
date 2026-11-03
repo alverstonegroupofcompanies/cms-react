@@ -316,9 +316,20 @@ export default function PatientDashboard() {
   const journeyStep = useMemo(() => {
     if (isCompletedToday) return 5
     if (!featured && !showQueueHero) return 0
-    if (activeQueue?.status === 'in_consultation' || featured?.queue_token?.status === 'in_consultation') {
+
+    // Only step 4 when the patient is actively inside the consultation room with the doctor.
+    // "Ready to enter" or waiting in queue is step 3 (In Queue), never step 4.
+    const isWithDoctor = activeQueue
+      ? activeQueue.status === 'in_consultation'
+      : Boolean(
+          featured?.queue_token?.status === 'in_consultation' &&
+          featured?.status === 'checked_in'
+        )
+
+    if (isWithDoctor) {
       return 4
     }
+
     if (featuredIsQueued) return 3
     if (tokenCode) return 2
     return 1
@@ -372,7 +383,9 @@ export default function PatientDashboard() {
   const visitTitle = showQueueHero
     ? activeQueue?.status === 'in_consultation'
       ? 'Doctor is ready for your consultation'
-      : "You are checked into today's live queue"
+      : activeQueue?.status_label === 'Ready to enter'
+        ? 'You are next · Ready to enter consultation room'
+        : "You are checked into today's live queue"
     : isCompletedToday
       ? 'Consultation Complete · Records Ready'
       : featured
@@ -484,7 +497,13 @@ export default function PatientDashboard() {
                       {[
                         { step: 1, label: 'Slot Booked' },
                         { step: 2, label: 'Token Issued' },
-                        { step: 3, label: 'In Queue' },
+                        {
+                          step: 3,
+                          label:
+                            activeQueue?.status_label === 'Ready to enter'
+                              ? 'Ready to Enter'
+                              : 'In Queue',
+                        },
                         { step: 4, label: 'With Doctor' },
                         { step: 5, label: 'Visit Complete' },
                       ].map((s) => {
