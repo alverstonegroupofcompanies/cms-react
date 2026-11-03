@@ -5706,10 +5706,26 @@
 }
 
 .po-banner-content .po-stage-missed-note {
-  margin: -0.6rem 0 1.4rem;
-  color: #fcd34d;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.35rem 0 1.35rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: 12px;
+  background: rgba(26, 11, 17, 0.82);
+  border: 1.5px solid rgba(251, 191, 36, 0.7);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  color: #fef08a !important;
   font-size: 0.92rem;
-  font-weight: 600;
+  font-weight: 650;
+  line-height: 1.45;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.po-banner-content .po-stage-missed-note svg {
+  color: #fbbf24;
+  flex-shrink: 0;
 }
 
 .po-banner-content .po-line-progress {
@@ -5833,29 +5849,94 @@
   gap: 0.6rem;
 }
 
-.po-banner-content .ps-btn {
-  background: #fff1f1;
-  color: #26170e;
-  border: none;
-  font-weight: 700;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+.po-flow-hero .ps-btn,
+.po-banner-content .ps-btn,
+.po-flow-hero a.ps-btn,
+.po-banner-content a.ps-btn {
+  background: #ffffff !important;
+  color: #8b1e2b !important;
+  border: 1.5px solid #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 0.92rem !important;
+  letter-spacing: 0.01em;
+  padding: 0.72rem 1.4rem !important;
+  border-radius: 999px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  cursor: pointer;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  text-decoration: none !important;
+  transition: all 200ms ease !important;
 }
 
-.po-banner-content .ps-btn:hover {
-  background: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+.po-flow-hero .ps-btn:hover,
+.po-banner-content .ps-btn:hover,
+.po-flow-hero a.ps-btn:hover,
+.po-banner-content a.ps-btn:hover {
+  background: #fff1f1 !important;
+  color: #6d1520 !important;
+  border-color: #fff1f1 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.42) !important;
 }
 
-.po-banner-content .ps-btn-outline {
-  border: 1px solid rgba(254, 205, 211, 0.35);
-  color: #fff1f1;
-  background: rgba(255, 255, 255, 0.08);
+.po-flow-hero .ps-btn svg,
+.po-banner-content .ps-btn svg {
+  color: #8b1e2b !important;
+  stroke: #8b1e2b !important;
 }
 
-.po-banner-content .ps-btn-outline:hover {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(254, 205, 211, 0.6);
+.po-flow-hero .ps-btn:hover svg,
+.po-banner-content .ps-btn:hover svg {
+  color: #6d1520 !important;
+  stroke: #6d1520 !important;
+}
+
+.po-flow-hero .ps-btn-outline,
+.po-banner-content .ps-btn-outline,
+.po-flow-hero a.ps-btn-outline,
+.po-banner-content a.ps-btn-outline {
+  background: rgba(255, 255, 255, 0.16) !important;
+  color: #ffffff !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.75) !important;
+  font-weight: 750 !important;
+  font-size: 0.92rem !important;
+  letter-spacing: 0.01em;
+  padding: 0.72rem 1.4rem !important;
+  border-radius: 999px !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+  cursor: pointer;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  text-decoration: none !important;
+  transition: all 200ms ease !important;
+}
+
+.po-flow-hero .ps-btn-outline:hover:not(:disabled),
+.po-banner-content .ps-btn-outline:hover:not(:disabled),
+.po-flow-hero a.ps-btn-outline:hover,
+.po-banner-content a.ps-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.28) !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+}
+
+.po-flow-hero .ps-btn-outline:disabled,
+.po-banner-content .ps-btn-outline:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.po-flow-hero .ps-btn-outline svg,
+.po-banner-content .ps-btn-outline svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
 }
 
 /* Right column directly on banner */
@@ -6214,10 +6295,21 @@
 }
 
 .po-stage-missed-note {
-  margin: -0.6rem 0 1.4rem;
-  color: #b45309;
-  font-size: 0.9rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.35rem 0 1.35rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: 12px;
+  background: rgba(26, 11, 17, 0.82);
+  border: 1.5px solid rgba(251, 191, 36, 0.7);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  color: #fef08a !important;
+  font-size: 0.92rem;
+  font-weight: 650;
+  line-height: 1.45;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 /* Continuous Open Line Progress (No Boxed Stepper) */

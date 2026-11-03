@@ -450,9 +450,25 @@ export default function PatientDashboard() {
                 </p>
 
                 {isMissedFeature && (
-                  <p className="po-stage-missed-note">
-                    This scheduled time slot has passed. Please pick a new time slot or cancel the visit.
-                  </p>
+                  <div className="po-stage-missed-note" role="status">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                      style={{ flexShrink: 0 }}
+                    >
+                      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                      <line x1="12" y1="9" x2="12" y2="13" />
+                      <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                    <span>This scheduled time slot has passed. Please pick a new time slot or cancel the visit.</span>
+                  </div>
                 )}
 
                 {/* Borderless Continuous Line Progress Track directly on banner */}
