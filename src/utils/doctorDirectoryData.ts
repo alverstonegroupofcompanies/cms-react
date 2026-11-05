@@ -692,3 +692,4 @@ export function findDoctorBySlugOrId(
     return nameKey === targetKey || slugKey === targetKey || nameKey.includes(targetKey) || targetKey.includes(nameKey)
   })
 }
+

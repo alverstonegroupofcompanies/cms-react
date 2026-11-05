@@ -351,18 +351,19 @@ export default function AsterNavbar() {
                   onMouseEnter={() => setActiveDropdown('doctors')}
                   onMouseLeave={() => setActiveDropdown(null)}
                 >
-                  <button
-                    type="button"
-                    className={`alv-pill-link alv-pill-trigger ${activeDropdown === 'doctors' ? 'is-open' : ''}`}
-                    onClick={() => setActiveDropdown(activeDropdown === 'doctors' ? null : 'doctors')}
-                    aria-expanded={activeDropdown === 'doctors'}
+                  <NavLink
+                    to="/doctors"
+                    className={({ isActive }) =>
+                      `alv-pill-link alv-pill-trigger ${isActive ? 'active ' : ''}${activeDropdown === 'doctors' ? 'is-open' : ''}`
+                    }
+                    onClick={() => setActiveDropdown(null)}
                     id="aster-nav-doctors-toggle"
                   >
-                    <span>Doctors</span>
+                    <span>Our Doctors</span>
                     <svg className="alv-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="6 9 12 15 18 9" />
                     </svg>
-                  </button>
+                  </NavLink>
 
                   {activeDropdown === 'doctors' && (
                     <div className="alv-floating-menu alv-menu-doctors">
@@ -476,18 +477,19 @@ export default function AsterNavbar() {
                   onMouseEnter={() => setActiveDropdown('doctors')}
                   onMouseLeave={() => setActiveDropdown(null)}
                 >
-                  <button
-                    type="button"
-                    className={`alv-pill-link alv-pill-trigger ${activeDropdown === 'doctors' ? 'is-open' : ''}`}
-                    onClick={() => setActiveDropdown(activeDropdown === 'doctors' ? null : 'doctors')}
-                    aria-expanded={activeDropdown === 'doctors'}
+                  <NavLink
+                    to="/doctors"
+                    className={({ isActive }) =>
+                      `alv-pill-link alv-pill-trigger ${isActive ? 'active ' : ''}${activeDropdown === 'doctors' ? 'is-open' : ''}`
+                    }
+                    onClick={() => setActiveDropdown(null)}
                     id="aster-nav-doctors-toggle-guest"
                   >
                     <span>Our Doctors</span>
                     <svg className="alv-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="6 9 12 15 18 9" />
                     </svg>
-                  </button>
+                  </NavLink>
 
                   {activeDropdown === 'doctors' && (
                     <div className="alv-floating-menu alv-menu-doctors">

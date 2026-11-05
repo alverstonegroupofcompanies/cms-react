@@ -176,7 +176,7 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
   }, [handlePrev, handleNext])
 
   return (
-    <section className="tda-section" aria-label="Our Trusted Doctors and Specialists">
+    <section className="tda-section" id="doctors" aria-label="Our Trusted Doctors and Specialists">
       <div className="tda-container">
         {/* ==================================================================
             1. TOP HEADER (MATCHING USER SCREENSHOT ARCHITECTURE)
@@ -194,15 +194,15 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
           </Reveal>
 
           <Reveal direction="up" distance={16} delay={0.2} duration={0.75} className="tda-cta-wrap">
-            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Link
                 to="/doctors"
                 className="tda-pill-btn"
                 style={{
-                  background: '#ffffff',
-                  color: '#8b1e2b',
-                  borderColor: 'rgba(139, 30, 43, 0.25)',
-                  boxShadow: '0 4px 14px rgba(139, 30, 43, 0.08)',
+                  background: 'linear-gradient(135deg, #8b1e2b 0%, #6e131e 100%)',
+                  color: '#ffffff',
+                  border: '1.5px solid #8b1e2b',
+                  boxShadow: '0 4px 16px rgba(139, 30, 43, 0.3)',
                 }}
               >
                 <span>Department-Wise Directory</span>
@@ -322,7 +322,15 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
                       <div className="tda-card-scrim">
                         <div className="tda-card-info">
                           <span className="tda-card-dept">{doc.department}</span>
-                          <h3 className="tda-card-name">{doc.name}</h3>
+                          <h3 className="tda-card-name">
+                            <Link
+                              to={`/doctors/${doc.id}`}
+                              style={{ color: 'inherit', textDecoration: 'none' }}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {doc.name}
+                            </Link>
+                          </h3>
                           <div className="tda-card-meta-row">
                             <span className="tda-card-degree">{doc.degree.split(',')[0]}</span>
                             <span className="tda-card-dot">•</span>
@@ -332,12 +340,17 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
                           </div>
                         </div>
 
-                        <div className="tda-card-hover-action" aria-hidden="true">
+                        <Link
+                          to={`/doctors/${doc.id}`}
+                          className="tda-card-hover-action"
+                          aria-label={`View profile of ${doc.name}`}
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <span>View Profile &amp; Book</span>
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                           </svg>
-                        </div>
+                        </Link>
                       </div>
                     </div>
                   </article>
@@ -518,6 +531,90 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
             </div>
           </div>
         </Reveal>
+
+        {/* ==================================================================
+            5. COMPREHENSIVE DEPARTMENT-WISE DIRECTORY BANNER
+            ================================================================== */}
+        <div
+          className="tda-directory-banner-wrap"
+          style={{
+            marginTop: '2.75rem',
+            background: 'linear-gradient(135deg, #2a0b12 0%, #50101b 50%, #6e131e 100%)',
+            borderRadius: '20px',
+            padding: 'clamp(1.5rem, 3.5vw, 2.35rem)',
+            color: '#ffffff',
+            boxShadow: '0 14px 40px rgba(110, 19, 30, 0.22)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '1.5rem',
+            flexWrap: 'wrap',
+          }}
+        >
+          <div style={{ maxWidth: '650px' }}>
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                fontSize: '0.78rem',
+                fontWeight: 750,
+                letterSpacing: '0.07em',
+                textTransform: 'uppercase',
+                color: '#fbcfe8',
+                marginBottom: '0.45rem',
+              }}
+            >
+              ★ Hospital-Wide Faculty &amp; Specialists
+            </span>
+            <h3
+              style={{
+                fontFamily: 'Fraunces, Georgia, serif',
+                fontSize: 'clamp(1.35rem, 2.2vw, 1.85rem)',
+                fontWeight: 700,
+                margin: '0 0 0.5rem',
+                color: '#ffffff',
+                lineHeight: 1.2,
+              }}
+            >
+              Looking for a specific doctor or medical department?
+            </h3>
+            <p
+              style={{
+                fontSize: '0.94rem',
+                lineHeight: 1.55,
+                color: 'rgba(254, 226, 226, 0.92)',
+                margin: 0,
+              }}
+            >
+              Explore our full directory grouped department by department — General Medicine, Cardiology, Orthopedics, Pediatrics, Dental, Dermatology &amp; Neurology. View verified degrees, weekly OPD day tracks, and individual doctor profiles.
+            </p>
+          </div>
+
+          <Link
+            to="/doctors"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.6rem',
+              padding: '0.95rem 1.85rem',
+              borderRadius: '9999px',
+              background: '#ffffff',
+              color: '#8b1e2b',
+              fontWeight: 800,
+              fontSize: '0.95rem',
+              textDecoration: 'none',
+              boxShadow: '0 6px 20px rgba(0, 0, 0, 0.25)',
+              whiteSpace: 'nowrap',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <span>Open All Doctors Directory</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
       </div>
     </section>
   )
