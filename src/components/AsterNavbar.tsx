@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { CLINIC } from '../config/clinic'
 import { useAuth } from '../context/AuthContext'
 import { storageUrl } from '../utils/storageUrl'
+import { smoothScrollToElement } from '../utils/scrollHelper'
 import './aster-navbar.css'
 
 interface SpecialtyItem {
@@ -24,6 +25,7 @@ const CLINIC_SPECIALTIES: SpecialtyItem[] = [
 
 const CLINIC_DOCTORS = [
   {
+    id: 'doc-sharma',
     name: 'Dr. Sarah Sharma',
     spec: 'General Medicine',
     qualification: 'MD (Gen Med), DNB',
@@ -31,25 +33,28 @@ const CLINIC_DOCTORS = [
     avail: 'Mon – Sat',
   },
   {
+    id: 'doc-priya',
     name: 'Dr. Priya Sharma',
     spec: 'Cardiology & Heart Care',
     qualification: 'MD, DM (Cardiology)',
-    experience: '11+ yrs exp',
-    avail: 'Mon – Fri',
+    experience: '12+ yrs exp',
+    avail: 'Mon, Wed, Fri',
   },
   {
+    id: 'doc-rajesh',
     name: 'Dr. Rajesh Menon',
     spec: 'Internal Medicine & Geriatrics',
     qualification: 'MD, Fellowship (Geriatric Med)',
-    experience: '18+ yrs exp',
-    avail: 'Mon – Sat',
+    experience: '16+ yrs exp',
+    avail: 'Tue, Thu, Sat',
   },
   {
-    name: 'Dr. Arun Kumar',
-    spec: 'Pediatrics & Neonatal Care',
-    qualification: 'DCH, MD (Pediatrics)',
-    experience: '9+ yrs exp',
-    avail: 'Tue – Sun',
+    id: 'doc-meera',
+    name: 'Dr. Meera Krishnan',
+    spec: 'Orthopedics & Joint Care',
+    qualification: 'MS (Orthopedics), MCh',
+    experience: '10+ yrs exp',
+    avail: 'Mon, Wed, Thu',
   },
 ]
 
@@ -171,16 +176,15 @@ export default function AsterNavbar() {
     e.preventDefault()
     setActiveDropdown(null)
     setMobileOpen(false)
+
     if (location.pathname === '/' || location.pathname === '/patient') {
-      const el = document.getElementById(id)
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        return
-      }
+      const scrolled = smoothScrollToElement(id, 85)
+      if (scrolled) return
     }
+
     navigate({ pathname: '/', hash: id })
     window.setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      smoothScrollToElement(id, 85)
     }, 120)
   }
 
@@ -369,19 +373,28 @@ export default function AsterNavbar() {
                     <div className="alv-floating-menu alv-menu-doctors">
                       <div className="alv-menu-header">
                         <div>
-                          <span className="alv-menu-kicker">Alverstone Medical Board</span>
-                          <h4 className="alv-menu-heading">Consulting Specialists</h4>
+                          <span className="alv-menu-kicker">Faculty &amp; Specialists</span>
+                          <h4 className="alv-menu-heading">Meet Our Physicians</h4>
                         </div>
-                        <Link to="/doctors" onClick={() => setActiveDropdown(null)} className="alv-menu-view-all">
-                          Full Directory →
-                        </Link>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.2rem' }}>
+                          <Link to="/doctors" onClick={() => setActiveDropdown(null)} className="alv-menu-view-all">
+                            Full Directory →
+                          </Link>
+                          <a
+                            href="/#doctors"
+                            onClick={(e) => handleScrollTo('doctors', e)}
+                            style={{ fontSize: '0.72rem', color: '#8b1e2b', textDecoration: 'none', fontWeight: 650, opacity: 0.9 }}
+                          >
+                            View on Home ↓
+                          </a>
+                        </div>
                       </div>
 
                       <div className="alv-doctors-grid">
                         {CLINIC_DOCTORS.map((doc) => (
                           <Link
-                            key={doc.name}
-                            to={`/patient/book?doctor=${encodeURIComponent(doc.name)}`}
+                            key={doc.id || doc.name}
+                            to={`/doctors/${doc.id}`}
                             className="alv-doc-item"
                             onClick={() => setActiveDropdown(null)}
                           >
@@ -393,7 +406,7 @@ export default function AsterNavbar() {
                               <p>{doc.spec}</p>
                               <span>{doc.qualification} • {doc.experience}</span>
                             </div>
-                            <span className="alv-doc-cta">Book →</span>
+                            <span className="alv-doc-cta">Profile →</span>
                           </Link>
                         ))}
                       </div>
@@ -495,19 +508,28 @@ export default function AsterNavbar() {
                     <div className="alv-floating-menu alv-menu-doctors">
                       <div className="alv-menu-header">
                         <div>
-                          <span className="alv-menu-kicker">Trusted Care Team</span>
-                          <h4 className="alv-menu-heading">Meet Our Senior Physicians</h4>
+                          <span className="alv-menu-kicker">Faculty &amp; Specialists</span>
+                          <h4 className="alv-menu-heading">Meet Our Physicians</h4>
                         </div>
-                        <Link to="/doctors" onClick={() => setActiveDropdown(null)} className="alv-menu-view-all">
-                          View All Doctors →
-                        </Link>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.2rem' }}>
+                          <Link to="/doctors" onClick={() => setActiveDropdown(null)} className="alv-menu-view-all">
+                            View All Doctors →
+                          </Link>
+                          <a
+                            href="/#doctors"
+                            onClick={(e) => handleScrollTo('doctors', e)}
+                            style={{ fontSize: '0.72rem', color: '#8b1e2b', textDecoration: 'none', fontWeight: 650, opacity: 0.9 }}
+                          >
+                            View on Home ↓
+                          </a>
+                        </div>
                       </div>
 
                       <div className="alv-doctors-grid">
                         {CLINIC_DOCTORS.map((doc) => (
                           <Link
-                            key={doc.name}
-                            to={`/patient/book?doctor=${encodeURIComponent(doc.name)}`}
+                            key={doc.id || doc.name}
+                            to={`/doctors/${doc.id}`}
                             className="alv-doc-item"
                             onClick={() => setActiveDropdown(null)}
                           >
@@ -519,7 +541,7 @@ export default function AsterNavbar() {
                               <p>{doc.spec}</p>
                               <span>{doc.qualification} • {doc.experience}</span>
                             </div>
-                            <span className="alv-doc-cta">Consult →</span>
+                            <span className="alv-doc-cta">Profile →</span>
                           </Link>
                         ))}
                       </div>
@@ -828,8 +850,11 @@ export default function AsterNavbar() {
             Specialties & Departments
           </a>
           <Link to="/doctors" className="alv-mobile-link" onClick={() => setMobileOpen(false)}>
-            Our Doctors &amp; Specialists
+            Our Doctors Directory (All Departments)
           </Link>
+          <a href="/#doctors" className="alv-mobile-link" onClick={(e) => handleScrollTo('doctors', e)}>
+            Doctors Showcase on Home
+          </a>
           <a href="/#services" className="alv-mobile-link" onClick={(e) => handleScrollTo('services', e)}>
             Patient Services
           </a>

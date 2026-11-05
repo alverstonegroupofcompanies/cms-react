@@ -51,6 +51,9 @@ export default function SmoothScroll({ children, enabled = true }: SmoothScrollP
 
     lenisRef.current = lenis
     setLenisInstance(lenis)
+    if (typeof window !== 'undefined') {
+      window.__lenis = lenis
+    }
 
     // Bridge Lenis with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update)
@@ -68,6 +71,9 @@ export default function SmoothScroll({ children, enabled = true }: SmoothScrollP
       lenis.destroy()
       lenisRef.current = null
       setLenisInstance(null)
+      if (typeof window !== 'undefined' && window.__lenis === lenis) {
+        delete window.__lenis
+      }
     }
   }, [enabled])
 

@@ -9,6 +9,7 @@ import AsterNavbar from './AsterNavbar'
 import SmoothScroll from './motion/SmoothScroll'
 import PageTransition from './motion/PageTransition'
 import StickyCTA from './motion/StickyCTA'
+import { smoothScrollToElement } from '../utils/scrollHelper'
 
 interface Props {
   children: React.ReactNode
@@ -39,10 +40,9 @@ export default function PatientSiteLayout({ children, portal = false }: Props) {
   useEffect(() => {
     if (!location.hash) return
     const id = location.hash.replace(/^#/, '')
-    const scroll = () => {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-    const t = window.setTimeout(scroll, 80)
+    const t = window.setTimeout(() => {
+      smoothScrollToElement(id, 85)
+    }, 120)
     return () => window.clearTimeout(t)
   }, [location.pathname, location.hash])
 
