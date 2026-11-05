@@ -6,6 +6,8 @@ import StaffLogin from './pages/StaffLogin'
 import PatientLanding from './pages/patient/Landing'
 import PatientAbout from './pages/patient/About'
 import SpecialtyPage from './pages/patient/SpecialtyPage'
+import DoctorsDirectory from './pages/patient/Doctors'
+import DoctorProfile from './pages/patient/DoctorProfile'
 import PatientLogin from './pages/patient/Login'
 import PatientRegister from './pages/patient/Register'
 import PatientDashboard from './pages/patient/Dashboard'
@@ -57,6 +59,10 @@ function App() {
           <Route path="/specialties/:slug" element={<SpecialtyPage />} />
           <Route path="/patient/specialties" element={<SpecialtyPage />} />
           <Route path="/patient/specialties/:slug" element={<SpecialtyPage />} />
+          <Route path="/doctors" element={<DoctorsDirectory />} />
+          <Route path="/doctors/:id" element={<DoctorProfile />} />
+          <Route path="/patient/doctors" element={<DoctorsDirectory />} />
+          <Route path="/patient/doctors/:id" element={<DoctorProfile />} />
           <Route path="/contact" element={<Navigate to={{ pathname: '/', hash: 'contact' }} replace />} />
           <Route path="/patient/contact" element={<Navigate to={{ pathname: '/', hash: 'contact' }} replace />} />
 

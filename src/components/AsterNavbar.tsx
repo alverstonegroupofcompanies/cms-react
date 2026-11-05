@@ -371,9 +371,9 @@ export default function AsterNavbar() {
                           <span className="alv-menu-kicker">Alverstone Medical Board</span>
                           <h4 className="alv-menu-heading">Consulting Specialists</h4>
                         </div>
-                        <a href="/#doctors" onClick={(e) => handleScrollTo('doctors', e)} className="alv-menu-view-all">
+                        <Link to="/doctors" onClick={() => setActiveDropdown(null)} className="alv-menu-view-all">
                           Full Directory →
-                        </a>
+                        </Link>
                       </div>
 
                       <div className="alv-doctors-grid">
@@ -496,9 +496,9 @@ export default function AsterNavbar() {
                           <span className="alv-menu-kicker">Trusted Care Team</span>
                           <h4 className="alv-menu-heading">Meet Our Senior Physicians</h4>
                         </div>
-                        <a href="/#doctors" onClick={(e) => handleScrollTo('doctors', e)} className="alv-menu-view-all">
+                        <Link to="/doctors" onClick={() => setActiveDropdown(null)} className="alv-menu-view-all">
                           View All Doctors →
-                        </a>
+                        </Link>
                       </div>
 
                       <div className="alv-doctors-grid">
@@ -825,9 +825,9 @@ export default function AsterNavbar() {
           <a href="/#specialties" className="alv-mobile-link" onClick={(e) => handleScrollTo('specialties', e)}>
             Specialties & Departments
           </a>
-          <a href="/#doctors" className="alv-mobile-link" onClick={(e) => handleScrollTo('doctors', e)}>
-            Our Doctors
-          </a>
+          <Link to="/doctors" className="alv-mobile-link" onClick={() => setMobileOpen(false)}>
+            Our Doctors &amp; Specialists
+          </Link>
           <a href="/#services" className="alv-mobile-link" onClick={(e) => handleScrollTo('services', e)}>
             Patient Services
           </a>
@@ -915,7 +915,7 @@ export default function AsterNavbar() {
                 {filteredDoctors.map((d) => (
                   <Link
                     key={d.name}
-                    to={`/patient/book?doctor=${encodeURIComponent(d.name)}`}
+                    to={`/doctors/${encodeURIComponent(d.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'))}`}
                     className="alv-search-result-item"
                     onClick={() => setSearchOpen(false)}
                   >

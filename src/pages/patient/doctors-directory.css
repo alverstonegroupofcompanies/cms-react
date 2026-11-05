@@ -1,0 +1,1196 @@
+/* ==========================================================================
+   ALVERSTONE MEDCITY — OUR DOCTORS DIRECTORY & SEPARATE DOCTOR PROFILE
+   Clean, luminous hospital aesthetic matching Alverstone Medcity brand
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. HERO SECTION (OUR DOCTORS DIRECTORY)
+   -------------------------------------------------------------------------- */
+.dr-hero {
+  position: relative;
+  background: linear-gradient(135deg, #2a0b12 0%, #50101b 50%, #6e131e 100%);
+  color: #ffffff;
+  padding: clamp(2.5rem, 5vw, 4.5rem) 1.5rem clamp(2rem, 4vw, 3.5rem);
+  overflow: hidden;
+}
+
+.dr-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(254, 205, 211, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.dr-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.dr-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(254, 226, 226, 0.75);
+  margin-bottom: 1.25rem;
+}
+
+.dr-breadcrumbs a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  transition: color 0.18s;
+}
+
+.dr-breadcrumbs a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.dr-breadcrumbs-sep {
+  opacity: 0.5;
+}
+
+.dr-hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffe4e6;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.dr-hero-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(2rem, 4.2vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #ffffff;
+  margin: 0 0 1rem;
+  letter-spacing: -0.02em;
+}
+
+.dr-hero-lead {
+  font-size: clamp(1rem, 1.35vw, 1.15rem);
+  line-height: 1.6;
+  color: rgba(254, 226, 226, 0.9);
+  max-width: 44rem;
+  margin: 0 0 2rem;
+}
+
+/* Quick Metrics Strip */
+.dr-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  max-width: 860px;
+}
+
+.dr-stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1.15rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+}
+
+.dr-stat-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.dr-stat-num {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.dr-stat-label {
+  display: block;
+  font-size: 0.76rem;
+  color: rgba(254, 226, 226, 0.78);
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   2. SEARCH & FILTER CONTROLS BAR
+   -------------------------------------------------------------------------- */
+.dr-controls-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(139, 30, 43, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  padding: 1rem 1.5rem;
+}
+
+.dr-controls-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dr-controls-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.dr-search-box {
+  position: relative;
+  flex: 1;
+  min-width: 260px;
+  max-width: 480px;
+}
+
+.dr-search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8b1e2b;
+  pointer-events: none;
+}
+
+.dr-search-input {
+  width: 100%;
+  padding: 0.75rem 2.6rem 0.75rem 2.75rem;
+  border-radius: 9999px;
+  border: 1.5px solid rgba(139, 30, 43, 0.22);
+  background: #ffffff;
+  font-size: 0.92rem;
+  color: #1a1a1a;
+  outline: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.dr-search-input:focus {
+  border-color: #8b1e2b;
+  box-shadow: 0 0 0 4px rgba(139, 30, 43, 0.12);
+}
+
+.dr-search-clear {
+  position: absolute;
+  right: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #888888;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dr-search-clear:hover {
+  color: #1a1a1a;
+  background: #f0f0f0;
+}
+
+.dr-view-modes {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f4ede6;
+  padding: 0.3rem;
+  border-radius: 9999px;
+}
+
+.dr-view-btn {
+  border: none;
+  background: transparent;
+  padding: 0.45rem 0.95rem;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: #6c5a52;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dr-view-btn.is-active {
+  background: #ffffff;
+  color: #8b1e2b;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Department Filter Scrollable Strip */
+.dr-dept-pills-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.35rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 30, 43, 0.3) transparent;
+}
+
+.dr-dept-pill {
+  flex-shrink: 0;
+  border: 1px solid rgba(139, 30, 43, 0.16);
+  background: #ffffff;
+  color: #4a3832;
+  font-size: 0.84rem;
+  font-weight: 650;
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.dr-dept-pill:hover {
+  background: #faf4ef;
+  border-color: rgba(139, 30, 43, 0.35);
+  color: #8b1e2b;
+}
+
+.dr-dept-pill.is-active {
+  background: #8b1e2b;
+  color: #ffffff;
+  border-color: #8b1e2b;
+  box-shadow: 0 4px 12px rgba(139, 30, 43, 0.25);
+}
+
+.dr-dept-pill-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.3rem;
+  height: 1.3rem;
+  padding: 0 0.35rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.06);
+  color: inherit;
+}
+
+.dr-dept-pill.is-active .dr-dept-pill-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   3. MAIN CONTENT CONTAINER & DEPARTMENT-WISE SECTIONS
+   -------------------------------------------------------------------------- */
+.dr-main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(2rem, 4vw, 3.5rem) 1.5rem;
+}
+
+.dr-results-count {
+  font-size: 0.95rem;
+  color: #6c5a52;
+  margin-bottom: 2rem;
+}
+
+.dr-dept-section {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  scroll-margin-top: 130px;
+}
+
+.dr-dept-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid rgba(139, 30, 43, 0.12);
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.dr-dept-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dr-dept-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fcedee 0%, #ffe4e6 100%);
+  border: 1px solid rgba(139, 30, 43, 0.15);
+  color: #8b1e2b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dr-dept-title-wrap h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  font-weight: 700;
+  color: #2a0b12;
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.dr-dept-title-wrap p {
+  font-size: 0.88rem;
+  color: #7a6358;
+  margin: 0;
+  max-width: 48ch;
+}
+
+.dr-dept-specialty-link {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #8b1e2b;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: gap 0.2s ease;
+}
+
+.dr-dept-specialty-link:hover {
+  text-decoration: underline;
+  gap: 0.55rem;
+}
+
+/* --------------------------------------------------------------------------
+   4. DOCTOR CARDS GRID & CARD DESIGN
+   -------------------------------------------------------------------------- */
+.dr-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 1.85rem);
+}
+
+.dr-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid rgba(139, 30, 43, 0.1);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.dr-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(139, 30, 43, 0.28);
+  box-shadow: 0 14px 34px rgba(139, 30, 43, 0.1);
+}
+
+.dr-card-photo-wrap {
+  position: relative;
+  width: 100%;
+  height: 230px;
+  background: #fbf7f4;
+  overflow: hidden;
+}
+
+.dr-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.35s ease;
+}
+
+.dr-card:hover .dr-card-img {
+  transform: scale(1.04);
+}
+
+.dr-card-badge {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  z-index: 2;
+  padding: 0.32rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(35, 10, 16, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.dr-card-room-pill {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  z-index: 2;
+  padding: 0.32rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(139, 30, 43, 0.15);
+  backdrop-filter: blur(8px);
+  color: #8b1e2b;
+  font-size: 0.76rem;
+  font-weight: 750;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.dr-card-body {
+  padding: 1.35rem 1.35rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.dr-card-dept-tag {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8b1e2b;
+  margin-bottom: 0.35rem;
+}
+
+.dr-card-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #1a1a1a;
+  margin: 0 0 0.35rem;
+}
+
+.dr-card-name a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.18s;
+}
+
+.dr-card-name a:hover {
+  color: #8b1e2b;
+}
+
+.dr-card-degree {
+  font-size: 0.82rem;
+  color: #6c5a52;
+  font-weight: 550;
+  margin-bottom: 0.75rem;
+}
+
+.dr-card-spec-lead {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #3b2c26;
+  margin: 0 0 1rem;
+}
+
+/* Schedule & Availability Box */
+.dr-card-schedule-box {
+  background: #faf4ef;
+  border: 1px solid rgba(139, 30, 43, 0.08);
+  border-radius: 12px;
+  padding: 0.75rem 0.85rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.dr-card-schedule-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #5c453d;
+}
+
+.dr-card-hours {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: #7a6358;
+}
+
+/* Card Action Buttons */
+.dr-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 0.65rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.dr-btn-profile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1.5px solid rgba(139, 30, 43, 0.25);
+  color: #8b1e2b;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.dr-btn-profile:hover {
+  background: #faf4ef;
+  border-color: #8b1e2b;
+  transform: translateY(-1px);
+}
+
+.dr-btn-book {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #8b1e2b 0%, #6e131e 100%);
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 750;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(139, 30, 43, 0.22);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.dr-btn-book:hover {
+  background: linear-gradient(135deg, #a12333 0%, #8b1e2b 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(139, 30, 43, 0.3);
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   5. SEPARATE DOCTOR PROFILE PAGE (.dp-*)
+   -------------------------------------------------------------------------- */
+.dp-page {
+  background: #faf6f0;
+  min-height: 100vh;
+}
+
+.dp-hero {
+  background: linear-gradient(135deg, #2a0b12 0%, #50101b 50%, #6e131e 100%);
+  color: #ffffff;
+  padding: 2.5rem 1.5rem 3.5rem;
+  position: relative;
+}
+
+.dp-hero-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.dp-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  font-weight: 650;
+  color: rgba(254, 226, 226, 0.85);
+  text-decoration: none;
+  margin-bottom: 2rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  transition: all 0.18s;
+}
+
+.dp-back-link:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateX(-3px);
+}
+
+/* Doctor Hero Card with Portrait */
+.dp-card-hero {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: clamp(1.75rem, 3.5vw, 3rem);
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+}
+
+.dp-portrait-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.15;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  background: #3b1019;
+}
+
+.dp-portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.dp-verified-badge {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 10px;
+  background: rgba(35, 10, 16, 0.86);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dp-info-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.dp-dept-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  align-self: flex-start;
+  padding: 0.35rem 0.95rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  font-size: 0.8rem;
+  font-weight: 750;
+  color: #ffe4e6;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dp-doc-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(2rem, 3.8vw, 2.85rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.dp-doc-spec-headline {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #fbcfe8;
+  margin: 0;
+}
+
+.dp-doc-degree-line {
+  font-size: 0.9rem;
+  color: rgba(254, 226, 226, 0.85);
+  margin: 0;
+}
+
+/* Key Metrics Grid in Profile Hero */
+.dp-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.dp-metric-cell {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  padding: 0.65rem 0.85rem;
+}
+
+.dp-metric-label {
+  display: block;
+  font-size: 0.72rem;
+  color: rgba(254, 226, 226, 0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.dp-metric-val {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 750;
+  color: #ffffff;
+}
+
+/* Hero Book CTA Button */
+.dp-hero-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  align-self: flex-start;
+  padding: 0.9rem 1.85rem;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #8b1e2b;
+  font-size: 1rem;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
+}
+
+.dp-hero-cta-btn:hover {
+  background: #fff5f6;
+  color: #6e131e;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   6. DOCTOR PROFILE BODY (DETAILS, SCHEDULE, BIO)
+   -------------------------------------------------------------------------- */
+.dp-content-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 5vw, 4rem) 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(320px, 1.2fr);
+  gap: clamp(1.75rem, 3.5vw, 3rem);
+  align-items: start;
+}
+
+.dp-main-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.dp-sidebar-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: sticky;
+  top: 90px;
+}
+
+/* Section Cards in Profile */
+.dp-section-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(139, 30, 43, 0.1);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.dp-section-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.dp-section-head-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #fcedee;
+  color: #8b1e2b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dp-section-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #2a0b12;
+  margin: 0;
+}
+
+.dp-bio-lead {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #3b2c26;
+  margin: 0 0 1.25rem;
+}
+
+.dp-philosophy-box {
+  background: #faf4ef;
+  border-left: 4px solid #8b1e2b;
+  border-radius: 0 12px 12px 0;
+  padding: 1.15rem 1.35rem;
+  margin: 1.25rem 0 0;
+}
+
+.dp-philosophy-quote {
+  font-style: italic;
+  font-size: 0.96rem;
+  line-height: 1.6;
+  color: #4a3832;
+  margin: 0 0 0.35rem;
+}
+
+.dp-philosophy-author {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #8b1e2b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Specializations & Conditions Pills */
+.dp-specializations-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.dp-spec-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background: #fcedee;
+  color: #6e131e;
+  border: 1px solid rgba(139, 30, 43, 0.15);
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.dp-spec-bullet {
+  color: #8b1e2b;
+  font-size: 0.95rem;
+}
+
+/* Education List */
+.dp-education-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.dp-edu-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: #3b2c26;
+  line-height: 1.5;
+}
+
+.dp-edu-icon {
+  color: #8b1e2b;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+/* Sidebar Schedule Card */
+.dp-sidebar-booking-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 2px solid rgba(139, 30, 43, 0.15);
+  padding: 1.75rem;
+  box-shadow: 0 10px 30px rgba(139, 30, 43, 0.08);
+}
+
+.dp-sidebar-card-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #2a0b12;
+  margin: 0 0 0.5rem;
+}
+
+.dp-sidebar-card-sub {
+  font-size: 0.88rem;
+  color: #6c5a52;
+  margin: 0 0 1.25rem;
+}
+
+.dp-schedule-days-summary {
+  margin-bottom: 1.25rem;
+}
+
+.dp-sidebar-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed rgba(139, 30, 43, 0.15);
+  font-size: 0.88rem;
+}
+
+.dp-sidebar-info-row:last-of-type {
+  border-bottom: none;
+}
+
+.dp-sidebar-info-row dt {
+  color: #7a6358;
+  font-weight: 550;
+}
+
+.dp-sidebar-info-row dd {
+  margin: 0;
+  font-weight: 750;
+  color: #1a1a1a;
+}
+
+.dp-sidebar-book-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.95rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #8b1e2b 0%, #6e131e 100%);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 800;
+  text-decoration: none;
+  margin-top: 1.25rem;
+  box-shadow: 0 6px 18px rgba(139, 30, 43, 0.28);
+  transition: all 0.2s ease;
+}
+
+.dp-sidebar-book-btn:hover {
+  background: linear-gradient(135deg, #a12333 0%, #8b1e2b 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 30, 43, 0.35);
+  color: #ffffff;
+}
+
+.dp-sidebar-guarantee-note {
+  font-size: 0.78rem;
+  color: #7a6358;
+  text-align: center;
+  margin-top: 0.85rem;
+  line-height: 1.4;
+}
+
+/* How It Works Steps in Profile */
+.dp-steps-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.dp-step-box {
+  background: #faf4ef;
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid rgba(139, 30, 43, 0.08);
+}
+
+.dp-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #8b1e2b;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.dp-step-heading {
+  font-size: 0.88rem;
+  font-weight: 750;
+  color: #2a0b12;
+  margin: 0 0 0.25rem;
+}
+
+.dp-step-desc {
+  font-size: 0.8rem;
+  color: #6c5a52;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Related Doctors Section */
+.dp-related-section {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+.dp-related-header {
+  margin-bottom: 1.5rem;
+}
+
+.dp-related-header h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2a0b12;
+  margin: 0 0 0.25rem;
+}
+
+.dp-related-header p {
+  font-size: 0.9rem;
+  color: #6c5a52;
+  margin: 0;
+}
+
+/* Empty State */
+.dr-empty-state {
+  text-align: center;
+  padding: 4rem 1.5rem;
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px dashed rgba(139, 30, 43, 0.2);
+  margin: 2rem 0;
+}
+
+.dr-empty-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #fcedee;
+  color: #8b1e2b;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.dr-empty-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.35rem;
+  color: #2a0b12;
+  margin: 0 0 0.5rem;
+}
+
+.dr-empty-desc {
+  font-size: 0.92rem;
+  color: #6c5a52;
+  margin: 0 0 1.5rem;
+}
+
+.dr-empty-reset-btn {
+  padding: 0.65rem 1.35rem;
+  border-radius: 9999px;
+  background: #8b1e2b;
+  color: #ffffff;
+  border: none;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   7. RESPONSIVE BREAKPOINTS
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .dp-card-hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .dp-portrait-wrap {
+    max-width: 240px;
+    margin: 0 auto;
+  }
+
+  .dp-info-col {
+    align-items: center;
+  }
+
+  .dp-content-container {
+    grid-template-columns: 1fr;
+  }
+
+  .dp-sidebar-column {
+    position: static;
+  }
+
+  .dp-steps-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .dr-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dr-card-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .dr-controls-top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dr-search-box {
+    max-width: none;
+  }
+}

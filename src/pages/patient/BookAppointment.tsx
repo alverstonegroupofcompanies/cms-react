@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import PatientLayout from '../../components/PatientLayout'
 import DoctorAvatar from '../../components/DoctorAvatar'
 import DoctorDayTrack from '../../components/DoctorDayTrack'
@@ -65,6 +65,7 @@ function departmentIcon(name: string) {
 export default function BookAppointment() {
   usePageTitle('Book a visit', 'Patient')
   const { user } = useAuth()
+  const [searchParams] = useSearchParams()
   const [clinic, setClinic] = useState<Clinic | null>(null)
   const [departments, setDepartments] = useState<Department[]>([])
   const [doctors, setDoctors] = useState<Doctor[]>([])
@@ -87,8 +88,30 @@ export default function BookAppointment() {
     })
   }, [])
 
+  // Auto-populate from URL query params (e.g. ?doctor_id=1&department_id=1 or ?doctor=Dr.+Sarah)
   useEffect(() => {
-    setDoctorId('')
+    if (!clinic) return
+    const qDept = searchParams.get('department_id')
+    const qDocId = searchParams.get('doctor_id')
+    const qDocName = searchParams.get('doctor')
+
+    if (qDept) {
+      setDepartmentId(qDept)
+    } else if (qDocId || qDocName) {
+      getDoctors({ clinic_id: clinic.id }).then(({ data }) => {
+        const found = data.find(
+          (d: Doctor) =>
+            (qDocId && String(d.id) === String(qDocId)) ||
+            (qDocName && d.name.toLowerCase().includes(qDocName.toLowerCase()))
+        )
+        if (found && found.department_id) {
+          setDepartmentId(String(found.department_id))
+        }
+      })
+    }
+  }, [clinic, searchParams])
+
+  useEffect(() => {
     setDate('')
     setSelectedSlot('')
     setAvailableDates([])
@@ -96,11 +119,22 @@ export default function BookAppointment() {
       getDoctors({
         clinic_id: clinic.id,
         department_id: Number(departmentId),
-      }).then(({ data }) => setDoctors(data))
+      }).then(({ data }) => {
+        setDoctors(data)
+        const qDocId = searchParams.get('doctor_id')
+        const qDocName = searchParams.get('doctor')
+        if (qDocId && data.some((d: Doctor) => String(d.id) === String(qDocId))) {
+          setDoctorId(String(qDocId))
+        } else if (qDocName) {
+          const match = data.find((d: Doctor) => d.name.toLowerCase().includes(qDocName.toLowerCase()))
+          if (match) setDoctorId(String(match.id))
+        }
+      })
     } else {
       setDoctors([])
+      setDoctorId('')
     }
-  }, [clinic, departmentId])
+  }, [clinic, departmentId, searchParams])
 
   useEffect(() => {
     setDate('')

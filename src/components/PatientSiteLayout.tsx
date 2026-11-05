@@ -193,8 +193,8 @@ export default function PatientSiteLayout({ children, portal = false }: Props) {
               <h4>Hospital & Governance</h4>
               <nav className="ps-footer-links" aria-label="Hospital and governance">
                 <Link to="/about">About Alverstone Medcity</Link>
-                <Link to="/#doctors">Our Consulting Physicians</Link>
-                <Link to="/#services"> Out-Patient Care Standards</Link>
+                <Link to="/doctors">Our Doctors &amp; Specialists</Link>
+                <Link to="/#services">Out-Patient Care Standards</Link>
                 <Link to="/#contact">Campus Directions & Map</Link>
               </nav>
               <div className="ps-footer-standards">

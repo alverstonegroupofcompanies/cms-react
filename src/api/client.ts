@@ -143,6 +143,7 @@ export const getDepartments = (clinicId: number) =>
 // Doctors
 export const getDoctors = (params?: { clinic_id?: number; department_id?: number }) =>
   api.get('/doctors', { params })
+export const getDoctor = (id: number | string) => api.get(`/doctors/${id}`)
 export const createDoctor = (data: object | FormData) =>
   data instanceof FormData
     ? api.post('/doctors', data, { headers: { 'Content-Type': 'multipart/form-data' } })

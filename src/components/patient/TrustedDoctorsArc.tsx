@@ -194,14 +194,33 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
           </Reveal>
 
           <Reveal direction="up" distance={16} delay={0.2} duration={0.75} className="tda-cta-wrap">
-            <Link to={bookBaseUrl} className="tda-pill-btn">
-              <span>Book a Consultation</span>
-              <span className="tda-pill-arrow" aria-hidden>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </span>
-            </Link>
+            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <Link
+                to="/doctors"
+                className="tda-pill-btn"
+                style={{
+                  background: '#ffffff',
+                  color: '#8b1e2b',
+                  borderColor: 'rgba(139, 30, 43, 0.25)',
+                  boxShadow: '0 4px 14px rgba(139, 30, 43, 0.08)',
+                }}
+              >
+                <span>Department-Wise Directory</span>
+                <span className="tda-pill-arrow" aria-hidden>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </Link>
+              <Link to={bookBaseUrl} className="tda-pill-btn">
+                <span>Book a Consultation</span>
+                <span className="tda-pill-arrow" aria-hidden>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </Link>
+            </div>
           </Reveal>
         </div>
 
@@ -385,7 +404,30 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
             </div>
           </div>
 
-          <div className="tda-spotlight-action">
+          <div className="tda-spotlight-action" style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+            <Link
+              to={`/doctors/${activeDoc.id}`}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                padding: '0.75rem 1.15rem',
+                borderRadius: '9999px',
+                border: '1.5px solid rgba(139, 30, 43, 0.28)',
+                color: '#8b1e2b',
+                fontWeight: 700,
+                fontSize: '0.86rem',
+                textDecoration: 'none',
+                background: '#ffffff',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+                transition: 'all 0.18s ease',
+              }}
+            >
+              <span>View Profile</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </Link>
             <Link
               to={`${bookBaseUrl}?doctor=${encodeURIComponent(activeDoc.name)}&dept=${encodeURIComponent(
                 activeDoc.department
