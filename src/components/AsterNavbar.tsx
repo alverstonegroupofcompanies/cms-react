@@ -349,70 +349,14 @@ export default function AsterNavbar() {
                   Prescriptions
                 </NavLink>
 
-                {/* Our Doctors Dropdown */}
-                <div
-                  className={`alv-dropdown-wrap ${activeDropdown === 'doctors' ? 'open' : ''}`}
-                  onMouseEnter={() => setActiveDropdown('doctors')}
-                  onMouseLeave={() => setActiveDropdown(null)}
+                {/* Our Doctors - Dedicated Page */}
+                <NavLink
+                  to="/doctors"
+                  className={({ isActive }) => `alv-pill-link${isActive ? ' active' : ''}`}
+                  id="aster-nav-doctors"
                 >
-                  <NavLink
-                    to="/doctors"
-                    className={({ isActive }) =>
-                      `alv-pill-link alv-pill-trigger ${isActive ? 'active ' : ''}${activeDropdown === 'doctors' ? 'is-open' : ''}`
-                    }
-                    onClick={() => setActiveDropdown(null)}
-                    id="aster-nav-doctors-toggle"
-                  >
-                    <span>Our Doctors</span>
-                    <svg className="alv-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                  </NavLink>
-
-                  {activeDropdown === 'doctors' && (
-                    <div className="alv-floating-menu alv-menu-doctors">
-                      <div className="alv-menu-header">
-                        <div>
-                          <span className="alv-menu-kicker">Faculty &amp; Specialists</span>
-                          <h4 className="alv-menu-heading">Meet Our Physicians</h4>
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.2rem' }}>
-                          <Link to="/doctors" onClick={() => setActiveDropdown(null)} className="alv-menu-view-all">
-                            Full Directory →
-                          </Link>
-                          <a
-                            href="/#doctors"
-                            onClick={(e) => handleScrollTo('doctors', e)}
-                            style={{ fontSize: '0.72rem', color: '#8b1e2b', textDecoration: 'none', fontWeight: 650, opacity: 0.9 }}
-                          >
-                            View on Home ↓
-                          </a>
-                        </div>
-                      </div>
-
-                      <div className="alv-doctors-grid">
-                        {CLINIC_DOCTORS.map((doc) => (
-                          <Link
-                            key={doc.id || doc.name}
-                            to={`/doctors/${doc.id}`}
-                            className="alv-doc-item"
-                            onClick={() => setActiveDropdown(null)}
-                          >
-                            <div className="alv-doc-monogram">
-                              {doc.name.replace('Dr. ', '').slice(0, 2).toUpperCase()}
-                            </div>
-                            <div className="alv-doc-meta">
-                              <h5>{doc.name}</h5>
-                              <p>{doc.spec}</p>
-                              <span>{doc.qualification} • {doc.experience}</span>
-                            </div>
-                            <span className="alv-doc-cta">Profile →</span>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                  Our Doctors
+                </NavLink>
               </div>
             ) : (
               /* ============================================================
@@ -484,70 +428,14 @@ export default function AsterNavbar() {
                   )}
                 </div>
 
-                {/* Our Doctors Dropdown */}
-                <div
-                  className={`alv-dropdown-wrap ${activeDropdown === 'doctors' ? 'open' : ''}`}
-                  onMouseEnter={() => setActiveDropdown('doctors')}
-                  onMouseLeave={() => setActiveDropdown(null)}
+                {/* Our Doctors - Dedicated Page */}
+                <NavLink
+                  to="/doctors"
+                  className={({ isActive }) => `alv-pill-link${isActive ? ' active' : ''}`}
+                  id="aster-nav-doctors-guest"
                 >
-                  <NavLink
-                    to="/doctors"
-                    className={({ isActive }) =>
-                      `alv-pill-link alv-pill-trigger ${isActive ? 'active ' : ''}${activeDropdown === 'doctors' ? 'is-open' : ''}`
-                    }
-                    onClick={() => setActiveDropdown(null)}
-                    id="aster-nav-doctors-toggle-guest"
-                  >
-                    <span>Our Doctors</span>
-                    <svg className="alv-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                  </NavLink>
-
-                  {activeDropdown === 'doctors' && (
-                    <div className="alv-floating-menu alv-menu-doctors">
-                      <div className="alv-menu-header">
-                        <div>
-                          <span className="alv-menu-kicker">Faculty &amp; Specialists</span>
-                          <h4 className="alv-menu-heading">Meet Our Physicians</h4>
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.2rem' }}>
-                          <Link to="/doctors" onClick={() => setActiveDropdown(null)} className="alv-menu-view-all">
-                            View All Doctors →
-                          </Link>
-                          <a
-                            href="/#doctors"
-                            onClick={(e) => handleScrollTo('doctors', e)}
-                            style={{ fontSize: '0.72rem', color: '#8b1e2b', textDecoration: 'none', fontWeight: 650, opacity: 0.9 }}
-                          >
-                            View on Home ↓
-                          </a>
-                        </div>
-                      </div>
-
-                      <div className="alv-doctors-grid">
-                        {CLINIC_DOCTORS.map((doc) => (
-                          <Link
-                            key={doc.id || doc.name}
-                            to={`/doctors/${doc.id}`}
-                            className="alv-doc-item"
-                            onClick={() => setActiveDropdown(null)}
-                          >
-                            <div className="alv-doc-monogram">
-                              {doc.name.replace('Dr. ', '').slice(0, 2).toUpperCase()}
-                            </div>
-                            <div className="alv-doc-meta">
-                              <h5>{doc.name}</h5>
-                              <p>{doc.spec}</p>
-                              <span>{doc.qualification} • {doc.experience}</span>
-                            </div>
-                            <span className="alv-doc-cta">Profile →</span>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                  Our Doctors
+                </NavLink>
 
                 <a
                   href="/#services"
@@ -850,11 +738,8 @@ export default function AsterNavbar() {
             Specialties & Departments
           </a>
           <Link to="/doctors" className="alv-mobile-link" onClick={() => setMobileOpen(false)}>
-            Our Doctors Directory (All Departments)
+            Our Doctors
           </Link>
-          <a href="/#doctors" className="alv-mobile-link" onClick={(e) => handleScrollTo('doctors', e)}>
-            Doctors Showcase on Home
-          </a>
           <a href="/#services" className="alv-mobile-link" onClick={(e) => handleScrollTo('services', e)}>
             Patient Services
           </a>

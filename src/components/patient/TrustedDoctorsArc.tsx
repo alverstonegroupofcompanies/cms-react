@@ -205,7 +205,7 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
                   boxShadow: '0 4px 16px rgba(139, 30, 43, 0.3)',
                 }}
               >
-                <span>Department-Wise Directory</span>
+                <span>All Doctors Directory Page</span>
                 <span className="tda-pill-arrow" aria-hidden>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <path d="M5 12h14M12 5l7 7-7 7" />
@@ -346,7 +346,7 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
                           aria-label={`View profile of ${doc.name}`}
                           onClick={(e) => e.stopPropagation()}
                         >
-                          <span>View Profile &amp; Book</span>
+                          <span>View Doctor Profile</span>
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                           </svg>
@@ -436,7 +436,7 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
                 transition: 'all 0.18s ease',
               }}
             >
-              <span>View Profile</span>
+              <span>View Doctor Profile</span>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>

@@ -54,3 +54,4 @@ export function scrollToTopInstant(): void {
   if (document.documentElement) document.documentElement.scrollTop = 0
   if (document.body) document.body.scrollTop = 0
 }
+

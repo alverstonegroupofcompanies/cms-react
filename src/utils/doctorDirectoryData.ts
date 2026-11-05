@@ -111,8 +111,8 @@ export const STATIC_DOCTORS: UnifiedDoctor[] = [
   {
     id: 'doc-sharma',
     dbId: 1,
-    slug: 'dr-sarah-johnson',
-    name: 'Dr. Sarah Johnson',
+    slug: 'dr-sarah-sharma',
+    name: 'Dr. Sarah Sharma',
     degree: 'MBBS, MD (General Medicine), DNB',
     departmentName: 'General & Internal Medicine',
     departmentSlug: 'general-medicine',
@@ -127,7 +127,7 @@ export const STATIC_DOCTORS: UnifiedDoctor[] = [
     daysSummary: 'Mon – Sat',
     hoursSummary: '09:00 AM – 03:00 PM',
     lunchBreak: '01:00 PM – 02:00 PM',
-    bio: 'Dr. Sarah Johnson is a distinguished internal medicine specialist who has spent over 14 years providing attentive adult primary care. She focuses on metabolic balance, early chronic disease detection, and sustainable lifestyle modifications that prevent long-term complications.',
+    bio: 'Dr. Sarah Sharma is a distinguished internal medicine specialist who has spent over 14 years providing attentive adult primary care. She focuses on metabolic balance, early chronic disease detection, and sustainable lifestyle modifications that prevent long-term complications.',
     philosophy:
       'I believe in listening to the entire patient story rather than prescribing quick fixes. Thorough clinical assessment and patient education are the true foundations of enduring wellness.',
     specializations: [
