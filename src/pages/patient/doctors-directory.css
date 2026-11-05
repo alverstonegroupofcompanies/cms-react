@@ -1,630 +1,1339 @@
 /* ==========================================================================
-   ALVERSTONE MEDCITY — OUR DOCTORS DIRECTORY & SEPARATE DOCTOR PROFILE
-   Clean, luminous hospital aesthetic matching Alverstone Medcity brand
+   ALVERSTONE MEDCITY — OUR BEST DOCTORS DIRECTORY & PROFILE STYLES
+   Crafted to match the reference layout with our signature burgundy/wine theme
    ========================================================================== */
 
+:root {
+  --alv-wine-900: #2a0b12;
+  --alv-wine-800: #50101b;
+  --alv-wine-700: #6e131e;
+  --alv-wine-600: #8b1e2b;
+  --alv-wine-500: #a92435;
+  --alv-wine-100: #ffe4e6;
+  --alv-wine-50: #fff1f2;
+  --alv-gold: #f59e0b;
+  --alv-slate-900: #0f172a;
+  --alv-slate-800: #1e293b;
+  --alv-slate-700: #334155;
+  --alv-slate-600: #475569;
+  --alv-slate-500: #64748b;
+  --alv-slate-200: #e2e8f0;
+  --alv-slate-100: #f1f5f9;
+  --alv-slate-50: #f8fafc;
+  --alv-warm-bg: #fcfbfa;
+}
+
+.alv-doctors-landing {
+  background-color: #ffffff;
+  color: var(--alv-slate-800);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
 /* --------------------------------------------------------------------------
-   1. HERO SECTION (OUR DOCTORS DIRECTORY)
+   1. HERO SECTION (MATCHING SCREENSHOT LAYOUT & OUR COLOR THEME)
    -------------------------------------------------------------------------- */
-.dr-hero {
+.alv-doc-hero {
   position: relative;
-  background: linear-gradient(135deg, #2a0b12 0%, #50101b 50%, #6e131e 100%);
-  color: #ffffff;
-  padding: clamp(2.5rem, 5vw, 4.5rem) 1.5rem clamp(2rem, 4vw, 3.5rem);
-  overflow: hidden;
+  background: radial-gradient(circle at 80% 20%, rgba(254, 226, 226, 0.45) 0%, transparent 55%),
+              linear-gradient(180deg, #ffffff 0%, var(--alv-warm-bg) 100%);
+  padding: clamp(3rem, 6vw, 5.5rem) 1.5rem clamp(2.5rem, 5vw, 4.5rem);
+  border-bottom: 1px solid rgba(139, 30, 43, 0.08);
 }
 
-.dr-hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 18% 22%, rgba(254, 205, 211, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 85% 75%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
-  pointer-events: none;
-}
-
-.dr-hero-inner {
-  max-width: 1200px;
+.alv-doc-hero-container {
+  max-width: 1220px;
   margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-
-.dr-breadcrumbs {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
-  color: rgba(254, 226, 226, 0.75);
-  margin-bottom: 1.25rem;
+  gap: clamp(2rem, 5vw, 4.5rem);
 }
 
-.dr-breadcrumbs a {
-  color: rgba(255, 255, 255, 0.9);
-  text-decoration: none;
-  transition: color 0.18s;
+.alv-doc-hero-content {
+  max-width: 580px;
 }
 
-.dr-breadcrumbs a:hover {
-  color: #ffffff;
-  text-decoration: underline;
-}
-
-.dr-breadcrumbs-sep {
-  opacity: 0.5;
-}
-
-.dr-hero-kicker {
+.alv-doc-hero-kicker {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.9rem;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #ffe4e6;
-  font-size: 0.78rem;
+  gap: 0.65rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin-bottom: 1rem;
+  letter-spacing: 0.08em;
+  color: var(--alv-wine-600);
+  margin-bottom: 1.15rem;
 }
 
-.dr-hero-title {
+.alv-kicker-line {
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  background: var(--alv-wine-600);
+  border-radius: 99px;
+}
+
+.alv-doc-hero-title {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: clamp(2rem, 4.2vw, 3.25rem);
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
   font-weight: 700;
-  line-height: 1.15;
-  color: #ffffff;
-  margin: 0 0 1rem;
-  letter-spacing: -0.02em;
+  line-height: 1.12;
+  color: var(--alv-slate-900);
+  letter-spacing: -0.025em;
+  margin: 0 0 1.25rem;
 }
 
-.dr-hero-lead {
-  font-size: clamp(1rem, 1.35vw, 1.15rem);
-  line-height: 1.6;
-  color: rgba(254, 226, 226, 0.9);
-  max-width: 44rem;
-  margin: 0 0 2rem;
+.alv-title-highlight {
+  color: var(--alv-wine-600);
+  font-style: italic;
+  font-weight: 700;
+  position: relative;
 }
 
-/* Quick Metrics Strip */
-.dr-hero-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  max-width: 860px;
+.alv-doc-hero-sub {
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.68;
+  color: var(--alv-slate-600);
+  margin: 0 0 2.25rem;
 }
 
-.dr-stat-pill {
+.alv-doc-hero-actions {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
-  padding: 0.85rem 1.15rem;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.09);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(8px);
-}
-
-.dr-stat-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.16);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  flex-shrink: 0;
-}
-
-.dr-stat-num {
-  display: block;
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: #ffffff;
-  line-height: 1.2;
-}
-
-.dr-stat-label {
-  display: block;
-  font-size: 0.76rem;
-  color: rgba(254, 226, 226, 0.78);
-  font-weight: 500;
-}
-
-/* --------------------------------------------------------------------------
-   2. SEARCH & FILTER CONTROLS BAR
-   -------------------------------------------------------------------------- */
-.dr-controls-bar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(139, 30, 43, 0.1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  padding: 1rem 1.5rem;
-}
-
-.dr-controls-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.dr-controls-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+  margin-bottom: 2.25rem;
 }
 
-.dr-search-box {
+.alv-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 2rem;
+  background: linear-gradient(135deg, var(--alv-wine-600) 0%, var(--alv-wine-700) 100%);
+  color: #ffffff !important;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(139, 30, 43, 0.28);
+  transition: all 0.22s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.alv-btn-primary:hover {
+  background: linear-gradient(135deg, var(--alv-wine-700) 0%, var(--alv-wine-800) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(139, 30, 43, 0.38);
+}
+
+.alv-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.88rem 1.85rem;
+  background: #ffffff;
+  color: var(--alv-wine-600);
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  text-decoration: none;
+  border: 1.8px solid var(--alv-wine-600);
+  transition: all 0.22s ease;
+  cursor: pointer;
+}
+
+.alv-btn-outline:hover {
+  background: var(--alv-wine-50);
+  border-color: var(--alv-wine-700);
+  transform: translateY(-2px);
+}
+
+.alv-hero-trust-strip {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--alv-slate-200);
+}
+
+.alv-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--alv-slate-600);
+}
+
+.alv-trust-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--alv-wine-600);
+}
+
+/* Right Doctor Visual (Matches Reference Pose) */
+.alv-doc-hero-visual {
+  display: flex;
+  justify-content: center;
   position: relative;
-  flex: 1;
-  min-width: 260px;
+}
+
+.alv-hero-img-backdrop {
+  position: relative;
+  width: 100%;
   max-width: 480px;
 }
 
-.dr-search-icon {
+.alv-hero-circle-accent {
   position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #8b1e2b;
-  pointer-events: none;
+  top: 10%;
+  left: 5%;
+  width: 90%;
+  height: 80%;
+  background: radial-gradient(circle, rgba(254, 205, 211, 0.5) 0%, rgba(255, 241, 242, 0.2) 70%, transparent 100%);
+  border-radius: 50%;
+  z-index: 0;
+  filter: blur(20px);
 }
 
-.dr-search-input {
+.alv-hero-doctor-img {
+  position: relative;
   width: 100%;
-  padding: 0.75rem 2.6rem 0.75rem 2.75rem;
-  border-radius: 9999px;
-  border: 1.5px solid rgba(139, 30, 43, 0.22);
+  height: clamp(380px, 42vw, 540px);
+  object-fit: cover;
+  border-radius: 28px;
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.12), 0 4px 16px rgba(139, 30, 43, 0.08);
+  border: 4px solid #ffffff;
+  z-index: 1;
+}
+
+/* Floating Badges */
+.alv-floating-seal {
+  position: absolute;
   background: #ffffff;
+  padding: 0.75rem 1.15rem;
+  border-radius: 18px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  z-index: 2;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  animation: alv-float 4s ease-in-out infinite alternate;
+}
+
+@keyframes alv-float {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-8px); }
+}
+
+.alv-seal-rating {
+  bottom: 8%;
+  left: -5%;
+}
+
+.alv-seal-certified {
+  top: 14%;
+  right: -5%;
+  animation-delay: -2s;
+}
+
+.alv-seal-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #fef3c7;
+  color: #b45309;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.alv-seal-check {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--alv-wine-50);
+  color: var(--alv-wine-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.alv-floating-seal strong {
+  display: block;
   font-size: 0.92rem;
-  color: #1a1a1a;
-  outline: none;
+  font-weight: 750;
+  color: var(--alv-slate-900);
+}
+
+.alv-floating-seal span {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--alv-slate-500);
+}
+
+/* --------------------------------------------------------------------------
+   2. STATS SECTION (MATCHING SCREENSHOT STATS BAR)
+   -------------------------------------------------------------------------- */
+.alv-stats-section {
+  padding: clamp(3rem, 5vw, 4.5rem) 1.5rem;
+  background: #ffffff;
+  border-bottom: 1px solid var(--alv-slate-200);
+}
+
+.alv-stats-container {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.alv-stats-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 3rem;
+}
+
+.alv-stats-heading {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(1.85rem, 3.2vw, 2.6rem);
+  font-weight: 700;
+  color: var(--alv-slate-900);
+  line-height: 1.25;
+  margin: 0 0 0.75rem;
+}
+
+.alv-stats-heading span {
+  color: var(--alv-wine-600);
+}
+
+.alv-stats-lead {
+  font-size: 0.95rem;
+  color: var(--alv-slate-600);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.alv-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.alv-stat-card {
+  text-align: center;
+  padding: 1.75rem 1.25rem;
+  background: var(--alv-warm-bg);
+  border-radius: 20px;
+  border: 1px solid rgba(139, 30, 43, 0.08);
+  transition: all 0.22s ease;
+}
+
+.alv-stat-card:hover {
+  transform: translateY(-4px);
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(139, 30, 43, 0.1);
+  border-color: var(--alv-wine-600);
+}
+
+.alv-stat-val {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  font-weight: 700;
+  color: var(--alv-wine-600);
+  margin: 0 0 0.35rem;
+  line-height: 1;
+}
+
+.alv-stat-lbl {
+  font-size: 0.95rem;
+  font-weight: 750;
+  color: var(--alv-slate-900);
+  margin: 0 0 0.25rem;
+}
+
+.alv-stat-sub {
+  font-size: 0.78rem;
+  color: var(--alv-slate-500);
+}
+
+/* --------------------------------------------------------------------------
+   3. ABOUT US SECTION (MATCHING SCREENSHOT ABOUT SECTION)
+   -------------------------------------------------------------------------- */
+.alv-about-strip {
+  padding: clamp(3.5rem, 6vw, 5.5rem) 1.5rem;
+  background: var(--alv-warm-bg);
+  border-bottom: 1px solid var(--alv-slate-200);
+}
+
+.alv-about-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.alv-about-kicker {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--alv-wine-600);
+  margin-bottom: 0.85rem;
+}
+
+.alv-about-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(1.85rem, 3.2vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--alv-slate-900);
+  margin: 0 0 1.25rem;
+}
+
+.alv-about-body {
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: var(--alv-slate-600);
+  margin: 0 0 1rem;
+}
+
+.alv-about-points {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1.75rem 0 2rem;
+}
+
+.alv-about-point {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.92rem;
+  font-weight: 650;
+  color: var(--alv-slate-800);
+}
+
+.alv-point-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--alv-wine-100);
+  color: var(--alv-wine-700);
+  font-size: 0.82rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.alv-about-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 750;
+  color: var(--alv-wine-600);
+  text-decoration: none;
+  transition: all 0.18s;
+}
+
+.alv-about-link:hover {
+  color: var(--alv-wine-800);
+  transform: translateX(4px);
+}
+
+.alv-about-visual {
+  position: relative;
+}
+
+.alv-about-frame {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.12);
+  border: 4px solid #ffffff;
+}
+
+.alv-about-img {
+  width: 100%;
+  height: clamp(320px, 34vw, 420px);
+  object-fit: cover;
+  display: block;
+}
+
+.alv-about-badge {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  padding: 0.75rem 1.25rem;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.alv-about-badge strong {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--alv-slate-900);
+}
+
+.alv-about-badge span {
+  display: block;
+  font-size: 0.74rem;
+  color: var(--alv-wine-600);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   4. HOW IT WORKS SECTION (4 STEP CARDS)
+   -------------------------------------------------------------------------- */
+.alv-how-section {
+  padding: clamp(3.5rem, 6vw, 5.5rem) 1.5rem;
+  background: #ffffff;
+  border-bottom: 1px solid var(--alv-slate-200);
+}
+
+.alv-how-container {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.alv-how-header {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto 3.25rem;
+}
+
+.alv-how-kicker {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--alv-wine-600);
+  margin-bottom: 0.65rem;
+}
+
+.alv-how-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 700;
+  color: var(--alv-slate-900);
+  margin: 0 0 0.85rem;
+}
+
+.alv-how-lead {
+  font-size: 0.98rem;
+  color: var(--alv-slate-600);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.alv-how-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.alv-how-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1.5px solid var(--alv-slate-200);
+  padding: 2rem 1.5rem;
+  transition: all 0.25s ease;
+}
+
+.alv-how-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--alv-wine-600);
+  box-shadow: 0 16px 36px rgba(139, 30, 43, 0.1);
+}
+
+.alv-how-step-num {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--alv-slate-300);
+}
+
+.alv-how-card:hover .alv-how-step-num {
+  color: var(--alv-wine-600);
+}
+
+.alv-how-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--alv-wine-50);
+  color: var(--alv-wine-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.alv-how-card-title {
+  font-size: 1.1rem;
+  font-weight: 750;
+  color: var(--alv-slate-900);
+  margin: 0 0 0.5rem;
+}
+
+.alv-how-card-text {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--alv-slate-600);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   5. OUR BEST DOCTORS / CATALOG SECTION
+   -------------------------------------------------------------------------- */
+.alv-catalog-section {
+  padding: clamp(3.5rem, 6vw, 5.5rem) 1.5rem;
+  background: var(--alv-warm-bg);
+  border-bottom: 1px solid var(--alv-slate-200);
+}
+
+.alv-catalog-container {
+  max-width: 1220px;
+  margin: 0 auto;
+}
+
+.alv-catalog-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 2.5rem;
+}
+
+.alv-catalog-kicker {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--alv-wine-600);
+  margin-bottom: 0.65rem;
+}
+
+.alv-catalog-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(2.2rem, 3.8vw, 3rem);
+  font-weight: 700;
+  color: var(--alv-slate-900);
+  margin: 0 0 0.85rem;
+}
+
+.alv-catalog-lead {
+  font-size: 0.98rem;
+  color: var(--alv-slate-600);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Department Filter Pills Track */
+.alv-dept-pills-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.alv-dept-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: var(--alv-slate-700);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 650;
+  border: 1px solid var(--alv-slate-200);
+  cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
-.dr-search-input:focus {
-  border-color: #8b1e2b;
-  box-shadow: 0 0 0 4px rgba(139, 30, 43, 0.12);
+.alv-dept-pill:hover {
+  background: var(--alv-wine-50);
+  color: var(--alv-wine-700);
+  border-color: var(--alv-wine-600);
+  transform: translateY(-2px);
 }
 
-.dr-search-clear {
-  position: absolute;
-  right: 0.85rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: transparent;
-  border: none;
-  color: #888888;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dr-search-clear:hover {
-  color: #1a1a1a;
-  background: #f0f0f0;
-}
-
-.dr-view-modes {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #f4ede6;
-  padding: 0.3rem;
-  border-radius: 9999px;
-}
-
-.dr-view-btn {
-  border: none;
-  background: transparent;
-  padding: 0.45rem 0.95rem;
-  border-radius: 9999px;
-  font-size: 0.82rem;
-  font-weight: 650;
-  color: #6c5a52;
-  cursor: pointer;
-  transition: all 0.18s;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.dr-view-btn.is-active {
-  background: #ffffff;
-  color: #8b1e2b;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-}
-
-/* Department Filter Scrollable Strip */
-.dr-dept-pills-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  overflow-x: auto;
-  padding-bottom: 0.35rem;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(139, 30, 43, 0.3) transparent;
-}
-
-.dr-dept-pill {
-  flex-shrink: 0;
-  border: 1px solid rgba(139, 30, 43, 0.16);
-  background: #ffffff;
-  color: #4a3832;
-  font-size: 0.84rem;
-  font-weight: 650;
-  padding: 0.45rem 1rem;
-  border-radius: 9999px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-}
-
-.dr-dept-pill:hover {
-  background: #faf4ef;
-  border-color: rgba(139, 30, 43, 0.35);
-  color: #8b1e2b;
-}
-
-.dr-dept-pill.is-active {
-  background: #8b1e2b;
+.alv-dept-pill.active {
+  background: linear-gradient(135deg, var(--alv-wine-600) 0%, var(--alv-wine-700) 100%);
   color: #ffffff;
-  border-color: #8b1e2b;
-  box-shadow: 0 4px 12px rgba(139, 30, 43, 0.25);
+  border-color: var(--alv-wine-700);
+  box-shadow: 0 4px 14px rgba(139, 30, 43, 0.25);
 }
 
-.dr-dept-pill-count {
+.alv-pill-count {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 1.3rem;
-  height: 1.3rem;
-  padding: 0 0.35rem;
-  border-radius: 9999px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--alv-slate-100);
+  color: var(--alv-slate-600);
   font-size: 0.72rem;
   font-weight: 800;
-  background: rgba(0, 0, 0, 0.06);
-  color: inherit;
+  transition: all 0.2s;
 }
 
-.dr-dept-pill.is-active .dr-dept-pill-count {
+.alv-dept-pill.active .alv-pill-count {
   background: rgba(255, 255, 255, 0.25);
   color: #ffffff;
 }
 
-/* --------------------------------------------------------------------------
-   3. MAIN CONTENT CONTAINER & DEPARTMENT-WISE SECTIONS
-   -------------------------------------------------------------------------- */
-.dr-main-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: clamp(2rem, 4vw, 3.5rem) 1.5rem;
-}
-
-.dr-results-count {
-  font-size: 0.95rem;
-  color: #6c5a52;
+/* Search Bar Row & View Mode Toggle */
+.alv-search-bar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
   margin-bottom: 2rem;
 }
 
-.dr-dept-section {
-  margin-bottom: clamp(2.5rem, 5vw, 4rem);
-  scroll-margin-top: 130px;
+.alv-search-box {
+  position: relative;
+  flex: 1;
+  min-width: 280px;
+  max-width: 600px;
 }
 
-.dr-dept-header {
+.alv-search-icon {
+  position: absolute;
+  left: 1.15rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--alv-slate-400);
+  pointer-events: none;
+}
+
+.alv-search-input {
+  width: 100%;
+  padding: 0.82rem 2.75rem 0.82rem 2.9rem;
+  border-radius: 9999px;
+  border: 1.5px solid var(--alv-slate-200);
+  background: #ffffff;
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: var(--alv-slate-900);
+  outline: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.alv-search-input:focus {
+  border-color: var(--alv-wine-600);
+  box-shadow: 0 0 0 3px rgba(139, 30, 43, 0.12);
+}
+
+.alv-search-clear {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--alv-slate-400);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.alv-view-toggle {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid var(--alv-slate-200);
+  border-radius: 9999px;
+  padding: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.alv-view-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--alv-slate-600);
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.alv-view-btn.active {
+  background: var(--alv-wine-600);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(139, 30, 43, 0.25);
+}
+
+.alv-filter-banner {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  background: var(--alv-wine-50);
+  border: 1px solid var(--alv-wine-100);
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  color: var(--alv-wine-800);
+  margin-bottom: 2rem;
+}
+
+.alv-clear-link {
+  background: none;
+  border: none;
+  color: var(--alv-wine-700);
+  font-weight: 750;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Department Section Block (Department-wise View) */
+.alv-dept-block {
+  margin-bottom: 3.5rem;
+}
+
+.alv-dept-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
   padding-bottom: 1.25rem;
-  border-bottom: 2px solid rgba(139, 30, 43, 0.12);
   margin-bottom: 1.75rem;
+  border-bottom: 2px solid var(--alv-slate-200);
   flex-wrap: wrap;
 }
 
-.dr-dept-header-left {
+.alv-dept-block-left {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.dr-dept-icon-box {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #fcedee 0%, #ffe4e6 100%);
-  border: 1px solid rgba(139, 30, 43, 0.15);
-  color: #8b1e2b;
+.alv-dept-icon-circle {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--alv-wine-50) 0%, var(--alv-wine-100) 100%);
+  color: var(--alv-wine-600);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.dr-dept-title-wrap h2 {
+.alv-dept-block-title {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  font-size: 1.55rem;
   font-weight: 700;
-  color: #2a0b12;
-  margin: 0 0 0.25rem;
-  letter-spacing: -0.01em;
+  color: var(--alv-slate-900);
+  margin: 0 0 0.2rem;
 }
 
-.dr-dept-title-wrap p {
+.alv-dept-block-tagline {
   font-size: 0.88rem;
-  color: #7a6358;
+  color: var(--alv-slate-600);
   margin: 0;
-  max-width: 48ch;
 }
 
-.dr-dept-specialty-link {
-  font-size: 0.85rem;
+.alv-dept-overview-link {
+  font-size: 0.88rem;
   font-weight: 700;
-  color: #8b1e2b;
+  color: var(--alv-wine-600);
   text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  transition: gap 0.2s ease;
+  transition: all 0.18s;
 }
 
-.dr-dept-specialty-link:hover {
-  text-decoration: underline;
-  gap: 0.55rem;
+.alv-dept-overview-link:hover {
+  color: var(--alv-wine-800);
+  transform: translateX(3px);
 }
 
-/* --------------------------------------------------------------------------
-   4. DOCTOR CARDS GRID & CARD DESIGN
-   -------------------------------------------------------------------------- */
-.dr-cards-grid {
+/* Doctors Cards Grid */
+.alv-doctors-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: clamp(1.25rem, 2.5vw, 1.85rem);
+  grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+  gap: 1.75rem;
 }
 
-.dr-card {
-  position: relative;
+/* Individual Doctor Card (Matches Reference Card Architecture) */
+.alv-doctor-card {
   background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid rgba(139, 30, 43, 0.1);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+  border-radius: 20px;
+  border: 1px solid var(--alv-slate-200);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.dr-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(139, 30, 43, 0.28);
-  box-shadow: 0 14px 34px rgba(139, 30, 43, 0.1);
+.alv-doctor-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(139, 30, 43, 0.3);
+  box-shadow: 0 16px 36px rgba(139, 30, 43, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
-.dr-card-photo-wrap {
+.alv-card-photo-wrap {
   position: relative;
   width: 100%;
-  height: 230px;
-  background: #fbf7f4;
+  height: 250px;
+  background: var(--alv-slate-100);
   overflow: hidden;
 }
 
-.dr-card-img {
+.alv-card-photo-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top center;
-  transition: transform 0.35s ease;
+  transition: transform 0.4s ease;
 }
 
-.dr-card:hover .dr-card-img {
+.alv-doctor-card:hover .alv-card-photo-img {
   transform: scale(1.04);
 }
 
-.dr-card-badge {
+.alv-card-badge {
   position: absolute;
-  top: 0.85rem;
-  left: 0.85rem;
-  z-index: 2;
-  padding: 0.32rem 0.75rem;
-  border-radius: 9999px;
-  background: rgba(35, 10, 16, 0.78);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(8px);
+  top: 1rem;
+  left: 1rem;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(6px);
   color: #ffffff;
-  font-size: 0.74rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.dr-card-room-pill {
-  position: absolute;
-  top: 0.85rem;
-  right: 0.85rem;
-  z-index: 2;
-  padding: 0.32rem 0.75rem;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(139, 30, 43, 0.15);
-  backdrop-filter: blur(8px);
-  color: #8b1e2b;
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   font-weight: 750;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  letter-spacing: 0.03em;
 }
 
-.dr-card-body {
-  padding: 1.35rem 1.35rem 1.25rem;
+.alv-card-room-pill {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
+  color: var(--alv-wine-700);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.3rem 0.7rem;
+  border-radius: 9999px;
+  border: 1px solid var(--alv-wine-100);
+}
+
+.alv-card-body {
+  padding: 1.35rem 1.35rem 1.5rem;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
-.dr-card-dept-tag {
+.alv-card-dept-tag {
   display: inline-block;
-  font-size: 0.76rem;
-  font-weight: 700;
+  font-size: 0.74rem;
+  font-weight: 750;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #8b1e2b;
+  letter-spacing: 0.05em;
+  color: var(--alv-wine-600);
   margin-bottom: 0.35rem;
 }
 
-.dr-card-name {
+.alv-card-name {
   font-family: 'Fraunces', Georgia, serif;
   font-size: 1.25rem;
   font-weight: 700;
+  color: var(--alv-slate-900);
+  margin: 0 0 0.3rem;
   line-height: 1.25;
-  color: #1a1a1a;
-  margin: 0 0 0.35rem;
 }
 
-.dr-card-name a {
+.alv-card-name a {
   color: inherit;
   text-decoration: none;
   transition: color 0.18s;
 }
 
-.dr-card-name a:hover {
-  color: #8b1e2b;
+.alv-card-name a:hover {
+  color: var(--alv-wine-600);
 }
 
-.dr-card-degree {
-  font-size: 0.82rem;
-  color: #6c5a52;
-  font-weight: 550;
-  margin-bottom: 0.75rem;
+.alv-card-degree {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--alv-slate-500);
+  margin-bottom: 0.45rem;
 }
 
-.dr-card-spec-lead {
-  font-size: 0.88rem;
+.alv-card-spec-lead {
+  font-size: 0.86rem;
   line-height: 1.45;
-  color: #3b2c26;
+  color: var(--alv-slate-700);
   margin: 0 0 1rem;
+  flex: 1;
 }
 
-/* Schedule & Availability Box */
-.dr-card-schedule-box {
-  background: #faf4ef;
-  border: 1px solid rgba(139, 30, 43, 0.08);
+/* Schedule Strip in Card */
+.alv-card-schedule-box {
+  background: var(--alv-warm-bg);
+  padding: 0.75rem 0.95rem;
   border-radius: 12px;
-  padding: 0.75rem 0.85rem;
-  margin-bottom: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
+  border: 1px solid var(--alv-slate-200);
+  margin-bottom: 1.15rem;
 }
 
-.dr-card-schedule-head {
+.alv-card-schedule-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
   font-size: 0.76rem;
-  font-weight: 700;
-  color: #5c453d;
+  color: var(--alv-slate-600);
+  margin-bottom: 0.45rem;
 }
 
-.dr-card-hours {
+.alv-sched-lbl {
+  font-weight: 650;
+}
+
+.alv-card-hours {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.78rem;
-  color: #7a6358;
+  gap: 0.3rem;
+  font-weight: 700;
+  color: var(--alv-slate-800);
 }
 
-/* Card Action Buttons */
-.dr-card-actions {
-  display: grid;
-  grid-template-columns: 1fr 1.3fr;
-  gap: 0.65rem;
-  margin-top: auto;
-  padding-top: 0.5rem;
+/* Action Buttons inside Card */
+.alv-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.dr-btn-profile {
+.alv-card-btn-schedule {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
-  padding: 0.65rem 0.85rem;
-  border-radius: 10px;
-  background: #ffffff;
-  border: 1.5px solid rgba(139, 30, 43, 0.25);
-  color: #8b1e2b;
-  font-size: 0.84rem;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.dr-btn-profile:hover {
-  background: #faf4ef;
-  border-color: #8b1e2b;
-  transform: translateY(-1px);
-}
-
-.dr-btn-book {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  padding: 0.65rem 1rem;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #8b1e2b 0%, #6e131e 100%);
-  color: #ffffff;
-  font-size: 0.84rem;
+  padding: 0.72rem 1rem;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, var(--alv-wine-600) 0%, var(--alv-wine-700) 100%);
+  color: #ffffff !important;
+  font-size: 0.88rem;
   font-weight: 750;
   text-decoration: none;
   box-shadow: 0 4px 12px rgba(139, 30, 43, 0.22);
-  transition: all 0.2s ease;
-  white-space: nowrap;
+  transition: all 0.18s ease;
+  border: none;
 }
 
-.dr-btn-book:hover {
-  background: linear-gradient(135deg, #a12333 0%, #8b1e2b 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(139, 30, 43, 0.3);
-  color: #ffffff;
+.alv-card-btn-schedule:hover {
+  background: linear-gradient(135deg, var(--alv-wine-700) 0%, var(--alv-wine-800) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(139, 30, 43, 0.32);
+}
+
+.alv-card-btn-profile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.62rem 1rem;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: var(--alv-slate-700);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid var(--alv-slate-200);
+  transition: all 0.18s ease;
+}
+
+.alv-card-btn-profile:hover {
+  background: var(--alv-wine-50);
+  color: var(--alv-wine-700);
+  border-color: var(--alv-wine-600);
+}
+
+/* Empty State */
+.alv-empty-box {
+  text-align: center;
+  padding: 4rem 1.5rem;
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1.5px dashed var(--alv-slate-200);
+  max-width: 520px;
+  margin: 2rem auto;
+}
+
+.alv-empty-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--alv-wine-50);
+  color: var(--alv-wine-600);
+  margin-bottom: 1.25rem;
+}
+
+.alv-empty-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--alv-slate-900);
+  margin: 0 0 0.5rem;
+}
+
+.alv-empty-desc {
+  font-size: 0.92rem;
+  color: var(--alv-slate-600);
+  margin: 0 0 1.5rem;
+  line-height: 1.55;
 }
 
 /* --------------------------------------------------------------------------
-   5. SEPARATE DOCTOR PROFILE PAGE (.dp-*)
+   6. TESTIMONIALS SECTION (MATCHING SCREENSHOT CLIENT REVIEWS)
+   -------------------------------------------------------------------------- */
+.alv-reviews-section {
+  padding: clamp(3.5rem, 6vw, 5.5rem) 1.5rem;
+  background: #ffffff;
+  border-bottom: 1px solid var(--alv-slate-200);
+}
+
+.alv-reviews-container {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.alv-reviews-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 3.25rem;
+}
+
+.alv-reviews-kicker {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--alv-wine-600);
+  margin-bottom: 0.65rem;
+}
+
+.alv-reviews-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 700;
+  color: var(--alv-slate-900);
+  margin: 0 0 0.75rem;
+}
+
+.alv-reviews-lead {
+  font-size: 0.96rem;
+  color: var(--alv-slate-600);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.alv-reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+}
+
+.alv-review-card {
+  background: var(--alv-warm-bg);
+  padding: 2rem 1.75rem;
+  border-radius: 20px;
+  border: 1px solid rgba(139, 30, 43, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.22s ease;
+}
+
+.alv-review-card:hover {
+  transform: translateY(-4px);
+  background: #ffffff;
+  border-color: var(--alv-wine-600);
+  box-shadow: 0 14px 34px rgba(139, 30, 43, 0.1);
+}
+
+.alv-review-stars {
+  color: #f59e0b;
+  font-size: 1.15rem;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.alv-review-quote {
+  font-size: 0.94rem;
+  line-height: 1.65;
+  color: var(--alv-slate-700);
+  margin: 0 0 1.5rem;
+  flex: 1;
+}
+
+.alv-review-author strong {
+  display: block;
+  font-size: 0.94rem;
+  color: var(--alv-slate-900);
+  font-weight: 750;
+}
+
+.alv-review-author span {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--alv-wine-600);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   7. BOTTOM CARE CTA BANNER (ALVERSTONE WINE GRADIENT)
+   -------------------------------------------------------------------------- */
+.alv-bottom-cta-strip {
+  background: linear-gradient(135deg, var(--alv-wine-900) 0%, var(--alv-wine-800) 50%, var(--alv-wine-700) 100%);
+  color: #ffffff;
+  padding: clamp(3rem, 5vw, 4.5rem) 1.5rem;
+}
+
+.alv-bottom-cta-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.alv-cta-eyebrow {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--alv-wine-100);
+  margin-bottom: 0.5rem;
+}
+
+.alv-cta-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 0.5rem;
+}
+
+.alv-cta-desc {
+  font-size: 0.94rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  max-width: 560px;
+  line-height: 1.55;
+}
+
+.alv-cta-btns-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.alv-cta-phone-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.9rem 1.65rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #ffffff !important;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.alv-cta-phone-btn:hover {
+  background: rgba(255, 255, 255, 0.24);
+  transform: translateY(-2px);
+}
+
+.alv-cta-book-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.9rem 1.85rem;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: var(--alv-wine-700) !important;
+  font-size: 0.92rem;
+  font-weight: 750;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s;
+}
+
+.alv-cta-book-btn:hover {
+  background: var(--alv-wine-50);
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   8. SEPARATE DOCTOR PROFILE PAGE STYLES (DoctorProfile.tsx)
    -------------------------------------------------------------------------- */
 .dp-page {
-  background: #faf6f0;
-  min-height: 100vh;
+  background-color: var(--alv-warm-bg);
+  min-height: 80vh;
 }
 
 .dp-hero {
-  background: linear-gradient(135deg, #2a0b12 0%, #50101b 50%, #6e131e 100%);
+  position: relative;
+  background: linear-gradient(135deg, var(--alv-wine-900) 0%, var(--alv-wine-800) 50%, var(--alv-wine-700) 100%);
   color: #ffffff;
   padding: 2.5rem 1.5rem 3.5rem;
-  position: relative;
 }
 
 .dp-hero-inner {
-  max-width: 1140px;
+  max-width: 1180px;
   margin: 0 auto;
 }
 
@@ -632,48 +1341,33 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-weight: 650;
-  color: rgba(254, 226, 226, 0.85);
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   margin-bottom: 2rem;
-  padding: 0.35rem 0.8rem;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  transition: all 0.18s;
+  transition: color 0.18s;
 }
 
 .dp-back-link:hover {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.16);
-  transform: translateX(-3px);
 }
 
-/* Doctor Hero Card with Portrait */
 .dp-card-hero {
   display: grid;
   grid-template-columns: 280px 1fr;
-  gap: clamp(1.75rem, 3.5vw, 3rem);
+  gap: 2.5rem;
   align-items: center;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 24px;
-  padding: clamp(1.5rem, 3vw, 2.5rem);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
 }
 
 .dp-portrait-wrap {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1.15;
-  border-radius: 18px;
+  height: 340px;
+  border-radius: 20px;
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-  background: #3b1019;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  border: 3px solid rgba(255, 255, 255, 0.2);
 }
 
 .dp-portrait-img {
@@ -685,158 +1379,132 @@
 
 .dp-verified-badge {
   position: absolute;
-  bottom: 0.75rem;
-  left: 0.75rem;
-  right: 0.75rem;
-  padding: 0.4rem 0.75rem;
-  border-radius: 10px;
-  background: rgba(35, 10, 16, 0.86);
+  bottom: 0.85rem;
+  left: 0.85rem;
+  right: 0.85rem;
+  background: rgba(15, 23, 42, 0.9);
   backdrop-filter: blur(8px);
   color: #ffffff;
   font-size: 0.74rem;
-  font-weight: 700;
+  font-weight: 750;
+  padding: 0.45rem 0.75rem;
+  border-radius: 9999px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  gap: 0.45rem;
 }
 
-.dp-info-col {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
+.dp-verified-badge svg {
+  color: #34d399;
 }
 
 .dp-dept-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  align-self: flex-start;
-  padding: 0.35rem 0.95rem;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  font-size: 0.8rem;
+  display: inline-block;
+  font-size: 0.82rem;
   font-weight: 750;
-  color: #ffe4e6;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
+  color: #fbcfe8;
+  margin-bottom: 0.5rem;
 }
 
 .dp-doc-name {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: clamp(2rem, 3.8vw, 2.85rem);
+  font-size: clamp(2rem, 3.5vw, 2.85rem);
   font-weight: 700;
   color: #ffffff;
-  margin: 0;
+  margin: 0 0 0.35rem;
   line-height: 1.15;
 }
 
 .dp-doc-spec-headline {
   font-size: 1.15rem;
   font-weight: 600;
-  color: #fbcfe8;
-  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
+  margin: 0 0 0.25rem;
 }
 
 .dp-doc-degree-line {
   font-size: 0.9rem;
-  color: rgba(254, 226, 226, 0.85);
-  margin: 0;
+  color: rgba(254, 226, 226, 0.8);
+  margin: 0 0 1.5rem;
 }
 
-/* Key Metrics Grid in Profile Hero */
 .dp-metrics-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 0.75rem;
-  margin: 0.5rem 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 1.75rem;
 }
 
 .dp-metric-cell {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 12px;
-  padding: 0.65rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
 }
 
 .dp-metric-label {
-  display: block;
   font-size: 0.72rem;
-  color: rgba(254, 226, 226, 0.75);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-weight: 600;
-  margin-bottom: 0.2rem;
+  letter-spacing: 0.05em;
+  color: rgba(254, 226, 226, 0.75);
 }
 
 .dp-metric-val {
-  display: block;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   font-weight: 750;
   color: #ffffff;
 }
 
-/* Hero Book CTA Button */
 .dp-hero-cta-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.55rem;
-  align-self: flex-start;
-  padding: 0.9rem 1.85rem;
-  border-radius: 12px;
+  gap: 0.65rem;
+  padding: 0.9rem 2rem;
   background: #ffffff;
-  color: #8b1e2b;
-  font-size: 1rem;
-  font-weight: 800;
+  color: var(--alv-wine-700) !important;
+  font-size: 0.95rem;
+  font-weight: 750;
+  border-radius: 9999px;
   text-decoration: none;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-  transition: all 0.2s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s;
 }
 
 .dp-hero-cta-btn:hover {
-  background: #fff5f6;
-  color: #6e131e;
+  background: var(--alv-wine-50);
   transform: translateY(-2px);
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.3);
 }
 
-/* --------------------------------------------------------------------------
-   6. DOCTOR PROFILE BODY (DETAILS, SCHEDULE, BIO)
-   -------------------------------------------------------------------------- */
+/* Doctor Profile Content Body (Main + Sidebar) */
 .dp-content-container {
-  max-width: 1140px;
-  margin: 0 auto;
-  padding: clamp(2.5rem, 5vw, 4rem) 1.5rem;
+  max-width: 1180px;
+  margin: -1.5rem auto 3.5rem;
+  padding: 0 1.5rem;
   display: grid;
-  grid-template-columns: minmax(0, 1.8fr) minmax(320px, 1.2fr);
-  gap: clamp(1.75rem, 3.5vw, 3rem);
-  align-items: start;
+  grid-template-columns: 1fr 340px;
+  gap: 2rem;
+  position: relative;
+  z-index: 10;
 }
 
 .dp-main-column {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 1.75rem;
 }
 
-.dp-sidebar-column {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  position: sticky;
-  top: 90px;
-}
-
-/* Section Cards in Profile */
 .dp-section-card {
   background: #ffffff;
   border-radius: 20px;
-  border: 1px solid rgba(139, 30, 43, 0.1);
-  padding: clamp(1.5rem, 3vw, 2.25rem);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--alv-slate-200);
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
 }
 
 .dp-section-head {
@@ -844,60 +1512,59 @@
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 1.25rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--alv-slate-100);
 }
 
 .dp-section-head-icon {
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: #fcedee;
-  color: #8b1e2b;
+  background: var(--alv-wine-50);
+  color: var(--alv-wine-600);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
 .dp-section-title {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: 1.45rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  color: #2a0b12;
+  color: var(--alv-slate-900);
   margin: 0;
 }
 
 .dp-bio-lead {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #3b2c26;
-  margin: 0 0 1.25rem;
+  font-size: 0.98rem;
+  line-height: 1.75;
+  color: var(--alv-slate-700);
+  margin: 0 0 1.5rem;
 }
 
 .dp-philosophy-box {
-  background: #faf4ef;
-  border-left: 4px solid #8b1e2b;
-  border-radius: 0 12px 12px 0;
-  padding: 1.15rem 1.35rem;
-  margin: 1.25rem 0 0;
+  background: var(--alv-warm-bg);
+  border-left: 4px solid var(--alv-wine-600);
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 14px 14px 0;
 }
 
 .dp-philosophy-quote {
+  font-family: 'Fraunces', Georgia, serif;
   font-style: italic;
-  font-size: 0.96rem;
+  font-size: 1.05rem;
   line-height: 1.6;
-  color: #4a3832;
-  margin: 0 0 0.35rem;
+  color: var(--alv-wine-900);
+  margin: 0 0 0.5rem;
 }
 
 .dp-philosophy-author {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  color: #8b1e2b;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  color: var(--alv-wine-600);
 }
 
-/* Specializations & Conditions Pills */
+/* Specializations Grid */
 .dp-specializations-grid {
   display: flex;
   flex-wrap: wrap;
@@ -908,18 +1575,18 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  background: #fcedee;
-  color: #6e131e;
-  border: 1px solid rgba(139, 30, 43, 0.15);
+  background: var(--alv-wine-50);
+  color: var(--alv-wine-800);
   font-size: 0.88rem;
   font-weight: 650;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid var(--alv-wine-100);
 }
 
 .dp-spec-bullet {
-  color: #8b1e2b;
-  font-size: 0.95rem;
+  color: var(--alv-wine-600);
+  font-weight: 800;
 }
 
 /* Education List */
@@ -934,264 +1601,251 @@
 
 .dp-edu-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.75rem;
-  font-size: 0.95rem;
-  color: #3b2c26;
-  line-height: 1.5;
+  font-size: 0.92rem;
+  color: var(--alv-slate-800);
+  font-weight: 600;
 }
 
 .dp-edu-icon {
-  color: #8b1e2b;
-  margin-top: 0.15rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--alv-slate-100);
+  color: var(--alv-wine-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
-/* Sidebar Schedule Card */
+/* Steps Strip */
+.dp-steps-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.dp-step-box {
+  background: var(--alv-warm-bg);
+  padding: 1.25rem;
+  border-radius: 14px;
+  border: 1px solid var(--alv-slate-200);
+}
+
+.dp-step-num {
+  display: inline-block;
+  font-family: 'Fraunces', serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--alv-wine-600);
+  margin-bottom: 0.35rem;
+}
+
+.dp-step-heading {
+  font-size: 0.95rem;
+  font-weight: 750;
+  color: var(--alv-slate-900);
+  margin: 0 0 0.35rem;
+}
+
+.dp-step-desc {
+  font-size: 0.82rem;
+  color: var(--alv-slate-600);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Sidebar Column */
 .dp-sidebar-booking-card {
   background: #ffffff;
   border-radius: 20px;
-  border: 2px solid rgba(139, 30, 43, 0.15);
-  padding: 1.75rem;
-  box-shadow: 0 10px 30px rgba(139, 30, 43, 0.08);
+  border: 1px solid var(--alv-slate-200);
+  padding: 2rem 1.75rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  position: sticky;
+  top: 100px;
 }
 
 .dp-sidebar-card-title {
   font-family: 'Fraunces', Georgia, serif;
   font-size: 1.35rem;
   font-weight: 700;
-  color: #2a0b12;
-  margin: 0 0 0.5rem;
+  color: var(--alv-slate-900);
+  margin: 0 0 0.35rem;
 }
 
 .dp-sidebar-card-sub {
-  font-size: 0.88rem;
-  color: #6c5a52;
+  font-size: 0.86rem;
+  color: var(--alv-slate-600);
   margin: 0 0 1.25rem;
 }
 
 .dp-schedule-days-summary {
+  background: var(--alv-warm-bg);
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--alv-slate-200);
   margin-bottom: 1.25rem;
 }
 
 .dp-sidebar-info-row {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 0;
-  border-bottom: 1px dashed rgba(139, 30, 43, 0.15);
+  gap: 1rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--alv-slate-100);
   font-size: 0.88rem;
 }
 
-.dp-sidebar-info-row:last-of-type {
-  border-bottom: none;
-}
-
 .dp-sidebar-info-row dt {
-  color: #7a6358;
-  font-weight: 550;
+  color: var(--alv-slate-500);
 }
 
 .dp-sidebar-info-row dd {
+  font-weight: 700;
+  color: var(--alv-slate-900);
   margin: 0;
-  font-weight: 750;
-  color: #1a1a1a;
+  text-align: right;
 }
 
 .dp-sidebar-book-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.55rem;
+  gap: 0.5rem;
   width: 100%;
-  padding: 0.95rem;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #8b1e2b 0%, #6e131e 100%);
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: 800;
+  padding: 0.9rem 1.5rem;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, var(--alv-wine-600) 0%, var(--alv-wine-700) 100%);
+  color: #ffffff !important;
+  font-size: 0.95rem;
+  font-weight: 750;
   text-decoration: none;
-  margin-top: 1.25rem;
-  box-shadow: 0 6px 18px rgba(139, 30, 43, 0.28);
-  transition: all 0.2s ease;
+  box-shadow: 0 8px 24px rgba(139, 30, 43, 0.28);
+  margin-top: 1.5rem;
+  transition: all 0.2s;
 }
 
 .dp-sidebar-book-btn:hover {
-  background: linear-gradient(135deg, #a12333 0%, #8b1e2b 100%);
+  background: linear-gradient(135deg, var(--alv-wine-700) 0%, var(--alv-wine-800) 100%);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(139, 30, 43, 0.35);
-  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(139, 30, 43, 0.38);
 }
 
 .dp-sidebar-guarantee-note {
-  font-size: 0.78rem;
-  color: #7a6358;
+  font-size: 0.76rem;
+  color: var(--alv-slate-500);
   text-align: center;
-  margin-top: 0.85rem;
-  line-height: 1.4;
-}
-
-/* How It Works Steps in Profile */
-.dp-steps-strip {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.dp-step-box {
-  background: #faf4ef;
-  border-radius: 12px;
-  padding: 1rem;
-  border: 1px solid rgba(139, 30, 43, 0.08);
-}
-
-.dp-step-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #8b1e2b;
-  color: #ffffff;
-  font-size: 0.75rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-}
-
-.dp-step-heading {
-  font-size: 0.88rem;
-  font-weight: 750;
-  color: #2a0b12;
-  margin: 0 0 0.25rem;
-}
-
-.dp-step-desc {
-  font-size: 0.8rem;
-  color: #6c5a52;
-  margin: 0;
+  margin: 0.85rem 0 0;
   line-height: 1.4;
 }
 
 /* Related Doctors Section */
 .dp-related-section {
-  max-width: 1140px;
-  margin: 0 auto;
-  padding: 0 1.5rem 4rem;
+  max-width: 1180px;
+  margin: 0 auto 4rem;
+  padding: 0 1.5rem;
 }
 
 .dp-related-header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
 }
 
 .dp-related-header h3 {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: 1.5rem;
+  font-size: 1.65rem;
   font-weight: 700;
-  color: #2a0b12;
-  margin: 0 0 0.25rem;
+  color: var(--alv-slate-900);
+  margin: 0 0 0.35rem;
 }
 
 .dp-related-header p {
-  font-size: 0.9rem;
-  color: #6c5a52;
+  font-size: 0.92rem;
+  color: var(--alv-slate-600);
   margin: 0;
 }
 
-/* Empty State */
-.dr-empty-state {
-  text-align: center;
-  padding: 4rem 1.5rem;
-  background: #ffffff;
-  border-radius: 20px;
-  border: 1px dashed rgba(139, 30, 43, 0.2);
-  margin: 2rem 0;
-}
-
-.dr-empty-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: #fcedee;
-  color: #8b1e2b;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
-.dr-empty-title {
-  font-family: 'Fraunces', Georgia, serif;
-  font-size: 1.35rem;
-  color: #2a0b12;
-  margin: 0 0 0.5rem;
-}
-
-.dr-empty-desc {
-  font-size: 0.92rem;
-  color: #6c5a52;
-  margin: 0 0 1.5rem;
-}
-
-.dr-empty-reset-btn {
-  padding: 0.65rem 1.35rem;
-  border-radius: 9999px;
-  background: #8b1e2b;
-  color: #ffffff;
-  border: none;
-  font-weight: 700;
-  font-size: 0.88rem;
-  cursor: pointer;
-}
-
 /* --------------------------------------------------------------------------
-   7. RESPONSIVE BREAKPOINTS
+   RESPONSIVE BREAKPOINTS
    -------------------------------------------------------------------------- */
-@media (max-width: 900px) {
-  .dp-card-hero {
+@media (max-width: 1024px) {
+  .alv-doc-hero-container {
     grid-template-columns: 1fr;
     text-align: center;
   }
 
-  .dp-portrait-wrap {
-    max-width: 240px;
+  .alv-doc-hero-content {
+    max-width: 100%;
     margin: 0 auto;
   }
 
-  .dp-info-col {
-    align-items: center;
+  .alv-doc-hero-kicker {
+    justify-content: center;
+  }
+
+  .alv-doc-hero-actions {
+    justify-content: center;
+  }
+
+  .alv-hero-trust-strip {
+    justify-content: center;
+  }
+
+  .alv-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .alv-how-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .alv-about-container {
+    grid-template-columns: 1fr;
+  }
+
+  .alv-reviews-grid {
+    grid-template-columns: 1fr;
   }
 
   .dp-content-container {
     grid-template-columns: 1fr;
   }
 
-  .dp-sidebar-column {
-    position: static;
+  .dp-card-hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .dp-portrait-wrap {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .dp-metrics-row {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .alv-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .alv-how-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .alv-doctors-cards-grid {
+    grid-template-columns: 1fr;
   }
 
   .dp-steps-strip {
     grid-template-columns: 1fr;
   }
-}
 
-@media (max-width: 640px) {
-  .dr-cards-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .dr-card-actions {
-    grid-template-columns: 1fr;
-  }
-
-  .dr-controls-top {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .dr-search-box {
-    max-width: none;
+  .alv-floating-seal {
+    display: none;
   }
 }
-
