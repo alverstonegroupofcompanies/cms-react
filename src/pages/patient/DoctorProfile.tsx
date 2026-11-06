@@ -372,7 +372,7 @@ export default function DoctorProfile() {
               <p>Explore other board-certified consultants caring for patients in this department.</p>
             </div>
 
-            <div className="dr-cards-grid">
+            <div className="alv-doctors-cards-grid">
               {relatedDoctors.map((rel) => {
                 const relProfileUrl = `/doctors/${rel.slug || rel.id}`
                 const relBookUrl = `${bookBaseUrl}?doctor_id=${rel.dbId || rel.id}&doctor=${encodeURIComponent(
@@ -380,13 +380,15 @@ export default function DoctorProfile() {
                 )}${rel.departmentId ? `&department_id=${rel.departmentId}` : ''}`
 
                 return (
-                  <article key={String(rel.id)} className="dr-card">
-                    <div className="dr-card-photo-wrap">
-                      <Link to={relProfileUrl}>
+                  <article key={String(rel.id)} className="alv-doctor-card">
+                    {/* Top Portrait Wrap */}
+                    <div className="alv-card-photo-wrap">
+                      <Link to={relProfileUrl} aria-label={`View profile of ${rel.name}`}>
                         <img
                           src={rel.image}
                           alt={rel.name}
-                          className="dr-card-img"
+                          className="alv-card-photo-img"
+                          loading="lazy"
                           onError={(e) => {
                             const target = e.currentTarget
                             if (!target.src.includes('doc-sharma-general.jpg')) {
@@ -395,32 +397,28 @@ export default function DoctorProfile() {
                           }}
                         />
                       </Link>
-                      <span className="dr-card-badge">{rel.badge}</span>
-                      <span className="dr-card-room-pill">{rel.room}</span>
+                      <span className="alv-card-badge">{rel.badge}</span>
+                      <span className="alv-card-room-pill">{rel.room}</span>
                     </div>
 
-                    <div className="dr-card-body">
-                      <span className="dr-card-dept-tag">{rel.departmentName}</span>
-                      <h4 className="dr-card-name">
+                    {/* Body Info */}
+                    <div className="alv-card-body">
+                      <span className="alv-card-dept-tag">{rel.departmentName}</span>
+                      <h3 className="alv-card-name">
                         <Link to={relProfileUrl}>{rel.name}</Link>
-                      </h4>
-                      <div className="dr-card-degree">{rel.degree}</div>
-                      <p className="dr-card-spec-lead">{rel.specialization}</p>
+                      </h3>
+                      <div className="alv-card-degree">{rel.degree}</div>
 
-                      <div className="dr-card-schedule-box">
-                        <div className="dr-card-schedule-head">
-                          <span>OPD Days:</span>
-                          <span className="dr-card-hours">{rel.hoursSummary}</span>
-                        </div>
-                        <DoctorDayTrack availability={rel.availability} showSummary={false} size="sm" />
-                      </div>
-
-                      <div className="dr-card-actions">
-                        <Link to={relProfileUrl} className="dr-btn-profile">
-                          <span>View Profile</span>
+                      {/* Action Buttons Cluster */}
+                      <div className="alv-card-actions">
+                        <Link to={relBookUrl} className="alv-card-btn-schedule">
+                          <span>Schedule Appointment</span>
                         </Link>
-                        <Link to={relBookUrl} className="dr-btn-book">
-                          <span>Book Visit</span>
+                        <Link to={relProfileUrl} className="alv-card-btn-profile">
+                          <span>View Profile</span>
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                          </svg>
                         </Link>
                       </div>
                     </div>
