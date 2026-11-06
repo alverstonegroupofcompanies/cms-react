@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import PatientSiteLayout from '../../components/PatientSiteLayout'
-import DoctorDayTrack from '../../components/DoctorDayTrack'
 import { getDoctors } from '../../api/client'
 import type { Doctor } from '../../api/types'
 import { usePageTitle } from '../../hooks/usePageTitle'
@@ -786,21 +785,6 @@ function ModernDoctorCard({ doc, bookUrl }: { doc: UnifiedDoctor; bookUrl: strin
           <Link to={profileUrl}>{doc.name}</Link>
         </h3>
         <div className="alv-card-degree">{doc.degree}</div>
-
-        {/* Weekly OPD Day Track */}
-        <div className="alv-card-schedule-box">
-          <div className="alv-card-schedule-head">
-            <span className="alv-sched-lbl">Available Days:</span>
-            <span className="alv-card-hours">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-              {doc.hoursSummary}
-            </span>
-          </div>
-          <DoctorDayTrack availability={doc.availability} showSummary={false} size="sm" />
-        </div>
 
         {/* Action Buttons Cluster (Matches Screenshot) */}
         <div className="alv-card-actions">
