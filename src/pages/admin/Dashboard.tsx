@@ -1,319 +1,765 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Layout from '../../components/Layout'
-import ActionTile from '../../components/ActionTile'
 import { getDashboardStats } from '../../api/client'
 import { adminNav } from '../../config/navigation'
 import type { DashboardStats } from '../../api/types'
 import { useAuth } from '../../context/AuthContext'
+import {
+  IconStethoscope,
+  IconShield,
+  IconUsers,
+  IconCalendar,
+  IconQueue,
+  IconPill,
+  IconFlask,
+  IconTv,
+  IconPlus,
+  IconRefresh,
+} from '../../components/Icons'
 
 export default function AdminDashboard() {
   const { user } = useAuth()
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
 
-  useEffect(() => {
+  const loadData = () => {
+    setRefreshing(true)
     getDashboardStats()
       .then(({ data }) => setStats(data))
       .catch(() => {})
-      .finally(() => setLoading(false))
+      .finally(() => {
+        setLoading(false)
+        setRefreshing(false)
+      })
+  }
+
+  useEffect(() => {
+    loadData()
   }, [])
 
   return (
     <Layout
-      title="Executive Command Center"
-      subtitle="Complete system administration, access control & hospital overview"
+      title="Super Admin Dashboard"
+      subtitle="Hospital-wide operational overview, personnel credentials & system controls"
       nav={adminNav}
     >
-      {/* Super Admin Welcome Banner */}
+      {/* Top Simple Action & Session Bar */}
       <div
         style={{
-          background: 'linear-gradient(135deg, #2a0b12 0%, #50101b 50%, #6e131e 100%)',
-          color: '#ffffff',
-          padding: '1.75rem 2rem',
-          borderRadius: '18px',
-          marginBottom: '2rem',
-          boxShadow: '0 10px 30px rgba(42, 11, 18, 0.22)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
-          gap: '1.25rem',
+          gap: '1rem',
+          padding: '0.85rem 1.25rem',
+          background: '#ffffff',
+          border: '1px solid #e2e8f0',
+          borderRadius: '12px',
+          marginBottom: '1.5rem',
         }}
       >
-        <div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
-            <span
-              style={{
-                background: 'rgba(255, 255, 255, 0.18)',
-                color: '#fbcfe8',
-                fontSize: '0.74rem',
-                fontWeight: 800,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                padding: '0.25rem 0.65rem',
-                borderRadius: '999px',
-                border: '1px solid rgba(255, 255, 255, 0.25)',
-              }}
-            >
-              Master Access • Super Admin
-            </span>
-            <span style={{ fontSize: '0.82rem', color: 'rgba(255, 255, 255, 0.8)' }}>
-              Logged in as {user?.email || 'superadmin@alverstone.com'}
-            </span>
-          </div>
-          <h2 style={{ fontFamily: 'Fraunces, Georgia, serif', fontSize: '1.75rem', fontWeight: 700, margin: 0 }}>
-            Alverstone Medcity Operations Overview
-          </h2>
-          <p style={{ margin: '0.35rem 0 0', fontSize: '0.92rem', color: 'rgba(255, 255, 255, 0.85)' }}>
-            Full system governance: create &amp; manage doctor credentials, assign staff logins, track live queues, and review hospital analytics.
-          </p>
-        </div>
-
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <Link
-            to="/admin/doctors"
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+          <span
             style={{
-              padding: '0.65rem 1.25rem',
-              borderRadius: '999px',
-              background: '#ffffff',
+              width: '9px',
+              height: '9px',
+              borderRadius: '50%',
+              background: '#16a34a',
+              display: 'inline-block',
+            }}
+          />
+          <span style={{ fontSize: '0.88rem', color: '#334155' }}>
+            Logged in as <strong>{user?.name || 'Super Administrator'}</strong> ({user?.email || 'superadmin@alverstone.com'})
+          </span>
+          <span
+            style={{
+              fontSize: '0.72rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              background: '#fef2f2',
               color: '#8b1e2b',
-              fontWeight: 750,
-              fontSize: '0.86rem',
-              textDecoration: 'none',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              padding: '0.2rem 0.55rem',
+              borderRadius: '999px',
+              border: '1px solid #fecdd3',
             }}
           >
-            + Create Doctor Login
+            Super Admin
+          </span>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+          <button
+            type="button"
+            onClick={loadData}
+            disabled={refreshing}
+            className="btn btn-sm btn-secondary"
+            title="Refresh statistics"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
+          >
+            <IconRefresh size={14} className={refreshing ? 'spin' : ''} />
+            <span>{refreshing ? 'Updating…' : 'Refresh'}</span>
+          </button>
+          <Link
+            to="/admin/doctors"
+            className="btn btn-sm btn-secondary"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', textDecoration: 'none' }}
+          >
+            <IconPlus size={14} />
+            <span>Add Doctor</span>
           </Link>
           <Link
             to="/admin/staff"
+            className="btn btn-sm btn-primary"
             style={{
-              padding: '0.65rem 1.25rem',
-              borderRadius: '999px',
-              background: 'rgba(255, 255, 255, 0.15)',
-              color: '#ffffff',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              fontWeight: 700,
-              fontSize: '0.86rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.35rem',
               textDecoration: 'none',
+              background: '#8b1e2b',
+              borderColor: '#8b1e2b',
             }}
           >
-            + Create Staff Login
+            <IconPlus size={14} />
+            <span>Add Staff Login</span>
           </Link>
         </div>
       </div>
 
-      {/* Primary Hospital Pulse Counters */}
-      <div className="stats-grid" style={{ marginBottom: '2rem' }}>
-        <div className="stat-card">
-          <span>Active Doctors</span>
-          <strong style={{ color: '#8b1e2b' }}>{loading ? '…' : (stats?.total_doctors ?? '—')}</strong>
-          <small style={{ color: '#64748b', fontSize: '0.78rem', marginTop: '0.25rem' }}>
-            Board-certified faculty
-          </small>
+      {/* Main Complete Vertical Table: System Operations & Live Status */}
+      <div
+        style={{
+          background: '#ffffff',
+          border: '1px solid #e2e8f0',
+          borderRadius: '12px',
+          overflow: 'hidden',
+          marginBottom: '2rem',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
+        }}
+      >
+        <div
+          style={{
+            padding: '1rem 1.25rem',
+            borderBottom: '1px solid #e2e8f0',
+            background: '#fafafa',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <div>
+            <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>
+              Hospital Operations &amp; Resource Pulse
+            </h3>
+            <p style={{ margin: '0.2rem 0 0', fontSize: '0.8rem', color: '#64748b' }}>
+              Real-time resource counts, duty allocations, and direct department controls
+            </p>
+          </div>
+          <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+            {loading ? 'Fetching live numbers…' : 'Live synced'}
+          </span>
         </div>
 
-        <div className="stat-card">
-          <span>Total Staff Members</span>
-          <strong style={{ color: '#0369a1' }}>{loading ? '…' : (stats?.total_staff ?? '—')}</strong>
-          <small style={{ color: '#64748b', fontSize: '0.78rem', marginTop: '0.25rem' }}>
-            Reception, Pharmacy, Lab, Admin
-          </small>
-        </div>
+        <div className="table-wrap" style={{ margin: 0 }}>
+          <table className="table" style={{ margin: 0, width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
+                <th style={{ width: '32%', padding: '0.75rem 1.25rem', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#475569' }}>
+                  Workspace / Department
+                </th>
+                <th style={{ width: '18%', padding: '0.75rem 1rem', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#475569' }}>
+                  Live Metric
+                </th>
+                <th style={{ width: '35%', padding: '0.75rem 1rem', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#475569' }}>
+                  Operational Scope &amp; Breakdown
+                </th>
+                <th style={{ width: '15%', padding: '0.75rem 1.25rem', textAlign: 'right', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#475569' }}>
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Row 1: Doctors */}
+              <tr>
+                <td style={{ padding: '0.95rem 1.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                    <div
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        background: '#fef2f2',
+                        color: '#8b1e2b',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <IconStethoscope size={20} />
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.92rem' }}>Doctor Faculty</div>
+                      <div style={{ fontSize: '0.78rem', color: '#64748b' }}>Specialists, surgeons &amp; OPD consultants</div>
+                    </div>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+                    <strong style={{ fontSize: '1.15rem', color: '#0f172a' }}>
+                      {loading ? '…' : (stats?.total_doctors ?? 0)}
+                    </strong>
+                    <span style={{ fontSize: '0.78rem', color: '#16a34a', fontWeight: 600 }}>Active</span>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem', fontSize: '0.84rem', color: '#334155' }}>
+                  Manage user IDs, assign passwords, set OPD room numbers, and consultation fees
+                </td>
+                <td style={{ padding: '0.95rem 1.25rem', textAlign: 'right' }}>
+                  <Link
+                    to="/admin/doctors"
+                    className="btn btn-sm btn-secondary"
+                    style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}
+                  >
+                    Manage Doctors &rarr;
+                  </Link>
+                </td>
+              </tr>
 
-        <div className="stat-card">
-          <span>Registered Patients</span>
-          <strong style={{ color: '#0f172a' }}>{loading ? '…' : (stats?.total_patients ?? '—')}</strong>
-          <small style={{ color: '#64748b', fontSize: '0.78rem', marginTop: '0.25rem' }}>
-            Permanent hospital records
-          </small>
-        </div>
+              {/* Row 2: Staff Accounts */}
+              <tr>
+                <td style={{ padding: '0.95rem 1.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                    <div
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        background: '#f0f9ff',
+                        color: '#0284c7',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <IconShield size={20} />
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.92rem' }}>Staff Accounts &amp; Access</div>
+                      <div style={{ fontSize: '0.78rem', color: '#64748b' }}>Reception, Pharmacy, Lab &amp; Admin workforce</div>
+                    </div>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+                    <strong style={{ fontSize: '1.15rem', color: '#0f172a' }}>
+                      {loading ? '…' : (stats?.total_staff ?? 0)}
+                    </strong>
+                    <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Personnel</span>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem', fontSize: '0.84rem', color: '#334155' }}>
+                  <span style={{ color: '#0369a1', fontWeight: 600 }}>
+                    Reception: {stats?.staff_breakdown?.receptionist ?? 0}
+                  </span>
+                  {' • '}
+                  <span style={{ color: '#7e22ce', fontWeight: 600 }}>
+                    Pharmacy: {stats?.staff_breakdown?.pharmacy ?? 0}
+                  </span>
+                  {' • '}
+                  <span style={{ color: '#0f766e', fontWeight: 600 }}>
+                    Lab: {stats?.staff_breakdown?.lab ?? 0}
+                  </span>
+                  {' • '}
+                  <span style={{ color: '#be123c', fontWeight: 600 }}>
+                    Admin: {stats?.staff_breakdown?.admin ?? 0}
+                  </span>
+                </td>
+                <td style={{ padding: '0.95rem 1.25rem', textAlign: 'right' }}>
+                  <Link
+                    to="/admin/staff"
+                    className="btn btn-sm btn-secondary"
+                    style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}
+                  >
+                    Manage Staff &rarr;
+                  </Link>
+                </td>
+              </tr>
 
-        <div className="stat-card">
-          <span>Today&rsquo;s Appointments</span>
-          <strong style={{ color: '#15803d' }}>{loading ? '…' : (stats?.today_appointments ?? '—')}</strong>
-          <small style={{ color: '#64748b', fontSize: '0.78rem', marginTop: '0.25rem' }}>
-            Active consultations scheduled
-          </small>
-        </div>
+              {/* Row 3: Patients Registry */}
+              <tr>
+                <td style={{ padding: '0.95rem 1.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                    <div
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        background: '#f8fafc',
+                        color: '#334155',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                        border: '1px solid #e2e8f0',
+                      }}
+                    >
+                      <IconUsers size={20} />
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.92rem' }}>Patient Master Registry</div>
+                      <div style={{ fontSize: '0.78rem', color: '#64748b' }}>Hospital electronic health records</div>
+                    </div>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+                    <strong style={{ fontSize: '1.15rem', color: '#0f172a' }}>
+                      {loading ? '…' : (stats?.total_patients ?? 0)}
+                    </strong>
+                    <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Patients</span>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem', fontSize: '0.84rem', color: '#334155' }}>
+                  Permanent medical histories, contact records, visit summaries, and billing ledgers
+                </td>
+                <td style={{ padding: '0.95rem 1.25rem', textAlign: 'right' }}>
+                  <Link
+                    to="/admin/patients"
+                    className="btn btn-sm btn-secondary"
+                    style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}
+                  >
+                    View Registry &rarr;
+                  </Link>
+                </td>
+              </tr>
 
-        <div className="stat-card">
-          <span>Queue Waiting</span>
-          <strong style={{ color: '#b45309' }}>{loading ? '…' : (stats?.today_queue_length ?? '—')}</strong>
-          <small style={{ color: '#64748b', fontSize: '0.78rem', marginTop: '0.25rem' }}>
-            Live tokens in reception lobby
-          </small>
-        </div>
+              {/* Row 4: Today's Appointments */}
+              <tr>
+                <td style={{ padding: '0.95rem 1.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                    <div
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        background: '#f0fdf4',
+                        color: '#16a34a',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <IconCalendar size={20} />
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.92rem' }}>Today&rsquo;s Appointments</div>
+                      <div style={{ fontSize: '0.78rem', color: '#64748b' }}>Scheduled outpatient consultations</div>
+                    </div>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+                    <strong style={{ fontSize: '1.15rem', color: '#15803d' }}>
+                      {loading ? '…' : (stats?.today_appointments ?? 0)}
+                    </strong>
+                    <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Bookings</span>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem', fontSize: '0.84rem', color: '#334155' }}>
+                  Active patient consultations booked with doctors for current OPD clinical shifts
+                </td>
+                <td style={{ padding: '0.95rem 1.25rem', textAlign: 'right' }}>
+                  <Link
+                    to="/receptionist/appointments"
+                    className="btn btn-sm btn-secondary"
+                    style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}
+                  >
+                    View Schedule &rarr;
+                  </Link>
+                </td>
+              </tr>
 
-        <div className="stat-card">
-          <span>Pharmacy Catalog</span>
-          <strong style={{ color: '#7c3aed' }}>{loading ? '…' : (stats?.total_medicines ?? '—')}</strong>
-          <small style={{ color: '#64748b', fontSize: '0.78rem', marginTop: '0.25rem' }}>
-            Formulary medications
-          </small>
+              {/* Row 5: Live Waiting Queue */}
+              <tr>
+                <td style={{ padding: '0.95rem 1.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                    <div
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        background: '#fffbeb',
+                        color: '#d97706',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <IconQueue size={20} />
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.92rem' }}>Live Waiting Queue</div>
+                      <div style={{ fontSize: '0.78rem', color: '#64748b' }}>Reception lobby tokens in sequence</div>
+                    </div>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+                    <strong style={{ fontSize: '1.15rem', color: '#b45309' }}>
+                      {loading ? '…' : (stats?.today_queue_length ?? 0)}
+                    </strong>
+                    <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Tokens</span>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem', fontSize: '0.84rem', color: '#334155' }}>
+                  Patients checked-in, waiting in lobby seating, and called into consultation rooms
+                </td>
+                <td style={{ padding: '0.95rem 1.25rem', textAlign: 'right' }}>
+                  <Link
+                    to="/receptionist/queue"
+                    className="btn btn-sm btn-secondary"
+                    style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}
+                  >
+                    Queue Monitor &rarr;
+                  </Link>
+                </td>
+              </tr>
+
+              {/* Row 6: Pharmacy Formulary */}
+              <tr>
+                <td style={{ padding: '0.95rem 1.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                    <div
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        background: '#faf5ff',
+                        color: '#7e22ce',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <IconPill size={20} />
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.92rem' }}>Pharmacy Inventory</div>
+                      <div style={{ fontSize: '0.78rem', color: '#64748b' }}>Formulary drugs, stock &amp; dispensing</div>
+                    </div>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+                    <strong style={{ fontSize: '1.15rem', color: '#7c3aed' }}>
+                      {loading ? '…' : (stats?.total_medicines ?? 0)}
+                    </strong>
+                    <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Medicines</span>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem', fontSize: '0.84rem', color: '#334155' }}>
+                  Hospital medication catalog, available stock units, dosages, and retail rates
+                </td>
+                <td style={{ padding: '0.95rem 1.25rem', textAlign: 'right' }}>
+                  <Link
+                    to="/admin/medicines"
+                    className="btn btn-sm btn-secondary"
+                    style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}
+                  >
+                    Manage Drugs &rarr;
+                  </Link>
+                </td>
+              </tr>
+
+              {/* Row 7: Diagnostic Laboratory */}
+              <tr>
+                <td style={{ padding: '0.95rem 1.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                    <div
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        background: '#f0fdfa',
+                        color: '#0f766e',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <IconFlask size={20} />
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.92rem' }}>Diagnostic Laboratory</div>
+                      <div style={{ fontSize: '0.78rem', color: '#64748b' }}>Pathology panels, blood work &amp; orders</div>
+                    </div>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+                    <strong style={{ fontSize: '1.15rem', color: '#0f766e' }}>
+                      {loading ? '…' : (stats?.today_lab_orders ?? 'Active')}
+                    </strong>
+                    <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Panels</span>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem', fontSize: '0.84rem', color: '#334155' }}>
+                  Pathology test definitions, specimen types, normal reference ranges, and test fees
+                </td>
+                <td style={{ padding: '0.95rem 1.25rem', textAlign: 'right' }}>
+                  <Link
+                    to="/admin/lab"
+                    className="btn btn-sm btn-secondary"
+                    style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}
+                  >
+                    Manage Tests &rarr;
+                  </Link>
+                </td>
+              </tr>
+
+              {/* Row 8: TV Displays */}
+              <tr>
+                <td style={{ padding: '0.95rem 1.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                    <div
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        background: '#f1f5f9',
+                        color: '#475569',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <IconTv size={20} />
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.92rem' }}>OPD TV Displays</div>
+                      <div style={{ fontSize: '0.78rem', color: '#64748b' }}>Waiting lobby digital signage &amp; screens</div>
+                    </div>
+                  </div>
+                </td>
+                <td style={{ padding: '0.95rem 1rem' }}>
+                  <span
+                    style={{
+                      background: '#dcfce7',
+                      color: '#15803d',
+                      fontSize: '0.75rem',
+                      fontWeight: 700,
+                      padding: '0.2rem 0.55rem',
+                      borderRadius: '999px',
+                    }}
+                  >
+                    Live Broadcast
+                  </span>
+                </td>
+                <td style={{ padding: '0.95rem 1rem', fontSize: '0.84rem', color: '#334155' }}>
+                  Real-time audio chime, visual token alerts, and department room queue displays
+                </td>
+                <td style={{ padding: '0.95rem 1.25rem', textAlign: 'right' }}>
+                  <Link
+                    to="/admin/displays"
+                    className="btn btn-sm btn-secondary"
+                    style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}
+                  >
+                    Configure Screens &rarr;
+                  </Link>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      {/* Staff Breakdown Strip */}
+      {/* Table 2: Complete Vertical Credentials & System Portals */}
       <div
-        className="card"
         style={{
-          padding: '1.5rem',
-          borderRadius: '16px',
-          marginBottom: '2.5rem',
           background: '#ffffff',
           border: '1px solid #e2e8f0',
+          borderRadius: '12px',
+          overflow: 'hidden',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+        <div
+          style={{
+            padding: '1rem 1.25rem',
+            borderBottom: '1px solid #e2e8f0',
+            background: '#fafafa',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           <div>
-            <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 750, color: '#0f172a' }}>
-              Staff Roles &amp; Workforce Distribution
+            <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>
+              System Portals &amp; Master Credentials Reference
             </h3>
-            <p style={{ margin: '0.2rem 0 0', fontSize: '0.85rem', color: '#64748b' }}>
-              Active personnel authorized across hospital care departments
+            <p style={{ margin: '0.2rem 0 0', fontSize: '0.8rem', color: '#64748b' }}>
+              Reference logins for testing, departmental portal jumping, and credential resets
             </p>
           </div>
           <Link
             to="/admin/staff"
-            style={{
-              fontSize: '0.84rem',
-              fontWeight: 750,
-              color: '#8b1e2b',
-              textDecoration: 'none',
-            }}
+            style={{ fontSize: '0.82rem', fontWeight: 700, color: '#8b1e2b', textDecoration: 'none' }}
           >
-            Manage All Staff Logins &rarr;
+            Create / Reset Staff Passwords &rarr;
           </Link>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-          <div style={{ background: '#f0f9ff', padding: '1rem 1.25rem', borderRadius: '12px', border: '1px solid #bae6fd' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 750, textTransform: 'uppercase', color: '#0369a1' }}>Reception Desk</span>
-            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0c4a6e', margin: '0.3rem 0' }}>
-              {stats?.staff_breakdown?.receptionist ?? 0}
-            </div>
-            <span style={{ fontSize: '0.78rem', color: '#0284c7' }}>Patient check-in &amp; token queue</span>
-          </div>
+        <div className="table-wrap" style={{ margin: 0 }}>
+          <table className="table" style={{ margin: 0, width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
+                <th style={{ width: '25%', padding: '0.75rem 1.25rem', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#475569' }}>
+                  Portal / Role
+                </th>
+                <th style={{ width: '26%', padding: '0.75rem 1rem', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#475569' }}>
+                  User ID / Email
+                </th>
+                <th style={{ width: '18%', padding: '0.75rem 1rem', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#475569' }}>
+                  Password
+                </th>
+                <th style={{ width: '18%', padding: '0.75rem 1rem', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#475569' }}>
+                  Access Level
+                </th>
+                <th style={{ width: '13%', padding: '0.75rem 1.25rem', textAlign: 'right', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#475569' }}>
+                  Direct Access
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Super Admin */}
+              <tr>
+                <td style={{ padding: '0.9rem 1.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                    <span style={{ color: '#8b1e2b', display: 'inline-flex' }}><IconShield size={16} /></span>
+                    <span style={{ fontWeight: 700, color: '#0f172a' }}>Super Administrator</span>
+                  </div>
+                </td>
+                <td style={{ padding: '0.9rem 1rem' }}>
+                  <code style={{ background: '#f1f5f9', padding: '0.2rem 0.45rem', borderRadius: '4px', fontSize: '0.82rem', color: '#0f172a' }}>
+                    superadmin@alverstone.com
+                  </code>
+                </td>
+                <td style={{ padding: '0.9rem 1rem' }}>
+                  <code style={{ background: '#f1f5f9', padding: '0.2rem 0.45rem', borderRadius: '4px', fontSize: '0.82rem', color: '#0f172a' }}>
+                    SuperAdmin@2026
+                  </code>
+                </td>
+                <td style={{ padding: '0.9rem 1rem', fontSize: '0.82rem', color: '#64748b' }}>
+                  <span style={{ color: '#8b1e2b', fontWeight: 700 }}>Full Master Access</span>
+                </td>
+                <td style={{ padding: '0.9rem 1.25rem', textAlign: 'right' }}>
+                  <span style={{ fontSize: '0.78rem', color: '#16a34a', fontWeight: 700 }}>Active Now</span>
+                </td>
+              </tr>
 
-          <div style={{ background: '#faf5ff', padding: '1rem 1.25rem', borderRadius: '12px', border: '1px solid #e9d5ff' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 750, textTransform: 'uppercase', color: '#7e22ce' }}>Pharmacy Unit</span>
-            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#581c87', margin: '0.3rem 0' }}>
-              {stats?.staff_breakdown?.pharmacy ?? 0}
-            </div>
-            <span style={{ fontSize: '0.78rem', color: '#9333ea' }}>Dispensing &amp; prescription billing</span>
-          </div>
+              {/* Reception Desk */}
+              <tr>
+                <td style={{ padding: '0.9rem 1.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                    <span style={{ color: '#0284c7', display: 'inline-flex' }}><IconUsers size={16} /></span>
+                    <span style={{ fontWeight: 600, color: '#0f172a' }}>Reception Desk</span>
+                  </div>
+                </td>
+                <td style={{ padding: '0.9rem 1rem' }}>
+                  <code style={{ background: '#f1f5f9', padding: '0.2rem 0.45rem', borderRadius: '4px', fontSize: '0.82rem', color: '#0f172a' }}>
+                    reception@clinic.com
+                  </code>
+                </td>
+                <td style={{ padding: '0.9rem 1rem' }}>
+                  <code style={{ background: '#f1f5f9', padding: '0.2rem 0.45rem', borderRadius: '4px', fontSize: '0.82rem', color: '#0f172a' }}>
+                    password
+                  </code>
+                </td>
+                <td style={{ padding: '0.9rem 1rem', fontSize: '0.82rem', color: '#64748b' }}>
+                  Patient check-in &amp; queue
+                </td>
+                <td style={{ padding: '0.9rem 1.25rem', textAlign: 'right' }}>
+                  <Link
+                    to="/receptionist/dashboard"
+                    style={{ fontSize: '0.82rem', fontWeight: 700, color: '#0284c7', textDecoration: 'none' }}
+                  >
+                    Open Portal &rarr;
+                  </Link>
+                </td>
+              </tr>
 
-          <div style={{ background: '#f0fdfa', padding: '1rem 1.25rem', borderRadius: '12px', border: '1px solid #99f6e4' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 750, textTransform: 'uppercase', color: '#0f766e' }}>Clinical Laboratory</span>
-            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#134e4a', margin: '0.3rem 0' }}>
-              {stats?.staff_breakdown?.lab ?? 0}
-            </div>
-            <span style={{ fontSize: '0.78rem', color: '#0d9488' }}>Diagnostic test processing</span>
-          </div>
+              {/* Pharmacy Unit */}
+              <tr>
+                <td style={{ padding: '0.9rem 1.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                    <span style={{ color: '#7e22ce', display: 'inline-flex' }}><IconPill size={16} /></span>
+                    <span style={{ fontWeight: 600, color: '#0f172a' }}>Pharmacy Desk</span>
+                  </div>
+                </td>
+                <td style={{ padding: '0.9rem 1rem' }}>
+                  <code style={{ background: '#f1f5f9', padding: '0.2rem 0.45rem', borderRadius: '4px', fontSize: '0.82rem', color: '#0f172a' }}>
+                    pharmacy@clinic.com
+                  </code>
+                </td>
+                <td style={{ padding: '0.9rem 1rem' }}>
+                  <code style={{ background: '#f1f5f9', padding: '0.2rem 0.45rem', borderRadius: '4px', fontSize: '0.82rem', color: '#0f172a' }}>
+                    password
+                  </code>
+                </td>
+                <td style={{ padding: '0.9rem 1rem', fontSize: '0.82rem', color: '#64748b' }}>
+                  Drug billing &amp; dispensing
+                </td>
+                <td style={{ padding: '0.9rem 1.25rem', textAlign: 'right' }}>
+                  <Link
+                    to="/pharmacy/dashboard"
+                    style={{ fontSize: '0.82rem', fontWeight: 700, color: '#7e22ce', textDecoration: 'none' }}
+                  >
+                    Open Portal &rarr;
+                  </Link>
+                </td>
+              </tr>
 
-          <div style={{ background: '#fff1f2', padding: '1rem 1.25rem', borderRadius: '12px', border: '1px solid #fecdd3' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 750, textTransform: 'uppercase', color: '#be123c' }}>System Administrators</span>
-            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#881337', margin: '0.3rem 0' }}>
-              {stats?.staff_breakdown?.admin ?? 0}
-            </div>
-            <span style={{ fontSize: '0.78rem', color: '#e11d48' }}>Governance &amp; system access</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Super Admin Quick Control Grid */}
-      <p className="section-title" style={{ fontSize: '1.05rem', fontWeight: 750, color: '#0f172a', marginBottom: '1rem' }}>
-        Hospital Systems &amp; Workspaces
-      </p>
-      <div className="action-grid" style={{ marginBottom: '2.5rem' }}>
-        <ActionTile
-          to="/admin/doctors"
-          icon="stethoscope"
-          title="Doctor Accounts &amp; Logins"
-          description="Create doctor user IDs, set passwords, assign departments &amp; consultation hours"
-        />
-        <ActionTile
-          to="/admin/staff"
-          icon="shield"
-          title="Staff Logins &amp; Access"
-          description="Create and reset credentials for Reception, Pharmacy, Lab, and Admins"
-        />
-        <ActionTile
-          to="/admin/patients"
-          icon="users"
-          title="Patient Master Registry"
-          description="View patient health files, contact details, and past visit histories"
-        />
-        <ActionTile
-          to="/admin/medicines"
-          icon="pill"
-          title="Pharmacy Formulary"
-          description="Manage drug catalogs, stock quantities, and clinical pricing"
-        />
-        <ActionTile
-          to="/admin/lab"
-          icon="flask"
-          title="Diagnostic Lab Tests"
-          description="Define test panels, pathology pricing, and laboratory order tracking"
-        />
-        <ActionTile
-          to="/admin/displays"
-          icon="tv"
-          title="OPD Queue TV Displays"
-          description="Configure waiting room screens and real-time consultation token monitors"
-        />
-      </div>
-
-      {/* Master Credentials Reference Box */}
-      <div
-        style={{
-          background: '#f8fafc',
-          border: '1px solid #cbd5e1',
-          borderRadius: '16px',
-          padding: '1.5rem',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.85rem' }}>
-          <span
-            style={{
-              width: '10px',
-              height: '10px',
-              borderRadius: '50%',
-              background: '#10b981',
-              display: 'inline-block',
-            }}
-          />
-          <h4 style={{ margin: 0, fontSize: '0.96rem', fontWeight: 750, color: '#0f172a' }}>
-            System Access &amp; Administrative Credentials
-          </h4>
-        </div>
-        <p style={{ margin: '0 0 1rem', fontSize: '0.86rem', color: '#475569', lineHeight: 1.5 }}>
-          You have full authority to create, edit, or reset logins for any medical staff. Use the credentials below to log into the Super Admin console or share workspace logins with your team.
-        </p>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', fontSize: '0.84rem' }}>
-          <div style={{ background: '#ffffff', padding: '0.85rem 1rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
-            <strong style={{ display: 'block', color: '#8b1e2b', marginBottom: '0.2rem' }}>Super Admin (Master Login)</strong>
-            <div>Email / User ID: <code>superadmin@alverstone.com</code></div>
-            <div>Password: <code>SuperAdmin@2026</code></div>
-          </div>
-          <div style={{ background: '#ffffff', padding: '0.85rem 1rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
-            <strong style={{ display: 'block', color: '#0284c7', marginBottom: '0.2rem' }}>Reception Desk Portal</strong>
-            <div>Email: <code>reception@clinic.com</code></div>
-            <div>Password: <code>password</code></div>
-          </div>
-          <div style={{ background: '#ffffff', padding: '0.85rem 1rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
-            <strong style={{ display: 'block', color: '#7c3aed', marginBottom: '0.2rem' }}>Pharmacy Workspace</strong>
-            <div>Email: <code>pharmacy@clinic.com</code></div>
-            <div>Password: <code>password</code></div>
-          </div>
-          <div style={{ background: '#ffffff', padding: '0.85rem 1rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
-            <strong style={{ display: 'block', color: '#0f766e', marginBottom: '0.2rem' }}>Pathology Lab Workspace</strong>
-            <div>Email: <code>lab@clinic.com</code></div>
-            <div>Password: <code>password</code></div>
-          </div>
+              {/* Diagnostics Lab */}
+              <tr>
+                <td style={{ padding: '0.9rem 1.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                    <span style={{ color: '#0f766e', display: 'inline-flex' }}><IconFlask size={16} /></span>
+                    <span style={{ fontWeight: 600, color: '#0f172a' }}>Diagnostic Laboratory</span>
+                  </div>
+                </td>
+                <td style={{ padding: '0.9rem 1rem' }}>
+                  <code style={{ background: '#f1f5f9', padding: '0.2rem 0.45rem', borderRadius: '4px', fontSize: '0.82rem', color: '#0f172a' }}>
+                    lab@clinic.com
+                  </code>
+                </td>
+                <td style={{ padding: '0.9rem 1rem' }}>
+                  <code style={{ background: '#f1f5f9', padding: '0.2rem 0.45rem', borderRadius: '4px', fontSize: '0.82rem', color: '#0f172a' }}>
+                    password
+                  </code>
+                </td>
+                <td style={{ padding: '0.9rem 1rem', fontSize: '0.82rem', color: '#64748b' }}>
+                  Diagnostic tests &amp; pathology
+                </td>
+                <td style={{ padding: '0.9rem 1.25rem', textAlign: 'right' }}>
+                  <Link
+                    to="/lab/dashboard"
+                    style={{ fontSize: '0.82rem', fontWeight: 700, color: '#0f766e', textDecoration: 'none' }}
+                  >
+                    Open Portal &rarr;
+                  </Link>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </Layout>
