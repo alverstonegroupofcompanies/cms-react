@@ -6,11 +6,11 @@
    ========================================================================== */
 
 :root {
-  --alv-espresso-deep: #5c0d11;
-  --alv-espresso: #7f1d1d;
-  --alv-toffee-dark: #b91c1c;
-  --alv-toffee: #dc2626;
-  --alv-copper: #ef4444;
+  --alv-espresso-deep: #220509;
+  --alv-espresso: #2e080e;
+  --alv-toffee-dark: #6e131e;
+  --alv-toffee: #8b1e2b;
+  --alv-copper: #a82435;
   --alv-champagne: #f1f5f9;
   --alv-desert: #f1f5f9;
   --alv-almond: #f8fafc;
@@ -33,8 +33,8 @@
    TIER 1: CONCIERGE RIBBON
    -------------------------------------------------------------------------- */
 .alv-ribbon {
-  background: linear-gradient(90deg, #7f1d1d 0%, #991b1b 50%, #7f1d1d 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(90deg, #220509 0%, #2e080e 50%, #220509 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--alv-desert);
   font-size: 0.76rem;
   padding: 0.38rem 0;
@@ -210,8 +210,8 @@
    TIER 2: BOUTIQUE MAIN BAR (KIMSHEALTH #FF2E2E RED)
    -------------------------------------------------------------------------- */
 .alv-mainbar {
-  background: linear-gradient(135deg, #991b1b 0%, #b91c1c 45%, #dc2626 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg, #380c13 0%, #4a121a 50%, #2e080e 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   height: 76px;
   display: flex;
   align-items: center;
@@ -272,7 +272,7 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.42rem;
   padding: 0.48rem 0.95rem;
   border-radius: 999px;
   border: none;
@@ -288,6 +288,26 @@
   transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.alv-nav-icon {
+  width: 14.5px;
+  height: 14.5px;
+  flex-shrink: 0;
+  opacity: 0.88;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.alv-pill-link:hover .alv-nav-icon,
+.alv-pill-link.is-open .alv-nav-icon {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.alv-pill-link.active .alv-nav-icon {
+  opacity: 1;
+  color: #8b1e2b;
+  transform: scale(1.08);
+}
+
 .alv-pill-link:hover,
 .alv-pill-link.is-open {
   background: rgba(255, 255, 255, 0.16);
@@ -296,7 +316,7 @@
 
 .alv-pill-link.active {
   background: #ffffff;
-  color: #dc2626;
+  color: #8b1e2b;
   font-weight: 700;
   box-shadow: 0 2px 10px rgba(15, 23, 42, 0.16);
 }
@@ -398,7 +418,7 @@
   height: 28px;
   border-radius: 50%;
   background: #ffffff;
-  color: #dc2626;
+  color: #8b1e2b;
   font-size: 0.74rem;
   font-weight: 800;
   display: inline-flex;
@@ -414,7 +434,7 @@
   padding: 0.45rem 0.5rem 0.45rem 1.05rem;
   border-radius: 999px;
   background: #ffffff;
-  color: #dc2626;
+  color: #8b1e2b;
   font-size: 0.85rem;
   font-weight: 700;
   text-decoration: none;
@@ -432,7 +452,7 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: #dc2626;
+  background: #8b1e2b;
   color: #ffffff;
   display: inline-flex;
   align-items: center;
@@ -442,7 +462,7 @@
 
 .alv-book-cta:hover .alv-book-cta-arrow {
   transform: translateX(2px);
-  background: #b91c1c;
+  background: #6e131e;
 }
 
 /* --------------------------------------------------------------------------
@@ -532,7 +552,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #dc2626;
+  color: #8b1e2b;
   margin-bottom: 0.15rem;
 }
 
@@ -546,7 +566,7 @@
 .alv-menu-view-all {
   font-size: 0.78rem;
   font-weight: 700;
-  color: #dc2626;
+  color: #8b1e2b;
   text-decoration: none;
   padding: 0.28rem 0.65rem;
   border-radius: 999px;
@@ -556,7 +576,7 @@
 }
 
 .alv-menu-view-all:hover {
-  background: #dc2626;
+  background: #8b1e2b;
   color: #ffffff;
 }
 
@@ -593,7 +613,7 @@
   border-radius: 10px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  color: #dc2626;
+  color: #8b1e2b;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -622,7 +642,7 @@
 .alv-spec-badge {
   font-size: 0.64rem;
   font-weight: 700;
-  color: #dc2626;
+  color: #8b1e2b;
   background: #f1f5f9;
   padding: 0.1rem 0.45rem;
   border-radius: 999px;
@@ -666,7 +686,7 @@
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  background: linear-gradient(135deg, #8b1e2b 0%, #6e131e 100%);
   color: #ffffff;
   font-size: 0.84rem;
   font-weight: 800;
@@ -691,7 +711,7 @@
   margin: 0;
   font-size: 0.76rem;
   font-weight: 600;
-  color: #dc2626;
+  color: #8b1e2b;
 }
 
 .alv-doc-meta span {
@@ -702,7 +722,7 @@
 .alv-doc-cta {
   font-size: 0.78rem;
   font-weight: 700;
-  color: #dc2626;
+  color: #8b1e2b;
   padding: 0.3rem 0.65rem;
   border-radius: 999px;
   background: #ffffff;
@@ -1149,7 +1169,7 @@
 
   .alv-mobile-cta {
     background: #ffffff !important;
-    color: #dc2626 !important;
+    color: #8b1e2b !important;
     font-weight: 700;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   }
