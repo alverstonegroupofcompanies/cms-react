@@ -803,7 +803,7 @@ export default function AsterNavbar() {
               </div>
 
               <div className="alv-search-results-list">
-                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#8b1e2b', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>
+                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#dc2626', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>
                   SPECIALTIES ({filteredSpecialties.length})
                 </div>
                 {filteredSpecialties.map((s) => (
@@ -817,11 +817,11 @@ export default function AsterNavbar() {
                       <strong>{s.name}</strong>
                       <div style={{ fontSize: '0.76rem', color: '#6f5342' }}>{s.desc}</div>
                     </div>
-                    <span style={{ color: '#8b1e2b', fontWeight: 700, fontSize: '0.82rem' }}>Explore →</span>
+                    <span style={{ color: '#dc2626', fontWeight: 700, fontSize: '0.82rem' }}>Explore →</span>
                   </Link>
                 ))}
 
-                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#8b1e2b', letterSpacing: '0.05em', marginTop: '0.85rem', marginBottom: '0.35rem' }}>
+                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#dc2626', letterSpacing: '0.05em', marginTop: '0.85rem', marginBottom: '0.35rem' }}>
                   DOCTORS ({filteredDoctors.length})
                 </div>
                 {filteredDoctors.map((d) => (
@@ -832,10 +832,10 @@ export default function AsterNavbar() {
                     onClick={() => setSearchOpen(false)}
                   >
                     <div>
-                      <strong>{d.name}</strong> — <span style={{ color: '#8b1e2b' }}>{d.spec}</span>
+                      <strong>{d.name}</strong> — <span style={{ color: '#dc2626' }}>{d.spec}</span>
                       <div style={{ fontSize: '0.76rem', color: '#6f5342' }}>{d.qualification} • {d.experience}</div>
                     </div>
-                    <span style={{ color: '#8b1e2b', fontWeight: 700, fontSize: '0.82rem' }}>Consult →</span>
+                    <span style={{ color: '#dc2626', fontWeight: 700, fontSize: '0.82rem' }}>Consult →</span>
                   </Link>
                 ))}
               </div>
@@ -858,12 +858,12 @@ export default function AsterNavbar() {
             </div>
             <div className="alv-modal-body">
               <div style={{ background: '#fff5f5', border: '1px solid #fecdd3', padding: '1.1rem', borderRadius: '12px', marginBottom: '1.25rem' }}>
-                <strong style={{ color: '#8b1e2b', display: 'block', marginBottom: '0.35rem' }}>
+                <strong style={{ color: '#dc2626', display: 'block', marginBottom: '0.35rem' }}>
                   24-Hour Emergency Ambulance & Trauma Desk
                 </strong>
                 <a
                   href={`tel:${CLINIC.phone.replace(/\s/g, '')}`}
-                  style={{ fontSize: '1.35rem', fontWeight: 800, color: '#8b1e2b', textDecoration: 'none' }}
+                  style={{ fontSize: '1.35rem', fontWeight: 800, color: '#dc2626', textDecoration: 'none' }}
                 >
                   {CLINIC.phone}
                 </a>
@@ -875,15 +875,15 @@ export default function AsterNavbar() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
                 <div style={{ background: '#fff5f5', padding: '0.9rem', borderRadius: '10px', border: '1px solid #fff1f1' }}>
                   <div style={{ fontWeight: 700, color: '#18181b', marginBottom: '0.2rem' }}>Appointment Desk</div>
-                  <div style={{ fontSize: '0.85rem', color: '#8b1e2b', fontWeight: 600 }}>Open 24/7 online</div>
-                  <Link to="/patient/book" onClick={() => setHelpOpen(false)} style={{ display: 'inline-block', marginTop: '0.45rem', fontSize: '0.8rem', color: '#8b1e2b', fontWeight: 700 }}>
+                  <div style={{ fontSize: '0.85rem', color: '#dc2626', fontWeight: 600 }}>Open 24/7 online</div>
+                  <Link to="/patient/book" onClick={() => setHelpOpen(false)} style={{ display: 'inline-block', marginTop: '0.45rem', fontSize: '0.8rem', color: '#dc2626', fontWeight: 700 }}>
                     Book Preferred Slot →
                   </Link>
                 </div>
 
                 <div style={{ background: '#fff5f5', padding: '0.9rem', borderRadius: '10px', border: '1px solid #fff1f1' }}>
                   <div style={{ fontWeight: 700, color: '#18181b', marginBottom: '0.2rem' }}>Email Helpdesk</div>
-                  <a href={`mailto:${CLINIC.email}`} style={{ fontSize: '0.85rem', color: '#8b1e2b', textDecoration: 'none', fontWeight: 600 }}>
+                  <a href={`mailto:${CLINIC.email}`} style={{ fontSize: '0.85rem', color: '#dc2626', textDecoration: 'none', fontWeight: 600 }}>
                     {CLINIC.email}
                   </a>
                   <p style={{ margin: '0.35rem 0 0 0', fontSize: '0.78rem', color: '#6f5342' }}>Responses within 2 hours</p>
@@ -891,8 +891,8 @@ export default function AsterNavbar() {
               </div>
 
               <div style={{ marginTop: '1.25rem', padding: '0.85rem', background: '#fff1f1', borderRadius: '10px', border: '1px solid #fecdd3' }}>
-                <strong style={{ color: '#8b1e2b', fontSize: '0.88rem' }}>Campus Address:</strong>
-                <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.82rem', color: '#6e131e' }}>
+                <strong style={{ color: '#dc2626', fontSize: '0.88rem' }}>Campus Address:</strong>
+                <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.82rem', color: '#b91c1c' }}>
                   {CLINIC.address}
                 </p>
               </div>
