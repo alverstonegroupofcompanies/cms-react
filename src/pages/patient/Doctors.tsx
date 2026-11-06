@@ -786,7 +786,6 @@ function ModernDoctorCard({ doc, bookUrl }: { doc: UnifiedDoctor; bookUrl: strin
           <Link to={profileUrl}>{doc.name}</Link>
         </h3>
         <div className="alv-card-degree">{doc.degree}</div>
-        <p className="alv-card-spec-lead">{doc.specialization}</p>
 
         {/* Weekly OPD Day Track */}
         <div className="alv-card-schedule-box">

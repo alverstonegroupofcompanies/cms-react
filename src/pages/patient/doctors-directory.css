@@ -973,21 +973,21 @@
 
 .alv-card-dept-tag {
   display: inline-block;
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   font-weight: 750;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   color: var(--alv-wine-600);
   margin-bottom: 0.35rem;
 }
 
 .alv-card-name {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.32rem;
+  font-weight: 750;
   color: var(--alv-slate-900);
-  margin: 0 0 0.3rem;
-  line-height: 1.25;
+  margin: 0 0 0.35rem;
+  line-height: 1.22;
 }
 
 .alv-card-name a {
@@ -1001,18 +1001,11 @@
 }
 
 .alv-card-degree {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--alv-slate-500);
-  margin-bottom: 0.45rem;
-}
-
-.alv-card-spec-lead {
-  font-size: 0.86rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #475569;
   line-height: 1.45;
-  color: var(--alv-slate-700);
-  margin: 0 0 1rem;
-  flex: 1;
+  margin-bottom: 1.15rem;
 }
 
 /* Schedule Strip in Card */
