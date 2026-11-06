@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { Patient, RegisterPatientPayload, RoyalPointsData, VisitBill } from './types'
+import type { Patient, RegisterPatientPayload, RoyalPointsData, User, VisitBill } from './types'
 
 function resolveApiBase(): string {
   const raw = (import.meta.env.VITE_API_URL || import.meta.env.VITE_APP_URL || '').trim()
@@ -283,5 +283,12 @@ export const getPharmacySales = (params?: { from?: string; to?: string }) =>
   api.get('/pharmacy/sales', { params })
 
 // Staff
-export const getStaff = () => api.get('/staff')
+export const getStaff = () => api.get<User[]>('/staff')
+export const createStaff = (data: { name: string; email: string; phone?: string; password: string; role: string; status?: string }) =>
+  api.post('/staff', data)
+export const updateStaff = (id: number, data: { name: string; email: string; phone?: string; role: string; status: string }) =>
+  api.put(`/staff/${id}`, data)
+export const resetStaffPassword = (id: number, password: string) =>
+  api.post(`/staff/${id}/reset-password`, { password })
+export const deleteStaff = (id: number) => api.delete(`/staff/${id}`)
 export const createReceptionist = (data: object) => api.post('/staff/receptionist', data)

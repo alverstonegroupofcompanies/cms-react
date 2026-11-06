@@ -45,6 +45,13 @@ const portals = [
     accent: false,
   },
   {
+    to: '/admin/login',
+    title: 'Super Admin & Hospital Governance',
+    detail: 'Executive command center · doctors, staff logins & system overview',
+    icon: 'user' as const,
+    accent: false,
+  },
+  {
     to: '/',
     title: 'Hospital Website & Patient Care',
     detail: 'Public homepage, appointments & patient care',

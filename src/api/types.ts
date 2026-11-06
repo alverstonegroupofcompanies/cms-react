@@ -329,8 +329,21 @@ export interface LabOrder {
 export interface DashboardStats {
   total_patients: number
   total_doctors: number
+  active_doctors?: number
+  pending_doctors?: number
+  total_staff?: number
+  staff_breakdown?: {
+    receptionist: number
+    pharmacy: number
+    lab: number
+    admin: number
+  }
   today_appointments: number
   today_queue_length: number
+  today_completed_tokens?: number
+  total_medicines?: number
+  total_lab_tests?: number
+  today_lab_orders?: number
 }
 
 export interface CalendarDaySummary {

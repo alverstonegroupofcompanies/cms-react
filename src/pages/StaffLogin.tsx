@@ -31,7 +31,7 @@ const SUBTITLE: Record<StaffRole, string> = {
 
 const DEMO_EMAIL: Record<StaffRole, string> = {
   doctor: 'doctor@clinic.com',
-  admin: 'admin@clinic.com',
+  admin: 'superadmin@alverstone.com',
   receptionist: 'reception@clinic.com',
   pharmacy: 'pharmacy@clinic.com',
   lab: 'lab@clinic.com',
@@ -75,9 +75,9 @@ export default function StaffLogin({ role, redirect, title }: Props) {
       {error && <div className="alert alert-error">{error}</div>}
       <form className="hop-auth-form" onSubmit={handleLogin}>
         <div className="form-group">
-          <label>Email</label>
+          <label>Email or User ID</label>
           <input
-            type="email"
+            type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={DEMO_EMAIL[role]}
