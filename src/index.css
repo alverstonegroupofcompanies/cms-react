@@ -9348,9 +9348,9 @@ a.ps-btn {
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  padding: 0.7rem 1.2rem;
+  padding: 0.7rem 1.25rem;
   border-radius: 12px;
-  background: linear-gradient(160deg, #24944a 0%, #1f7a3a 55%, #186532 100%);
+  background: linear-gradient(145deg, #8b1e2b 0%, #6e131e 100%);
   color: #fff !important;
   font-family: var(--font-ui);
   font-weight: 700;
@@ -9358,11 +9358,11 @@ a.ps-btn {
   letter-spacing: 0.01em;
   text-transform: none;
   text-decoration: none;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 8px 18px rgba(31, 122, 58, 0.22);
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 8px 18px rgba(139, 30, 43, 0.28);
   transition:
     background 280ms var(--ps-ease),
     transform 280ms var(--ps-ease),
@@ -9370,11 +9370,11 @@ a.ps-btn {
 }
 .ps-btn:hover,
 a.ps-btn:hover {
-  background: linear-gradient(160deg, #1f7a3a 0%, #186532 100%);
+  background: linear-gradient(145deg, #a32433 0%, #7e1723 100%);
   transform: translateY(-1px);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    0 12px 24px rgba(31, 122, 58, 0.28);
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 12px 24px rgba(139, 30, 43, 0.35);
 }
 .ps-btn-nav {
   padding: 0.52rem 1.15rem;
@@ -10269,12 +10269,14 @@ a.ps-btn-outline:hover {
 
 .ps-about-aside {
   position: relative;
-  padding: 1.35rem 1.4rem 1.45rem;
-  border-radius: 16px;
+  padding: 1.6rem 1.6rem 1.7rem;
+  border-radius: 18px;
   background:
-    linear-gradient(160deg, #152238 0%, #1c2f4a 55%, #243b2e 100%);
+    linear-gradient(160deg, #1c0910 0%, #2b0e17 55%, #182234 100%);
+  border: 1px solid rgba(254, 205, 211, 0.2);
+  border-top: 3px solid #8b1e2b;
   color: #f8fafc;
-  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.18);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.22);
   overflow: hidden;
 }
 
@@ -10282,9 +10284,9 @@ a.ps-btn-outline:hover {
   content: '';
   position: absolute;
   inset: auto -20% -40% auto;
-  width: 180px;
-  height: 180px;
-  background: radial-gradient(circle, rgba(125, 211, 199, 0.22), transparent 70%);
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(225, 29, 72, 0.2), transparent 70%);
   pointer-events: none;
 }
 
@@ -10331,7 +10333,7 @@ a.ps-btn-outline:hover {
   margin: 0;
   font-size: 0.85rem;
   font-weight: 650;
-  color: #99f6e4;
+  color: #fbcfe8;
   text-align: right;
 }
 
