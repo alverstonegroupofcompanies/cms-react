@@ -156,88 +156,108 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: #FFFFFF;
-  border: 1px solid #e2e8f0;
-  color: #b91c1c;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid #e2e8f0;
+  color: #8b1e2b;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 28;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  z-index: 35;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.1);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.25s ease,
+              color 0.25s ease,
+              box-shadow 0.25s ease;
 }
 
 .tda-nav-btn:hover {
-  background: #b91c1c;
+  background: #8b1e2b;
   color: #FFFFFF;
-  border-color: #b91c1c;
-  transform: translateY(-50%) scale(1.08);
+  border-color: #8b1e2b;
+  transform: translateY(-50%) scale(1.12);
+  box-shadow: 0 10px 24px rgba(139, 30, 43, 0.32);
 }
 
 .tda-nav-btn--prev {
-  left: 14px;
+  left: 20px;
 }
 
 .tda-nav-btn--next {
-  right: 14px;
+  right: 20px;
 }
 
 .tda-arc-stage {
   perspective: 1200px;
-  perspective-origin: center 45%;
+  perspective-origin: center center;
   width: 100%;
+  height: 480px;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: visible;
-  padding: 18px 0 24px;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  margin: 10px 0 20px;
 }
 
 .tda-cards-row {
+  position: relative;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 14px;
   transform-style: preserve-3d;
-  position: relative;
-  width: 100%;
 }
 
 /* ==========================================================================
-   INDIVIDUAL DOCTOR CARD (3D ARC TRANSFORM)
+   INDIVIDUAL DOCTOR CARD (3D COVERFLOW TRANSFORM)
    ========================================================================== */
 .tda-card {
-  position: relative;
-  flex: 0 0 178px;
-  width: 178px;
-  height: 310px;
-  border-radius: 20px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 270px;
+  height: 400px;
+  margin-left: -135px;
+  margin-top: -200px;
+  border-radius: 24px;
   cursor: pointer;
   outline: none;
   background: #18181b;
   transform-style: preserve-3d;
   transform-origin: center center;
-  transform: perspective(1000px)
-             rotateY(var(--rotate-y, 0deg))
-             translateZ(var(--translate-z, 0px))
-             translateY(var(--translate-y, 0px));
-  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1),
-              box-shadow 0.3s ease,
-              border-color 0.3s ease,
-              filter 0.3s ease;
-  will-change: transform;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.45s ease;
+  will-change: transform, opacity;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1280px) {
   .tda-card {
-    flex: 0 0 192px;
-    width: 192px;
-    height: 330px;
-    border-radius: 22px;
+    width: 285px;
+    height: 415px;
+    margin-left: -142.5px;
+    margin-top: -207.5px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tda-card {
+    width: 220px;
+    height: 340px;
+    margin-left: -110px;
+    margin-top: -170px;
+  }
+  .tda-arc-stage {
+    height: 390px;
   }
 }
 
@@ -247,15 +267,31 @@
   height: 100%;
   border-radius: inherit;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 12px 28px -8px rgba(24, 24, 27, 0.22);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.32);
   background: #18181b;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .tda-card:hover .tda-card-inner {
-  box-shadow: 0 22px 48px -10px rgba(0, 0, 0, 0.38), 0 6px 16px rgba(139, 30, 43, 0.15);
-  border-color: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.65);
+  box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.45);
+}
+
+/* Subtle dark tint over inactive cards so the active doctor stands out vibrantly */
+.tda-card:not(.tda-card--active)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(15, 23, 42, 0.22);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 6;
+}
+
+.tda-card--active::after {
+  opacity: 0;
 }
 
 .tda-card-photo-box {
@@ -276,24 +312,24 @@
 }
 
 .tda-card:hover .tda-card-photo {
-  transform: scale(1.08);
+  transform: scale(1.05);
 }
 
 .tda-card-top-pill {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 12px;
+  left: 12px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   background: rgba(255, 255, 255, 0.96);
   color: #18181b;
   font-size: 11px;
-  font-weight: 700;
-  padding: 4px 9px;
+  font-weight: 750;
+  padding: 4px 10px;
   border-radius: 9999px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
-  z-index: 5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 7;
   letter-spacing: 0.02em;
 }
 
@@ -307,41 +343,41 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 42px 12px 14px;
+  padding: 56px 16px 18px;
   background: linear-gradient(
     180deg,
-    rgba(24, 24, 27, 0) 0%,
-    rgba(24, 24, 27, 0.48) 25%,
-    rgba(24, 24, 27, 0.88) 65%,
-    rgba(24, 24, 27, 0.98) 100%
+    rgba(15, 23, 42, 0) 0%,
+    rgba(15, 23, 42, 0.45) 25%,
+    rgba(15, 23, 42, 0.92) 70%,
+    rgba(15, 23, 42, 0.99) 100%
   );
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  z-index: 4;
+  z-index: 5;
 }
 
 .tda-card-dept {
-  font-size: 10.5px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 750;
   color: #fca5a5;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  display: block;
-  margin-bottom: 3px;
-  line-height: 1.2;
-  white-space: nowrap;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .tda-card-name {
   font-family: 'Sansation', 'Outfit', sans-serif;
-  font-size: 14.5px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 800;
   color: #FFFFFF;
-  margin: 0 0 3px;
-  line-height: 1.2;
+  margin: 0 0 6px;
+  line-height: 1.25;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -350,19 +386,19 @@
 .tda-card-meta-row {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 11px;
-  color: #D1D5DB;
+  gap: 6px;
+  font-size: 11.5px;
+  color: #cbd5e1;
   font-weight: 500;
   white-space: nowrap;
 }
 
 .tda-card-degree {
-  color: #9CA3AF;
+  color: #cbd5e1;
 }
 
 .tda-card-dot {
-  color: #6B7280;
+  color: #94a3b8;
 }
 
 .tda-card-exp-highlight {
@@ -371,15 +407,23 @@
 }
 
 .tda-card-hover-action {
-  display: none;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 8px;
+  margin-top: 10px;
+  padding: 6px 14px;
+  background: linear-gradient(135deg, #8b1e2b 0%, #b91c1c 100%);
+  color: #ffffff;
   font-size: 11px;
   font-weight: 700;
-  color: #fca5a5;
+  border-radius: 9999px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(139, 30, 43, 0.35);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 /* ==========================================================================
@@ -390,30 +434,15 @@
 }
 
 .tda-card--active .tda-card-inner {
-  border: 2px solid #b91c1c;
+  border: 2.5px solid #8b1e2b;
   box-shadow:
-    0 20px 45px -10px rgba(185, 28, 28, 0.32),
-    0 0 0 3px rgba(185, 28, 28, 0.2);
-}
-
-.tda-card--active {
-  transform: perspective(1000px)
-             rotateY(var(--rotate-y, 0deg))
-             translateZ(calc(var(--translate-z, 0px) + 28px))
-             translateY(calc(var(--translate-y, 0px) - 8px))
-             scale(1.04);
-}
-
-.tda-card--hovered:not(.tda-card--active) {
-  transform: perspective(1000px)
-             rotateY(var(--rotate-y, 0deg))
-             translateZ(calc(var(--translate-z, 0px) + 16px))
-             translateY(calc(var(--translate-y, 0px) - 4px))
-             scale(1.02);
+    0 25px 60px -12px rgba(139, 30, 43, 0.48),
+    0 0 0 3px rgba(139, 30, 43, 0.22);
 }
 
 .tda-card--active .tda-card-hover-action {
-  display: inline-flex;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Dots Indicator */
@@ -421,24 +450,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  margin-top: 22px;
+  gap: 10px;
+  margin-top: 26px;
 }
 
 .tda-dot {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   border-radius: 9999px;
-  background: #CBD5E1;
+  background: #cbd5e1;
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: width 0.25s ease, background-color 0.25s ease;
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.tda-dot:hover {
+  background: #94a3b8;
 }
 
 .tda-dot--active {
-  width: 26px;
-  background: #b91c1c;
+  width: 32px;
+  background: linear-gradient(90deg, #8b1e2b 0%, #b91c1c 100%);
+  box-shadow: 0 2px 8px rgba(139, 30, 43, 0.32);
 }
 
 /* ==========================================================================
@@ -703,36 +739,6 @@
 /* ==========================================================================
    RESPONSIVENESS (MOBILE & TABLET ADAPTATION)
    ========================================================================== */
-@media (max-width: 1180px) {
-  .tda-arc-stage {
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    justify-content: flex-start;
-    padding: 20px 24px;
-  }
-
-  .tda-cards-row {
-    justify-content: flex-start;
-    width: max-content;
-    padding: 0 20px;
-  }
-
-  .tda-card {
-    scroll-snap-align: center;
-    flex: 0 0 190px;
-    width: 190px;
-    height: 310px;
-    transform: none !important;
-  }
-
-  .tda-card--active {
-    border: 2px solid #8b1e2b;
-    transform: scale(1.03) !important;
-  }
-}
-
 @media (max-width: 900px) {
   .tda-spotlight-bar {
     flex-direction: column;
@@ -774,7 +780,16 @@
   }
 
   .tda-nav-btn {
-    display: none;
+    width: 38px;
+    height: 38px;
+  }
+
+  .tda-nav-btn--prev {
+    left: 8px;
+  }
+
+  .tda-nav-btn--next {
+    right: 8px;
   }
 
   .tda-spotlight-bar {
@@ -796,12 +811,6 @@
 
   .tda-spotlight-name {
     font-size: 17px;
-  }
-
-  .tda-card {
-    flex: 0 0 165px;
-    width: 165px;
-    height: 275px;
   }
 
   .tda-pillar-card {

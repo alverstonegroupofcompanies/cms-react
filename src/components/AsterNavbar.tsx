@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from '../config/animations'
 import { CLINIC } from '../config/clinic'
 import { useAuth } from '../context/AuthContext'
 import { storageUrl } from '../utils/storageUrl'
@@ -122,8 +124,20 @@ export default function AsterNavbar() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [helpOpen, setHelpOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
 
   const dropdownRef = useRef<HTMLDivElement>(null)
+
+  useGSAP(() => {
+    const st = ScrollTrigger.create({
+      start: 'top -40',
+      end: 99999,
+      onUpdate: (self) => {
+        setIsScrolled(self.progress > 0)
+      },
+    })
+    return () => st.kill()
+  }, [])
 
   const initials =
     user?.name
@@ -208,7 +222,7 @@ export default function AsterNavbar() {
   )
 
   return (
-    <header className="alv-header" ref={dropdownRef}>
+    <header className={`alv-header${isScrolled ? ' is-scrolled' : ''}`} ref={dropdownRef}>
       {/* ==================================================================
           TIER 1: ALVERSTONE CONCIERGE RIBBON (SLIM WARM ESPRESSO UTILITY BAR)
           ================================================================== */}

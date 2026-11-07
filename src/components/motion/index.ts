@@ -15,4 +15,7 @@ export { default as PageTransition } from './PageTransition'
 export type { PageTransitionProps } from './PageTransition'
 export { default as StickyCTA } from './StickyCTA'
 export type { StickyCTAProps } from './StickyCTA'
+export { default as ScrollProgress } from './ScrollProgress'
+export { default as CountUp } from './CountUp'
+export type { CountUpProps } from './CountUp'
 

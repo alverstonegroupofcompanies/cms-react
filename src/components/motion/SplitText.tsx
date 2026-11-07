@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useId } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
+import React, { useRef, useId } from 'react'
+import { useGSAP } from '@gsap/react'
+import { gsap, ANIMATION_CONFIG } from '../../config/animations'
 
 export interface SplitTextProps {
   children: React.ReactNode
@@ -10,22 +8,45 @@ export interface SplitTextProps {
   as?: React.ElementType
   /** Custom CSS classes */
   className?: string
-  /** Delay in seconds before word reveal starts once in view. Defaults to 0.05. */
+  /**
+   * Split mode:
+   * - 'words': Reveals word-by-word with a soft, confident slide-and-fade (default)
+   * - 'chars': Reveals letter-by-letter with a crisp, fluid staggered glide
+   * - 'typewriter': Reveals letter-by-letter mimicking a mechanical/digital typing pace
+   */
+  by?: 'words' | 'chars' | 'typewriter'
+  /** Delay in seconds before reveal starts once in view. Defaults to 0.05. */
   delay?: number
-  /** Duration of each word glide in seconds. Defaults to 0.82 (calm and reassuring). */
+  /** Duration of each unit's reveal in seconds. */
   duration?: number
-  /** Stagger interval in seconds between words. Defaults to 0.04. */
+  /** Stagger interval in seconds between words or characters. */
   stagger?: number
-  /** Distance in pixels words slide up from. Defaults to 22. */
+  /** Distance in pixels words or letters slide up from. */
   distance?: number
-  /** ScrollTrigger trigger offset. Defaults to 'top 70%' (triggers midway into view). */
+  /** ScrollTrigger trigger offset. Defaults to config start ('top 85%'). */
   start?: string
   /** Whether the animation runs only once. Defaults to true. */
   once?: boolean
+  /** Whether to render a sleek blinking typing caret/cursor at the end of the text. */
+  cursor?: boolean
   /** Optional element ID */
   id?: string
   /** Optional inline styles */
   style?: React.CSSProperties
+}
+
+/**
+ * Extracts plain text from React nodes for screen reader accessibility (aria-label).
+ */
+function extractPlainText(node: React.ReactNode): string {
+  if (typeof node === 'string') return node
+  if (typeof node === 'number') return String(node)
+  if (Array.isArray(node)) return node.map(extractPlainText).join('')
+  if (React.isValidElement(node)) {
+    const el = node as React.ReactElement<{ children?: React.ReactNode }>
+    return el.props.children ? extractPlainText(el.props.children) : ''
+  }
+  return ''
 }
 
 /**
@@ -57,8 +78,14 @@ function splitIntoWords(node: React.ReactNode, keyPrefix = 'w'): React.ReactNode
 
   if (React.isValidElement(node)) {
     const element = node as React.ReactElement<{ children?: React.ReactNode; className?: string }>
-    // If element is a gradient span or badge, preserve it as a unified reveal unit so background-clip: text is never broken
-    if (element.props?.className && typeof element.props.className === 'string' && element.props.className.includes('gradient')) {
+    const isSpecialSpan =
+      typeof element.props.className === 'string' &&
+      (element.props.className.includes('gradient') ||
+        element.props.className.includes('accent') ||
+        element.props.className.includes('badge') ||
+        element.props.className.includes('pill'))
+
+    if (isSpecialSpan) {
       return (
         <span
           key={element.key || keyPrefix}
@@ -74,9 +101,11 @@ function splitIntoWords(node: React.ReactNode, keyPrefix = 'w'): React.ReactNode
         </span>
       )
     }
-    if (!element.props || !element.props.children) {
-      return node
+
+    if (!element.props.children) {
+      return element
     }
+
     return React.cloneElement(
       element,
       { key: element.key || keyPrefix },
@@ -92,84 +121,200 @@ function splitIntoWords(node: React.ReactNode, keyPrefix = 'w'): React.ReactNode
 }
 
 /**
- * Premium, medical-grade headline reveal component.
- * Reveals headlines word-by-word with a soft, confident slide-and-fade.
- * Calibrated specifically for healthcare (never gimmicky character-by-character).
- * Fully accessible to screen readers and respects `prefers-reduced-motion`.
+ * Splits text into word containers with individual character spans for letter-by-letter / typing animations.
+ * Preserves word bounds with whiteSpace: nowrap so line breaks never snap in the middle of a word.
+ */
+function splitIntoChars(node: React.ReactNode, keyPrefix = 'c'): React.ReactNode {
+  if (typeof node === 'string') {
+    const words = node.split(/(\s+)/)
+    return words.map((chunk, i) => {
+      if (/^\s+$/.test(chunk)) {
+        return chunk // natural space between words
+      }
+      const chars = Array.from(chunk)
+      return (
+        <span
+          key={`${keyPrefix}-${i}`}
+          className="motion-word-wrap"
+          style={{ display: 'inline-block', whiteSpace: 'nowrap' }}
+        >
+          {chars.map((char, j) => (
+            <span
+              key={`${keyPrefix}-${i}-c${j}`}
+              className="motion-char"
+              style={{
+                display: 'inline-block',
+                willChange: 'transform, opacity',
+              }}
+            >
+              {char}
+            </span>
+          ))}
+        </span>
+      )
+    })
+  }
+
+  if (React.isValidElement(node)) {
+    const element = node as React.ReactElement<{ children?: React.ReactNode; className?: string }>
+    if (!element.props.children) {
+      return element
+    }
+    return React.cloneElement(
+      element,
+      { key: element.key || keyPrefix },
+      splitIntoChars(element.props.children, `${keyPrefix}-nested`)
+    )
+  }
+
+  if (Array.isArray(node)) {
+    return node.map((child, i) => splitIntoChars(child, `${keyPrefix}-${i}`))
+  }
+
+  return node
+}
+
+/**
+ * Premium headline reveal component powered by GSAP + ScrollTrigger.
+ * Supports:
+ * - Word-by-word reveal (default)
+ * - Letter-by-letter fluid staggered reveal ('chars')
+ * - Typewriter staggered cadence ('typewriter')
+ * - Optional blinking caret cursor
+ * - Fully accessible with aria-label & respects `prefers-reduced-motion`
  */
 export default function SplitText({
   children,
   as: Component = 'h2',
   className = '',
+  by = 'words',
   delay = 0.05,
-  duration = 0.82,
-  stagger = 0.04,
-  distance = 22,
-  start = 'top 70%',
+  duration,
+  stagger,
+  distance,
+  start,
   once = true,
+  cursor = false,
   id,
   style,
 }: SplitTextProps) {
   const containerRef = useRef<HTMLElement | null>(null)
   const autoKey = useId()
+  const plainText = extractPlainText(children)
 
-  useEffect(() => {
-    const el = containerRef.current
-    if (!el || typeof window === 'undefined') return
+  const isCharMode = by === 'chars' || by === 'typewriter'
+  const effDuration = duration ?? (isCharMode ? (by === 'typewriter' ? 0.05 : 0.45) : ANIMATION_CONFIG.duration.normal)
+  const effStagger = stagger ?? (isCharMode ? (by === 'typewriter' ? 0.045 : 0.026) : 0.04)
+  const effDistance = distance ?? (isCharMode ? (by === 'typewriter' ? 0 : 12) : 22)
+  const effStart = start ?? ANIMATION_CONFIG.start
 
-    // Accessibility check: immediately show if user prefers reduced motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) {
-      const words = el.querySelectorAll<HTMLElement>('.motion-word')
-      words.forEach((w) => {
-        w.style.opacity = '1'
-        w.style.transform = 'none'
-      })
-      return
-    }
+  useGSAP(
+    () => {
+      const el = containerRef.current
+      if (!el || !ANIMATION_CONFIG.enabled) return
 
-    const words = el.querySelectorAll<HTMLElement>('.motion-word')
-    if (!words.length) return
+      const targets = isCharMode
+        ? el.querySelectorAll<HTMLElement>('.motion-char')
+        : el.querySelectorAll<HTMLElement>('.motion-word')
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        words,
+      if (!targets.length) return
+
+      const mm = gsap.matchMedia()
+      mm.add(
         {
-          opacity: 0,
-          y: distance,
+          isReduced: '(prefers-reduced-motion: reduce)',
+          isNormal: '(prefers-reduced-motion: no-preference)',
         },
-        {
-          opacity: 1,
-          y: 0,
-          duration,
-          delay,
-          stagger,
-          ease: 'power2.out',
-          clearProps: 'transform,opacity',
-          scrollTrigger: {
-            trigger: el,
-            start,
-            once,
-          },
+        (context) => {
+          const { isReduced } = context.conditions as { isReduced: boolean }
+
+          if (isReduced) {
+            targets.forEach((t) => {
+              t.style.opacity = '1'
+              t.style.transform = 'none'
+            })
+            return
+          }
+
+          if (by === 'typewriter') {
+            gsap.fromTo(
+              targets,
+              { opacity: 0, y: 3 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: effDuration,
+                delay,
+                stagger: effStagger,
+                ease: 'none',
+                clearProps: 'transform',
+                scrollTrigger: {
+                  trigger: el,
+                  start: effStart,
+                  toggleActions: ANIMATION_CONFIG.toggleActions,
+                  once,
+                },
+              }
+            )
+          } else if (by === 'chars') {
+            gsap.from(targets, {
+              opacity: 0,
+              y: effDistance,
+              rotateX: -30,
+              transformOrigin: '50% 100%',
+              duration: effDuration,
+              delay,
+              stagger: effStagger,
+              ease: 'power3.out',
+              clearProps: 'transform,opacity',
+              scrollTrigger: {
+                trigger: el,
+                start: effStart,
+                toggleActions: ANIMATION_CONFIG.toggleActions,
+                once,
+              },
+            })
+          } else {
+            // Words mode
+            gsap.from(targets, {
+              opacity: 0,
+              y: effDistance,
+              duration: effDuration,
+              delay,
+              stagger: effStagger,
+              ease: ANIMATION_CONFIG.ease,
+              clearProps: 'transform,opacity',
+              scrollTrigger: {
+                trigger: el,
+                start: effStart,
+                toggleActions: ANIMATION_CONFIG.toggleActions,
+                once,
+              },
+            })
+          }
         }
       )
-    }, containerRef)
-
-    return () => {
-      ctx.revert()
+    },
+    {
+      scope: containerRef,
+      dependencies: [by, isCharMode, delay, effDuration, effStagger, effDistance, effStart, once],
     }
-  }, [delay, duration, stagger, distance, start, once])
-
-  const parsedChildren = splitIntoWords(children, autoKey)
+  )
 
   return (
     <Component
       ref={containerRef}
       id={id}
+      aria-label={plainText || undefined}
       className={`motion-split-text ${className}`.trim()}
       style={style}
     >
-      {parsedChildren}
+      {isCharMode ? splitIntoChars(children, autoKey) : splitIntoWords(children, autoKey)}
+      {cursor && (
+        <span className="motion-typewriter-cursor" aria-hidden="true">
+          |
+        </span>
+      )}
     </Component>
   )
 }

@@ -1,103 +1,12 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { CLINIC } from '../../config/clinic'
-import {
-  IconPhone,
-  IconCalendar,
-  IconBuilding,
-  IconTv,
-  IconDroplet,
-  IconStethoscope,
-  IconReceipt,
-} from '../Icons'
+import { IconCalendar } from '../Icons'
 import './building-walkthrough.css'
-
-// Custom visual icons for scannable accessibility across all age groups
-function IconWheelchair({ size = 18 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <circle cx="12" cy="4" r="2" />
-      <path d="M10 9h4l2 7h3" />
-      <path d="M14 13l-3 4-2-1" />
-      <circle cx="9" cy="18" r="4" />
-    </svg>
-  )
-}
-
-function IconAutoDoor({ size = 18 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <rect x="3" y="3" width="18" height="18" rx="2" />
-      <line x1="12" y1="3" x2="12" y2="21" strokeDasharray="2 2" />
-      <polyline points="7 10 9 12 7 14" />
-      <polyline points="17 10 15 12 17 14" />
-    </svg>
-  )
-}
-
-function IconParking({ size = 18 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <rect x="3" y="3" width="18" height="18" rx="4" />
-      <path d="M9 17V7h4a3 3 0 0 1 0 6H9" />
-    </svg>
-  )
-}
-
-function IconAmbulance({ size = 18 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <rect x="2" y="7" width="15" height="11" rx="2" />
-      <path d="M17 10h4l2 3v5h-6" />
-      <circle cx="7" cy="18" r="2" />
-      <circle cx="17" cy="18" r="2" />
-      <path d="M9 10v4M7 12h4" />
-    </svg>
-  )
-}
-
-
-
-function IconLounge({ size = 18 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M6 19v2M18 19v2" />
-      <path d="M4 11a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6H4z" />
-      <path d="M6 9V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4" />
-    </svg>
-  )
-}
-
-function IconFastCheck({ size = 18 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <circle cx="12" cy="12" r="9" />
-      <polyline points="12 7 12 12 15 15" />
-      <path d="M16 4l2-2M8 4L6 2" />
-    </svg>
-  )
-}
-
-function IconAirCurtain({ size = 18 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      <polyline points="9 12 11 14 15 10" />
-    </svg>
-  )
-}
-
-interface SceneFeature {
-  icon: React.ReactNode
-  label: string
-}
 
 interface SceneData {
   id: string
   stepNumber: string
-  badge: string
   title: string
-  features: SceneFeature[]
   image: string
   alt: string
 }
@@ -106,52 +15,28 @@ const SCENES: SceneData[] = [
   {
     id: 'campus',
     stepNumber: '01',
-    badge: 'Hospital Campus',
-    title: 'Hospital Campus & Parking',
-    features: [
-      { icon: <IconParking size={18} />, label: 'Free Patient Parking' },
-      { icon: <IconAmbulance size={18} />, label: '24/7 Covered Drop-off' },
-      { icon: <IconBuilding size={18} />, label: 'Spacious Green Campus' },
-    ],
+    title: 'Hospital Campus',
     image: '/images/walkthrough/01-building.jpg',
     alt: 'Alverstone Medcity Hospital Exterior Architecture',
   },
   {
     id: 'entrance',
     stepNumber: '02',
-    badge: 'Step-Free Entry',
-    title: 'Step-Free Grand Entrance',
-    features: [
-      { icon: <IconWheelchair size={18} />, label: '100% Step-Free Access' },
-      { icon: <IconAutoDoor size={18} />, label: 'Touchless Auto Doors' },
-      { icon: <IconAirCurtain size={18} />, label: 'Wheelchairs at Gate' },
-    ],
+    title: 'Main Entrance',
     image: '/images/walkthrough/02-entrance.jpg',
     alt: 'Grand Glass Entrance Doors of Alverstone Medcity',
   },
   {
     id: 'atrium',
     stepNumber: '03',
-    badge: 'Lobby & Waiting Lounge',
-    title: 'Sunlit Atrium & Live Queue',
-    features: [
-      { icon: <IconTv size={18} />, label: 'Live Token TV Screens' },
-      { icon: <IconLounge size={18} />, label: 'Quiet AC Lounge Seating' },
-      { icon: <IconDroplet size={18} />, label: 'Purified Water & Restrooms' },
-    ],
+    title: 'Lobby & Atrium',
     image: '/images/walkthrough/03-atrium.jpg',
     alt: 'Grand Interior Atrium and Waiting Lobby',
   },
   {
     id: 'reception',
     stepNumber: '04',
-    badge: 'Front Reception Desk',
-    title: 'Warm Welcome & Check-in',
-    features: [
-      { icon: <IconFastCheck size={18} />, label: '30-Sec Instant Check-in' },
-      { icon: <IconStethoscope size={18} />, label: 'Doctor Room Directions' },
-      { icon: <IconReceipt size={18} />, label: 'Cashless Desk & Billing' },
-    ],
+    title: 'Reception Desk',
     image: '/images/walkthrough/04-reception.jpg',
     alt: 'Friendly Clinic Receptionist at Check-in Desk',
   },
@@ -451,21 +336,12 @@ export default function BuildingToReceptionWalkthrough({
               <div className="btr-top-actions">
                 <button
                   type="button"
-                  className={`btr-action-btn ${autoTour ? 'is-active' : ''}`}
+                  className={`btr-action-btn btr-play-btn ${autoTour ? 'is-active' : ''}`}
                   onClick={toggleAutoTour}
-                  aria-label={autoTour ? 'Pause Walkthrough Tour' : 'Play Automatic Walkthrough Tour'}
+                  aria-label={autoTour ? 'Pause Tour' : 'Play Tour'}
+                  title={autoTour ? 'Pause' : 'Play'}
                 >
-                  {autoTour ? (
-                    <>
-                      <span>❚❚</span>
-                      <span>Pause</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>▶</span>
-                      <span>Auto Tour</span>
-                    </>
-                  )}
+                  <span style={{ fontSize: '0.85rem' }}>{autoTour ? '❚❚' : '▶'}</span>
                 </button>
 
                 <button
@@ -497,24 +373,12 @@ export default function BuildingToReceptionWalkthrough({
                 />
               </div>
 
-              {/* Unified Bottom Console */}
+              {/* Unified Bottom Console - Minimal */}
               <div className="btr-console-bar" key={activeSceneData.id}>
-                {/* Left: Step Tag & Clean Title */}
+                {/* Left: Step Tag & Clean Minimal Title */}
                 <div className="btr-console-identity">
-                  <div className="btr-step-label">
-                    <span>STEP {activeSceneData.stepNumber} OF 04</span>
-                  </div>
+                  <span className="btr-step-label">{activeSceneData.stepNumber} / 04</span>
                   <h3 className="btr-console-title">{activeSceneData.title}</h3>
-                </div>
-
-                {/* Center: Visual Icon Feature Badges */}
-                <div className="btr-console-features">
-                  {activeSceneData.features.map((feat, idx) => (
-                    <span key={idx} className="btr-feature-chip">
-                      <span className="btr-feat-icon">{feat.icon}</span>
-                      <span className="btr-feat-label">{feat.label}</span>
-                    </span>
-                  ))}
                 </div>
 
                 {/* Right: Quick Stepper + Primary Book CTA */}
@@ -537,8 +401,8 @@ export default function BuildingToReceptionWalkthrough({
                           type="button"
                           className={`btr-dot-btn ${activeScene === idx ? 'is-active' : ''}`}
                           onClick={() => goToScene(idx)}
-                          aria-label={`Jump to step ${idx + 1}: ${s.badge}`}
-                          title={s.badge}
+                          aria-label={`Jump to step ${idx + 1}: ${s.title}`}
+                          title={s.title}
                         >
                           <span>{idx + 1}</span>
                         </button>
@@ -562,16 +426,6 @@ export default function BuildingToReceptionWalkthrough({
                       <span>{signedIn ? 'Book Visit' : 'Book Consultation'}</span>
                       <span aria-hidden>→</span>
                     </Link>
-                    {activeScene === 3 && (
-                      <a
-                        href={`tel:${CLINIC.phone.replace(/\s/g, '')}`}
-                        className="btr-btn-phone"
-                        title="Direct Call to Front Desk"
-                      >
-                        <IconPhone size={14} />
-                        <span>Call</span>
-                      </a>
-                    )}
                   </div>
                 </div>
               </div>

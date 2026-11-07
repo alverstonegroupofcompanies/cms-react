@@ -22,6 +22,25 @@
   will-change: transform, opacity;
 }
 
+.motion-char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.motion-typewriter-cursor {
+  display: inline-block;
+  color: #8b1e2b;
+  font-weight: 300;
+  margin-left: 3px;
+  animation: motionCursorBlink 0.9s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  user-select: none;
+}
+
+@keyframes motionCursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .motion-section-bg {
   position: relative;
   transition: background-color 700ms cubic-bezier(0.16, 1, 0.3, 1);

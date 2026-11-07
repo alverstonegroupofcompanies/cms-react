@@ -9,6 +9,7 @@ import AsterNavbar from './AsterNavbar'
 import SmoothScroll from './motion/SmoothScroll'
 import PageTransition from './motion/PageTransition'
 import StickyCTA from './motion/StickyCTA'
+import ScrollProgress from './motion/ScrollProgress'
 import { smoothScrollToElement } from '../utils/scrollHelper'
 
 interface Props {
@@ -49,6 +50,7 @@ export default function PatientSiteLayout({ children, portal = false }: Props) {
   return (
     <SmoothScroll>
       <div className={`ps-site ph-app page-fade${portal ? ' is-portal' : ''}`}>
+        <ScrollProgress />
         <AsterNavbar />
 
         <main className={`ps-main${portal ? ' ps-main-portal' : ''}`}>

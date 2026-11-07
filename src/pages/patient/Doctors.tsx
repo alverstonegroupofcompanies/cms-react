@@ -10,6 +10,7 @@ import {
   mergeUnifiedDoctors,
 } from '../../utils/doctorDirectoryData'
 import type { DepartmentMeta, UnifiedDoctor } from '../../utils/doctorDirectoryData'
+import { Reveal, CountUp } from '../../components/motion'
 import './doctors-directory.css'
 
 function renderDeptIcon(iconType?: string) {
@@ -339,25 +340,33 @@ export default function DoctorsDirectory() {
 
             <div className="alv-stats-grid">
               <div className="alv-stat-card">
-                <h3 className="alv-stat-val">25,356+</h3>
+                <h3 className="alv-stat-val">
+                  <CountUp to={25356} suffix="+" />
+                </h3>
                 <p className="alv-stat-lbl">Patients Served</p>
                 <span className="alv-stat-sub">Across South Kerala</span>
               </div>
 
               <div className="alv-stat-card">
-                <h3 className="alv-stat-val">6,050+</h3>
+                <h3 className="alv-stat-val">
+                  <CountUp to={6050} suffix="+" />
+                </h3>
                 <p className="alv-stat-lbl">Consultations</p>
                 <span className="alv-stat-sub">Completed This Month</span>
               </div>
 
               <div className="alv-stat-card">
-                <h3 className="alv-stat-val">21+</h3>
+                <h3 className="alv-stat-val">
+                  <CountUp to={21} suffix="+" />
+                </h3>
                 <p className="alv-stat-lbl">Specialist Suites</p>
                 <span className="alv-stat-sub">Dedicated OPD Rooms</span>
               </div>
 
               <div className="alv-stat-card">
-                <h3 className="alv-stat-val">99%</h3>
+                <h3 className="alv-stat-val">
+                  <CountUp to={99} suffix="%" />
+                </h3>
                 <p className="alv-stat-lbl">Satisfaction Rate</p>
                 <span className="alv-stat-sub">Verified Feedback</span>
               </div>
@@ -370,7 +379,7 @@ export default function DoctorsDirectory() {
             ================================================================== */}
         <section className="alv-about-strip" aria-label="About Our Medical Faculty">
           <div className="alv-about-container">
-            <div className="alv-about-content">
+            <Reveal direction="left" className="alv-about-content">
               <span className="alv-about-kicker">About Us</span>
               <h2 className="alv-about-title">
                 Unhurried Medical Care with Senior Specialists
@@ -400,9 +409,9 @@ export default function DoctorsDirectory() {
               <Link to="/about" className="alv-about-link">
                 <span>Read More About Our Hospital →</span>
               </Link>
-            </div>
+            </Reveal>
 
-            <div className="alv-about-visual">
+            <Reveal direction="right" className="alv-about-visual">
               <div className="alv-about-frame">
                 <img
                   src="/images/patient-about.jpg"
@@ -420,7 +429,7 @@ export default function DoctorsDirectory() {
                   <span>Compassion &amp; Precision</span>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </section>
 
@@ -437,7 +446,7 @@ export default function DoctorsDirectory() {
               </p>
             </div>
 
-            <div className="alv-how-grid">
+            <Reveal direction="up" stagger={0.09} className="alv-how-grid">
               <div className="alv-how-card">
                 <div className="alv-how-step-num">01</div>
                 <div className="alv-how-icon-box">
@@ -497,7 +506,7 @@ export default function DoctorsDirectory() {
                   Walk into the specialist suite when your token appears on the waiting room digital display.
                 </p>
               </div>
-            </div>
+            </Reveal>
           </div>
         </section>
 
@@ -681,7 +690,7 @@ export default function DoctorsDirectory() {
               </p>
             </div>
 
-            <div className="alv-reviews-grid">
+            <Reveal direction="up" stagger={0.09} className="alv-reviews-grid">
               <div className="alv-review-card">
                 <div className="alv-review-stars">★★★★★</div>
                 <blockquote className="alv-review-quote">
@@ -714,7 +723,7 @@ export default function DoctorsDirectory() {
                   <span>General &amp; Internal Medicine</span>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </section>
 
@@ -722,7 +731,7 @@ export default function DoctorsDirectory() {
             7. BOTTOM CARE CTA BANNER (ALVERSTONE SIGNATURE COLOR THEME)
             ================================================================== */}
         <section className="alv-bottom-cta-strip">
-          <div className="alv-bottom-cta-inner">
+          <Reveal direction="up" className="alv-bottom-cta-inner">
             <div>
               <span className="alv-cta-eyebrow">24/7 Clinical Support</span>
               <h3 className="alv-cta-title">Need Immediate Medical Advice or Assistance?</h3>
@@ -742,7 +751,7 @@ export default function DoctorsDirectory() {
                 <span>Book Appointment Online</span>
               </Link>
             </div>
-          </div>
+          </Reveal>
         </section>
       </div>
     </PatientSiteLayout>

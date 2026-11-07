@@ -297,6 +297,14 @@
   box-shadow: 0 6px 20px rgba(139, 30, 43, 0.28);
 }
 
+.btr-play-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 50%;
+}
+
 .btr-skip-btn {
   color: #475569;
 }
@@ -346,10 +354,12 @@
   align-items: center;
   justify-content: space-between;
   gap: 1.25rem;
-  background: #ffffff;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 0.85rem 1.35rem;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(226, 232, 240, 0.9);
+  border-radius: 9999px;
+  padding: 0.55rem 0.75rem 0.55rem 1.25rem;
   box-shadow: 0 16px 40px -10px rgba(15, 30, 23, 0.16), 0 2px 8px rgba(0, 0, 0, 0.04);
   box-sizing: border-box;
   width: 100%;
@@ -367,13 +377,12 @@
   }
 }
 
-/* Left: Step Tag & Clean Title */
+/* Left: Step Tag & Clean Minimal Title */
 .btr-console-identity {
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  align-items: center;
+  gap: 0.75rem;
   flex-shrink: 0;
-  min-width: 190px;
 }
 
 .btr-step-label {
@@ -381,64 +390,23 @@
   align-items: center;
   font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: #8b1e2b;
+  background: #fff1f2;
+  padding: 0.22rem 0.55rem;
+  border-radius: 9999px;
+  border: 1px solid #fecdd3;
+  line-height: 1.2;
 }
 
 .btr-console-title {
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: 750;
   color: #0f172a;
   margin: 0;
   font-family: var(--ph-font-display, 'Outfit', 'Plus Jakarta Sans', sans-serif);
   letter-spacing: -0.015em;
   white-space: nowrap;
-}
-
-/* Center: Visual Icon Feature Badges (Icons instead of walls of text) */
-.btr-console-features {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.55rem;
-  flex: 1;
-  justify-content: center;
-}
-
-.btr-feature-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.42rem 0.85rem;
-  background: #f8fafc;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 9999px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #0f172a;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-  white-space: nowrap;
-  transition: all 200ms ease;
-}
-
-.btr-feature-chip:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
-  color: #8b1e2b;
-  transform: translateY(-1px);
-}
-
-.btr-feat-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #8b1e2b;
-  flex-shrink: 0;
-}
-
-.btr-feat-label {
-  line-height: 1.2;
 }
 
 /* Right: Stepper Controls or Reception CTAs */
@@ -573,54 +541,24 @@
    RESPONSIVE DESIGN FOR CONSOLE BAR (TABLET & MOBILE)
    ========================================================================== */
 
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
   .btr-console-bar {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-      "identity stepper"
-      "features features"
-      "cta cta";
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
     gap: 0.75rem;
-    padding: 0.85rem 1.15rem;
-    border-radius: 18px;
+    padding: 0.65rem 1rem;
+    border-radius: 16px;
   }
 
   .btr-console-identity {
-    grid-area: identity;
     min-width: 0;
   }
 
-  .btr-console-actions {
-    display: contents;
-  }
-
-  .btr-stepper-nav {
-    grid-area: stepper;
-    align-self: center;
-    justify-self: end;
-  }
-
-  .btr-console-features {
-    grid-area: features;
-    width: 100%;
-    justify-content: flex-start;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    padding: 2px 0 4px;
-    gap: 0.5rem;
-    scrollbar-width: none;
-  }
-
-  .btr-console-features::-webkit-scrollbar {
-    display: none;
-  }
-
   .btr-cta-group {
-    grid-area: cta;
     width: 100%;
     display: flex;
-    gap: 0.5rem;
   }
 
   .btr-btn-primary {
@@ -635,30 +573,19 @@
   }
 
   .btr-console-bar {
-    padding: 0.7rem 0.85rem;
+    padding: 0.6rem 0.85rem;
     border-radius: 14px;
     gap: 0.55rem;
   }
 
   .btr-console-title {
     font-size: 0.95rem;
-    white-space: normal;
-  }
-
-  .btr-feature-chip {
-    padding: 0.32rem 0.7rem;
-    font-size: 0.75rem;
   }
 
   .btr-btn-primary {
-    padding: 0.6rem 1rem;
+    padding: 0.55rem 0.95rem;
     font-size: 0.82rem;
     border-radius: 10px;
-  }
-
-  .btr-btn-phone {
-    padding: 0.6rem 0.8rem;
-    font-size: 0.8rem;
   }
 }
 

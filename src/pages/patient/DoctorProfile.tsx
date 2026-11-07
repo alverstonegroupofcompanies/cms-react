@@ -11,6 +11,7 @@ import {
   mergeUnifiedDoctors,
 } from '../../utils/doctorDirectoryData'
 import type { UnifiedDoctor } from '../../utils/doctorDirectoryData'
+import { Reveal } from '../../components/motion'
 import './doctors-directory.css'
 
 export default function DoctorProfile() {
@@ -367,12 +368,12 @@ export default function DoctorProfile() {
             ================================================================== */}
         {relatedDoctors.length > 0 && (
           <section className="dp-related-section">
-            <div className="dp-related-header">
+            <Reveal direction="up" className="dp-related-header">
               <h3>Other Specialists in {doctor.departmentName}</h3>
               <p>Explore other board-certified consultants caring for patients in this department.</p>
-            </div>
+            </Reveal>
 
-            <div className="alv-doctors-cards-grid">
+            <Reveal direction="up" stagger={0.08} className="alv-doctors-cards-grid">
               {relatedDoctors.map((rel) => {
                 const relProfileUrl = `/doctors/${rel.slug || rel.id}`
                 const relBookUrl = `${bookBaseUrl}?doctor_id=${rel.dbId || rel.id}&doctor=${encodeURIComponent(
@@ -425,7 +426,7 @@ export default function DoctorProfile() {
                   </article>
                 )
               })}
-            </div>
+            </Reveal>
           </section>
         )}
       </div>

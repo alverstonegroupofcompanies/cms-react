@@ -3,6 +3,7 @@ import PatientSiteLayout from '../../components/PatientSiteLayout'
 import { useAuth } from '../../context/AuthContext'
 import { CLINIC } from '../../config/clinic'
 import { usePageTitle } from '../../hooks/usePageTitle'
+import { Reveal } from '../../components/motion'
 import {
   IconCalendar,
   IconCheck,
@@ -965,7 +966,7 @@ export default function SpecialtyPage() {
               <p>{activeSpecialty.awarenessLead}</p>
             </div>
 
-            <div className="sp-awareness-split">
+            <Reveal direction="up" className="sp-awareness-split">
               {/* Left: Early Warning Signs to Watch For */}
               <div className="sp-signs-col">
                 <h3 className="sp-subhead">
@@ -1002,7 +1003,7 @@ export default function SpecialtyPage() {
                   ))}
                 </div>
               </div>
-            </div>
+            </Reveal>
           </section>
 
           <hr className="sp-divider" />
@@ -1017,7 +1018,7 @@ export default function SpecialtyPage() {
               <p>{activeSpecialty.nutritionIntro}</p>
             </div>
 
-            <div className="sp-nutrition-split">
+            <Reveal direction="up" className="sp-nutrition-split">
               {/* Nourishing Foods to Embrace */}
               <div className="sp-eat-col">
                 <h3 className="sp-subhead is-positive">
@@ -1070,7 +1071,7 @@ export default function SpecialtyPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </section>
 
           <hr className="sp-divider" />
@@ -1084,7 +1085,7 @@ export default function SpecialtyPage() {
               <h2>Daily Practices to Maintain Long-Term Health</h2>
             </div>
 
-            <div className="sp-habits-rows">
+            <Reveal direction="up" stagger={0.07} className="sp-habits-rows">
               {activeSpecialty.healthHabits.map((habit, i) => (
                 <div key={habit.title} className="sp-habit-row">
                   <span className="sp-habit-index">0{i + 1}</span>
@@ -1095,7 +1096,7 @@ export default function SpecialtyPage() {
                   <span className="sp-habit-cadence">{habit.cadence}</span>
                 </div>
               ))}
-            </div>
+            </Reveal>
 
             {/* Dual Editorial Quotes Banner */}
             <div className="sp-quotes-strip">

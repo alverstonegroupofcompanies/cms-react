@@ -1,84 +1,93 @@
-import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import { gsap, ANIMATION_CONFIG } from '../config/animations'
+
+export type RevealDirection = 'up' | 'down' | 'left' | 'right' | 'none'
+
+export interface ScrollRevealOptions {
+  direction?: RevealDirection
+  distance?: number
+  duration?: number
+  delay?: number
+  start?: string
+  once?: boolean
+  ease?: string
+  selector?: string
+}
 
 /**
- * Scroll-only reveals for `[data-reveal]`.
- * Animations start only when the element is in view — not while it is still below the fold.
- * Use `data-reveal="hero"` (or `"immediate"`) for first-screen content that may animate on load.
+ * useScrollReveal
+ * Scoped GSAP ScrollTrigger hook for smooth fade/slide reveals.
+ * Automatically cleans up on unmount or route change via useGSAP.
+ * Respects prefers-reduced-motion via gsap.matchMedia.
  */
-export function useScrollReveal(rootSelector = '.ps-site') {
-  const { pathname } = useLocation()
+export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(options: ScrollRevealOptions = {}) {
+  const containerRef = useRef<T>(null)
 
-  useEffect(() => {
-    const root = document.querySelector(rootSelector)
-    if (!root) return
+  useGSAP(
+    () => {
+      const root = containerRef.current
+      if (!root || !ANIMATION_CONFIG.enabled) return
 
-    const nodes = Array.from(root.querySelectorAll<HTMLElement>('[data-reveal]'))
-    if (!nodes.length) return
+      const targets = options.selector ? root.querySelectorAll(options.selector) : root
+      if (!targets) return
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      nodes.forEach((el) => el.classList.add('is-visible'))
-      return
-    }
+      const mm = gsap.matchMedia()
 
-    nodes.forEach((el) => el.classList.remove('is-visible'))
+      mm.add(
+        {
+          isReduced: '(prefers-reduced-motion: reduce)',
+          isNormal: '(prefers-reduced-motion: no-preference)',
+        },
+        (context) => {
+          const { isReduced } = context.conditions as { isReduced: boolean }
 
-    let userScrolled = window.scrollY > 12
-    const pending = new Set<Element>()
+          if (isReduced) {
+            gsap.from(targets, {
+              opacity: 0,
+              duration: options.duration ?? ANIMATION_CONFIG.duration.fast,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: root,
+                start: options.start ?? ANIMATION_CONFIG.start,
+                toggleActions: ANIMATION_CONFIG.toggleActions,
+                once: options.once ?? true,
+              },
+            })
+            return
+          }
 
-    const reveal = (el: Element, observer: IntersectionObserver) => {
-      el.classList.add('is-visible')
-      pending.delete(el)
-      observer.unobserve(el)
-    }
+          const direction = options.direction ?? 'up'
+          const dist = options.distance ?? ANIMATION_CONFIG.distance.md
 
-    const inViewEnough = (entry: IntersectionObserverEntry) =>
-      entry.isIntersecting && (entry.intersectionRatio >= 0.08 || entry.boundingClientRect.top < window.innerHeight * 0.92)
+          let x = 0
+          let y = 0
+          if (direction === 'up') y = dist
+          else if (direction === 'down') y = -dist
+          else if (direction === 'left') x = -dist
+          else if (direction === 'right') x = dist
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!inViewEnough(entry)) return
-          reveal(entry.target, observer)
-        })
-      },
-      {
-        threshold: [0, 0.08, 0.2],
-        rootMargin: '0px 0px -5% 0px',
-      },
-    )
+          gsap.from(targets, {
+            opacity: 0,
+            x,
+            y,
+            duration: options.duration ?? ANIMATION_CONFIG.duration.normal,
+            delay: options.delay ?? 0,
+            ease: options.ease ?? ANIMATION_CONFIG.ease,
+            scrollTrigger: {
+              trigger: root,
+              start: options.start ?? ANIMATION_CONFIG.start,
+              toggleActions: ANIMATION_CONFIG.toggleActions,
+              once: options.once ?? true,
+            },
+          })
+        }
+      )
+    },
+    { scope: containerRef, dependencies: [options.direction, options.distance, options.delay, options.selector] }
+  )
 
-    const flushPending = () => {
-      if (!userScrolled) return
-      pending.forEach((el) => {
-        const rect = (el as HTMLElement).getBoundingClientRect()
-        const vh = window.innerHeight
-        const visible =
-          rect.top < vh * 0.86 &&
-          rect.bottom > vh * 0.12 &&
-          rect.height > 0
-        if (visible) reveal(el, observer)
-      })
-    }
-
-    const onScroll = () => {
-      if (window.scrollY <= 12) return
-      userScrolled = true
-      flushPending()
-      window.removeEventListener('scroll', onScroll)
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true })
-
-    const frame = requestAnimationFrame(() => {
-      nodes.forEach((el) => observer.observe(el))
-    })
-
-    return () => {
-      cancelAnimationFrame(frame)
-      observer.disconnect()
-      window.removeEventListener('scroll', onScroll)
-      pending.clear()
-    }
-  }, [pathname, rootSelector])
+  return containerRef
 }
+
+export default useScrollReveal

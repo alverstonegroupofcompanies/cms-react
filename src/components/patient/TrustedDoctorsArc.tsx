@@ -145,8 +145,18 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
   // Center card initially selected (index 3 out of 7)
   const [activeIndex, setActiveIndex] = useState<number>(3)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [windowWidth, setWindowWidth] = useState<number>(
+    typeof window !== 'undefined' ? window.innerWidth : 1200
+  )
   const bookBaseUrl = signedIn ? '/patient/book' : '/patient/login?next=%2Fpatient%2Fbook'
   const arcStageRef = useRef<HTMLDivElement>(null)
+
+  // Track responsive screen width for optimal 3D perspective & spacing
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const activeDoc = TRUSTED_DOCTORS[activeIndex]
 
@@ -158,7 +168,7 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
     setActiveIndex((prev) => (prev < TRUSTED_DOCTORS.length - 1 ? prev + 1 : 0))
   }, [])
 
-  // Keyboard navigation when stage is focused
+  // Keyboard navigation when stage or page is interacted with
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (document.activeElement?.closest('.tda-section')) {
@@ -174,6 +184,30 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [handlePrev, handleNext])
+
+  // Touch swipe support for mobile & tablet smooth gestures
+  const touchStartX = useRef<number | null>(null)
+  const touchEndX = useRef<number | null>(null)
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX
+  }
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return
+    const diff = touchStartX.current - touchEndX.current
+    if (diff > 45) {
+      handleNext()
+    } else if (diff < -45) {
+      handlePrev()
+    }
+    touchStartX.current = null
+    touchEndX.current = null
+  }
 
   return (
     <section className="tda-section" id="doctors" aria-label="Our Trusted Doctors and Specialists">
@@ -227,7 +261,12 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
         {/* ==================================================================
             2. THE 3D CURVED PANORAMIC ARC GALLERY
             ================================================================== */}
-        <div className="tda-arc-stage-wrap" data-reveal style={{ ['--d' as string]: '100ms' }}>
+        <div
+          className="tda-arc-stage-wrap"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           {/* Subtle vignette fade masks on left and right for seamless edge blend */}
           <div className="tda-edge-fade tda-edge-fade--left" aria-hidden="true" />
           <div className="tda-edge-fade tda-edge-fade--right" aria-hidden="true" />
@@ -239,7 +278,7 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
             onClick={handlePrev}
             aria-label="View previous doctor"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <polyline points="15 18 9 12 15 6" />
             </svg>
           </button>
@@ -250,7 +289,7 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
             onClick={handleNext}
             aria-label="View next doctor"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <polyline points="9 18 15 12 9 6" />
             </svg>
           </button>
@@ -264,13 +303,36 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
                 const isActive = idx === activeIndex
                 const isHovered = idx === hoveredIndex
 
-                // 3D Arc Curvature calculation
-                // Left cards rotate outward clockwise (+rotateY), right cards rotate counter-clockwise (-rotateY)
-                const rotateY = -offset * 7.5
-                // Outer cards are closer to camera in a concave cylinder (taller at sides)
-                const translateZ = absOffset * 22
-                // Parabolic curve: center is slightly lower or higher to match screenshot's inverted-U top
-                const translateY = absOffset * 4
+                // Fluid 3D Coverflow geometry with cinematic depth and responsive fan spread
+                const isMobile = windowWidth < 640
+                const isTablet = windowWidth >= 640 && windowWidth < 1024
+                const spacing = isMobile ? 120 : isTablet ? 175 : 225
+
+                let translateX = 0
+                let translateZ = 0
+                let rotateY = 0
+                let scale = 1
+                let opacity = 1
+
+                if (isActive) {
+                  translateX = 0
+                  translateZ = isMobile ? 40 : 80
+                  rotateY = 0
+                  scale = isMobile ? 1.02 : 1.05
+                  opacity = 1
+                } else {
+                  const dir = offset > 0 ? 1 : -1
+                  const baseSpread = spacing
+                  const extraSpread = absOffset === 1 ? 0 : (absOffset - 1) * (spacing * 0.72)
+                  translateX = dir * (baseSpread + extraSpread)
+
+                  translateZ = -absOffset * (isMobile ? 55 : 85)
+                  rotateY = dir > 0 ? (isMobile ? -14 : -22) : (isMobile ? 14 : 22)
+                  scale = Math.max(isMobile ? 0.82 : 0.76, 1 - absOffset * 0.085)
+                  opacity = absOffset > 3 ? 0 : Math.max(0.18, 1 - absOffset * 0.28)
+                }
+
+                const zIndex = 30 - absOffset
 
                 return (
                   <article
@@ -278,16 +340,13 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
                     className={`tda-card ${isActive ? 'tda-card--active' : ''} ${
                       isHovered ? 'tda-card--hovered' : ''
                     }`}
-                    style={
-                      {
-                        '--offset': offset,
-                        '--abs-offset': absOffset,
-                        '--rotate-y': `${rotateY}deg`,
-                        '--translate-z': `${translateZ}px`,
-                        '--translate-y': `${translateY}px`,
-                        zIndex: 20 - absOffset,
-                      } as React.CSSProperties
-                    }
+                    style={{
+                      transform: `translate3d(${translateX}px, 0, ${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
+                      opacity,
+                      zIndex,
+                      pointerEvents: absOffset > 2 ? 'none' : 'auto',
+                      visibility: absOffset > 3 ? 'hidden' : 'visible',
+                    }}
                     onClick={() => setActiveIndex(idx)}
                     onMouseEnter={() => setHoveredIndex(idx)}
                     onMouseLeave={() => setHoveredIndex(null)}
@@ -309,6 +368,12 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
                           alt={`${doc.name} - ${doc.department}`}
                           className="tda-card-photo"
                           loading="lazy"
+                          onError={(e) => {
+                            const target = e.currentTarget
+                            if (!target.src.includes('doc-sharma-general.jpg')) {
+                              target.src = '/images/doctors/doc-sharma-general.jpg'
+                            }
+                          }}
                         />
                       </div>
 
@@ -335,7 +400,7 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
                             <span className="tda-card-degree">{doc.degree.split(',')[0]}</span>
                             <span className="tda-card-dot">•</span>
                             <span className="tda-card-exp-highlight">
-                              <AnimatedCounter value={doc.experienceYears} suffix=" Yrs Practice" />
+                              {doc.experience}
                             </span>
                           </div>
                         </div>
@@ -379,7 +444,16 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
         <div className="tda-spotlight-bar" aria-live="polite">
           <div className="tda-spotlight-left">
             <div className="tda-spotlight-avatar">
-              <img src={activeDoc.image} alt={activeDoc.name} />
+              <img
+                src={activeDoc.image}
+                alt={activeDoc.name}
+                onError={(e) => {
+                  const target = e.currentTarget
+                  if (!target.src.includes('doc-sharma-general.jpg')) {
+                    target.src = '/images/doctors/doc-sharma-general.jpg'
+                  }
+                }}
+              />
             </div>
             <div className="tda-spotlight-meta">
               <div className="tda-spotlight-title-row">

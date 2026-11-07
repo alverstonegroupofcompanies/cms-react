@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { useGSAP } from '@gsap/react'
+import { gsap, ScrollTrigger, ANIMATION_CONFIG } from '../../config/animations'
 import PatientSiteLayout from '../../components/PatientSiteLayout'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { CLINIC } from '../../config/clinic'
@@ -31,9 +33,141 @@ const GALLERY = [
 export default function PatientAbout() {
   usePageTitle('About Us', 'Alverstone Medcity')
   const [openFaq, setOpenFaq] = useState<number | null>(0)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useGSAP(
+    () => {
+      const root = containerRef.current
+      if (!root || !ANIMATION_CONFIG.enabled) return
+
+      const mm = gsap.matchMedia()
+
+      mm.add(
+        {
+          isDesktop: '(min-width: 768px)',
+          isMobile: '(max-width: 767px)',
+          isReduced: '(prefers-reduced-motion: reduce)',
+        },
+        (context) => {
+          const { isReduced, isDesktop } = context.conditions as { isReduced: boolean; isDesktop: boolean }
+
+          if (isReduced) {
+            gsap.from(root.querySelectorAll('[data-reveal]'), {
+              opacity: 0,
+              duration: ANIMATION_CONFIG.duration.fast,
+              stagger: 0.05,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: root,
+                start: ANIMATION_CONFIG.start,
+                once: true,
+              },
+            })
+            return
+          }
+
+          // 1. Hero Load-in Animation
+          const heroInner = root.querySelector('.ps-about-hero .ps-page-hero-inner')
+          if (heroInner && heroInner.children.length > 0) {
+            gsap.from(Array.from(heroInner.children), {
+              opacity: 0,
+              y: ANIMATION_CONFIG.distance.md,
+              duration: ANIMATION_CONFIG.duration.normal,
+              stagger: 0.1,
+              ease: ANIMATION_CONFIG.ease,
+              clearProps: 'transform,opacity',
+            })
+          }
+
+          // Desktop Subtle Background Parallax Scrub
+          const heroEl = root.querySelector<HTMLElement>('.ps-about-hero')
+          if (heroEl && isDesktop) {
+            gsap.to(heroEl, {
+              backgroundPosition: 'center 65%',
+              ease: 'none',
+              scrollTrigger: {
+                trigger: heroEl,
+                start: 'top top',
+                end: 'bottom top',
+                scrub: 0.5,
+              },
+            })
+          }
+
+          // 2. Batched Stagger for Card Grids (Pillars, Gallery, Features, Reviews)
+          const batchContainers = root.querySelectorAll(
+            '.ps-about-pillars-grid, .ps-about-gallery-grid, .ps-about-feature-grid, .ps-about-voice-grid'
+          )
+
+          batchContainers.forEach((grid) => {
+            const items = grid.querySelectorAll<HTMLElement>('[data-reveal]')
+            if (!items.length) return
+
+            ScrollTrigger.batch(Array.from(items), {
+              start: ANIMATION_CONFIG.start,
+              once: true,
+              onEnter: (batch) => {
+                gsap.from(batch, {
+                  opacity: 0,
+                  y: ANIMATION_CONFIG.distance.sm,
+                  duration: ANIMATION_CONFIG.duration.normal,
+                  stagger: ANIMATION_CONFIG.stagger.fast,
+                  ease: ANIMATION_CONFIG.ease,
+                  clearProps: 'transform,opacity',
+                })
+              },
+            })
+          })
+
+          // 3. Standalone Sections & Split Reveals (Left / Right / Up)
+          const standaloneElements = root.querySelectorAll<HTMLElement>('[data-reveal]')
+          standaloneElements.forEach((el) => {
+            // Skip elements inside batch grids or hero
+            if (
+              el.closest('.ps-about-hero') ||
+              el.closest('.ps-about-gallery-grid') ||
+              el.closest('.ps-about-feature-grid') ||
+              el.closest('.ps-about-voice-grid')
+            ) {
+              return
+            }
+
+            const variant = el.getAttribute('data-reveal')
+            let x: number = 0
+            let y: number = ANIMATION_CONFIG.distance.md
+
+            if (variant === 'left') {
+              x = -ANIMATION_CONFIG.distance.md
+              y = 0
+            } else if (variant === 'right') {
+              x = ANIMATION_CONFIG.distance.md
+              y = 0
+            }
+
+            gsap.from(el, {
+              opacity: 0,
+              x,
+              y,
+              duration: ANIMATION_CONFIG.duration.normal,
+              ease: ANIMATION_CONFIG.ease,
+              clearProps: 'transform,opacity',
+              scrollTrigger: {
+                trigger: el,
+                start: ANIMATION_CONFIG.start,
+                toggleActions: ANIMATION_CONFIG.toggleActions,
+                once: true,
+              },
+            })
+          })
+        }
+      )
+    },
+    { scope: containerRef }
+  )
 
   return (
     <PatientSiteLayout>
+      <div ref={containerRef} className="ps-about-page-wrapper">
       {/* 1. Master Hero Section */}
       <section
         className="ps-page-hero ps-about-hero"
@@ -166,7 +300,7 @@ export default function PatientAbout() {
         <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
           <div className="ps-about-intro-grid" style={{ alignItems: 'stretch', gap: '2.5rem' }}>
             {/* Left Column: Narrative & Key Pillars */}
-            <div data-reveal style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div data-reveal="left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.75rem' }}>
                 <span
                   style={{
@@ -322,7 +456,7 @@ export default function PatientAbout() {
             {/* Right Column: Upgraded Executive Campus & Visit Card */}
             <aside
               className="ps-about-aside"
-              data-reveal
+              data-reveal="right"
               style={{
                 ['--d' as string]: '120ms',
                 display: 'flex',
@@ -487,8 +621,9 @@ export default function PatientAbout() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+          <div className="ps-about-pillars-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
             <div
+              data-reveal
               style={{
                 background: '#ffffff',
                 padding: '1.75rem 1.5rem',
@@ -522,6 +657,7 @@ export default function PatientAbout() {
             </div>
 
             <div
+              data-reveal
               style={{
                 background: '#ffffff',
                 padding: '1.75rem 1.5rem',
@@ -555,6 +691,7 @@ export default function PatientAbout() {
             </div>
 
             <div
+              data-reveal
               style={{
                 background: '#ffffff',
                 padding: '1.75rem 1.5rem',
@@ -588,6 +725,7 @@ export default function PatientAbout() {
             </div>
 
             <div
+              data-reveal
               style={{
                 background: '#ffffff',
                 padding: '1.75rem 1.5rem',
@@ -1213,6 +1351,7 @@ export default function PatientAbout() {
           </div>
         </div>
       </section>
+      </div>
     </PatientSiteLayout>
   )
 }

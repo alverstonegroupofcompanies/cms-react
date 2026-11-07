@@ -86,13 +86,22 @@ export default function ElderCareSection({ signedIn = false }: ElderCareSectionP
 
       <div className="ecs-container">
         {/* ==================================================================
-            1. HEADER WITH CLASSIC EDITORIAL SERIF
+            1. HEADER WITH CLASSIC EDITORIAL SERIF (GSAP LETTER-BY-LETTER ANIMATION)
             ================================================================== */}
         <div className="ecs-header">
-          <SplitText as="h2" id="ecs-main-title" className="ecs-title">
+          <SplitText
+            as="h2"
+            id="ecs-main-title"
+            className="ecs-title"
+            by="chars"
+            stagger={0.028}
+            duration={0.45}
+            distance={14}
+            cursor
+          >
             Home Care That&apos;s Tailored to Your Needs
           </SplitText>
-          <Reveal direction="up" distance={14} delay={0.12} duration={0.75}>
+          <Reveal direction="up" distance={14} delay={0.4} duration={0.75}>
             <p className="ecs-subtitle">
               Dignified, unhurried healthcare and compassionate bedside support designed to keep senior loved ones safe,
               healthy, and cherished in the comfort of their home or at our campus.

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { smoothScrollToElement, scrollToTopInstant } from '../utils/scrollHelper'
+import { ScrollTrigger } from '../config/animations'
 
 /**
  * ScrollToTop ensures that whenever the user clicks any link,
@@ -47,6 +48,12 @@ export default function ScrollToTop() {
         container.scrollTop = 0
       }
     })
+
+    // Refresh GSAP ScrollTrigger after route transition and layout settle
+    const refreshTimer = window.setTimeout(() => {
+      ScrollTrigger.refresh()
+    }, 150)
+    return () => window.clearTimeout(refreshTimer)
   }, [pathname, search, hash])
 
   return null
