@@ -988,67 +988,278 @@ export default function PatientAbout() {
 
       {/* 10. Master Bottom Call to Action */}
       <section
-        className="ps-about-cta"
-        data-reveal
         style={{
-          background: 'linear-gradient(135deg, #1c0910 0%, #2b0e17 50%, #40101b 100%)',
-          color: '#ffffff',
-          padding: '4.5rem 1.5rem',
+          padding: '4rem 1.5rem 5rem',
+          background: '#f8fafc',
+          borderTop: '1px solid #e2e8f0',
         }}
       >
-        <div className="ps-about-cta-inner" style={{ maxWidth: '1160px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '2rem' }}>
-          <div style={{ maxWidth: '640px' }}>
-            <span
-              style={{
-                color: '#fed7aa',
-                fontSize: '0.74rem',
-                fontWeight: 800,
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                marginBottom: '0.5rem',
-                display: 'block',
-              }}
-            >
-              EXPERIENCE ALVERSTONE MEDCITY
-            </span>
+        <div
+          data-reveal
+          style={{
+            maxWidth: '1160px',
+            margin: '0 auto',
+            borderRadius: '24px',
+            background:
+              'radial-gradient(circle at 100% 0%, rgba(225, 29, 72, 0.3), transparent 50%), radial-gradient(circle at 0% 100%, rgba(254, 215, 170, 0.16), transparent 45%), linear-gradient(135deg, #1c0910 0%, #2f0d19 50%, #4a1221 100%)',
+            color: '#ffffff',
+            border: '1px solid rgba(254, 205, 211, 0.22)',
+            boxShadow: '0 24px 50px rgba(28, 9, 16, 0.28)',
+            padding: 'clamp(2rem, 4vw, 3.25rem)',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '2.5rem',
+            alignItems: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Left Column: Heading, Perks & Actions */}
+          <div>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.85rem' }}>
+              <span
+                style={{
+                  background: 'rgba(255, 255, 255, 0.14)',
+                  backdropFilter: 'blur(8px)',
+                  color: '#fed7aa',
+                  fontSize: '0.74rem',
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  padding: '0.3rem 0.75rem',
+                  borderRadius: '999px',
+                  border: '1px solid rgba(254, 215, 170, 0.3)',
+                }}
+              >
+                Experience Alverstone Medcity • Chandanathope
+              </span>
+            </div>
+
             <h2
               style={{
                 fontFamily: 'Fraunces, Georgia, serif',
-                fontSize: 'clamp(2rem, 3.2vw, 2.7rem)',
+                fontSize: 'clamp(1.9rem, 3.2vw, 2.7rem)',
                 fontWeight: 800,
-                margin: '0 0 1rem',
+                lineHeight: 1.2,
                 color: '#ffffff',
+                margin: '0 0 1rem',
+                letterSpacing: '-0.02em',
               }}
             >
               Ready for Healthcare Without Waiting?
             </h2>
-            <p style={{ fontSize: '1.05rem', color: 'rgba(255, 255, 255, 0.85)', margin: 0, lineHeight: 1.65 }}>
-              Create your patient account in under two minutes or book your chosen doctor directly for a date and time that suits your life.
+
+            <p
+              style={{
+                fontSize: '1.02rem',
+                lineHeight: 1.65,
+                color: 'rgba(255, 255, 255, 0.88)',
+                margin: '0 0 1.5rem',
+                maxWidth: '520px',
+              }}
+            >
+              Book your consultation with our board-certified specialists or walk in directly to our 24/7 campus in Chandanathope, Kollam.
             </p>
+
+            {/* Feature Perks */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.65rem 1.25rem', marginBottom: '2rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.86rem', color: '#fed7aa', fontWeight: 650 }}>
+                <span style={{ color: '#86efac' }}>&#10003;</span>
+                <span>Zero Unmanaged Waiting</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.86rem', color: '#fed7aa', fontWeight: 650 }}>
+                <span style={{ color: '#86efac' }}>&#10003;</span>
+                <span>Verified MD / MS Specialists</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.86rem', color: '#fed7aa', fontWeight: 650 }}>
+                <span style={{ color: '#86efac' }}>&#10003;</span>
+                <span>24/7 Pharmacy &amp; Lab On-Campus</span>
+              </div>
+            </div>
+
+            {/* High Contrast Action Buttons */}
+            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+              <Link
+                to="/patient/book"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.85rem 1.65rem',
+                  borderRadius: '12px',
+                  background: '#fed7aa',
+                  color: '#6e131e',
+                  fontWeight: 800,
+                  fontSize: '0.94rem',
+                  textDecoration: 'none',
+                  boxShadow: '0 6px 18px rgba(0, 0, 0, 0.25)',
+                  transition: 'transform 0.15s, background 0.15s',
+                }}
+              >
+                <span>Book an Appointment</span>
+                <span style={{ fontSize: '1.1rem' }}>&rarr;</span>
+              </Link>
+
+              <a
+                href="tel:+914742712233"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.45rem',
+                  padding: '0.82rem 1.4rem',
+                  borderRadius: '12px',
+                  background: 'rgba(255, 255, 255, 0.12)',
+                  color: '#ffffff',
+                  border: '1.5px solid rgba(255, 255, 255, 0.35)',
+                  fontWeight: 700,
+                  fontSize: '0.92rem',
+                  textDecoration: 'none',
+                  backdropFilter: 'blur(8px)',
+                }}
+              >
+                <span style={{ color: '#86efac', display: 'inline-flex' }}><IconPhone size={15} /></span>
+                <span>Call 0474 271 2233</span>
+              </a>
+            </div>
           </div>
 
-          <div className="ps-about-actions" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          {/* Right Column: Executive Frosted Info Plate */}
+          <div
+            style={{
+              background: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(16px)',
+              borderRadius: '18px',
+              border: '1px solid rgba(255, 255, 255, 0.18)',
+              padding: '1.75rem',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '8px',
+                    background: '#8b1e2b',
+                    color: '#ffffff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <IconBuilding size={16} />
+                </div>
+                <span style={{ fontWeight: 800, fontSize: '0.95rem', color: '#ffffff' }}>
+                  Alverstone Medcity
+                </span>
+              </div>
+
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  background: 'rgba(34, 197, 94, 0.22)',
+                  color: '#86efac',
+                  border: '1px solid rgba(34, 197, 94, 0.4)',
+                  padding: '0.2rem 0.55rem',
+                  borderRadius: '999px',
+                  fontSize: '0.72rem',
+                  fontWeight: 750,
+                  textTransform: 'uppercase',
+                }}
+              >
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e' }} />
+                Open 24/7
+              </span>
+            </div>
+
+            <p style={{ fontSize: '0.86rem', color: 'rgba(255, 255, 255, 0.8)', margin: '0 0 1.25rem', lineHeight: 1.5 }}>
+              Central Medical Campus, Chandanathope, Kollam, Kerala 691014
+            </p>
+
+            {/* Quick Access Matrix */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '1.25rem' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '0.65rem 0.85rem',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  fontSize: '0.84rem',
+                }}
+              >
+                <span style={{ color: 'rgba(255, 255, 255, 0.85)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <span style={{ color: '#fed7aa', display: 'inline-flex' }}><IconStethoscope size={14} /></span>
+                  OPD Specialty Clinics
+                </span>
+                <strong style={{ color: '#fed7aa' }}>08:00 AM &ndash; 09:00 PM</strong>
+              </div>
+
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '0.65rem 0.85rem',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  fontSize: '0.84rem',
+                }}
+              >
+                <span style={{ color: 'rgba(255, 255, 255, 0.85)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <span style={{ color: '#86efac', display: 'inline-flex' }}><IconPill size={14} /></span>
+                  Clinical Pharmacy &amp; Lab
+                </span>
+                <strong style={{ color: '#86efac' }}>24 &times; 7 Always Open</strong>
+              </div>
+
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '0.65rem 0.85rem',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  fontSize: '0.84rem',
+                }}
+              >
+                <span style={{ color: 'rgba(255, 255, 255, 0.85)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <span style={{ color: '#93c5fd', display: 'inline-flex' }}><IconShield size={14} /></span>
+                  Emergency &amp; Helpdesk
+                </span>
+                <strong style={{ color: '#93c5fd' }}>Fully Staffed</strong>
+              </div>
+            </div>
+
             <Link
-              to="/patient/book"
-              className="ps-btn ps-btn-lg"
+              to="/doctors"
               style={{
-                background: '#ffffff',
-                color: '#8b1e2b !important',
-                fontWeight: 800,
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
-              }}
-            >
-              Book an Appointment
-            </Link>
-            <a
-              href="tel:+914742712233"
-              className="ps-btn-ghost"
-              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.4rem',
+                width: '100%',
+                padding: '0.65rem',
+                borderRadius: '8px',
+                background: 'rgba(255, 255, 255, 0.1)',
+                color: '#ffffff',
+                textDecoration: 'none',
+                fontSize: '0.82rem',
                 fontWeight: 700,
+                border: '1px solid rgba(255, 255, 255, 0.15)',
               }}
             >
-              Call 0474 271 2233
-            </a>
+              <span>Explore Our Doctors &amp; Specialists</span>
+              <span>&rarr;</span>
+            </Link>
           </div>
         </div>
       </section>
