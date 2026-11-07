@@ -102,7 +102,7 @@ export default function PatientAbout() {
             Where board-certified clinical mastery, zero-wait token pacing, and modern diagnostics unite under one serene campus in Kollam. No chaotic lobbies, no fragmented care.
           </p>
 
-          <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '2.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: 0 }}>
             <Link
               to="/patient/book"
               className="ps-btn"
@@ -156,56 +156,6 @@ export default function PatientAbout() {
                 <IconPhone size={14} />
               </span>
               <span>24/7 Helpline: <strong>0474 271 2233</strong></span>
-            </div>
-          </div>
-
-          {/* Trust Metric Counters Strip */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-              gap: '1rem',
-              background: 'rgba(255, 255, 255, 0.12)',
-              backdropFilter: 'blur(16px)',
-              padding: '1.25rem 1.5rem',
-              borderRadius: '16px',
-              border: '1px solid rgba(255, 255, 255, 0.22)',
-            }}
-          >
-            <div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 850, color: '#fed7aa', lineHeight: 1.1 }}>
-                25,000+
-              </div>
-              <div style={{ fontSize: '0.82rem', color: 'rgba(255, 255, 255, 0.85)', marginTop: '0.2rem' }}>
-                Happy Patients Served
-              </div>
-            </div>
-
-            <div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 850, color: '#ffffff', lineHeight: 1.1 }}>
-                50+
-              </div>
-              <div style={{ fontSize: '0.82rem', color: 'rgba(255, 255, 255, 0.85)', marginTop: '0.2rem' }}>
-                Senior Specialists &amp; Surgeons
-              </div>
-            </div>
-
-            <div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 850, color: '#ffffff', lineHeight: 1.1 }}>
-                15+
-              </div>
-              <div style={{ fontSize: '0.82rem', color: 'rgba(255, 255, 255, 0.85)', marginTop: '0.2rem' }}>
-                Multi-Specialty Departments
-              </div>
-            </div>
-
-            <div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 850, color: '#86efac', lineHeight: 1.1 }}>
-                24 &times; 7
-              </div>
-              <div style={{ fontSize: '0.82rem', color: 'rgba(255, 255, 255, 0.85)', marginTop: '0.2rem' }}>
-                Pharmacy, Lab &amp; Emergency
-              </div>
             </div>
           </div>
         </div>
