@@ -600,7 +600,7 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
-                OPD, Lab & Pharmacy Under 1 Roof
+                Consultations, Lab & Pharmacy Under 1 Roof
               </span>
             </div>
           </div>
@@ -661,7 +661,7 @@ export default function TrustedDoctorsArc({ signedIn = false }: TrustedDoctorsAr
                 margin: 0,
               }}
             >
-              Explore our full directory grouped department by department — General Medicine, Cardiology, Orthopedics, Pediatrics, Dental, Dermatology &amp; Neurology. View verified degrees, weekly OPD day tracks, and individual doctor profiles.
+              Explore our full directory grouped department by department — General Medicine, Cardiology, Orthopedics, Pediatrics, Dental, Dermatology &amp; Neurology. View verified degrees, weekly consultation schedules, and individual doctor profiles.
             </p>
           </div>
 

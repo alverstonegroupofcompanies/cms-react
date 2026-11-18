@@ -84,7 +84,11 @@ export default function PharmacyBillPrint({ bill, lines, onlyIncluded = true }: 
           <strong>{doctor?.name ? displayDoctorName(doctor.name) : 'Doctor'}</strong>
           {doctor?.specialization ? <div>{doctor.specialization}</div> : null}
           {bill.worksheet?.worksheet_code ? <div>WS: {bill.worksheet.worksheet_code}</div> : null}
-          {bill.queue_token?.display_code ? <div>Token: {bill.queue_token.display_code}</div> : null}
+          {(bill.queue_token?.display_code || bill.worksheet?.queue_token?.display_code) ? (
+            <div>Token: <strong>{bill.queue_token?.display_code || bill.worksheet?.queue_token?.display_code}</strong></div>
+          ) : bill.queue_token?.token_number ? (
+            <div>Token: <strong>{String(bill.queue_token.token_number).padStart(2, '0')}</strong></div>
+          ) : null}
         </div>
       </div>
 

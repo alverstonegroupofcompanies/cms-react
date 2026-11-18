@@ -155,6 +155,57 @@
   background: #8b1e2b;
 }
 
+/* Card 1: Gentle Sage & Eucalyptus */
+.ecs-card:nth-child(1) .ecs-dot-grid span {
+  background: #059669;
+}
+.ecs-card:nth-child(1) .ecs-photo-circle {
+  background: #ecfdf5;
+  border-color: #d1fae5;
+}
+.ecs-card:nth-child(1) .ecs-floating-arrow-btn {
+  background: #059669;
+  box-shadow: 0 6px 16px rgba(5, 150, 105, 0.28);
+}
+.ecs-card:nth-child(1):hover {
+  border-color: rgba(5, 150, 105, 0.35);
+  box-shadow: 0 26px 52px -10px rgba(5, 150, 105, 0.16);
+}
+
+/* Card 2: Warm Sunshine Amber */
+.ecs-card:nth-child(2) .ecs-dot-grid span {
+  background: #d97706;
+}
+.ecs-card:nth-child(2) .ecs-photo-circle {
+  background: #fffbeb;
+  border-color: #fef3c7;
+}
+.ecs-card:nth-child(2) .ecs-floating-arrow-btn {
+  background: #d97706;
+  box-shadow: 0 6px 16px rgba(217, 119, 6, 0.28);
+}
+.ecs-card:nth-child(2):hover {
+  border-color: rgba(217, 119, 6, 0.35);
+  box-shadow: 0 26px 52px -10px rgba(217, 119, 6, 0.16);
+}
+
+/* Card 3: Calming Sapphire Blue */
+.ecs-card:nth-child(3) .ecs-dot-grid span {
+  background: #0284c7;
+}
+.ecs-card:nth-child(3) .ecs-photo-circle {
+  background: #f0f9ff;
+  border-color: #e0f2fe;
+}
+.ecs-card:nth-child(3) .ecs-floating-arrow-btn {
+  background: #0284c7;
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.28);
+}
+.ecs-card:nth-child(3):hover {
+  border-color: rgba(2, 132, 199, 0.35);
+  box-shadow: 0 26px 52px -10px rgba(2, 132, 199, 0.16);
+}
+
 .ecs-card--accent .ecs-dot-grid span {
   background: #ffffff;
 }

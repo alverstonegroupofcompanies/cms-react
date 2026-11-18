@@ -360,9 +360,6 @@ export default function DoctorPatient() {
                     {patient.blood_group && patient.blood_group !== 'unknown' && (
                       <span className="dph-blood">{patient.blood_group}</span>
                     )}
-                    <span className="dph-pill" style={{ background: '#fef3c7', color: '#92400e', border: '1px solid #fde68a', fontWeight: 700 }}>
-                      👑 {patient.royal_points || 0} pts (₹{Math.round(((patient.royal_points || 0) / 4) * 100) / 100})
-                    </span>
                   </p>
                 </div>
               </div>
@@ -387,10 +384,6 @@ export default function DoctorPatient() {
                 <div>
                   <dt>Bills</dt>
                   <dd>{bills.length}</dd>
-                </div>
-                <div style={{ background: 'rgba(245, 158, 11, 0.12)', borderRadius: '8px' }}>
-                  <dt style={{ color: '#b45309', fontWeight: 700 }}>👑 Points</dt>
-                  <dd style={{ color: '#b45309', fontWeight: 800 }}>{patient.royal_points || 0}</dd>
                 </div>
               </dl>
               <div className="dph-contact-strip">

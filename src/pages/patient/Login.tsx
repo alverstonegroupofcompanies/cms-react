@@ -274,47 +274,41 @@ export default function PatientLogin() {
         <div className="pp-bg-leaf pp-bg-leaf-c" />
       </div>
 
-      <section className="pp-hero pp-hero-auth">
-        <div className="pp-hero-copy">
-          <div className="pp-auth-hero-watermark" aria-hidden="true">
-            <img src="/brand/alverstone-medcity-logo-white.png?v=2" alt="" />
-          </div>
+      <main className="pp-auth-shell">
+        <div className="pp-auth-split-card">
+          {/* Left Pane: Hospital Atmosphere & Patient Trust */}
+          <div className="pp-auth-hero-pane">
+            <div className="pp-auth-hero-header">
+              <BrandLogo brand="clinic" to="/" height={42} onDark className="pp-auth-brand" />
+            </div>
 
-          <div className="pp-auth-hero-header">
-            <BrandLogo brand="clinic" to="/" height={44} onDark className="pp-auth-brand" />
-            <span className="pp-auth-badge">Patient Portal</span>
-          </div>
-
-          <div className="pp-auth-hero-bottom">
-            <div className="pp-auth-glass-card">
-              <span className="pp-auth-tagline-kicker">Caring Doctors · Happy Patients</span>
+            <div className="pp-auth-hero-content">
               <h2 className="pp-auth-hero-heading">Healthcare that puts your family first</h2>
-              <p className="pp-auth-hero-sub">
-                Book appointments, track live queue updates, and view your medical records in one calm, friendly place.
-              </p>
             </div>
 
-            <Link to="/" className="pp-auth-back">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <line x1="19" y1="12" x2="5" y2="12" />
-                <polyline points="12 19 5 12 12 5" />
-              </svg>
-              <span>Back to hospital site</span>
-            </Link>
+            <div className="pp-auth-hero-footer">
+              <Link to="/" className="pp-auth-back">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="19" y1="12" x2="5" y2="12" />
+                  <polyline points="12 19 5 12 12 5" />
+                </svg>
+                <span>Back to hospital site</span>
+              </Link>
+            </div>
           </div>
-        </div>
 
-        <div className="pp-hero-form-wrap" id="sign-in">
-          {redirectTo !== '/patient/dashboard' && (
-            <div className="pp-auth-notice" role="status">
-              Sign in to continue to{' '}
-              <strong>{redirectTo.replace('/patient/', '').replace(/-/g, ' ')}</strong>.
-            </div>
-          )}
+          {/* Right Pane: Authentication Console */}
+          <div className="pp-auth-form-pane" id="sign-in">
+            <div className="pp-auth-form-inner">
+              {redirectTo !== '/patient/dashboard' && (
+                <div className="pp-auth-notice" role="status">
+                  Sign in to continue to{' '}
+                  <strong>{redirectTo.replace('/patient/', '').replace(/-/g, ' ')}</strong>.
+                </div>
+              )}
 
-          <div className="pp-card">
-            <h2 className="pp-card-title">{cardTitle}</h2>
-            <p className="pp-card-sub">{cardSub}</p>
+              <h1 className="pp-card-title">{cardTitle}</h1>
+              <p className="pp-card-sub">{cardSub}</p>
 
             {mode !== 'forgot' && (
               <div className="pp-tabs" role="tablist" aria-label="Sign-in method">
@@ -634,9 +628,10 @@ export default function PatientLogin() {
                 New here? <Link to="/patient/register">Create a patient account</Link>
               </p>
             )}
+            </div>
           </div>
         </div>
-      </section>
+      </main>
     </div>
   )
 }

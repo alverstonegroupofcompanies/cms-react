@@ -290,6 +290,14 @@ export default function BookAppointment() {
                   <div><dt>Doctor</dt><dd>{doctor?.name ?? '—'}</dd></div>
                   <div><dt>Specialty</dt><dd>{doctor?.specialization ?? '—'}</dd></div>
                   <div><dt>Department</dt><dd>{department?.name ?? '—'}</dd></div>
+                  {doctor?.consultation_fee != null && (
+                    <div>
+                      <dt>Consultation Fee</dt>
+                      <dd style={{ color: '#8b1e2b', fontWeight: 800 }}>
+                        ₹{Math.round(Number(doctor.consultation_fee))}
+                      </dd>
+                    </div>
+                  )}
                   <div><dt>Clinic</dt><dd>{appointment.clinic?.name ?? clinic?.name ?? '—'}</dd></div>
                   <div><dt>Date</dt><dd>{formatAppointmentDate(appointment.appointment_date)}</dd></div>
                   <div><dt>Time</dt><dd>{formatSlotTime(appointment.slot_time)}</dd></div>
@@ -481,26 +489,39 @@ export default function BookAppointment() {
                     {doctors.length === 0 ? (
                       <p className="pb-muted">No doctors available in this department.</p>
                     ) : (
-                      doctors.map((d) => (
-                        <button
-                          key={d.id}
-                          type="button"
-                          className={`pb-doctor-card${doctorId === String(d.id) ? ' is-on' : ''}`}
-                          onClick={() => setDoctorId(String(d.id))}
-                        >
-                          <DoctorAvatar doctorId={d.id} name={d.name} photoUrl={d.photo_url} className="pb-doctor-photo" />
-                          <div className="pb-doctor-copy">
-                            <strong>{d.name}</strong>
-                            <span>{d.specialization}</span>
-                            <span className="pb-doctor-meta">
-                              <IconCalendar size={13} /> {formatWorkingDaysSummary(d.availability)}
-                            </span>
-                          </div>
-                          <div className="pb-doctor-days-col">
-                            <DoctorDayTrack availability={d.availability} showSummary={false} />
-                          </div>
-                        </button>
-                      ))
+                      doctors.map((d) => {
+                        const fee =
+                          d.consultation_fee != null && Number(d.consultation_fee) > 0
+                            ? Math.round(Number(d.consultation_fee))
+                            : null
+                        return (
+                          <button
+                            key={d.id}
+                            type="button"
+                            className={`pb-doctor-card${doctorId === String(d.id) ? ' is-on' : ''}`}
+                            onClick={() => setDoctorId(String(d.id))}
+                          >
+                            <DoctorAvatar doctorId={d.id} name={d.name} photoUrl={d.photo_url} className="pb-doctor-photo" />
+                            <div className="pb-doctor-copy">
+                              <strong>{d.name}</strong>
+                              <span>{d.specialization}</span>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap', marginTop: '0.2rem' }}>
+                                <span className="pb-doctor-meta">
+                                  <IconCalendar size={13} /> {formatWorkingDaysSummary(d.availability)}
+                                </span>
+                                {fee != null && (
+                                  <span className="pb-doctor-fee">
+                                    ₹{fee} Fee
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <div className="pb-doctor-days-col">
+                              <DoctorDayTrack availability={d.availability} showSummary={false} />
+                            </div>
+                          </button>
+                        )
+                      })
                     )}
                   </div>
                 </div>
@@ -514,7 +535,14 @@ export default function BookAppointment() {
                         <span className="pb-hint-title">
                           Available consultation days for <strong>{selectedDoctor.name}</strong>:
                         </span>
-                        <span className="pb-hint-spec">{selectedDoctor.specialization}</span>
+                        <span className="pb-hint-spec">
+                          {selectedDoctor.specialization}
+                          {selectedDoctor.consultation_fee != null && Number(selectedDoctor.consultation_fee) > 0 && (
+                            <strong style={{ marginLeft: '0.5rem', color: '#8b1e2b', fontWeight: 750 }}>
+                              · ₹{Math.round(Number(selectedDoctor.consultation_fee))} Consultation Fee
+                            </strong>
+                          )}
+                        </span>
                       </div>
                       <DoctorDayTrack availability={selectedDoctor.availability} showSummary />
                     </div>
@@ -576,6 +604,14 @@ export default function BookAppointment() {
                       <em>Doctor</em>
                       <strong>{selectedDoctor?.name}</strong>
                     </div>
+                    {selectedDoctor?.consultation_fee != null && Number(selectedDoctor.consultation_fee) > 0 && (
+                      <div className="pb-ready-row">
+                        <em>Consultation fee</em>
+                        <strong style={{ color: '#8b1e2b', fontSize: '1.05rem', fontWeight: 800 }}>
+                          ₹{Math.round(Number(selectedDoctor.consultation_fee))}
+                        </strong>
+                      </div>
+                    )}
                     <div className="pb-ready-row">
                       <em>When</em>
                       <strong>
@@ -611,7 +647,14 @@ export default function BookAppointment() {
                     <span className="pb-aside-dot" aria-hidden />
                     <div>
                       <span>Doctor</span>
-                      <strong>{selectedDoctor?.name || 'Not selected'}</strong>
+                      <strong>
+                        {selectedDoctor?.name || 'Not selected'}
+                        {selectedDoctor?.consultation_fee != null && Number(selectedDoctor.consultation_fee) > 0 && (
+                          <span style={{ display: 'block', fontSize: '0.82rem', color: '#8b1e2b', fontWeight: 700 }}>
+                            ₹{Math.round(Number(selectedDoctor.consultation_fee))} Consultation Fee
+                          </span>
+                        )}
+                      </strong>
                     </div>
                   </li>
                   <li className={date ? 'is-set' : ''}>

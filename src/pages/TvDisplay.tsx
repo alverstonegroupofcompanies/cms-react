@@ -719,7 +719,7 @@ export default function TvDisplay() {
                         <div className="tv-upcoming-tokens-list">
                           {waiting.map((token) => (
                             <div key={token.id} className="tv-upcoming-token-item">
-                              <span className="tv-upcoming-pos">#{token.position}</span>
+                              <span className="tv-upcoming-pos">#{token.token_number ?? token.position}</span>
                               <span className="tv-upcoming-code">{token.display_code}</span>
                               <span className="tv-upcoming-name">{token.patient_name}</span>
                               {token.slot_time && (

@@ -1,0 +1,784 @@
+/* ==========================================================================
+   RECEPTION DESK DAY BOARD — CLINICAL TEAL & COOL GREY-WHITE DESIGN SYSTEM
+   Meets all WCAG AA contrast, 44px touch targets, sentence-case type,
+   calm clinical theme with deep teal accents, amber waiting, green ready.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+/* Scope to Reception Day Board */
+.rdm,
+.layout--clinic .rdm {
+  --rdm-teal-600: #0f766e;
+  --rdm-teal-700: #115e59;
+  --rdm-teal-500: #14b8a6;
+  --rdm-teal-50: #f0fdfa;
+  --rdm-teal-100: #ccfbf1;
+  --rdm-teal-200: #99f6e4;
+  --rdm-slate-900: #0f172a;
+  --rdm-slate-800: #1e293b;
+  --rdm-slate-700: #334155;
+  --rdm-slate-600: #475569;
+  --rdm-slate-500: #64748b;
+  --rdm-slate-400: #94a3b8;
+  --rdm-slate-200: #e2e8f0;
+  --rdm-slate-100: #f1f5f9;
+  --rdm-slate-50: #f8fafc;
+  --rdm-white: #ffffff;
+  
+  --rdm-amber-600: #d97706;
+  --rdm-amber-700: #b45309;
+  --rdm-amber-50: #fffbeb;
+  --rdm-amber-200: #fde68a;
+
+  --rdm-green-600: #059669;
+  --rdm-green-700: #047857;
+  --rdm-green-50: #f0fdf4;
+  --rdm-green-200: #bbf7d0;
+
+  --rdm-red-600: #dc2626;
+  --rdm-red-700: #b91c1c;
+  --rdm-red-50: #fef2f2;
+  --rdm-red-200: #fecaca;
+
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  color: var(--rdm-slate-900) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
+  background: transparent !important;
+}
+
+/* Enforce sentence case: no all-caps labels */
+.rdm,
+.rdm *,
+.layout--clinic .rdm,
+.layout--clinic .rdm * {
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+/* Visible keyboard focus for accessibility */
+.rdm a:focus-visible,
+.rdm button:focus-visible,
+.rdm input:focus-visible,
+.rdm select:focus-visible {
+  outline: 2px solid var(--rdm-teal-600) !important;
+  outline-offset: 2px !important;
+}
+
+/* ==========================================================================
+   1. UNIFIED HEADER BAR
+   Title, board date, live indicator, and direct actions in one clean row
+   ========================================================================== */
+.rdm-header-card {
+  background: var(--rdm-white) !important;
+  border: 1px solid var(--rdm-slate-200) !important;
+  border-radius: 14px !important;
+  padding: 1.15rem 1.4rem !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 1rem 1.5rem !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+.rdm-header-left {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 0.85rem 1.25rem !important;
+}
+
+.rdm-header-title-block h1 {
+  font-size: 1.35rem !important;
+  font-weight: 800 !important;
+  color: var(--rdm-slate-900) !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+}
+
+.rdm-header-title-block p {
+  font-size: 0.84rem !important;
+  color: var(--rdm-slate-500) !important;
+  margin: 0.15rem 0 0 !important;
+}
+
+.rdm-header-date-chip {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  background: var(--rdm-slate-50) !important;
+  border: 1px solid var(--rdm-slate-200) !important;
+  padding: 0.35rem 0.75rem !important;
+  border-radius: 8px !important;
+  font-size: 0.84rem !important;
+  font-weight: 650 !important;
+  color: var(--rdm-slate-800) !important;
+}
+
+.rdm-live-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  background: #f0fdfa !important;
+  border: 1px solid #99f6e4 !important;
+  color: #0f766e !important;
+  padding: 0.3rem 0.7rem !important;
+  border-radius: 999px !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+}
+
+.rdm-live-pulse {
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50% !important;
+  background: #0f766e !important;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.22) !important;
+  animation: rdmPulse 1.8s ease-in-out infinite !important;
+}
+
+@keyframes rdmPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.85); opacity: 0.45; }
+}
+
+.rdm-header-actions {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 0.6rem !important;
+}
+
+/* ==========================================================================
+   2. FILTERS STRIP
+   Clean cool grey-white inputs with sentence-case labels
+   ========================================================================== */
+.rdm-filters-strip {
+  background: var(--rdm-white) !important;
+  border: 1px solid var(--rdm-slate-200) !important;
+  border-radius: 12px !important;
+  padding: 0.85rem 1.15rem !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-end !important;
+  gap: 0.85rem !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03) !important;
+}
+
+.rdm-filter-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.3rem !important;
+  flex: 1 1 180px !important;
+  min-width: 140px !important;
+}
+
+.rdm-filter-group.is-date {
+  flex: 0 0 auto !important;
+  min-width: 155px !important;
+}
+
+.rdm-filter-group.is-search {
+  flex: 2 1 240px !important;
+}
+
+.rdm-filter-group label {
+  font-size: 0.78rem !important;
+  font-weight: 650 !important;
+  color: var(--rdm-slate-600) !important;
+  margin: 0 !important;
+}
+
+.rdm-filter-input {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  height: 42px !important;
+  padding: 0.45rem 0.75rem !important;
+  background: var(--rdm-slate-50) !important;
+  border: 1px solid var(--rdm-slate-200) !important;
+  border-radius: 8px !important;
+  font-family: inherit !important;
+  font-size: 0.88rem !important;
+  font-weight: 550 !important;
+  color: var(--rdm-slate-900) !important;
+  transition: border-color 0.15s ease, background 0.15s ease !important;
+}
+
+.rdm-filter-input:focus {
+  background: var(--rdm-white) !important;
+  border-color: var(--rdm-teal-600) !important;
+}
+
+.rdm-filter-clear-btn {
+  height: 42px !important;
+  padding: 0 0.85rem !important;
+  background: transparent !important;
+  border: 1px dashed var(--rdm-slate-300, #cbd5e1) !important;
+  border-radius: 8px !important;
+  color: var(--rdm-slate-600) !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.rdm-filter-clear-btn:hover {
+  background: var(--rdm-slate-100) !important;
+  color: var(--rdm-slate-900) !important;
+}
+
+/* ==========================================================================
+   3. STATS STRIP — NEXT TOKEN EMPHASIS
+   Only the "Next token" tile and peak-hour bar use strong color;
+   everything else stays quiet and calm.
+   ========================================================================== */
+.rdm-stats-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+  gap: 0.75rem !important;
+  align-items: stretch !important;
+}
+
+.rdm-stat-tile {
+  background: var(--rdm-white) !important;
+  border: 1px solid var(--rdm-slate-200) !important;
+  border-radius: 12px !important;
+  padding: 0.85rem 1.05rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
+  position: relative !important;
+}
+
+.rdm-stat-tile-label {
+  font-size: 0.76rem !important;
+  font-weight: 600 !important;
+  color: var(--rdm-slate-500) !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.rdm-stat-tile-val {
+  font-size: 1.45rem !important;
+  font-weight: 800 !important;
+  color: var(--rdm-slate-900) !important;
+  line-height: 1.15 !important;
+  font-variant-numeric: tabular-nums !important;
+  margin: 0 !important;
+}
+
+/* Amber for waiting */
+.rdm-stat-tile.is-waiting .rdm-stat-tile-val {
+  color: var(--rdm-amber-600) !important;
+}
+
+/* Indigo for with doctor */
+.rdm-stat-tile.is-consult .rdm-stat-tile-val {
+  color: #4338ca !important;
+}
+
+/* Green for done */
+.rdm-stat-tile.is-done .rdm-stat-tile-val {
+  color: var(--rdm-green-600) !important;
+}
+
+/* Next token tile — strongest visual emphasis in deep teal */
+.rdm-stat-tile.is-next-token {
+  background: linear-gradient(135deg, #0f766e 0%, #115e59 100%) !important;
+  border-color: #0f766e !important;
+  color: var(--rdm-white) !important;
+  box-shadow: 0 4px 14px rgba(15, 118, 110, 0.3) !important;
+  grid-column: span 1 !important;
+}
+
+.rdm-stat-tile.is-next-token .rdm-stat-tile-label {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-weight: 650 !important;
+}
+
+.rdm-stat-tile.is-next-token .rdm-stat-tile-val {
+  color: var(--rdm-white) !important;
+  font-size: 1.65rem !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* ==========================================================================
+   4. TWO-COLUMN DASHBOARD LAYOUT (MAIN 3 SECTIONS + SIDE PANEL)
+   ========================================================================== */
+.rdm-board-layout {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 375px !important;
+  gap: 1.25rem !important;
+  align-items: start !important;
+}
+
+@media (max-width: 1180px) {
+  .rdm-board-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+.rdm-main-column {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
+  min-width: 0 !important;
+}
+
+.rdm-side-column {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
+  min-width: 0 !important;
+}
+
+/* ==========================================================================
+   5. SECTIONS OVERVIEW (WITH DOCTOR, IN QUEUE, UPCOMING)
+   Rows over heavy cards: generous spacing, thin dividers
+   ========================================================================== */
+.rdm-section-card {
+  background: var(--rdm-white) !important;
+  border: 1px solid var(--rdm-slate-200) !important;
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+/* Top accent color per section */
+.rdm-section-card.section-consult {
+  border-top: 3px solid #6366f1 !important;
+}
+
+.rdm-section-card.section-queue {
+  border-top: 3px solid var(--rdm-amber-600) !important;
+}
+
+.rdm-section-card.section-upcoming {
+  border-top: 3px solid var(--rdm-teal-600) !important;
+}
+
+.rdm-section-card.section-done {
+  border-top: 3px solid var(--rdm-green-600) !important;
+}
+
+.rdm-card-header {
+  padding: 0.95rem 1.25rem !important;
+  background: var(--rdm-white) !important;
+  border-bottom: 1px solid var(--rdm-slate-200) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+}
+
+.rdm-card-header-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+}
+
+.rdm-card-icon {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: var(--rdm-slate-100) !important;
+  color: var(--rdm-slate-700) !important;
+}
+
+.section-consult .rdm-card-icon {
+  background: #eef2ff !important;
+  color: #4338ca !important;
+}
+
+.section-queue .rdm-card-icon {
+  background: var(--rdm-amber-50) !important;
+  color: var(--rdm-amber-700) !important;
+}
+
+.section-upcoming .rdm-card-icon {
+  background: var(--rdm-teal-50) !important;
+  color: var(--rdm-teal-700) !important;
+}
+
+.rdm-card-title-group h2,
+.rdm-card-title-group h3 {
+  font-size: 1rem !important;
+  font-weight: 750 !important;
+  color: var(--rdm-slate-900) !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+}
+
+.rdm-card-title-group p {
+  font-size: 0.78rem !important;
+  color: var(--rdm-slate-500) !important;
+  margin: 0.15rem 0 0 !important;
+}
+
+.rdm-card-badge-count {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 24px !important;
+  height: 24px !important;
+  padding: 0 0.45rem !important;
+  border-radius: 999px !important;
+  background: var(--rdm-slate-100) !important;
+  color: var(--rdm-slate-700) !important;
+  font-size: 0.76rem !important;
+  font-weight: 750 !important;
+}
+
+/* ==========================================================================
+   6. CLEAN TABLE ROWS & CHIPS
+   ========================================================================== */
+.rdm-data-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  font-size: 0.86rem !important;
+  text-align: left !important;
+}
+
+.rdm-data-table th {
+  padding: 0.65rem 1rem !important;
+  background: var(--rdm-slate-50) !important;
+  border-bottom: 1px solid var(--rdm-slate-200) !important;
+  font-size: 0.75rem !important;
+  font-weight: 650 !important;
+  color: var(--rdm-slate-500) !important;
+  white-space: nowrap !important;
+}
+
+.rdm-data-table td {
+  padding: 0.95rem 1rem !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  vertical-align: middle !important;
+  color: var(--rdm-slate-900) !important;
+}
+
+.rdm-data-table tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+.rdm-data-table tbody tr:hover td {
+  background: #fbfcfe !important;
+}
+
+/* Token chip on the left */
+.rdm-token-chip {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  background: #f0fdfa !important;
+  border: 1px solid #99f6e4 !important;
+  color: #0f766e !important;
+  font-weight: 750 !important;
+  font-size: 0.82rem !important;
+  font-variant-numeric: tabular-nums !important;
+  padding: 0.25rem 0.55rem !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
+}
+
+.rdm-token-chip:hover {
+  background: #ccfbf1 !important;
+  border-color: #5eead4 !important;
+  color: #115e59 !important;
+}
+
+/* Time */
+.rdm-time-chip {
+  font-weight: 650 !important;
+  font-variant-numeric: tabular-nums !important;
+  color: var(--rdm-slate-800) !important;
+  font-size: 0.85rem !important;
+  white-space: nowrap !important;
+}
+
+/* Patient cell */
+.rdm-patient-cell {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.15rem !important;
+}
+
+.rdm-patient-name {
+  font-weight: 700 !important;
+  color: var(--rdm-slate-900) !important;
+}
+
+.rdm-patient-sub {
+  font-size: 0.76rem !important;
+  color: var(--rdm-slate-500) !important;
+}
+
+/* Doctor cell */
+.rdm-doctor-cell {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.15rem !important;
+}
+
+.rdm-doctor-name {
+  font-weight: 650 !important;
+  color: var(--rdm-slate-800) !important;
+}
+
+.rdm-doctor-spec {
+  font-size: 0.74rem !important;
+  color: var(--rdm-teal-700) !important;
+  font-weight: 550 !important;
+}
+
+/* Status pills */
+.rdm-status-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  padding: 0.25rem 0.65rem !important;
+  border-radius: 999px !important;
+  font-size: 0.75rem !important;
+  font-weight: 650 !important;
+  white-space: nowrap !important;
+}
+
+.rdm-status-pill.is-ready {
+  background: var(--rdm-green-50) !important;
+  border: 1px solid var(--rdm-green-200) !important;
+  color: var(--rdm-green-700) !important;
+}
+
+.rdm-status-pill.is-waiting {
+  background: var(--rdm-amber-50) !important;
+  border: 1px solid var(--rdm-amber-200) !important;
+  color: var(--rdm-amber-700) !important;
+}
+
+.rdm-status-pill.is-consult {
+  background: #eef2ff !important;
+  border: 1px solid #c7d2fe !important;
+  color: #4338ca !important;
+}
+
+.rdm-status-pill.is-booked {
+  background: var(--rdm-slate-100) !important;
+  border: 1px solid var(--rdm-slate-200) !important;
+  color: var(--rdm-slate-600) !important;
+}
+
+.rdm-status-pill.is-late {
+  background: var(--rdm-red-50) !important;
+  border: 1px solid var(--rdm-red-200) !important;
+  color: var(--rdm-red-700) !important;
+}
+
+/* ==========================================================================
+   7. BUTTONS & 44PX TOUCH TARGET ACTIONS
+   Primary action per row is filled or tinted.
+   Secondary actions are quiet.
+   Cancel is red text only.
+   ========================================================================== */
+.rdm-row-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 0.4rem !important;
+  flex-wrap: wrap !important;
+}
+
+/* General button base with minimum 40-44px touch target */
+.rdm-btn-base {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  min-height: 40px !important;
+  padding: 0.45rem 0.85rem !important;
+  border-radius: 8px !important;
+  font-family: inherit !important;
+  font-size: 0.82rem !important;
+  font-weight: 650 !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
+  white-space: nowrap !important;
+}
+
+/* Primary Action: Filled Deep Teal (e.g. Check in, Book/token) */
+.rdm-btn-primary {
+  background: #0f766e !important;
+  border: 1px solid #0f766e !important;
+  color: var(--rdm-white) !important;
+  box-shadow: 0 1px 3px rgba(15, 118, 110, 0.25) !important;
+}
+
+.rdm-btn-primary:hover:not(:disabled) {
+  background: #115e59 !important;
+  border-color: #115e59 !important;
+}
+
+/* Tinted Action: Green Tint for Print Slip / Token */
+.rdm-btn-tinted-green {
+  background: #f0fdf4 !important;
+  border: 1px solid #bbf7d0 !important;
+  color: #15803d !important;
+  font-weight: 700 !important;
+}
+
+.rdm-btn-tinted-green:hover:not(:disabled) {
+  background: #dcfce7 !important;
+  border-color: #86efac !important;
+  color: #166534 !important;
+}
+
+/* Secondary Action: Quiet ghost button (Reschedule, Refresh, Calendar) */
+.rdm-btn-quiet {
+  background: var(--rdm-white) !important;
+  border: 1px solid var(--rdm-slate-200) !important;
+  color: var(--rdm-slate-700) !important;
+  font-weight: 600 !important;
+}
+
+.rdm-btn-quiet:hover:not(:disabled) {
+  background: var(--rdm-slate-50) !important;
+  border-color: var(--rdm-slate-300, #cbd5e1) !important;
+  color: var(--rdm-slate-900) !important;
+}
+
+/* Cancel Action: Red text only (no heavy card or solid button) */
+.rdm-btn-cancel-only {
+  background: transparent !important;
+  border: none !important;
+  color: var(--rdm-red-600) !important;
+  font-weight: 650 !important;
+  font-size: 0.82rem !important;
+  min-height: 40px !important;
+  padding: 0.45rem 0.65rem !important;
+  cursor: pointer !important;
+  border-radius: 6px !important;
+  transition: all 0.15s ease !important;
+}
+
+.rdm-btn-cancel-only:hover:not(:disabled) {
+  background: var(--rdm-red-50) !important;
+  color: var(--rdm-red-700) !important;
+  text-decoration: underline !important;
+}
+
+/* Walk-in subtle button */
+.rdm-btn-walkin-quiet {
+  background: var(--rdm-white) !important;
+  border: 1px solid #fed7aa !important;
+  color: #c2410c !important;
+  font-weight: 650 !important;
+}
+
+.rdm-btn-walkin-quiet:hover:not(:disabled) {
+  background: #fff7ed !important;
+  border-color: #fdba74 !important;
+}
+
+/* Empty states */
+.rdm-empty-state {
+  padding: 2.25rem 1.5rem !important;
+  text-align: center !important;
+  color: var(--rdm-slate-500) !important;
+  font-size: 0.9rem !important;
+  font-weight: 550 !important;
+  background: var(--rdm-slate-50) !important;
+}
+
+/* ==========================================================================
+   8. SIDE PANEL: PEAK BOOKING HOURS
+   Teal accent bars, highlighted peak hour bar
+   ========================================================================== */
+.rdm-side-column .pbh {
+  margin: 0 !important;
+  background: var(--rdm-white) !important;
+  border: 1px solid var(--rdm-slate-200) !important;
+  border-radius: 14px !important;
+  padding: 1.15rem !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+.rdm-side-column .pbh-head {
+  margin-bottom: 0.75rem !important;
+}
+
+.rdm-side-column .pbh-title {
+  font-size: 1rem !important;
+  font-weight: 800 !important;
+  color: var(--rdm-slate-900) !important;
+}
+
+.rdm-side-column .pbh-sub {
+  font-size: 0.76rem !important;
+  color: var(--rdm-slate-500) !important;
+}
+
+.rdm-side-column .pbh-range {
+  border-radius: 999px !important;
+  padding: 0.28rem 0.65rem !important;
+  font-size: 0.74rem !important;
+  font-weight: 650 !important;
+  border: 1px solid var(--rdm-slate-200) !important;
+  background: var(--rdm-white) !important;
+  color: var(--rdm-slate-600) !important;
+}
+
+.rdm-side-column .pbh-range-on {
+  background: var(--rdm-teal-600) !important;
+  border-color: var(--rdm-teal-600) !important;
+  color: var(--rdm-white) !important;
+}
+
+.rdm-side-column .pbh-peak-badge {
+  background: var(--rdm-teal-600) !important;
+  color: var(--rdm-white) !important;
+  border-radius: 8px !important;
+  padding: 0.45rem 0.75rem !important;
+}
+
+.rdm-side-column .pbh-bar {
+  background: var(--rdm-teal-100) !important;
+}
+
+.rdm-side-column .pbh-col-busy .pbh-bar {
+  background: var(--rdm-teal-500) !important;
+}
+
+.rdm-side-column .pbh-col-peak .pbh-bar {
+  background: var(--rdm-teal-600) !important;
+}
+
+.rdm-side-column .pbh-col-peak .pbh-count,
+.rdm-side-column .pbh-col-peak .pbh-label {
+  color: var(--rdm-teal-700) !important;
+  font-weight: 750 !important;
+}
+
+.rdm-side-column .pbh-chip-1 {
+  background: var(--rdm-teal-600) !important;
+  color: var(--rdm-white) !important;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .rdm *,
+  .rdm-live-pulse {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+

@@ -7,27 +7,57 @@
   --ph-font-body: 'Absans', 'Plus Jakarta Sans', system-ui, sans-serif;
   --ph-primary: #8b1e2b;
   --ph-primary-deep: #6e131e;
-  --ph-toffee: #8b1e2b;
-  --ph-copper: #a82435;
+  --ph-primary-light: #a82435;
+  --ph-primary-glow: rgba(139, 30, 43, 0.16);
+
+  /* Vitality & Wellness Emerald (matches Alverstone leaf logo) */
+  --ph-emerald: #059669;
+  --ph-emerald-dark: #047857;
+  --ph-emerald-light: #10b981;
+  --ph-emerald-glow: rgba(5, 150, 105, 0.18);
+  --ph-mint: #ecfdf5;
+  --ph-mint-border: #a7f3d0;
+
+  /* Diagnostic Sapphire & Sky Blue */
+  --ph-sapphire: #0284c7;
+  --ph-sapphire-dark: #0369a1;
+  --ph-sapphire-light: #38bdf8;
+  --ph-sapphire-glow: rgba(2, 132, 199, 0.18);
+  --ph-azure: #f0f9ff;
+  --ph-azure-border: #bae6fd;
+
+  /* Warm Compassion Amber & Gold */
+  --ph-amber: #d97706;
+  --ph-amber-dark: #b45309;
+  --ph-amber-light: #f59e0b;
+  --ph-amber-glow: rgba(217, 119, 6, 0.18);
+  --ph-honey: #fffbeb;
+  --ph-honey-border: #fde68a;
+
+  /* Clinical Violet & Amethyst */
+  --ph-violet: #6366f1;
+  --ph-violet-dark: #4338ca;
+  --ph-violet-light: #818cf8;
+  --ph-violet-soft: #eef2ff;
+  --ph-violet-border: #c7d2fe;
+
+  /* Elegant Slate & Neutral Tones */
+  --ph-toffee: #b45309;
+  --ph-copper: #c2410c;
   --ph-tan: #f1f5f9;
   --ph-desert: #f1f5f9;
   --ph-almond: #f8fafc;
-  --ph-emerald: #8b1e2b;
-  --ph-emerald-dark: #6e131e;
-  --ph-emerald-light: #a82435;
-  --ph-emerald-glow: rgba(139, 30, 43, 0.16);
-  --ph-mint: #f8fafc;
-  --ph-navy: #18181b;
-  --ph-slate: #8b1e2b;
+  --ph-navy: #0f172a;
+  --ph-slate: #334155;
   --ph-slate-light: #ffffff;
   --ph-text-main: #18181b;
   --ph-text-muted: #52525b;
   --ph-text-subtle: #71717a;
   --ph-border-light: #e2e8f0;
-  --ph-border-emerald: #e2e8f0;
+  --ph-border-emerald: #a7f3d0;
   --ph-border-glow: rgba(139, 30, 43, 0.15);
   --ph-card-shadow: 0 12px 36px -8px rgba(24, 24, 27, 0.08), 0 4px 12px -2px rgba(24, 24, 27, 0.04);
-  --ph-card-hover-shadow: 0 24px 52px -12px rgba(139, 30, 43, 0.09), 0 8px 24px -4px rgba(24, 24, 27, 0.06);
+  --ph-card-hover-shadow: 0 24px 52px -12px rgba(24, 24, 27, 0.12), 0 8px 24px -4px rgba(24, 24, 27, 0.06);
   --ph-radius-sm: 10px;
   --ph-radius-md: 16px;
   --ph-radius-lg: 24px;
@@ -744,14 +774,14 @@ body {
 .ps-blob-top-left {
   top: -80px;
   left: -80px;
-  background: radial-gradient(circle, rgba(139, 26, 50, 0.08) 0%, rgba(139, 26, 50, 0) 70%);
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.14) 0%, rgba(16, 185, 129, 0.09) 45%, transparent 70%);
 }
 
-/* Soft rose at 10% opacity bottom-right behind 4th card */
+/* Soft amber-rose at 10% opacity bottom-right behind 4th card */
 .ps-blob-bottom-right {
   bottom: -100px;
   right: -80px;
-  background: radial-gradient(circle, rgba(244, 114, 182, 0.10) 0%, rgba(225, 29, 72, 0.08) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, rgba(225, 29, 72, 0.08) 45%, transparent 70%);
 }
 
 /* Faint ECG / Heartbeat Line crossing behind the heading at ~6% opacity */
@@ -1012,6 +1042,146 @@ body {
 
 .ps-service-box:hover .ps-service-action-link {
   color: #6e131e;
+}
+
+.ps-service-box:hover .ps-service-action-link span:last-child {
+  transform: translateX(6px);
+}
+
+/* --------------------------------------------------------------------------
+   CORE SERVICE CARD COLOR PALETTES (BALANCED CLINICAL MEDICAL ACCENTS)
+   -------------------------------------------------------------------------- */
+
+/* 1. Sapphire / Sky Blue (Instant Appointments) */
+.ps-service-box--sapphire {
+  border-color: rgba(2, 132, 199, 0.12);
+  box-shadow: 0 16px 40px -16px rgba(2, 132, 199, 0.22);
+}
+.ps-service-box--sapphire .ps-service-tag-pill {
+  color: #0284c7;
+  background: #f0f9ff;
+  border-color: #bae6fd;
+}
+.ps-service-box--sapphire .ps-service-icon-floating {
+  color: #0284c7;
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.14), 0 2px 6px rgba(15, 23, 42, 0.06);
+}
+.ps-service-box--sapphire:hover {
+  border-color: rgba(2, 132, 199, 0.4);
+  box-shadow: 0 28px 56px -14px rgba(2, 132, 199, 0.28), 0 8px 20px -4px rgba(2, 132, 199, 0.1);
+}
+.ps-service-box--sapphire:hover .ps-service-icon-floating {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: #ffffff;
+  box-shadow: 0 12px 28px rgba(2, 132, 199, 0.38);
+}
+.ps-service-box--sapphire:hover .ps-service-body h3 {
+  color: #0284c7;
+}
+.ps-service-box--sapphire .ps-service-action-link {
+  color: #0284c7;
+}
+.ps-service-box--sapphire:hover .ps-service-action-link {
+  color: #0369a1;
+}
+
+/* 2. Vitality Emerald / Mint (Live Queue & Tokens) */
+.ps-service-box--emerald {
+  border-color: rgba(5, 150, 105, 0.12);
+  box-shadow: 0 16px 40px -16px rgba(5, 150, 105, 0.22);
+}
+.ps-service-box--emerald .ps-service-tag-pill {
+  color: #047857;
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+.ps-service-box--emerald .ps-service-icon-floating {
+  color: #059669;
+  box-shadow: 0 8px 24px rgba(5, 150, 105, 0.14), 0 2px 6px rgba(15, 23, 42, 0.06);
+}
+.ps-service-box--emerald:hover {
+  border-color: rgba(5, 150, 105, 0.4);
+  box-shadow: 0 28px 56px -14px rgba(5, 150, 105, 0.28), 0 8px 20px -4px rgba(5, 150, 105, 0.1);
+}
+.ps-service-box--emerald:hover .ps-service-icon-floating {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #ffffff;
+  box-shadow: 0 12px 28px rgba(5, 150, 105, 0.38);
+}
+.ps-service-box--emerald:hover .ps-service-body h3 {
+  color: #059669;
+}
+.ps-service-box--emerald .ps-service-action-link {
+  color: #059669;
+}
+.ps-service-box--emerald:hover .ps-service-action-link {
+  color: #047857;
+}
+
+/* 3. Clinical Violet / Indigo (Diagnostic Lab Reports) */
+.ps-service-box--violet {
+  border-color: rgba(99, 102, 241, 0.12);
+  box-shadow: 0 16px 40px -16px rgba(99, 102, 241, 0.22);
+}
+.ps-service-box--violet .ps-service-tag-pill {
+  color: #4f46e5;
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+.ps-service-box--violet .ps-service-icon-floating {
+  color: #6366f1;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.14), 0 2px 6px rgba(15, 23, 42, 0.06);
+}
+.ps-service-box--violet:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 28px 56px -14px rgba(99, 102, 241, 0.28), 0 8px 20px -4px rgba(99, 102, 241, 0.1);
+}
+.ps-service-box--violet:hover .ps-service-icon-floating {
+  background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+  color: #ffffff;
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.38);
+}
+.ps-service-box--violet:hover .ps-service-body h3 {
+  color: #4f46e5;
+}
+.ps-service-box--violet .ps-service-action-link {
+  color: #4f46e5;
+}
+.ps-service-box--violet:hover .ps-service-action-link {
+  color: #4338ca;
+}
+
+/* 4. Warm Sunrise Amber / Coral (24/7 Clinical Pharmacy) */
+.ps-service-box--amber {
+  border-color: rgba(217, 119, 6, 0.12);
+  box-shadow: 0 16px 40px -16px rgba(217, 119, 6, 0.22);
+}
+.ps-service-box--amber .ps-service-tag-pill {
+  color: #b45309;
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+.ps-service-box--amber .ps-service-icon-floating {
+  color: #d97706;
+  box-shadow: 0 8px 24px rgba(217, 119, 6, 0.14), 0 2px 6px rgba(15, 23, 42, 0.06);
+}
+.ps-service-box--amber:hover {
+  border-color: rgba(217, 119, 6, 0.4);
+  box-shadow: 0 28px 56px -14px rgba(217, 119, 6, 0.28), 0 8px 20px -4px rgba(217, 119, 6, 0.1);
+}
+.ps-service-box--amber:hover .ps-service-icon-floating {
+  background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%);
+  color: #ffffff;
+  box-shadow: 0 12px 28px rgba(217, 119, 6, 0.38);
+}
+.ps-service-box--amber:hover .ps-service-body h3 {
+  color: #b45309;
+}
+.ps-service-box--amber .ps-service-action-link {
+  color: #b45309;
+}
+.ps-service-box--amber:hover .ps-service-action-link {
+  color: #92400e;
 }
 
 .ps-service-box:hover .ps-service-action-link span:last-child {
@@ -1834,17 +2004,16 @@ body {
    -------------------------------------------------------------------------- */
 .ps-contact-section {
   position: relative;
-  background-color: #fdf5f6;
+  background-color: #120407;
   background-image:
-    radial-gradient(ellipse 70% 60% at 8% 18%, rgba(220, 38, 38, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 65% 55% at 92% 22%, rgba(14, 165, 233, 0.09) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 50% 90%, rgba(245, 158, 11, 0.07) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 45% at 85% 82%, rgba(139, 26, 50, 0.08) 0%, transparent 55%),
-    url("data:image/svg+xml,%3Csvg width='56' height='56' viewBox='0 0 56 56' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%238b1a32' stroke-width='1' stroke-opacity='0.04'%3E%3Cpath d='M28 24v8M24 28h8' stroke-linecap='round'/%3E%3Ccircle cx='28' cy='28' r='1.5' fill='%238b1a32' fill-opacity='0.03' stroke='none'/%3E%3C/g%3E%3C/svg%3E"),
-    linear-gradient(155deg, #fff2f4 0%, #f6f9fe 38%, #fff8f5 72%, #fef3f5 100%);
-  padding: 6.5rem 1.75rem 7rem;
-  border-top: 1px solid rgba(139, 26, 50, 0.08);
-  border-bottom: 1px solid rgba(139, 26, 50, 0.08);
+    radial-gradient(circle at 18% 18%, rgba(220, 38, 38, 0.28) 0%, transparent 50%),
+    radial-gradient(circle at 85% 25%, rgba(185, 28, 28, 0.24) 0%, transparent 45%),
+    radial-gradient(circle at 50% 88%, rgba(139, 30, 43, 0.22) 0%, transparent 55%),
+    url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M24 16v16M16 24h16' stroke='%238b1a32' stroke-width='1.2' stroke-opacity='0.12' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='24' r='1.2' fill='%23ef4444' fill-opacity='0.08'/%3E%3C/svg%3E"),
+    linear-gradient(155deg, #130407 0%, #1a060b 42%, #260a10 75%, #110306 100%);
+  padding: 6.5rem 1.75rem 7.5rem;
+  border-top: 1px solid rgba(244, 63, 94, 0.2);
+  border-bottom: 1px solid rgba(244, 63, 94, 0.2);
   overflow: hidden;
 }
 
@@ -1871,7 +2040,7 @@ body {
   left: -60px;
   width: 460px;
   height: 460px;
-  background: radial-gradient(circle, rgba(220, 38, 38, 0.24) 0%, rgba(244, 63, 94, 0.08) 60%, transparent 80%);
+  background: radial-gradient(circle, rgba(220, 38, 38, 0.26) 0%, rgba(244, 63, 94, 0.1) 60%, transparent 80%);
   animation: psContactBlobFloat1 18s ease-in-out infinite alternate;
 }
 
@@ -1880,7 +2049,7 @@ body {
   right: -90px;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.22) 0%, rgba(56, 189, 248, 0.07) 60%, transparent 80%);
+  background: radial-gradient(circle, rgba(225, 29, 72, 0.22) 0%, rgba(244, 63, 94, 0.08) 60%, transparent 80%);
   animation: psContactBlobFloat2 22s ease-in-out infinite alternate;
 }
 
@@ -1987,8 +2156,8 @@ body {
 /* Header */
 .ps-contact-header {
   text-align: center;
-  max-width: 48rem;
-  margin: 0 auto 3.5rem;
+  max-width: 50rem;
+  margin: 0 auto 3.8rem;
 }
 
 .ps-contact-kicker {
@@ -1997,15 +2166,16 @@ body {
   gap: 0.55rem;
   padding: 0.35rem 0.95rem;
   border-radius: 999px;
-  background: rgba(31, 122, 58, 0.09);
-  border: 1px solid rgba(31, 122, 58, 0.22);
-  color: #1f7a3a;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #fca5a5;
   font-family: var(--font-ui, 'Absans', sans-serif);
   font-size: 0.78rem;
   font-weight: 750;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin-bottom: 0.95rem;
+  margin-bottom: 1.1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .ps-contact-kicker-dot {
@@ -2019,24 +2189,30 @@ body {
 
 .ps-contact-title {
   font-family: var(--font-display, 'Sansation', sans-serif);
-  font-size: clamp(2.1rem, 3.2vw, 2.85rem);
-  font-weight: 700;
-  color: #152238;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.2rem, 3.4vw, 3rem);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.025em;
   line-height: 1.15;
-  margin: 0 0 0.85rem;
+  margin: 0 0 0.95rem;
 }
 
 .ps-contact-accent {
-  color: #b91c1c;
+  color: #f87171;
+  background: linear-gradient(135deg, #fca5a5 0%, #ef4444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .ps-contact-subtitle {
   font-family: var(--font-ui, 'Absans', sans-serif);
   font-size: 1.05rem;
-  color: #52525b;
-  line-height: 1.6;
+  color: #cbd5e1;
+  line-height: 1.65;
   margin: 0;
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Grid Layout */
@@ -2054,55 +2230,62 @@ body {
   gap: 1.25rem;
 }
 
-/* 24/7 Hotline Card */
+/* 24/7 Hotline Command Card */
 .ps-contact-hotline-card {
   position: relative;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(254, 242, 242, 0.95) 100%);
-  border: 1.5px solid rgba(220, 38, 38, 0.35);
-  border-radius: 20px;
-  padding: 1.4rem 1.75rem;
+  background: linear-gradient(135deg, rgba(38, 12, 18, 0.95) 0%, rgba(22, 6, 10, 0.98) 100%);
+  border: 1.5px solid rgba(239, 68, 68, 0.45);
+  border-radius: 22px;
+  padding: 1.5rem 1.85rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1.25rem;
   box-shadow:
-    0 12px 32px rgba(220, 38, 38, 0.1),
-    0 2px 8px rgba(15, 23, 42, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  transition: all 260ms cubic-bezier(0.16, 1, 0.3, 1);
+    0 20px 45px -10px rgba(0, 0, 0, 0.5),
+    0 0 25px rgba(220, 38, 38, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  transition: all 280ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ps-contact-hotline-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(220, 38, 38, 0.55);
+  border-color: rgba(248, 113, 113, 0.7);
   box-shadow:
-    0 18px 40px rgba(220, 38, 38, 0.18),
-    0 4px 12px rgba(15, 23, 42, 0.06);
+    0 24px 50px -8px rgba(0, 0, 0, 0.6),
+    0 0 35px rgba(239, 68, 68, 0.28);
+}
+
+.ps-hotline-left-cluster {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
 }
 
 .ps-hotline-icon-wrap {
   position: relative;
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
 }
 
 .ps-hotline-pulse {
   position: absolute;
   top: -2px;
   right: -2px;
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
   background: #22c55e;
-  border: 2.5px solid #ffffff;
+  border: 2.5px solid #140407;
   animation: ps-pulse-glow 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
 }
 
@@ -2112,33 +2295,71 @@ body {
 }
 
 .ps-hotline-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   font-family: var(--font-ui, 'Absans', sans-serif);
   font-size: 0.76rem;
   font-weight: 750;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: #dc2626;
-  margin-bottom: 0.15rem;
+  color: #fca5a5;
+  margin-bottom: 0.2rem;
+}
+
+.ps-hotline-live-tag {
+  font-size: 0.68rem;
+  padding: 0.15rem 0.5rem;
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #86efac;
+  border-radius: 999px;
+  letter-spacing: 0.03em;
 }
 
 .ps-hotline-tel {
   font-family: var(--font-display, 'Sansation', sans-serif);
-  font-size: 1.65rem;
-  font-weight: 700;
-  color: #18181b;
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  font-weight: 800;
+  color: #ffffff;
   text-decoration: none;
   line-height: 1.15;
+  letter-spacing: 0.02em;
   transition: color 200ms ease;
 }
 
 .ps-hotline-tel:hover {
-  color: #dc2626;
+  color: #fca5a5;
 }
 
 .ps-hotline-sub {
-  font-size: 0.85rem;
-  color: #52525b;
-  margin-top: 0.2rem;
+  font-size: 0.84rem;
+  color: #94a3b8;
+  margin-top: 0.25rem;
+}
+
+.ps-hotline-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.15rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 200ms ease;
+  white-space: nowrap;
+}
+
+.ps-hotline-action-btn:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #ffffff;
+  transform: translateX(2px);
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
 }
 
 /* 2x2 Feature Grid */
@@ -2150,14 +2371,14 @@ body {
 
 .ps-contact-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  border-radius: 18px;
-  padding: 1.35rem 1.4rem;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 1.45rem 1.5rem;
   box-shadow:
-    0 8px 24px rgba(15, 23, 42, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    0 14px 34px -8px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
@@ -2166,16 +2387,17 @@ body {
 
 .ps-contact-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(185, 28, 28, 0.45);
+  border-color: rgba(248, 113, 113, 0.45);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.03) 100%);
   box-shadow:
-    0 16px 36px rgba(139, 26, 50, 0.12),
-    0 4px 10px rgba(15, 23, 42, 0.04);
+    0 20px 42px -6px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(220, 38, 38, 0.15);
 }
 
 .ps-card-icon-box {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2183,42 +2405,42 @@ body {
 }
 
 .ps-card-icon--emerald {
-  background: #fef2f2;
-  color: #b91c1c;
-  border: 1.5px solid #fee2e2;
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1.5px solid rgba(34, 197, 94, 0.3);
 }
 
 .ps-card-icon--navy {
-  background: #f8fafc;
-  color: #b91c1c;
-  border: 1.5px solid #e2e8f0;
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1.5px solid rgba(56, 189, 248, 0.3);
 }
 
 .ps-card-icon--teal {
-  background: #fef2f2;
-  color: #b91c1c;
-  border: 1.5px solid #fee2e2;
+  background: rgba(244, 63, 94, 0.15);
+  color: #fb7185;
+  border: 1.5px solid rgba(244, 63, 94, 0.3);
 }
 
 .ps-card-icon--purple {
-  background: #f8fafc;
-  color: #b91c1c;
-  border: 1.5px solid #e2e8f0;
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border: 1.5px solid rgba(168, 85, 247, 0.3);
 }
 
 .ps-card-body h4 {
   font-family: var(--font-display, 'Sansation', sans-serif);
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #18181b;
+  font-size: 1.1rem;
+  font-weight: 750;
+  color: #ffffff;
   margin: 0 0 0.35rem;
 }
 
 .ps-card-body p {
   font-family: var(--font-ui, 'Absans', sans-serif);
   font-size: 0.88rem;
-  line-height: 1.5;
-  color: #52525b;
+  line-height: 1.52;
+  color: #cbd5e1;
   margin: 0 0 0.65rem;
 }
 
@@ -2227,20 +2449,20 @@ body {
   align-items: center;
   gap: 0.35rem;
   font-family: var(--font-ui, 'Absans', sans-serif);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 750;
-  color: #b91c1c;
+  color: #fca5a5;
   text-decoration: none;
   transition: all 180ms ease;
 }
 
 .ps-card-link:hover {
-  color: #881337;
-  gap: 0.5rem;
+  color: #ffffff;
+  gap: 0.55rem;
 }
 
 .ps-card-email-link {
-  color: #152238;
+  color: #e2e8f0;
   font-weight: 650;
   text-decoration: none;
   transition: color 180ms ease;
@@ -2248,48 +2470,52 @@ body {
 }
 
 .ps-card-email-link:hover {
-  color: #b91c1c;
+  color: #fca5a5;
 }
 
 .ps-card-badge {
   display: inline-flex;
   align-items: center;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: #8b1e2b;
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
   margin-top: 0.15rem;
 }
 
 .ps-card-badge--live {
-  color: #15803d;
+  color: #86efac;
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.3);
 }
 
 /* Visiting Hours Card */
 .ps-contact-hours-card {
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  border-radius: 18px;
-  padding: 1.35rem 1.6rem;
-  box-shadow:
-    0 8px 24px rgba(15, 23, 42, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 1.45rem 1.65rem;
+  box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.45);
 }
 
 .ps-hours-header {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  color: #152238;
+  color: #fca5a5;
   margin-bottom: 0.95rem;
 }
 
 .ps-hours-header h4 {
   font-family: var(--font-display, 'Sansation', sans-serif);
   font-size: 1.05rem;
-  font-weight: 700;
-  color: #152238;
+  font-weight: 750;
+  color: #ffffff;
   margin: 0;
 }
 
@@ -2304,7 +2530,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding-bottom: 0.55rem;
-  border-bottom: 1px dashed rgba(21, 34, 56, 0.1);
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
   font-size: 0.88rem;
 }
 
@@ -2314,12 +2540,12 @@ body {
 }
 
 .ps-hours-day {
-  color: #556980;
-  font-weight: 600;
+  color: #94a3b8;
+  font-weight: 550;
 }
 
 .ps-hours-time {
-  color: #8b1e2b;
+  color: #fed7aa;
   font-weight: 750;
 }
 
@@ -2335,47 +2561,73 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.35rem 0.8rem;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(139, 26, 50, 0.12);
-  color: #7a1528;
-  font-size: 0.8rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e2e8f0;
+  font-size: 0.82rem;
   font-weight: 650;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
 }
 
-/* Right Column: Callback Form */
+/* Right Column: Priority Callback Form Wrapper */
 .ps-contact-right-col {
   position: sticky;
   top: 96px;
 }
 
 .ps-contact-form-wrapper {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 252, 250, 0.98) 100%);
-  border: 1.5px solid rgba(139, 26, 50, 0.15);
-  border-radius: 24px;
-  padding: 2.35rem 2.25rem;
+  background: linear-gradient(165deg, rgba(32, 11, 16, 0.94) 0%, rgba(18, 5, 8, 0.98) 100%);
+  border: 1.5px solid rgba(244, 63, 94, 0.35);
+  border-radius: 26px;
+  padding: 2.5rem 2.35rem;
   box-shadow:
-    0 24px 60px -12px rgba(139, 26, 50, 0.1),
-    0 6px 20px rgba(15, 23, 42, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(16px);
+    0 30px 70px -15px rgba(0, 0, 0, 0.7),
+    0 0 35px rgba(220, 38, 38, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(24px);
+}
+
+.ps-form-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #fca5a5;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+}
+
+.ps-badge-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+  animation: ps-pulse-glow 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
 }
 
 .ps-contact-form-wrapper h2 {
   font-family: var(--font-display, 'Sansation', sans-serif);
-  font-size: 1.65rem;
-  font-weight: 700;
-  color: #18181b;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
   margin: 0 0 0.45rem;
+  letter-spacing: -0.015em;
 }
 
 .ps-contact-form-wrapper .ps-form-lead {
   font-size: 0.92rem;
-  color: #52525b;
-  line-height: 1.5;
-  margin: 0 0 1.5rem;
+  color: #cbd5e1;
+  line-height: 1.55;
+  margin: 0 0 1.6rem;
 }
 
 /* Form Inputs */
@@ -2390,30 +2642,47 @@ body {
   font-family: var(--font-ui, 'Absans', sans-serif);
   font-size: 0.84rem;
   font-weight: 700;
-  color: #18181b;
+  color: #e2e8f0;
+}
+
+.ps-form-compact label span em.ps-optional {
+  color: #94a3b8;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 0.8rem;
 }
 
 .ps-form-compact input,
 .ps-form-compact select,
 .ps-form-compact textarea {
   width: 100%;
-  padding: 0.68rem 0.95rem;
+  padding: 0.75rem 1rem;
   border-radius: 12px;
-  border: 1.5px solid #e2e8f0;
-  background: #ffffff;
-  color: #18181b;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
   font-family: var(--font-ui, 'Absans', sans-serif);
-  font-size: 16px; /* Prevents auto-zoom on iOS Safari */
+  font-size: 15px;
   transition: all 200ms ease;
   box-sizing: border-box;
+}
+
+.ps-form-compact input::placeholder,
+.ps-form-compact textarea::placeholder {
+  color: #64748b;
+}
+
+.ps-form-compact select option {
+  background: #18080c;
+  color: #ffffff;
 }
 
 .ps-form-compact input:focus,
 .ps-form-compact select:focus,
 .ps-form-compact textarea:focus {
-  background: #ffffff;
-  border-color: #8b1e2b;
-  box-shadow: 0 0 0 3.5px rgba(139, 30, 43, 0.12);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3.5px rgba(239, 68, 68, 0.25);
   outline: none;
 }
 
@@ -2421,27 +2690,25 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.55rem;
+  gap: 0.6rem;
   width: 100%;
-  padding: 0.92rem 1.5rem;
+  padding: 1rem 1.6rem;
   border-radius: 14px;
-  background: linear-gradient(135deg, #8b1e2b 0%, #6e131e 100%);
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
   color: #ffffff;
   font-family: var(--font-ui, 'Absans', sans-serif);
-  font-size: 0.98rem;
+  font-size: 1rem;
   font-weight: 750;
-  border: 1px solid #8b1e2b;
-  box-shadow: 0 10px 24px rgba(139, 30, 43, 0.2);
+  border: 1px solid rgba(254, 205, 211, 0.35);
+  box-shadow: 0 12px 30px rgba(239, 68, 68, 0.35);
   cursor: pointer;
   transition: all 240ms cubic-bezier(0.16, 1, 0.3, 1);
-  margin-top: 0.5rem;
+  margin-top: 0.65rem;
 }
 
 .ps-form-compact .ps-btn-submit-clinical:hover {
-  background: #6e131e;
-  border-color: #6e131e;
-  color: #ffffff;
-  box-shadow: 0 14px 28px rgba(110, 19, 30, 0.3);
+  background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+  box-shadow: 0 16px 38px rgba(239, 68, 68, 0.5);
   transform: translateY(-2px);
 }
 
@@ -2455,67 +2722,63 @@ body {
 }
 
 .ps-form-privacy-note {
-  margin-top: 1rem;
+  margin-top: 1.1rem;
   text-align: center;
   font-size: 0.78rem;
-  color: #64748b;
-  line-height: 1.45;
+  color: #94a3b8;
+  line-height: 1.5;
 }
 
 /* Success Card */
 .ps-contact-thanks {
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 2.5rem 1.5rem;
+  color: #ffffff;
 }
 
 .ps-thanks-icon-wrap {
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-  color: #15803d;
+  background: rgba(34, 197, 94, 0.2);
+  border: 1.5px solid rgba(34, 197, 94, 0.4);
+  color: #4ade80;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.25rem;
-  border: 1px solid rgba(34, 197, 94, 0.25);
-  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.15);
 }
 
 .ps-contact-thanks h2 {
   font-family: var(--font-display, 'Sansation', sans-serif);
-  font-size: 1.55rem;
-  font-weight: 700;
-  color: #152238;
-  margin: 0 0 0.5rem;
+  font-size: 1.65rem;
+  color: #ffffff;
+  margin-bottom: 0.6rem;
 }
 
 .ps-contact-thanks p {
-  font-size: 0.94rem;
-  color: #556980;
+  color: #cbd5e1;
+  font-size: 0.95rem;
   line-height: 1.6;
-  margin: 0 0 1.25rem;
 }
 
 .ps-thanks-urgent-box {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
   border-radius: 12px;
-  padding: 0.85rem 1rem;
-  margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  font-size: 0.85rem;
-  color: #6e131e;
+  font-size: 0.88rem;
+  color: #fca5a5;
 }
 
 .ps-thanks-urgent-box a {
-  font-family: var(--font-display, 'Sansation', sans-serif);
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #8b1e2b;
-  text-decoration: none;
+  color: #ffffff;
+  font-weight: 750;
+  text-decoration: underline;
 }
 
 @media (max-width: 1024px) {
@@ -2742,17 +3005,25 @@ body {
    PREMIUM EXECUTIVE HOSPITAL FOOTER STYLES
    -------------------------------------------------------------------------- */
 
+.ps-footer,
 .ps-site .ps-footer {
   position: relative;
   margin-top: auto;
   margin-bottom: 0 !important;
   overflow: hidden;
-  background: linear-gradient(180deg, #1f0a0a 0%, #140505 100%);
+  background: linear-gradient(180deg, #180508 0%, #0d0204 100%) !important;
   color: #fff1f1;
   padding: 0 0 2.25rem;
   min-height: 0;
   border-top: 1px solid rgba(254, 202, 202, 0.24);
   box-shadow: none;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  width: 100%;
+  z-index: 20;
 }
 
 @media (max-width: 900px) {

@@ -499,7 +499,7 @@ export default function PatientAbout() {
                   <div>
                     <dt style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                       <span style={{ color: '#fca5a5', display: 'inline-flex' }}><IconStethoscope size={14} /></span>
-                      <span>Outpatient Clinics (OPD)</span>
+                      <span>Doctor Consultations</span>
                     </dt>
                     <dd style={{ color: '#fed7aa' }}>08:00 AM &ndash; 09:00 PM</dd>
                   </div>
@@ -1283,7 +1283,7 @@ export default function PatientAbout() {
               >
                 <span style={{ color: 'rgba(255, 255, 255, 0.85)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   <span style={{ color: '#fed7aa', display: 'inline-flex' }}><IconStethoscope size={14} /></span>
-                  OPD Specialty Clinics
+                  Doctor Consultations
                 </span>
                 <strong style={{ color: '#fed7aa' }}>08:00 AM &ndash; 09:00 PM</strong>
               </div>

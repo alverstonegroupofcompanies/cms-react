@@ -279,7 +279,7 @@ export default function DoctorsDirectory() {
                 </div>
                 <div className="alv-trust-item">
                   <span className="alv-trust-dot" />
-                  <span>Mon – Sat OPD Clinics</span>
+                  <span>Mon – Sat Doctor Clinics</span>
                 </div>
               </div>
             </div>
@@ -360,7 +360,7 @@ export default function DoctorsDirectory() {
                   <CountUp to={21} suffix="+" />
                 </h3>
                 <p className="alv-stat-lbl">Specialist Suites</p>
-                <span className="alv-stat-sub">Dedicated OPD Rooms</span>
+                <span className="alv-stat-sub">Dedicated Consultation Rooms</span>
               </div>
 
               <div className="alv-stat-card">
@@ -473,7 +473,7 @@ export default function DoctorsDirectory() {
                 </div>
                 <h4 className="alv-how-card-title">Select Doctor</h4>
                 <p className="alv-how-card-text">
-                  Review verified credentials, room number, clinical biography, and weekly OPD day schedules.
+                  Review verified credentials, room number, clinical biography, and weekly consultation schedules.
                 </p>
               </div>
 
@@ -698,7 +698,7 @@ export default function DoctorsDirectory() {
                 </blockquote>
                 <div className="alv-review-author">
                   <strong>Ramesh Pillai</strong>
-                  <span>Cardiology OPD Consultation</span>
+                  <span>Cardiology Consultation</span>
                 </div>
               </div>
 
@@ -794,6 +794,11 @@ function ModernDoctorCard({ doc, bookUrl }: { doc: UnifiedDoctor; bookUrl: strin
           <Link to={profileUrl}>{doc.name}</Link>
         </h3>
         <div className="alv-card-degree">{doc.degree}</div>
+        {doc.consultationFee != null && (
+          <div style={{ fontSize: '0.86rem', color: '#8b1e2b', fontWeight: 750, marginTop: '0.35rem' }}>
+            Consultation Fee: ₹{Math.round(Number(doc.consultationFee))}
+          </div>
+        )}
 
         {/* Action Buttons Cluster (Matches Screenshot) */}
         <div className="alv-card-actions">

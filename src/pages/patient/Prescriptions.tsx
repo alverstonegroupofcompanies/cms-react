@@ -69,6 +69,17 @@ export default function PatientPrescriptions() {
               </div>
               <p className="ph-lab-doctor">{displayDoctorName(p.doctor?.name)}</p>
               {visitMeta(p) && <p className="ph-muted ph-visit-meta">{visitMeta(p)}</p>}
+
+              {/* Pharmacy Token & Print Strip */}
+              <div className="ph-rx-token-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.85rem 0', padding: '0.65rem 0.85rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600 }}>Dispense Token:</span>
+                  <strong style={{ fontFamily: 'monospace', fontSize: '0.95rem', color: '#0f172a' }}>
+                    {p.clinic_prescription_number || `RX-${String(p.id).padStart(4, '0')}`}
+                  </strong>
+                </div>
+              </div>
+
               <ul className="rx-added-list ph-rx-listing">
                 {p.items?.map((item, i) => (
                   <li key={item.id} className="rx-added-card">

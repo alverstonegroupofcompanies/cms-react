@@ -23,7 +23,7 @@ export interface SplitTextProps {
   stagger?: number
   /** Distance in pixels words or letters slide up from. */
   distance?: number
-  /** ScrollTrigger trigger offset. Defaults to config start ('top 85%'). */
+  /** ScrollTrigger trigger offset. Defaults to config start ('top 70%'), or 'top 68%' for character mode. */
   start?: string
   /** Whether the animation runs only once. Defaults to true. */
   once?: boolean
@@ -188,7 +188,7 @@ export default function SplitText({
   as: Component = 'h2',
   className = '',
   by = 'words',
-  delay = 0.05,
+  delay = 0,
   duration,
   stagger,
   distance,
@@ -203,10 +203,10 @@ export default function SplitText({
   const plainText = extractPlainText(children)
 
   const isCharMode = by === 'chars' || by === 'typewriter'
-  const effDuration = duration ?? (isCharMode ? (by === 'typewriter' ? 0.05 : 0.45) : ANIMATION_CONFIG.duration.normal)
-  const effStagger = stagger ?? (isCharMode ? (by === 'typewriter' ? 0.045 : 0.026) : 0.04)
-  const effDistance = distance ?? (isCharMode ? (by === 'typewriter' ? 0 : 12) : 22)
-  const effStart = start ?? ANIMATION_CONFIG.start
+  const effDuration = duration ?? (isCharMode ? (by === 'typewriter' ? 0.03 : 0.28) : ANIMATION_CONFIG.duration.normal)
+  const effStagger = stagger ?? (isCharMode ? (by === 'typewriter' ? 0.03 : 0.014) : 0.03)
+  const effDistance = distance ?? (isCharMode ? (by === 'typewriter' ? 0 : 8) : 16)
+  const effStart = start ?? (isCharMode ? 'top 80%' : ANIMATION_CONFIG.start)
 
   useGSAP(
     () => {
@@ -253,6 +253,7 @@ export default function SplitText({
                   start: effStart,
                   toggleActions: ANIMATION_CONFIG.toggleActions,
                   once,
+                  invalidateOnRefresh: true,
                 },
               }
             )
@@ -272,6 +273,7 @@ export default function SplitText({
                 start: effStart,
                 toggleActions: ANIMATION_CONFIG.toggleActions,
                 once,
+                invalidateOnRefresh: true,
               },
             })
           } else {
@@ -289,6 +291,7 @@ export default function SplitText({
                 start: effStart,
                 toggleActions: ANIMATION_CONFIG.toggleActions,
                 once,
+                invalidateOnRefresh: true,
               },
             })
           }

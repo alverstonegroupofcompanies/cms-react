@@ -20,7 +20,7 @@ export interface RevealProps {
   className?: string
   /** HTML element type to render. Defaults to 'div'. */
   as?: React.ElementType
-  /** ScrollTrigger start offset. Defaults to 'top 85%'. */
+  /** ScrollTrigger start offset. Defaults to config start ('top 70%'). */
   start?: string
   /** Whether to trigger only once. Defaults to true. */
   once?: boolean
@@ -84,6 +84,7 @@ export default function Reveal({
                 start: effStart,
                 toggleActions: ANIMATION_CONFIG.toggleActions,
                 once,
+                invalidateOnRefresh: true,
               },
             })
             return
@@ -111,6 +112,7 @@ export default function Reveal({
               start: effStart,
               toggleActions: ANIMATION_CONFIG.toggleActions,
               once,
+              invalidateOnRefresh: true,
             },
           })
         }

@@ -52,6 +52,7 @@ export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(options:
                 start: options.start ?? ANIMATION_CONFIG.start,
                 toggleActions: ANIMATION_CONFIG.toggleActions,
                 once: options.once ?? true,
+                invalidateOnRefresh: true,
               },
             })
             return
@@ -79,6 +80,7 @@ export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(options:
               start: options.start ?? ANIMATION_CONFIG.start,
               toggleActions: ANIMATION_CONFIG.toggleActions,
               once: options.once ?? true,
+              invalidateOnRefresh: true,
             },
           })
         }

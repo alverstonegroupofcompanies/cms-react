@@ -10,6 +10,7 @@ declare global {
       scrollTo: (target: HTMLElement | string | number, options?: { offset?: number; duration?: number; immediate?: boolean }) => void
       scroll?: number
       targetScroll?: number
+      resize?: () => void
     }
   }
 }

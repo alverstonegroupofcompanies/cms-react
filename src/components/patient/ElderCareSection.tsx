@@ -94,14 +94,15 @@ export default function ElderCareSection({ signedIn = false }: ElderCareSectionP
             id="ecs-main-title"
             className="ecs-title"
             by="chars"
-            stagger={0.028}
-            duration={0.45}
-            distance={14}
+            stagger={0.014}
+            duration={0.28}
+            distance={8}
+            start="top 80%"
             cursor
           >
             Home Care That&apos;s Tailored to Your Needs
           </SplitText>
-          <Reveal direction="up" distance={14} delay={0.4} duration={0.75}>
+          <Reveal direction="up" distance={12} delay={0.12} duration={0.48} start="top 80%">
             <p className="ecs-subtitle">
               Dignified, unhurried healthcare and compassionate bedside support designed to keep senior loved ones safe,
               healthy, and cherished in the comfort of their home or at our campus.
@@ -112,7 +113,7 @@ export default function ElderCareSection({ signedIn = false }: ElderCareSectionP
         {/* ==================================================================
             2. THE FOUR ASYMMETRICAL ARCHED CARDS (EXACT SHAPE FINISH)
             ================================================================== */}
-        <Reveal direction="up" distance={26} stagger={0.08} className="ecs-cards-grid">
+        <Reveal direction="up" distance={20} stagger={0.06} className="ecs-cards-grid" start="top 80%">
           {ELDER_SERVICES.map((srv) => (
             <article
               key={srv.id}

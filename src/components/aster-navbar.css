@@ -664,6 +664,73 @@
   white-space: nowrap;
 }
 
+/* Distinct Specialty Accents in Mega Menu */
+.alv-spec-card:nth-child(1) .alv-spec-icon-box {
+  background: #fffbeb;
+  color: #d97706;
+  border-color: #fde68a;
+}
+.alv-spec-card:nth-child(1) .alv-spec-badge {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.alv-spec-card:nth-child(2) .alv-spec-icon-box {
+  background: #ecfdf5;
+  color: #059669;
+  border-color: #a7f3d0;
+}
+.alv-spec-card:nth-child(2) .alv-spec-badge {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.alv-spec-card:nth-child(3) .alv-spec-icon-box {
+  background: #fff1f2;
+  color: #e11d48;
+  border-color: #fecdd3;
+}
+.alv-spec-card:nth-child(3) .alv-spec-badge {
+  background: #fff1f2;
+  color: #be123c;
+  border: 1px solid #fecdd3;
+}
+
+.alv-spec-card:nth-child(4) .alv-spec-icon-box {
+  background: #fefce8;
+  color: #ca8a04;
+  border-color: #fef08a;
+}
+.alv-spec-card:nth-child(4) .alv-spec-badge {
+  background: #fefce8;
+  color: #a16207;
+  border: 1px solid #fef08a;
+}
+
+.alv-spec-card:nth-child(5) .alv-spec-icon-box {
+  background: #f0f9ff;
+  color: #0284c7;
+  border-color: #bae6fd;
+}
+.alv-spec-card:nth-child(5) .alv-spec-badge {
+  background: #f0f9ff;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.alv-spec-card:nth-child(6) .alv-spec-icon-box {
+  background: #eef2ff;
+  color: #6366f1;
+  border-color: #c7d2fe;
+}
+.alv-spec-card:nth-child(6) .alv-spec-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #c7d2fe;
+}
+
 .alv-spec-desc {
   margin: 0;
   font-size: 0.74rem;

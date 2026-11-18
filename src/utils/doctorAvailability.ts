@@ -113,8 +113,13 @@ export function formatDoctorOptionLabel(doctor: {
   name: string
   specialization?: string | null
   availability?: DoctorAvailability[] | null
+  consultation_fee?: number | string | null
 }): string {
   const spec = doctor.specialization ? ` — ${doctor.specialization}` : ''
+  const fee =
+    doctor.consultation_fee != null && Number(doctor.consultation_fee) > 0
+      ? ` · ₹${Math.round(Number(doctor.consultation_fee))}`
+      : ''
   const track = getDoctorDayTrack(doctor.availability)
-  return `${doctor.name}${spec} · [${track}]`
+  return `${doctor.name}${spec}${fee} · [${track}]`
 }

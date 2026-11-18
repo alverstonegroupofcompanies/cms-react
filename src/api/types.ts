@@ -285,6 +285,7 @@ export interface Prescription {
   items?: PrescriptionItem[]
   queue_token?: { id: number; display_code: string; token_number?: number } | null
   worksheet?: { id: number; worksheet_code: string; opened_at?: string | null } | null
+  clinic_prescription_number?: string | null
 }
 
 export interface PrescriptionItem {
@@ -324,6 +325,7 @@ export interface LabOrder {
   report?: { file_path: string; file_name: string; result_summary?: string }
   queue_token?: { id: number; display_code: string; token_number?: number } | null
   worksheet?: { id: number; worksheet_code: string; opened_at?: string | null } | null
+  clinic_prescription_number?: string | null
 }
 
 export interface DashboardStats {
@@ -410,6 +412,7 @@ export interface Worksheet {
   prescriptions?: Array<{
     id: number
     status: string
+    clinic_prescription_number?: string | null
     notes?: string | null
     created_at?: string
     items?: Array<{
@@ -479,8 +482,8 @@ export interface VisitBill {
   created_at?: string
   patient?: Patient | null
   doctor?: Doctor | null
-  worksheet?: { id: number; worksheet_code: string } | null
-  queue_token?: { id: number; display_code: string } | null
+  worksheet?: { id: number; worksheet_code: string; queue_token?: { id: number; display_code: string; token_number?: number } | null } | null
+  queue_token?: { id: number; display_code: string; token_number?: number } | null
   items?: VisitBillItem[]
 }
 

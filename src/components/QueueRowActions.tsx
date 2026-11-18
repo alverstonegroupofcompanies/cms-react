@@ -1,7 +1,9 @@
 import LiveWaitTimer from './LiveWaitTimer'
+import { IconPrinter } from './Icons'
 
 export type QueueRow = {
   id: number
+  token_number?: number | null
   position?: number
   display_code: string
   status: string
@@ -68,6 +70,7 @@ type ActionsProps = {
   onCheckIn: (row: QueueRow) => void
   onCheckOut: (row: QueueRow) => void
   onCancel?: (row: QueueRow) => void
+  onPreviewToken?: (row: QueueRow) => void
   showCancel?: boolean
   /** When false, hide consult checkout (receptionist). Default true for doctors. */
   allowCheckOut?: boolean
@@ -84,6 +87,7 @@ export function QueueRowActions({
   onCheckIn,
   onCheckOut,
   onCancel,
+  onPreviewToken,
   showCancel = false,
   allowCheckOut = true,
   checkInLabel = 'Check in',
@@ -98,6 +102,26 @@ export function QueueRowActions({
 
   return (
     <div className="queue-row-actions">
+      {onPreviewToken && (
+        <button
+          type="button"
+          className={buttonClassName}
+          onClick={() => onPreviewToken(row)}
+          title="Preview & print official token slip"
+          style={{
+            background: '#f0fdf4',
+            borderColor: '#86efac',
+            color: '#15803d',
+            fontWeight: 700,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.3rem',
+          }}
+        >
+          <IconPrinter size={13} />
+          <span>Print Slip</span>
+        </button>
+      )}
       {canIn && (
         <button
           type="button"

@@ -2,6 +2,9 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import Layout from '../../components/Layout'
 import RescheduleModal, { type RescheduleTarget } from '../../components/RescheduleModal'
+import TokenModal from '../../components/TokenModal'
+import type { TokenData } from '../../components/PrintableTokenSlip'
+import { IconPrinter } from '../../components/Icons'
 import {
   cancelAppointment,
   checkInAppointment,
@@ -25,6 +28,32 @@ export default function ReceptionistAppointments() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [rescheduleTarget, setRescheduleTarget] = useState<RescheduleTarget | null>(null)
+  const [tokenModalData, setTokenModalData] = useState<TokenData | null>(null)
+
+  const handlePreviewToken = (a: Appointment) => {
+    const code =
+      a.queue_token?.display_code ||
+      (a.queue_token?.token_number
+        ? `AMC${String(a.queue_token.token_number).padStart(2, '0')}`
+        : `AMC-${String(a.id).padStart(2, '0')}`)
+    const apptDate = toDateOnlyString(a.appointment_date)
+
+    const tData: TokenData = {
+      type: 'consultation',
+      tokenCode: code,
+      tokenNumber: a.queue_token?.token_number,
+      patientName: a.patient?.name || 'Registered Patient',
+      patientCode: a.patient?.patient_code,
+      patientPhone: a.patient?.phone,
+      doctorName: a.doctor?.name,
+      specialization: a.doctor?.specialization,
+      roomOrCounter: 'OPD Consultation Suite',
+      appointmentDate: apptDate,
+      slotTime: a.slot_time,
+      status: a.status,
+    }
+    setTokenModalData(tData)
+  }
 
   useEffect(() => {
     const d = searchParams.get('date')
@@ -101,7 +130,8 @@ export default function ReceptionistAppointments() {
     })
   }
 
-  const canManage = (status: string) => ['booked', 'no_show', 'checked_in'].includes(status)
+  const canManage = (status: string) => ['booked', 'no_show', 'missed', 'checked_in'].includes(status)
+  const todayIso = new Date().toISOString().split('T')[0]
 
   return (
     <Layout title="Appointments" subtitle="All upcoming bookings · filter by date if needed" nav={receptionistNav}>
@@ -169,47 +199,98 @@ export default function ReceptionistAppointments() {
                 </tr>
               </thead>
               <tbody>
-                {appointments.map((a) => (
-                  <tr key={a.id}>
-                    <td>{toDateOnlyString(a.appointment_date)}</td>
-                    <td><strong>{a.slot_time?.slice(0, 5)}</strong></td>
-                    <td>
-                      {a.patient?.name}
-                      <div className="muted">{a.patient?.patient_code}</div>
-                    </td>
-                    <td>{a.patient?.phone || '—'}</td>
-                    <td>{a.doctor?.name}</td>
-                    <td>
-                      <VisitSourceBadge source={a.type === 'walk_in' ? 'walk_in' : 'booked'} />
-                    </td>
-                    <td><span className={`badge badge-${a.status}`}>{a.status}</span></td>
-                    <td className="table-actions">
-                      {a.status === 'booked' && (
-                        <button type="button" className="btn btn-sm btn-primary" onClick={() => handleCheckIn(a.id)}>
-                          Check in
+                {appointments.map((a) => {
+                  const apptDate = toDateOnlyString(a.appointment_date)
+                  const isPast = apptDate < todayIso
+                  const isToday = apptDate === todayIso
+                  const isMissed =
+                    a.status === 'missed' ||
+                    a.status === 'no_show' ||
+                    (isPast && a.status !== 'completed' && a.status !== 'cancelled')
+                  const displayStatus = isMissed ? 'missed' : a.status
+
+                  return (
+                    <tr key={a.id}>
+                      <td>{apptDate}</td>
+                      <td><strong>{a.slot_time?.slice(0, 5)}</strong></td>
+                      <td>
+                        {a.patient?.name}
+                        <div className="muted">{a.patient?.patient_code}</div>
+                      </td>
+                      <td>{a.patient?.phone || '—'}</td>
+                      <td>{a.doctor?.name}</td>
+                      <td>
+                        <VisitSourceBadge source={a.type === 'walk_in' ? 'walk_in' : 'booked'} />
+                      </td>
+                      <td><span className={`badge badge-${displayStatus}`}>{displayStatus}</span></td>
+                      <td className="table-actions">
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-secondary"
+                          onClick={() => handlePreviewToken(a)}
+                          title="Preview & print official token slip"
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.25rem',
+                            background: '#f0fdf4',
+                            borderColor: '#86efac',
+                            color: '#15803d',
+                            fontWeight: 700,
+                          }}
+                        >
+                          <IconPrinter size={13} />
+                          <span>Print Slip</span>
                         </button>
-                      )}
-                      {a.status === 'checked_in' && a.queue_token?.status !== 'in_consultation' && (
-                        <button type="button" className="btn btn-sm btn-success" onClick={() => handleCheckout(a.id, a.patient?.name)}>
-                          Check out
-                        </button>
-                      )}
-                      {a.status === 'checked_in' && a.queue_token?.status === 'in_consultation' && (
-                        <span className="muted">With doctor</span>
-                      )}
-                      {canManage(a.status) && (
-                        <>
-                          <button type="button" className="btn btn-sm btn-secondary" onClick={() => openReschedule(a)}>
-                            Reschedule
-                          </button>
-                          <button type="button" className="btn btn-sm btn-secondary" onClick={() => handleCancel(a.id)}>
-                            Cancel
-                          </button>
-                        </>
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                        {isMissed ? (
+                          <>
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-primary"
+                              onClick={() => openReschedule(a)}
+                              title="Reschedule missed appointment to a new date/slot"
+                            >
+                              Reschedule
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-secondary"
+                              onClick={() => handleCancel(a.id)}
+                            >
+                              Cancel
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            {a.status === 'booked' && isToday && (
+                              <button type="button" className="btn btn-sm btn-primary" onClick={() => handleCheckIn(a.id)}>
+                                Check in
+                              </button>
+                            )}
+                            {a.status === 'checked_in' && isToday && a.queue_token?.status !== 'in_consultation' && (
+                              <button type="button" className="btn btn-sm btn-success" onClick={() => handleCheckout(a.id, a.patient?.name)}>
+                                Check out
+                              </button>
+                            )}
+                            {a.status === 'checked_in' && isToday && a.queue_token?.status === 'in_consultation' && (
+                              <span className="muted">With doctor</span>
+                            )}
+                            {canManage(a.status) && (
+                              <>
+                                <button type="button" className="btn btn-sm btn-secondary" onClick={() => openReschedule(a)}>
+                                  Reschedule
+                                </button>
+                                <button type="button" className="btn btn-sm btn-secondary" onClick={() => handleCancel(a.id)}>
+                                  Cancel
+                                </button>
+                              </>
+                            )}
+                          </>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
@@ -228,6 +309,11 @@ export default function ReceptionistAppointments() {
           )
           loadList()
         }}
+      />
+      <TokenModal
+        isOpen={Boolean(tokenModalData)}
+        token={tokenModalData}
+        onClose={() => setTokenModalData(null)}
       />
     </Layout>
   )

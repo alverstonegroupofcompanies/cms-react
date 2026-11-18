@@ -62,8 +62,10 @@ export default function CountUp({
             ease: 'power2.out',
             scrollTrigger: {
               trigger: el,
-              start: 'top 90%',
+              start: ANIMATION_CONFIG.start,
+              toggleActions: ANIMATION_CONFIG.toggleActions,
               once: true,
+              invalidateOnRefresh: true,
             },
             onUpdate: () => {
               if (el) {

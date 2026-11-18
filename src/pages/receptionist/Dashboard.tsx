@@ -2,10 +2,14 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Layout from '../../components/Layout'
 import RescheduleModal, { type RescheduleTarget } from '../../components/RescheduleModal'
+import TokenModal from '../../components/TokenModal'
+import IssueTokenModal from '../../components/IssueTokenModal'
+import type { TokenData } from '../../components/PrintableTokenSlip'
 import {
   IconCalendar,
   IconCheck,
   IconPlus,
+  IconPrinter,
   IconQueue,
   IconRefresh,
   IconStethoscope,
@@ -28,6 +32,7 @@ import { receptionistNav } from '../../config/navigation'
 import type { Appointment, Doctor } from '../../api/types'
 import { localDateString } from '../../utils/slotUtils'
 import { toDateOnlyString } from '../../utils/dateUtils'
+import '../../reception-board-theme.css'
 
 /** Fallback when a doctor has no completed-visit history yet. */
 const DEFAULT_CONSULT_MINUTES = 30
@@ -73,17 +78,17 @@ type BoardRow = {
 
 function statusLabel(row: BoardRow, queueHint?: { ready?: boolean }) {
   const key = row.board_status || row.status
-  if (key === 'late') return { text: 'Late', cls: 'rdm-pill rdm-pill-late' }
-  if (key === 'pending_arrival') return { text: 'Pending', cls: 'rdm-pill rdm-pill-muted' }
-  if (key === 'booked') return { text: 'Booked', cls: 'rdm-pill rdm-pill-muted' }
-  if (key === 'in_consultation') return { text: 'With doctor', cls: 'rdm-pill rdm-pill-consult' }
-  if (key === 'checked_out' || key === 'completed') return { text: 'Done', cls: 'rdm-pill rdm-pill-done' }
+  if (key === 'late') return { text: 'Late', cls: 'rdm-status-pill is-late' }
+  if (key === 'pending_arrival') return { text: 'Pending', cls: 'rdm-status-pill is-booked' }
+  if (key === 'booked') return { text: 'Booked', cls: 'rdm-status-pill is-booked' }
+  if (key === 'in_consultation') return { text: 'With doctor', cls: 'rdm-status-pill is-consult' }
+  if (key === 'checked_out' || key === 'completed') return { text: 'Done', cls: 'rdm-status-pill is-ready' }
   // Doctor free + this patient is next → ready to go in (after previous checkout).
   if (queueHint?.ready && (key === 'checked_in' || key === 'waiting')) {
-    return { text: 'Ready to enter', cls: 'rdm-pill rdm-pill-ready' }
+    return { text: 'Ready to enter', cls: 'rdm-status-pill is-ready' }
   }
-  if (key === 'checked_in' || key === 'waiting') return { text: 'Waiting', cls: 'rdm-pill rdm-pill-wait' }
-  return { text: key.replace(/_/g, ' '), cls: 'rdm-pill rdm-pill-muted' }
+  if (key === 'checked_in' || key === 'waiting') return { text: 'Waiting', cls: 'rdm-status-pill is-waiting' }
+  return { text: key.replace(/_/g, ' '), cls: 'rdm-status-pill is-booked' }
 }
 
 /** Waiting in queue → Check in to doctor. Consult checkout is doctor-only. */
@@ -170,7 +175,10 @@ function consultRemainingMinutes(
 }
 
 function queueSortKey(row: BoardRow) {
-  return `${row.sort_time || '99:99:99'}-${String(row.token_number ?? row.token_id ?? 9999).padStart(6, '0')}`
+  if (row.token_number != null) {
+    return String(row.token_number).padStart(6, '0')
+  }
+  return `zz-${row.sort_time || '99:99:99'}-${String(row.token_id ?? 9999).padStart(6, '0')}`
 }
 
 function isActiveQueueStatus(row: BoardRow) {
@@ -208,6 +216,7 @@ type BoardRowHandlers = {
   onCheckout: (row: BoardRow) => void
   onReschedule: (row: BoardRow) => void
   onCancel: (row: BoardRow) => void
+  onPreviewToken: (row: BoardRow) => void
   hideDoctor?: boolean
 }
 
@@ -248,6 +257,7 @@ function BoardPatientRow({
   onCheckout,
   onReschedule,
   onCancel,
+  onPreviewToken,
   hideDoctor,
 }: BoardRowHandlers & { row: BoardRow }) {
   const waitInfo = estimatedWaitById.get(String(t.id))
@@ -268,22 +278,42 @@ function BoardPatientRow({
       }
     >
       <td>
-        <span className="rdm-token">{tokenText}</span>
-        {t.end_of_line && <span className="rdm-meta">EOL</span>}
+        <button
+          type="button"
+          onClick={() => onPreviewToken(t)}
+          title="Click to preview & print official token slip"
+          style={{
+            cursor: 'pointer',
+            border: 'none',
+            background: 'transparent',
+            padding: 0,
+            font: 'inherit',
+            color: 'inherit',
+            textAlign: 'left',
+            display: 'inline-flex',
+            alignItems: 'center',
+          }}
+        >
+          <span className="rdm-token-chip">
+            <span style={{ color: '#0f766e', display: 'flex' }}><IconPrinter size={13} /></span>
+            <span>{tokenText}</span>
+          </span>
+        </button>
+        {t.end_of_line && <span className="rdm-meta" style={{ marginLeft: '0.35rem' }}>EOL</span>}
       </td>
       <td>
         <span className="rdm-day">{formatBoardDate(rowDate)}</span>
       </td>
       <td>
-        <span className="rdm-time">{slotLabel(t)}</span>
+        <span className="rdm-time-chip">{slotLabel(t)}</span>
       </td>
       <td>
-        <div className="rdm-patient">
-          <div className="rdm-name-row">
-            <span className="rdm-name">{t.patient?.name || '—'}</span>
+        <div className="rdm-patient-cell">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+            <span className="rdm-patient-name">{t.patient?.name || '—'}</span>
             <VisitSourceBadge source={t.source} />
           </div>
-          <span className="rdm-meta">
+          <span className="rdm-patient-sub">
             {t.patient?.patient_code}
             {t.patient?.phone ? ` · ${t.patient.phone}` : ''}
           </span>
@@ -291,10 +321,10 @@ function BoardPatientRow({
       </td>
       {!hideDoctor && (
         <td>
-          <div className="rdm-patient">
-            <span className="rdm-name">{t.doctor?.name || '—'}</span>
+          <div className="rdm-doctor-cell">
+            <span className="rdm-doctor-name">{t.doctor?.name || '—'}</span>
             {t.doctor?.specialization && (
-              <span className="rdm-doc-spec">{t.doctor.specialization}</span>
+              <span className="rdm-doctor-spec">{t.doctor.specialization}</span>
             )}
           </div>
         </td>
@@ -304,9 +334,9 @@ function BoardPatientRow({
       </td>
       <td>
         <span className={status.cls}>{status.text}</span>
-        {out && <span className="rdm-meta">Out {out}</span>}
+        {out && <span className="rdm-meta" style={{ display: 'block', marginTop: '0.15rem' }}>Out {out}</span>}
       </td>
-      <td className="rdm-col-action">
+      <td className="rdm-col-action" style={{ textAlign: 'right' }}>
         {isLate ? (
           <LateActions
             row={t}
@@ -316,14 +346,24 @@ function BoardPatientRow({
             onCheckout={onCheckout}
             onReschedule={onReschedule}
             onCancel={onCancel}
+            onPreviewToken={onPreviewToken}
           />
         ) : (
-          <div className="rdm-action-wrap">
-            <div className="rdm-actions">
+          <div className="rdm-action-wrap" style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.25rem' }}>
+            <div className="rdm-row-actions">
+              <button
+                type="button"
+                className="rdm-btn-base rdm-btn-tinted-green"
+                onClick={() => onPreviewToken(t)}
+                title="Preview & print official token slip"
+              >
+                <IconPrinter size={14} />
+                <span>Print Slip</span>
+              </button>
               {actions.showCheckIn && actions.actionKey && (
                 <button
                   type="button"
-                  className="rdm-btn rdm-btn-solid rdm-btn-sm"
+                  className="rdm-btn-base rdm-btn-primary"
                   disabled={checkingIn === actions.actionKey}
                   onClick={() => onCheckIn(t)}
                   title={actions.checkInTitle}
@@ -334,20 +374,11 @@ function BoardPatientRow({
               {actions.showCheckOut && actions.actionKey && (
                 <button
                   type="button"
-                  className="rdm-btn rdm-btn-solid rdm-btn-sm rdm-btn-checkout"
+                  className="rdm-btn-base rdm-btn-primary"
                   disabled={checkingOut === actions.actionKey}
                   onClick={() => onCheckout(t)}
                 >
                   {checkingOut === actions.actionKey ? '…' : 'Check out'}
-                </button>
-              )}
-              {(t.appointment?.id || (t.token_id && t.status === 'waiting')) && (
-                <button
-                  type="button"
-                  className="rdm-btn rdm-btn-ghost rdm-btn-sm"
-                  onClick={() => onCancel(t)}
-                >
-                  Cancel
                 </button>
               )}
               {t.appointment?.id &&
@@ -356,12 +387,21 @@ function BoardPatientRow({
                 ) && (
                   <button
                     type="button"
-                    className="rdm-btn rdm-btn-ghost rdm-btn-sm"
+                    className="rdm-btn-base rdm-btn-quiet"
                     onClick={() => onReschedule(t)}
                   >
                     Reschedule
                   </button>
                 )}
+              {(t.appointment?.id || (t.token_id && t.status === 'waiting')) && (
+                <button
+                  type="button"
+                  className="rdm-btn-cancel-only"
+                  onClick={() => onCancel(t)}
+                >
+                  Cancel
+                </button>
+              )}
             </div>
             {showHint && hint && (
               <p className="rdm-busy-hint" role="status">
@@ -389,7 +429,7 @@ function BoardSectionTable({
   const colSpan = hideDoctor ? 7 : 8
   return (
     <div className="rdm-table-wrap">
-      <table className={`rdm-table${hideDoctor ? ' rdm-table-no-doc' : ''}`}>
+      <table className={`rdm-data-table${hideDoctor ? ' rdm-table-no-doc' : ''}`}>
         <thead>
           <tr>
             <th>Token</th>
@@ -399,13 +439,13 @@ function BoardSectionTable({
             {!hideDoctor && <th>Doctor</th>}
             <th>Est. wait</th>
             <th>Status</th>
-            <th className="rdm-col-action">Action</th>
+            <th className="rdm-col-action" style={{ textAlign: 'right' }}>Action</th>
           </tr>
         </thead>
         <tbody>
           {rows.length === 0 ? (
             <tr>
-              <td colSpan={colSpan} className="rdm-empty">
+              <td colSpan={colSpan} className="rdm-empty-state">
                 {emptyText}
               </td>
             </tr>
@@ -563,6 +603,7 @@ function LateActions({
   onCheckout,
   onReschedule,
   onCancel,
+  onPreviewToken,
 }: {
   row: BoardRow
   checkingIn: number | null
@@ -571,6 +612,7 @@ function LateActions({
   onCheckout: (row: BoardRow) => void
   onReschedule: (row: BoardRow) => void
   onCancel: (row: BoardRow) => void
+  onPreviewToken: (row: BoardRow) => void
 }) {
   const actions = boardRowActions(row)
   const busy = actions.actionKey != null && checkingIn === actions.actionKey
@@ -578,11 +620,20 @@ function LateActions({
   const apptId = row.appointment?.id
 
   return (
-    <div className="rdm-actions">
+    <div className="rdm-row-actions">
+      <button
+        type="button"
+        className="rdm-btn-base rdm-btn-tinted-green"
+        onClick={() => onPreviewToken(row)}
+        title="Preview & print official token slip"
+      >
+        <IconPrinter size={14} />
+        <span>Print Slip</span>
+      </button>
       {actions.showCheckIn && actions.actionKey && (
         <button
           type="button"
-          className="rdm-btn rdm-btn-solid rdm-btn-sm"
+          className="rdm-btn-base rdm-btn-primary"
           disabled={busy}
           onClick={() => onCheckIn(row)}
           title={actions.checkInTitle}
@@ -593,7 +644,7 @@ function LateActions({
       {actions.showCheckOut && actions.actionKey && (
         <button
           type="button"
-          className="rdm-btn rdm-btn-solid rdm-btn-sm rdm-btn-checkout"
+          className="rdm-btn-base rdm-btn-primary"
           disabled={outBusy}
           onClick={() => onCheckout(row)}
         >
@@ -601,14 +652,22 @@ function LateActions({
         </button>
       )}
       {apptId && (
-        <>
-          <button type="button" className="rdm-btn rdm-btn-ghost rdm-btn-sm" onClick={() => onReschedule(row)}>
-            Reschedule
-          </button>
-          <button type="button" className="rdm-btn rdm-btn-ghost rdm-btn-sm" onClick={() => onCancel(row)}>
-            Cancel
-          </button>
-        </>
+        <button
+          type="button"
+          className="rdm-btn-base rdm-btn-quiet"
+          onClick={() => onReschedule(row)}
+        >
+          Reschedule
+        </button>
+      )}
+      {(apptId || (row.token_id && row.status === 'waiting')) && (
+        <button
+          type="button"
+          className="rdm-btn-cancel-only"
+          onClick={() => onCancel(row)}
+        >
+          Cancel
+        </button>
       )}
     </div>
   )
@@ -635,6 +694,58 @@ export default function ReceptionistDashboard() {
   const [statusFilter, setStatusFilter] = useState('')
   const [patientFilter, setPatientFilter] = useState('')
   const [peakRefreshKey, setPeakRefreshKey] = useState(0)
+  const [tokenModalData, setTokenModalData] = useState<TokenData | null>(null)
+  const [showIssueTokenModal, setShowIssueTokenModal] = useState(false)
+
+  const handlePreviewToken = (row: BoardRow) => {
+    const code =
+      row.display_code && row.display_code !== '—'
+        ? row.display_code
+        : row.token_number
+          ? `AMC${String(row.token_number).padStart(2, '0')}`
+          : 'AMC01'
+
+    const tData: TokenData = {
+      type: 'consultation',
+      tokenCode: code,
+      tokenNumber: row.token_number,
+      patientName: row.patient?.name || 'Registered Patient',
+      patientCode: row.patient?.patient_code,
+      patientPhone: row.patient?.phone,
+      doctorName: row.doctor?.name,
+      specialization: row.doctor?.specialization,
+      roomOrCounter: 'OPD Consultation Suite',
+      appointmentDate: row.queue_date || date,
+      slotTime: row.slot_time,
+      status: row.board_status || row.status,
+    }
+    setTokenModalData(tData)
+  }
+
+  const handlePreviewUpcomingToken = (a: Appointment) => {
+    const code =
+      a.queue_token?.display_code ||
+      (a.queue_token?.token_number
+        ? `AMC${String(a.queue_token.token_number).padStart(2, '0')}`
+        : `AMC-${String(a.id).padStart(2, '0')}`)
+    const apptDate = toDateOnlyString(a.appointment_date)
+
+    const tData: TokenData = {
+      type: 'consultation',
+      tokenCode: code,
+      tokenNumber: a.queue_token?.token_number,
+      patientName: a.patient?.name || 'Registered Patient',
+      patientCode: a.patient?.patient_code,
+      patientPhone: a.patient?.phone,
+      doctorName: a.doctor?.name,
+      specialization: a.doctor?.specialization,
+      roomOrCounter: 'OPD Consultation Suite',
+      appointmentDate: apptDate,
+      slotTime: a.slot_time,
+      status: a.status,
+    }
+    setTokenModalData(tData)
+  }
 
   useEffect(() => {
     getDoctors().then(({ data }) => setDoctors(data)).catch(() => setDoctors([]))
@@ -875,7 +986,7 @@ export default function ReceptionistDashboard() {
     () =>
       filteredRows
         .filter((r) => (r.board_status || r.status) === 'in_consultation')
-        .sort((a, b) => (a.doctor?.name || '').localeCompare(b.doctor?.name || '')),
+        .sort((a, b) => (a.token_number ?? 9999) - (b.token_number ?? 9999)),
     [filteredRows]
   )
 
@@ -884,15 +995,16 @@ export default function ReceptionistDashboard() {
       filteredRows
         .filter((r) => isActiveQueueStatus(r))
         .sort((a, b) => {
-          const aReady = estimatedWaitById.get(String(a.id))?.ready ? 0 : 1
-          const bReady = estimatedWaitById.get(String(b.id))?.ready ? 0 : 1
-          if (aReady !== bReady) return aReady - bReady
-          const aWait = estimatedWaitById.get(String(a.id))?.minutes ?? 9999
-          const bWait = estimatedWaitById.get(String(b.id))?.minutes ?? 9999
-          if (aWait !== bWait) return aWait - bWait
-          return queueSortKey(a).localeCompare(queueSortKey(b))
+          const aNum = a.token_number ?? null
+          const bNum = b.token_number ?? null
+          if (aNum != null && bNum != null) {
+            return aNum - bNum
+          }
+          if (aNum != null) return -1
+          if (bNum != null) return 1
+          return (a.slot_time || '99:99:99').localeCompare(b.slot_time || '99:99:99')
         }),
-    [filteredRows, estimatedWaitById]
+    [filteredRows]
   )
 
   const doneRows = useMemo(
@@ -942,6 +1054,7 @@ export default function ReceptionistDashboard() {
     onCheckout: handleCheckout,
     onReschedule: openReschedule,
     onCancel: handleAbort,
+    onPreviewToken: handlePreviewToken,
   }
 
   const filtersActive = Boolean(doctorFilter || statusFilter || patientFilter.trim())
@@ -955,155 +1068,195 @@ export default function ReceptionistDashboard() {
       nav={receptionistNav}
     >
       <div className="rdm">
-        <div className="rdm-hero-strip">
-          <div>
-            <p className="rdm-hero-kicker">Reception desk</p>
-            <h2 className="rdm-hero-title">Today&apos;s board</h2>
-            <p className="rdm-hero-copy">
-              Day board · {boardDateLabel}. Manage arrivals, queue, and consults in one place.
-            </p>
-          </div>
-          <div className="rdm-hero-actions">
-            <Link to="/receptionist/calendar" className="rdm-btn rdm-btn-ghost">
-              <IconCalendar size={15} /> Calendar
-            </Link>
-            <Link to="/receptionist/book?walkin=1" className="rdm-btn rdm-btn-walkin">
-              <IconUsers size={15} /> Walk-in
-            </Link>
-            <Link to="/receptionist/book" className="rdm-btn rdm-btn-solid">
-              <IconPlus size={15} /> Book / token
-            </Link>
-          </div>
-        </div>
-
-        <div className="rdm-controls">
-          <div className="rdm-bar">
-            <div className="rdm-bar-left">
-              <label className="rdm-date-wrap">
-                <span className="rdm-date-label">Board date</span>
-                <div className="rdm-date-row">
-                  <input
-                    type="date"
-                    className="rdm-date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    aria-label="Board date"
-                  />
-                  <span className="rdm-day-chip">{boardDateLabel}</span>
-                </div>
-              </label>
-              <button type="button" className="rdm-btn rdm-btn-ghost rdm-btn-sm" onClick={load}>
-                <IconRefresh size={14} /> Refresh
-              </button>
-              <span className="rdm-live">
-                <span className="rdm-live-dot" aria-hidden /> Live
-              </span>
+        {/* Header: page title, board date (Mon, 9 Nov 2026), a Live indicator, and actions: Refresh, Calendar, Walk-in, Book / token (primary) */}
+        <header className="rdm-header-card">
+          <div className="rdm-header-left">
+            <div className="rdm-header-title-block">
+              <h1>Reception desk</h1>
+              <p>Day board · {boardDateLabel}</p>
             </div>
+            <div className="rdm-header-date-chip">
+              <IconCalendar size={15} />
+              <span>{boardDateLabel}</span>
+            </div>
+            <span className="rdm-live-pill">
+              <span className="rdm-live-pulse" aria-hidden /> Live
+            </span>
           </div>
 
-          <div className="rdm-filters">
-            <label className="rdm-filter">
-              <span>Doctor</span>
-              <select
-                value={doctorFilter}
-                onChange={(e) => setDoctorFilter(e.target.value)}
-                aria-label="Filter by doctor"
-              >
-                <option value="">All doctors</option>
-                {doctors.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.name}{d.specialization ? ` — ${d.specialization}` : ''}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="rdm-filter">
-              <span>Status</span>
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                aria-label="Filter by status"
-              >
-                <option value="">All statuses</option>
-                <option value="late">Late</option>
-                <option value="waiting">Waiting / pending / booked</option>
-                <option value="in_consultation">With doctor</option>
-                <option value="done">Done</option>
-              </select>
-            </label>
-            <label className="rdm-filter rdm-filter-grow">
-              <span>Patient</span>
-              <input
-                type="search"
-                value={patientFilter}
-                onChange={(e) => setPatientFilter(e.target.value)}
-                placeholder="Name, ID or phone"
-                aria-label="Filter by patient"
-              />
-            </label>
-            {filtersActive && (
-              <button
-                type="button"
-                className="rdm-btn rdm-btn-ghost rdm-btn-sm rdm-filter-clear"
-                onClick={() => {
-                  setDoctorFilter('')
-                  setStatusFilter('')
-                  setPatientFilter('')
-                }}
-              >
-                Clear
-              </button>
-            )}
+          <div className="rdm-header-actions">
+            <button
+              type="button"
+              className="rdm-btn-base rdm-btn-quiet"
+              onClick={load}
+              title="Refresh day board data"
+            >
+              <IconRefresh size={14} />
+              <span>Refresh</span>
+            </button>
+            <Link
+              to="/receptionist/calendar"
+              className="rdm-btn-base rdm-btn-quiet"
+              title="Open clinic calendar"
+            >
+              <IconCalendar size={14} />
+              <span>Calendar</span>
+            </Link>
+            <Link
+              to="/receptionist/book?walkin=1"
+              className="rdm-btn-base rdm-btn-walkin-quiet"
+              title="Register a walk-in patient"
+            >
+              <IconUsers size={14} />
+              <span>Walk-in</span>
+            </Link>
+            <button
+              type="button"
+              className="rdm-btn-base rdm-btn-primary"
+              onClick={() => setShowIssueTokenModal(true)}
+              title="Issue a consultation token / book slot"
+            >
+              <IconPlus size={15} />
+              <span>Book / token</span>
+            </button>
           </div>
+        </header>
+
+        {/* Filters: board date, doctor, status, patient search (name, ID or phone) */}
+        <div className="rdm-filters-strip">
+          <div className="rdm-filter-group is-date">
+            <label htmlFor="rdm-date-input">Board date</label>
+            <input
+              id="rdm-date-input"
+              type="date"
+              className="rdm-filter-input"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              aria-label="Board date"
+            />
+          </div>
+
+          <div className="rdm-filter-group">
+            <label htmlFor="rdm-doctor-select">Doctor</label>
+            <select
+              id="rdm-doctor-select"
+              className="rdm-filter-input"
+              value={doctorFilter}
+              onChange={(e) => setDoctorFilter(e.target.value)}
+              aria-label="Filter by doctor"
+            >
+              <option value="">All doctors</option>
+              {doctors.map((d) => (
+                <option key={d.id} value={d.id}>
+                  {d.name}{d.specialization ? ` — ${d.specialization}` : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="rdm-filter-group">
+            <label htmlFor="rdm-status-select">Status</label>
+            <select
+              id="rdm-status-select"
+              className="rdm-filter-input"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              aria-label="Filter by status"
+            >
+              <option value="">All statuses</option>
+              <option value="late">Late</option>
+              <option value="waiting">Waiting / pending / booked</option>
+              <option value="in_consultation">With doctor</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+
+          <div className="rdm-filter-group is-search">
+            <label htmlFor="rdm-patient-search">Patient search</label>
+            <input
+              id="rdm-patient-search"
+              type="search"
+              className="rdm-filter-input"
+              value={patientFilter}
+              onChange={(e) => setPatientFilter(e.target.value)}
+              placeholder="Search by name, ID or phone"
+              aria-label="Search by name, ID or phone"
+            />
+          </div>
+
+          {filtersActive && (
+            <button
+              type="button"
+              className="rdm-filter-clear-btn"
+              onClick={() => {
+                setDoctorFilter('')
+                setStatusFilter('')
+                setPatientFilter('')
+              }}
+            >
+              Clear filters
+            </button>
+          )}
         </div>
 
-        <div className="rdm-kpi" aria-label="Summary">
-          <div className="rdm-kpi-item">
-            <span className="rdm-kpi-label">{filtersActive ? `Of ${rows.length}` : 'On board'}</span>
-            <b>{filteredRows.length}</b>
+        {/* Stats: On board, Waiting, Avg wait, With doctor, Done, Upcoming, and Next token (AMC03) */}
+        <div className="rdm-stats-grid" aria-label="Day board summary">
+          <div className="rdm-stat-tile">
+            <span className="rdm-stat-tile-label">{filtersActive ? `Of ${rows.length}` : 'On board'}</span>
+            <b className="rdm-stat-tile-val">{filteredRows.length}</b>
           </div>
-          <div className={`rdm-kpi-item${waiting > 0 ? ' is-emphasis' : ''}`}>
-            <span className="rdm-kpi-label">Waiting</span>
-            <b>{waiting}</b>
+
+          <div className={`rdm-stat-tile${waiting > 0 ? ' is-waiting' : ''}`}>
+            <span className="rdm-stat-tile-label">Waiting</span>
+            <b className="rdm-stat-tile-val">{waiting}</b>
           </div>
+
           <div
-            className="rdm-kpi-item"
-            title="Average estimated wait for queued patients (uses each doctor's recent visit length)"
+            className="rdm-stat-tile"
+            title="Average estimated wait for queued patients"
           >
-            <span className="rdm-kpi-label">Avg wait</span>
-            <b className="rdm-stat-timer">
+            <span className="rdm-stat-tile-label">Avg wait</span>
+            <b className="rdm-stat-tile-val">
               {avgEstMinutes != null ? formatEstMinutes(avgEstMinutes) : '—'}
             </b>
           </div>
-          <div className={`rdm-kpi-item${inConsult > 0 ? ' is-consult' : ''}`}>
-            <span className="rdm-kpi-label">With doctor</span>
-            <b>{inConsult}</b>
+
+          <div className={`rdm-stat-tile${inConsult > 0 ? ' is-consult' : ''}`}>
+            <span className="rdm-stat-tile-label">With doctor</span>
+            <b className="rdm-stat-tile-val">{inConsult}</b>
           </div>
-          <div className="rdm-kpi-item">
-            <span className="rdm-kpi-label">Done</span>
-            <b>{completed}</b>
+
+          <div className={`rdm-stat-tile${completed > 0 ? ' is-done' : ''}`}>
+            <span className="rdm-stat-tile-label">Done</span>
+            <b className="rdm-stat-tile-val">{completed}</b>
           </div>
-          <div className="rdm-kpi-item rdm-kpi-token">
-            <span className="rdm-kpi-label">Next token</span>
-            <b>{nextToken}</b>
-          </div>
+
           {upcomingBeyondBoard.length > 0 && (
-            <div className="rdm-kpi-item">
-              <span className="rdm-kpi-label">Upcoming</span>
-              <b>{upcomingBeyondBoard.length}{upcomingBeyondBoard.length >= 12 ? '+' : ''}</b>
+            <div className="rdm-stat-tile">
+              <span className="rdm-stat-tile-label">Upcoming</span>
+              <b className="rdm-stat-tile-val">
+                {upcomingBeyondBoard.length}{upcomingBeyondBoard.length >= 12 ? '+' : ''}
+              </b>
             </div>
           )}
+
           {filteredLate.length > 0 && (
-            <div className="rdm-kpi-item is-late">
-              <span className="rdm-kpi-label">Late</span>
-              <b>{filteredLate.length}</b>
+            <div className="rdm-stat-tile" style={{ borderColor: '#fca5a5', background: '#fff5f5' }}>
+              <span className="rdm-stat-tile-label" style={{ color: '#b91c1c' }}>Late</span>
+              <b className="rdm-stat-tile-val" style={{ color: '#b91c1c' }}>{filteredLate.length}</b>
             </div>
           )}
+
+          {/* Next token tile — strongest visual emphasis in deep teal */}
+          <div className="rdm-stat-tile is-next-token" title="Next token to be called or issued">
+            <span className="rdm-stat-tile-label">Next token</span>
+            <b className="rdm-stat-tile-val">{nextToken}</b>
+          </div>
         </div>
 
         {filteredLate.length > 0 && (
-          <div className="rdm-late" role="alert">
-            <span className="rdm-late-label">Late arrivals</span>
+          <div className="rdm-late" role="alert" style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '12px', padding: '0.9rem 1.15rem' }}>
+            <span className="rdm-late-label" style={{ color: '#b45309', fontWeight: 750 }}>Late arrivals</span>
             <div className="rdm-late-list">
               {filteredLate.map((l) => (
                 <div key={String(l.id)} className="rdm-late-item">
@@ -1121,6 +1274,7 @@ export default function ReceptionistDashboard() {
                     onCheckout={handleCheckout}
                     onReschedule={openReschedule}
                     onCancel={handleAbort}
+                    onPreviewToken={handlePreviewToken}
                   />
                 </div>
               ))}
@@ -1132,209 +1286,227 @@ export default function ReceptionistDashboard() {
         {error && <div className="rdm-flash rdm-flash-err">{error}</div>}
 
         {loading && rows.length === 0 ? (
-          <div className="rdm-panel">
-            <p className="rdm-empty" style={{ margin: 0 }}>Loading…</p>
+          <div className="rdm-section-card">
+            <p className="rdm-empty-state" style={{ margin: 0 }}>Loading board…</p>
           </div>
-        ) : filteredRows.length === 0 ? (
-          <div className="rdm-panel">
-            <p className="rdm-empty" style={{ margin: 0 }}>
+        ) : filteredRows.length === 0 && upcomingBeyondBoard.length === 0 ? (
+          <div className="rdm-section-card">
+            <p className="rdm-empty-state" style={{ margin: 0 }}>
               {rows.length === 0
-                ? 'No bookings for this date.'
-                : 'No rows match the current filters.'}
+                ? 'No bookings or queue entries for this date.'
+                : 'No patients match the current filters.'}
             </p>
           </div>
         ) : (
-          <div className="rdm-sections">
-            <section className="rdm-section rdm-section-consult">
-              <div className="rdm-panel">
-                <div className="rdm-section-head">
-                  <div className="rdm-section-title">
-                    <span className="rdm-section-ico" aria-hidden><IconStethoscope size={16} /></span>
-                    <div>
-                      <h3>With doctor</h3>
+          <div className="rdm-board-layout">
+            {/* Main Column: Three overview sections */}
+            <div className="rdm-main-column">
+              {/* 1. With doctor (in consultation now) */}
+              <section className="rdm-section-card section-consult">
+                <div className="rdm-card-header">
+                  <div className="rdm-card-header-left">
+                    <span className="rdm-card-icon" aria-hidden><IconStethoscope size={16} /></span>
+                    <div className="rdm-card-title-group">
+                      <h2>With doctor</h2>
                       <p>In consultation now</p>
                     </div>
                   </div>
-                  <span className="rdm-section-count">{withDoctorRows.length}</span>
+                  <span className="rdm-card-badge-count">{withDoctorRows.length}</span>
                 </div>
                 <BoardSectionTable
                   rows={withDoctorRows}
-                  emptyText="No one with a doctor right now."
+                  emptyText="No one with a doctor right now — room is ready for next patient."
                   handlers={boardHandlers}
                 />
-              </div>
-            </section>
+              </section>
 
-            <section className="rdm-section rdm-section-queue">
-              <div className="rdm-panel">
-                <div className="rdm-section-head">
-                  <div className="rdm-section-title">
-                    <span className="rdm-section-ico" aria-hidden><IconQueue size={16} /></span>
-                    <div>
-                      <h3>In queue</h3>
+              {/* 2. In queue (waiting or ready to enter) */}
+              <section className="rdm-section-card section-queue">
+                <div className="rdm-card-header">
+                  <div className="rdm-card-header-left">
+                    <span className="rdm-card-icon" aria-hidden><IconQueue size={16} /></span>
+                    <div className="rdm-card-title-group">
+                      <h2>In queue</h2>
                       <p>Waiting or ready to enter</p>
                     </div>
                   </div>
-                  <span className="rdm-section-count">{inQueueRows.length}</span>
+                  <span className="rdm-card-badge-count">{inQueueRows.length}</span>
                 </div>
                 <BoardSectionTable
                   rows={inQueueRows}
-                  emptyText="Nobody waiting in queue."
+                  emptyText="Queue is clear — no patients waiting right now."
                   handlers={boardHandlers}
                 />
-              </div>
-            </section>
+              </section>
 
-            {doneRows.length > 0 && (
-              <section className="rdm-section rdm-section-done">
-                <div className="rdm-panel">
-                  <div className="rdm-section-head">
-                    <div className="rdm-section-title">
-                      <span className="rdm-section-ico" aria-hidden><IconCheck size={16} /></span>
-                      <div>
-                        <h3>Completed</h3>
+              {/* Completed visits today (if any) */}
+              {doneRows.length > 0 && (
+                <section className="rdm-section-card section-done">
+                  <div className="rdm-card-header">
+                    <div className="rdm-card-header-left">
+                      <span className="rdm-card-icon" aria-hidden><IconCheck size={16} /></span>
+                      <div className="rdm-card-title-group">
+                        <h2>Completed</h2>
                         <p>Checked out today</p>
                       </div>
                     </div>
-                    <span className="rdm-section-count">{doneRows.length}</span>
+                    <span className="rdm-card-badge-count">{doneRows.length}</span>
                   </div>
                   <BoardSectionTable
                     rows={doneRows}
                     emptyText="No completed visits."
                     handlers={boardHandlers}
                   />
+                </section>
+              )}
+
+              {/* 3. Upcoming appointments (booked after today) */}
+              <section className="rdm-section-card section-upcoming">
+                <div className="rdm-card-header">
+                  <div className="rdm-card-header-left">
+                    <span className="rdm-card-icon" aria-hidden><IconCalendar size={16} /></span>
+                    <div className="rdm-card-title-group">
+                      <h2>Upcoming appointments</h2>
+                      <p>Booked after {boardDateLabel}</p>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                    <span className="rdm-card-badge-count">
+                      {upcomingBeyondBoard.length}{upcomingBeyondBoard.length >= 12 ? '+' : ''}
+                    </span>
+                    <Link
+                      to="/receptionist/appointments"
+                      className="rdm-btn-base rdm-btn-quiet"
+                      style={{ minHeight: '34px', padding: '0.25rem 0.65rem', fontSize: '0.78rem' }}
+                    >
+                      View all
+                    </Link>
+                  </div>
                 </div>
+                {upcomingBeyondBoard.length === 0 ? (
+                  <p className="rdm-empty-state" style={{ margin: 0 }}>
+                    No upcoming appointments scheduled after this date.
+                  </p>
+                ) : (
+                  <div className="rdm-table-wrap">
+                    <table className="rdm-data-table rdm-upcoming-table">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Time</th>
+                          <th>Patient</th>
+                          <th>Doctor</th>
+                          <th>Status</th>
+                          <th className="rdm-col-action" style={{ textAlign: 'right' }}>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {upcomingBeyondBoard.map((a) => {
+                          const apptDate = toDateOnlyString(a.appointment_date)
+                          return (
+                            <tr key={a.id}>
+                              <td>
+                                <span className="rdm-day">{formatBoardDate(apptDate)}</span>
+                              </td>
+                              <td>
+                                <span className="rdm-time-chip">{a.slot_time?.slice(0, 5) || '—'}</span>
+                              </td>
+                              <td>
+                                <div className="rdm-patient-cell">
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                                    <span className="rdm-patient-name">{a.patient?.name || '—'}</span>
+                                    <VisitSourceBadge source={a.type === 'walk_in' ? 'walk_in' : 'booked'} />
+                                  </div>
+                                  <span className="rdm-patient-sub">
+                                    {a.patient?.patient_code || ''}
+                                    {a.patient?.phone ? ` · ${a.patient.phone}` : ''}
+                                  </span>
+                                </div>
+                              </td>
+                              <td>
+                                <div className="rdm-doctor-cell">
+                                  <span className="rdm-doctor-name">{a.doctor?.name || '—'}</span>
+                                  {a.doctor?.specialization && (
+                                    <span className="rdm-doctor-spec">{a.doctor.specialization}</span>
+                                  )}
+                                </div>
+                              </td>
+                              <td>
+                                <span className="rdm-status-pill is-booked">{a.status.replace(/_/g, ' ')}</span>
+                              </td>
+                              <td className="rdm-col-action" style={{ textAlign: 'right' }}>
+                                <div className="rdm-row-actions">
+                                  <button
+                                    type="button"
+                                    className="rdm-btn-base rdm-btn-tinted-green"
+                                    onClick={() => handlePreviewUpcomingToken(a)}
+                                    title="Preview & print official token slip"
+                                  >
+                                    <IconPrinter size={14} />
+                                    <span>Print Slip</span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="rdm-btn-base rdm-btn-primary"
+                                    onClick={() => setDate(apptDate)}
+                                  >
+                                    Open day
+                                  </button>
+                                  {['booked', 'no_show', 'checked_in'].includes(a.status) && (
+                                    <>
+                                      <button
+                                        type="button"
+                                        className="rdm-btn-base rdm-btn-quiet"
+                                        onClick={() =>
+                                          setRescheduleTarget({
+                                            appointmentId: a.id,
+                                            doctorId: a.doctor_id,
+                                            doctorName: a.doctor?.name || 'Doctor',
+                                            appointmentDate: apptDate,
+                                            slotTime: a.slot_time || '09:00:00',
+                                            patientName: a.patient?.name,
+                                          })
+                                        }
+                                      >
+                                        Reschedule
+                                      </button>
+                                      <button
+                                        type="button"
+                                        className="rdm-btn-cancel-only"
+                                        onClick={async () => {
+                                          if (!window.confirm('Cancel this appointment?')) return
+                                          try {
+                                            await cancelAppointment(a.id)
+                                            setMessage('Appointment cancelled')
+                                            load()
+                                          } catch {
+                                            setError('Cancel failed')
+                                          }
+                                        }}
+                                      >
+                                        Cancel
+                                      </button>
+                                    </>
+                                  )}
+                                </div>
+                              </td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </section>
-            )}
+            </div>
+
+            {/* Side Panel: "Peak booking hours" bar chart with range tabs, doctor filter, and busiest hour summary */}
+            <aside className="rdm-side-column">
+              <PeakBookingChart refreshKey={peakRefreshKey} />
+            </aside>
           </div>
         )}
 
-        <section className="rdm-section rdm-section-upcoming">
-          <div className="rdm-panel">
-            <div className="rdm-section-head">
-              <div className="rdm-section-title">
-                <span className="rdm-section-ico" aria-hidden><IconCalendar size={16} /></span>
-                <div>
-                  <h3>Upcoming appointments</h3>
-                  <p>Booked after {boardDateLabel}</p>
-                </div>
-              </div>
-              <div className="rdm-upcoming-head-actions">
-                <span className="rdm-section-count">{upcomingBeyondBoard.length}{upcomingBeyondBoard.length >= 12 ? '+' : ''}</span>
-                <Link to="/receptionist/appointments" className="rdm-linkbtn">
-                  View all
-                </Link>
-              </div>
-            </div>
-            {upcomingBeyondBoard.length === 0 ? (
-              <p className="rdm-empty" style={{ margin: 0 }}>
-                No later bookings scheduled.
-              </p>
-            ) : (
-              <div className="rdm-table-wrap">
-                <table className="rdm-table rdm-upcoming-table">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Time</th>
-                      <th>Patient</th>
-                      <th>Doctor</th>
-                      <th>Status</th>
-                      <th className="rdm-col-action">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {upcomingBeyondBoard.map((a) => {
-                      const apptDate = toDateOnlyString(a.appointment_date)
-                      return (
-                        <tr key={a.id}>
-                          <td>
-                            <span className="rdm-day">{formatBoardDate(apptDate)}</span>
-                          </td>
-                          <td>
-                            <span className="rdm-time">{a.slot_time?.slice(0, 5) || '—'}</span>
-                          </td>
-                          <td>
-                            <div className="rdm-patient">
-                              <div className="rdm-name-row">
-                                <span className="rdm-name">{a.patient?.name || '—'}</span>
-                                <VisitSourceBadge source={a.type === 'walk_in' ? 'walk_in' : 'booked'} />
-                              </div>
-                              <span className="rdm-meta">
-                                {a.patient?.patient_code || ''}
-                                {a.patient?.phone ? ` · ${a.patient.phone}` : ''}
-                              </span>
-                            </div>
-                          </td>
-                          <td>
-                            <div className="rdm-patient">
-                              <span className="rdm-name">{a.doctor?.name || '—'}</span>
-                              {a.doctor?.specialization && (
-                                <span className="rdm-meta">{a.doctor.specialization}</span>
-                              )}
-                            </div>
-                          </td>
-                          <td>
-                            <span className="rdm-pill rdm-pill-muted">{a.status.replace(/_/g, ' ')}</span>
-                          </td>
-                          <td className="rdm-col-action">
-                            <div className="rdm-actions">
-                              <button
-                                type="button"
-                                className="rdm-btn rdm-btn-solid rdm-btn-sm"
-                                onClick={() => setDate(apptDate)}
-                              >
-                                Open day
-                              </button>
-                              {['booked', 'no_show', 'checked_in'].includes(a.status) && (
-                                <>
-                                  <button
-                                    type="button"
-                                    className="rdm-btn rdm-btn-ghost rdm-btn-sm"
-                                    onClick={() =>
-                                      setRescheduleTarget({
-                                        appointmentId: a.id,
-                                        doctorId: a.doctor_id,
-                                        doctorName: a.doctor?.name || 'Doctor',
-                                        appointmentDate: apptDate,
-                                        slotTime: a.slot_time || '09:00:00',
-                                        patientName: a.patient?.name,
-                                      })
-                                    }
-                                  >
-                                    Reschedule
-                                  </button>
-                                  <button
-                                    type="button"
-                                    className="rdm-btn rdm-btn-ghost rdm-btn-sm"
-                                    onClick={async () => {
-                                      if (!window.confirm('Cancel this appointment?')) return
-                                      try {
-                                        await cancelAppointment(a.id)
-                                        setMessage('Appointment cancelled')
-                                        load()
-                                      } catch {
-                                        setError('Cancel failed')
-                                      }
-                                    }}
-                                  >
-                                    Cancel
-                                  </button>
-                                </>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        </section>
-
-        <PeakBookingChart refreshKey={peakRefreshKey} />
       </div>
 
       <RescheduleModal
@@ -1349,6 +1521,24 @@ export default function ReceptionistDashboard() {
           )
           load()
         }}
+      />
+
+      <IssueTokenModal
+        isOpen={showIssueTokenModal}
+        onClose={() => setShowIssueTokenModal(false)}
+        defaultDate={date}
+        doctors={doctors}
+        onTokenIssued={(tData, msg) => {
+          setMessage(msg)
+          load()
+          setTokenModalData(tData)
+        }}
+      />
+
+      <TokenModal
+        isOpen={Boolean(tokenModalData)}
+        token={tokenModalData}
+        onClose={() => setTokenModalData(null)}
       />
     </Layout>
   )

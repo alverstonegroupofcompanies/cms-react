@@ -50,10 +50,12 @@ export default function ScrollToTop() {
     })
 
     // Refresh GSAP ScrollTrigger after route transition and layout settle
-    const refreshTimer = window.setTimeout(() => {
-      ScrollTrigger.refresh()
-    }, 150)
-    return () => window.clearTimeout(refreshTimer)
+    const refreshTimers = [150, 450, 900, 1800].map((delay) =>
+      window.setTimeout(() => {
+        ScrollTrigger.refresh()
+      }, delay)
+    )
+    return () => refreshTimers.forEach((t) => window.clearTimeout(t))
   }, [pathname, search, hash])
 
   return null

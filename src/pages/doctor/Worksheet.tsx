@@ -27,14 +27,18 @@ import {
   IconArrowLeft,
   IconCheck,
   IconDroplet,
+  IconEye,
   IconFlask,
   IconPhone,
   IconPill,
+  IconPrinter,
   IconReceipt,
   IconStethoscope,
   IconTrash,
   IconUser,
 } from '../../components/Icons'
+import TokenModal from '../../components/TokenModal'
+import type { TokenData } from '../../components/PrintableTokenSlip'
 import {
   doseFrequencyShort,
   formatDoseSchedule,
@@ -50,7 +54,7 @@ import {
   visitHistoryFromPrior,
   type ClinicalData,
 } from '../../utils/clinicalData'
-import type { LabTest, Medicine, Patient, VisitBill, Worksheet } from '../../api/types'
+import type { LabTest, Medicine, Patient, Prescription, VisitBill, Worksheet } from '../../api/types'
 
 const BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', 'unknown']
 const RX_DURATION_DAYS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const
@@ -151,6 +155,64 @@ export default function DoctorWorksheet() {
   const [lastBillTotal, setLastBillTotal] = useState(0)
   const [savedBill, setSavedBill] = useState<VisitBill | null>(null)
   const [showSavedBill, setShowSavedBill] = useState(false)
+  const [tokenModalData, setTokenModalData] = useState<TokenData | null>(null)
+
+  const getRxTokenNumber = (rx: { id: number; clinic_prescription_number?: string | null }, index?: number) => {
+    if (rx.clinic_prescription_number && !rx.clinic_prescription_number.startsWith('RX-')) {
+      return rx.clinic_prescription_number
+    }
+    const idx =
+      index != null
+        ? index
+        : worksheet?.prescriptions
+          ? worksheet.prescriptions.findIndex((p) => p.id === rx.id)
+          : 0
+    return String(Math.max(1, (idx >= 0 ? idx : 0) + 1)).padStart(2, '0')
+  }
+
+  const buildRxTokenData = (
+    rx: {
+      id: number
+      clinic_prescription_number?: string | null
+      notes?: string | null
+      created_at?: string
+      items?: Array<{
+        id?: number
+        medicine_id?: number
+        dosage?: string
+        frequency?: string
+        duration_days?: number
+        quantity?: number
+        medicine?: { name: string }
+      }>
+    },
+    index?: number
+  ): TokenData => {
+    const tokenNumber = getRxTokenNumber(rx, index)
+    const items = (rx.items || []).map((it) => ({
+      name: it.medicine?.name || (it.medicine_id ? selectedMeds[it.medicine_id]?.name : null) || `Medicine #${it.medicine_id || ''}`,
+      dosage: it.dosage,
+      frequency: it.frequency,
+      duration_days: it.duration_days,
+      quantity: it.quantity,
+    }))
+
+    return {
+      type: 'prescription',
+      tokenCode: tokenNumber,
+      prescriptionId: rx.id,
+      patientName: worksheet?.patient?.name || 'Patient',
+      patientCode: worksheet?.patient?.patient_code,
+      patientPhone: worksheet?.patient?.phone,
+      patientGender: worksheet?.patient?.gender,
+      doctorName: user?.doctor?.name,
+      specialization: user?.doctor?.specialization,
+      departmentName: user?.doctor?.department?.name,
+      roomOrCounter: 'Central Pharmacy • Ground Floor (Counter 1)',
+      notes: rx.notes || undefined,
+      items,
+    }
+  }
 
   const hydratePatientForm = (p: Patient) => {
     const [first, ...rest] = (p.name || '').trim().split(/\s+/)
@@ -349,7 +411,7 @@ export default function DoctorWorksheet() {
     setSavingRx(true)
     if (!opts?.quiet) setError('')
     try {
-      await createPrescription({
+      const res = await createPrescription({
         patient_id: worksheet.patient_id,
         doctor_id: user.doctor.id,
         queue_token_id: worksheet.queue_token_id,
@@ -357,12 +419,29 @@ export default function DoctorWorksheet() {
         notes: rxNotes || undefined,
         items,
       })
-      if (!opts?.quiet) setMessage('Prescription saved and sent to pharmacy')
+      const created = (res as { data?: Prescription })?.data
+      const tokenNumber = created?.clinic_prescription_number || `RX-${created?.id || 'NEW'}`
+
+      if (!opts?.quiet) {
+        setMessage(`Prescription saved! New Pharmacy Dispensing Token: ${tokenNumber}`)
+      }
       setRxNotes('')
       setRxItems([])
       setEditingRxIdx(null)
       await load({ quiet: true })
       setSavingRx(false)
+
+      if (created && !opts?.quiet) {
+        const tokenPayload = buildRxTokenData({
+          ...created,
+          items: created.items || items.map((it) => ({
+            ...it,
+            medicine: selectedMeds[it.medicine_id],
+          })),
+        })
+        setTokenModalData(tokenPayload)
+      }
+
       return true
     } catch (err: unknown) {
       const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message
@@ -580,6 +659,29 @@ export default function DoctorWorksheet() {
                 Worksheet {worksheet.worksheet_code} is closed
                 {lastBillTotal > 0 ? ` · bill ${formatInr(lastBillTotal)}` : ''}.
               </p>
+
+              {worksheet.prescriptions && worksheet.prescriptions.length > 0 && (
+                <div style={{ margin: '1.25rem 0 1.5rem', padding: '1.1rem', background: '#f8fafc', borderRadius: '12px', border: '1.5px solid #e2e8f0', width: '100%', boxSizing: 'border-box' }}>
+                  <p style={{ margin: '0 0 0.65rem', fontWeight: 750, fontSize: '0.88rem', color: '#0f172a' }}>
+                    Pharmacy Dispense Tokens Generated
+                  </p>
+                  <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    {worksheet.prescriptions.map((rx, idx) => (
+                      <button
+                        key={rx.id}
+                        type="button"
+                        className="pb-token-action-btn pb-token-action-print"
+                        onClick={() => setTokenModalData(buildRxTokenData(rx, idx))}
+                        style={{ padding: '0.5rem 1rem', fontSize: '0.84rem' }}
+                      >
+                        <IconPrinter size={15} />
+                        <span>Print Token Slip ({getRxTokenNumber(rx, idx)})</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="ws-done-actions">
                 <button
                   type="button"
@@ -958,11 +1060,36 @@ export default function DoctorWorksheet() {
 
                     {(worksheet.prescriptions || []).length > 0 && (
                       <ul className="rx-saved-list">
-                        {worksheet.prescriptions?.map((rx) => (
+                        {worksheet.prescriptions?.map((rx, idx) => (
                           <li key={rx.id} className="rx-saved-block">
                             <div className="rx-saved-meta">
-                              <strong>Rx #{rx.id}</strong>
-                              <span className="rx-status-pill">{rx.status}</span>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                                <strong>Rx #{rx.id}</strong>
+                                <span className="rx-token-tag" style={{ padding: '0.2rem 0.55rem', background: '#fee2e2', color: '#991b1b', borderRadius: '4px', fontSize: '0.74rem', fontWeight: 750 }}>
+                                  Token: {getRxTokenNumber(rx, idx)}
+                                </span>
+                              </div>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                                <button
+                                  type="button"
+                                  className="token-list-btn token-list-btn-primary"
+                                  onClick={() => setTokenModalData(buildRxTokenData(rx, idx))}
+                                  title="Print official prescription token slip"
+                                >
+                                  <IconPrinter size={13} />
+                                  <span>Print Token</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  className="token-list-btn"
+                                  onClick={() => setTokenModalData(buildRxTokenData(rx, idx))}
+                                  title="Preview printable token slip"
+                                >
+                                  <IconEye size={13} />
+                                  <span>Preview</span>
+                                </button>
+                                <span className="rx-status-pill">{rx.status}</span>
+                              </div>
                             </div>
                             <ul className="rx-added-list">
                               {rx.items?.map((item, i) => (
@@ -1280,6 +1407,12 @@ export default function DoctorWorksheet() {
           </>
         )}
       </div>
+
+      <TokenModal
+        isOpen={Boolean(tokenModalData)}
+        token={tokenModalData}
+        onClose={() => setTokenModalData(null)}
+      />
     </Layout>
   )
 }

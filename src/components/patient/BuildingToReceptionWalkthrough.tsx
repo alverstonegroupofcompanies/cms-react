@@ -377,7 +377,7 @@ export default function BuildingToReceptionWalkthrough({
               <div className="btr-console-bar" key={activeSceneData.id}>
                 {/* Left: Step Tag & Clean Minimal Title */}
                 <div className="btr-console-identity">
-                  <span className="btr-step-label">{activeSceneData.stepNumber} / 04</span>
+                  <span className="btr-step-label" data-step={activeScene}>{activeSceneData.stepNumber} / 04</span>
                   <h3 className="btr-console-title">{activeSceneData.title}</h3>
                 </div>
 

@@ -229,12 +229,6 @@ export default function AsterNavbar() {
       <div className="alv-ribbon">
         <div className="alv-ribbon-inner">
           <div className="alv-ribbon-left">
-            <a href={`tel:${CLINIC.phone.replace(/\s/g, '')}`} className="alv-emergency-pill">
-              <span className="alv-live-dot" />
-              <span className="alv-emergency-label">24/7 Emergency & Ambulance</span>
-              <strong>{CLINIC.phone}</strong>
-            </a>
-
             <span className="alv-ribbon-meta">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
@@ -250,7 +244,7 @@ export default function AsterNavbar() {
                 <circle cx="12" cy="12" r="10" />
                 <polyline points="12 6 12 12 16 14" />
               </svg>
-              OPD: Mon–Sat, 9:00 AM – 5:30 PM
+              Doctor Consultations: Mon–Sat, 9:00 AM – 5:30 PM
             </span>
           </div>
 
@@ -267,17 +261,8 @@ export default function AsterNavbar() {
               24/7 Care Desk
             </button>
 
-            <span className="alv-ribbon-divider" />
-
-            <Link to="/dashboard" className="alv-ribbon-btn">
-              Staff Portal
-            </Link>
-
-            <span className="alv-ribbon-divider" />
-
             {isPatient ? (
               <div className="alv-ribbon-auth">
-                <span className="alv-ribbon-patient-tag">Patient Portal Active</span>
                 <button
                   type="button"
                   className="alv-ribbon-signout"
@@ -694,19 +679,6 @@ export default function AsterNavbar() {
                         <div>
                           <strong>E-Prescriptions & Refills</strong>
                           <span>View dosage schedules & pharmacy bills</span>
-                        </div>
-                      </Link>
-
-                      <Link to="/dashboard" className="alv-hub-row" onClick={() => setActiveDropdown(null)}>
-                        <div className="alv-hub-icon">
-                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <rect x="2" y="7" width="20" height="14" rx="2" />
-                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                          </svg>
-                        </div>
-                        <div>
-                          <strong>Clinical Staff Suite</strong>
-                          <span>Doctor, Reception, Lab & Pharmacy login</span>
                         </div>
                       </Link>
                     </div>

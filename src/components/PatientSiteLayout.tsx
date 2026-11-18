@@ -1,15 +1,14 @@
 import { useEffect } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import BrandLogo from './BrandLogo'
 import { CLINIC } from '../config/clinic'
 import { useAuth } from '../context/AuthContext'
-import { useScrollReveal } from '../hooks/useScrollReveal'
 import { iconMap } from './Icons'
 import AsterNavbar from './AsterNavbar'
 import SmoothScroll from './motion/SmoothScroll'
 import PageTransition from './motion/PageTransition'
 import StickyCTA from './motion/StickyCTA'
-import ScrollProgress from './motion/ScrollProgress'
 import { smoothScrollToElement } from '../utils/scrollHelper'
 
 interface Props {
@@ -33,10 +32,20 @@ function loginHref(next?: string) {
 }
 
 export default function PatientSiteLayout({ children, portal = false }: Props) {
-  useScrollReveal()
   const { user } = useAuth()
   const location = useLocation()
   const isPatient = user?.role === 'patient'
+
+  useEffect(() => {
+    // Recalculate full document metrics on route navigation so Lenis & ScrollTrigger recognize the full footer
+    const t = window.setTimeout(() => {
+      if (typeof window !== 'undefined' && window.__lenis) {
+        window.__lenis.resize?.()
+      }
+      ScrollTrigger.refresh()
+    }, 180)
+    return () => window.clearTimeout(t)
+  }, [location.pathname])
 
   useEffect(() => {
     if (!location.hash) return
@@ -50,7 +59,6 @@ export default function PatientSiteLayout({ children, portal = false }: Props) {
   return (
     <SmoothScroll>
       <div className={`ps-site ph-app page-fade${portal ? ' is-portal' : ''}`}>
-        <ScrollProgress />
         <AsterNavbar />
 
         <main className={`ps-main${portal ? ' ps-main-portal' : ''}`}>
@@ -78,7 +86,7 @@ export default function PatientSiteLayout({ children, portal = false }: Props) {
         </nav>
       )}
 
-      <footer className="ps-footer" data-reveal>
+      <footer className="ps-footer">
         {/* Top Concierge & Emergency Contact Strip */}
         <div className="ps-footer-top-bar">
           <div className="ps-footer-top-inner">
@@ -210,7 +218,7 @@ export default function PatientSiteLayout({ children, portal = false }: Props) {
               <h4>Visiting Hours</h4>
               <ul className="ps-footer-hours">
                 <li>
-                  <span>Outpatient (OPD)</span>
+                  <span>Doctor Consultations</span>
                   <strong>9:00 AM – 5:30 PM</strong>
                 </li>
                 {CLINIC.hours.map((h) => (

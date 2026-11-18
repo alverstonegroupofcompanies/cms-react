@@ -41,11 +41,11 @@ export default function SpecialtyDisciplinesGrid({ signedIn = false }: Specialty
                 alt="Friendly specialist pediatrician examining a young child in modern colorful clinic"
                 loading="lazy"
               />
-              <span className="sdg-img-badge">Child Care</span>
+              <span className="sdg-img-badge sdg-img-badge--amber">Child Care</span>
             </Link>
 
-            {/* Tile 2: LIGHT TEXT (Pediatrics - Warm Cream) */}
-            <div className="sdg-tile sdg-tile--text sdg-tile--cream">
+            {/* Tile 2: LIGHT TEXT (Pediatrics - Warm Sunny Honey Amber) */}
+            <div className="sdg-tile sdg-tile--text sdg-tile--pediatrics">
               <div className="sdg-text-top">
                 <span className="sdg-tag">Pediatric OP</span>
                 <h3 className="sdg-tile-title">Pediatrics &amp; Child Wellness</h3>
@@ -67,11 +67,11 @@ export default function SpecialtyDisciplinesGrid({ signedIn = false }: Specialty
                 alt="Senior internal medicine specialist doctor reviewing patient wellness charts on tablet"
                 loading="lazy"
               />
-              <span className="sdg-img-badge">Primary Care</span>
+              <span className="sdg-img-badge sdg-img-badge--emerald">Primary Care</span>
             </Link>
 
-            {/* Tile 4: DARK TEXT (General Medicine - Midnight Forest) */}
-            <div className="sdg-tile sdg-tile--text sdg-tile--dark">
+            {/* Tile 4: DARK TEXT (General Medicine - Executive Clinical Navy & Mint) */}
+            <div className="sdg-tile sdg-tile--text sdg-tile--medicine">
               <div className="sdg-text-top">
                 <span className="sdg-tag">Adult Wellness</span>
                 <h3 className="sdg-tile-title">General &amp; Internal Medicine</h3>
@@ -87,8 +87,8 @@ export default function SpecialtyDisciplinesGrid({ signedIn = false }: Specialty
             </div>
 
             {/* ROW 2 */}
-            {/* Tile 5: MUTED TEXT (Dermatology - Slate Sage) */}
-            <div className="sdg-tile sdg-tile--text sdg-tile--slate">
+            {/* Tile 5: TEXT (Dermatology - Radiant Rose & Velvet Garnet) */}
+            <div className="sdg-tile sdg-tile--text sdg-tile--dermatology">
               <div className="sdg-text-top">
                 <span className="sdg-tag">Skin Clinic</span>
                 <h3 className="sdg-tile-title">Dermatology &amp; Aesthetics</h3>
@@ -110,11 +110,11 @@ export default function SpecialtyDisciplinesGrid({ signedIn = false }: Specialty
                 alt="Doctor performing advanced digital skin analysis in dermatology consultation suite"
                 loading="lazy"
               />
-              <span className="sdg-img-badge">Skin Clinic</span>
+              <span className="sdg-img-badge sdg-img-badge--rose">Skin Clinic</span>
             </Link>
 
-            {/* Tile 7: LIGHT TEXT (Diagnostic Pathology - Soft Porcelain) */}
-            <div className="sdg-tile sdg-tile--text sdg-tile--porcelain">
+            {/* Tile 7: LIGHT TEXT (Diagnostic Pathology - Precision Sapphire Azure) */}
+            <div className="sdg-tile sdg-tile--text sdg-tile--pathology">
               <div className="sdg-text-top">
                 <span className="sdg-tag">NABL Accredited</span>
                 <h3 className="sdg-tile-title">Advanced Diagnostic Pathology</h3>
@@ -136,7 +136,7 @@ export default function SpecialtyDisciplinesGrid({ signedIn = false }: Specialty
                 alt="Precision clinical automated laboratory analyzers and testing equipment"
                 loading="lazy"
               />
-              <span className="sdg-img-badge">Modern Lab</span>
+              <span className="sdg-img-badge sdg-img-badge--sapphire">Modern Lab</span>
             </Link>
           </Reveal>
       </div>

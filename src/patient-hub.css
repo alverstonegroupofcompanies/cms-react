@@ -6549,12 +6549,110 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 200ms ease, color 200ms ease;
+  transition: background 200ms ease, color 200ms ease, transform 200ms ease;
 }
 
 .po-index-row:hover .po-index-icon {
-  background: #18181b;
-  color: #fff1f1;
+  transform: scale(1.08);
+}
+
+.po-index-meta {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8b1e2b;
+  padding: 0.24rem 0.7rem;
+  border-radius: 999px;
+  transition: all 180ms ease;
+}
+
+/* Row 1: Book Consultation - Diagnostic Sapphire */
+.po-index-row:nth-child(1) .po-index-num {
+  color: #0284c7;
+}
+.po-index-row:nth-child(1) .po-index-icon {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #bae6fd;
+}
+.po-index-row:nth-child(1) .po-index-meta {
+  color: #0284c7;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+}
+.po-index-row:nth-child(1):hover {
+  background: linear-gradient(90deg, rgba(224, 242, 254, 0.5) 0%, transparent 100%);
+}
+.po-index-row:nth-child(1):hover .po-index-icon {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+/* Row 2: Live Queue & Visits - Vitality Mint & Emerald */
+.po-index-row:nth-child(2) .po-index-num {
+  color: #059669;
+}
+.po-index-row:nth-child(2) .po-index-icon {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+.po-index-row:nth-child(2) .po-index-meta {
+  color: #047857;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+}
+.po-index-row:nth-child(2):hover {
+  background: linear-gradient(90deg, rgba(209, 250, 229, 0.5) 0%, transparent 100%);
+}
+.po-index-row:nth-child(2):hover .po-index-icon {
+  background: #059669;
+  color: #ffffff;
+}
+
+/* Row 3: NABL Lab Reports - Precision Violet */
+.po-index-row:nth-child(3) .po-index-num {
+  color: #6366f1;
+}
+.po-index-row:nth-child(3) .po-index-icon {
+  background: #eef2ff;
+  color: #6366f1;
+  border: 1px solid #c7d2fe;
+}
+.po-index-row:nth-child(3) .po-index-meta {
+  color: #4f46e5;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+}
+.po-index-row:nth-child(3):hover {
+  background: linear-gradient(90deg, rgba(238, 242, 255, 0.6) 0%, transparent 100%);
+}
+.po-index-row:nth-child(3):hover .po-index-icon {
+  background: #6366f1;
+  color: #ffffff;
+}
+
+/* Row 4: Digital Prescriptions - Sunrise Amber */
+.po-index-row:nth-child(4) .po-index-num {
+  color: #d97706;
+}
+.po-index-row:nth-child(4) .po-index-icon {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #fde68a;
+}
+.po-index-row:nth-child(4) .po-index-meta {
+  color: #b45309;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+}
+.po-index-row:nth-child(4):hover {
+  background: linear-gradient(90deg, rgba(254, 243, 199, 0.5) 0%, transparent 100%);
+}
+.po-index-row:nth-child(4):hover .po-index-icon {
+  background: #d97706;
+  color: #ffffff;
 }
 
 .po-index-main h3 {
@@ -6639,12 +6737,24 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #fff1f1;
-  color: #6e131e;
+  background: #f8fafc;
+  color: #18181b;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+.po-ledger-group:nth-child(1) .po-ledger-ico {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #fde68a;
+}
+
+.po-ledger-group:nth-child(2) .po-ledger-ico {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #bae6fd;
 }
 
 .po-ledger-head h3 {
@@ -7764,13 +7874,17 @@
 }
 
 .pb-doctor-fee {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   font-style: normal;
   font-weight: 750;
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   color: #8b1e2b;
-  padding: 0.35rem 0.65rem;
+  padding: 0.22rem 0.6rem;
   border-radius: 999px;
   background: #fff1f1;
+  border: 1px solid #fecaca;
   white-space: nowrap;
 }
 

@@ -35,6 +35,7 @@ const CORE_SERVICES = [
     guestTo: '/patient/login?next=%2Fpatient%2Fbook',
     icon: IconCalendar,
     image: '/images/patient-banner-book.jpg',
+    colorVariant: 'sapphire',
   },
   {
     title: 'Live Queue & Token Status',
@@ -44,6 +45,7 @@ const CORE_SERVICES = [
     guestTo: '/patient/login?next=%2Fpatient%2Fdashboard',
     icon: IconQueue,
     image: '/images/service-live-queue.jpg',
+    colorVariant: 'emerald',
   },
   {
     title: 'Diagnostic Lab Reports',
@@ -53,6 +55,7 @@ const CORE_SERVICES = [
     guestTo: '/patient/login?next=%2Fpatient%2Flab-reports',
     icon: IconFlask,
     image: '/images/dept-lab-diagnostics.jpg',
+    colorVariant: 'violet',
   },
   {
     title: '24/7 Clinical Pharmacy',
@@ -62,6 +65,7 @@ const CORE_SERVICES = [
     guestTo: '/patient/login?next=%2Fpatient%2Fprescriptions',
     icon: IconPill,
     image: '/images/service-pharmacy.jpg',
+    colorVariant: 'amber',
   },
 ] as const
 
@@ -216,7 +220,7 @@ export default function PatientLanding() {
                   <Link
                     key={s.title}
                     to={targetUrl}
-                    className="ps-service-box"
+                    className={`ps-service-box ps-service-box--${s.colorVariant}`}
                   >
                     <div className="ps-service-img-wrap">
                       <img src={s.image} alt={s.title} />
@@ -403,10 +407,10 @@ export default function PatientLanding() {
                 <circle cx="11" cy="11" r="9" stroke="#8B1A32" strokeWidth="2" strokeOpacity="0.12" />
               </svg>
               <svg className="ps-c-motif ps-c-motif-3" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M10 3V17M3 10H17" stroke="#0284c7" strokeWidth="2.2" strokeLinecap="round" strokeOpacity="0.13" />
+                <path d="M10 3V17M3 10H17" stroke="#8B1A32" strokeWidth="2.2" strokeLinecap="round" strokeOpacity="0.14" />
               </svg>
               <svg className="ps-c-motif ps-c-motif-4" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="10" stroke="#0284c7" strokeWidth="2" strokeOpacity="0.11" />
+                <circle cx="12" cy="12" r="10" stroke="#8B1A32" strokeWidth="2" strokeOpacity="0.12" />
               </svg>
               <svg className="ps-c-motif ps-c-motif-5" width="22" height="22" viewBox="0 0 22 22" fill="none">
                 <path d="M11 3V19M3 11H19" stroke="#8B1A32" strokeWidth="2.2" strokeLinecap="round" strokeOpacity="0.12" />
@@ -433,20 +437,31 @@ export default function PatientLanding() {
               <Reveal direction="left" distance={28} duration={0.85} className="ps-contact-left-col">
                 {/* 24/7 Emergency & Hotline Banner */}
                 <div className="ps-contact-hotline-card">
-                  <div className="ps-hotline-icon-wrap">
-                    <IconPhone size={22} />
-                    <span className="ps-hotline-pulse" />
+                  <div className="ps-hotline-left-cluster">
+                    <div className="ps-hotline-icon-wrap">
+                      <IconPhone size={24} />
+                    </div>
+                    <div className="ps-hotline-info">
+                      <div className="ps-hotline-eyebrow">
+                        24/7 Immediate Care &amp; Trauma Desk
+                      </div>
+                      <a
+                        href={`tel:${CLINIC.phone.replace(/\s/g, '')}`}
+                        className="ps-hotline-tel"
+                      >
+                        {CLINIC.phone}
+                      </a>
+                      <span className="ps-hotline-sub">Direct triage with hospital reception &bull; Zero telephone queues</span>
+                    </div>
                   </div>
-                  <div className="ps-hotline-info">
-                    <div className="ps-hotline-eyebrow">24/7 Immediate Care Desk</div>
-                    <a
-                      href={`tel:${CLINIC.phone.replace(/\s/g, '')}`}
-                      className="ps-hotline-tel"
-                    >
-                      {CLINIC.phone}
-                    </a>
-                    <span className="ps-hotline-sub">Round-the-clock emergency triage & outpatient assistance</span>
-                  </div>
+                  <a
+                    href={`tel:${CLINIC.phone.replace(/\s/g, '')}`}
+                    className="ps-hotline-action-btn"
+                    aria-label="Direct call to 24/7 care desk"
+                  >
+                    <span>Direct Call</span>
+                    <span aria-hidden>&rarr;</span>
+                  </a>
                 </div>
 
                 {/* 2x2 Feature Grid */}
@@ -483,7 +498,6 @@ export default function PatientLanding() {
                           {CLINIC.email}
                         </a>
                       </p>
-                      <span className="ps-card-badge">Direct desk reply</span>
                     </div>
                   </div>
 
@@ -495,7 +509,6 @@ export default function PatientLanding() {
                     <div className="ps-card-body">
                       <h4>24/7 Services</h4>
                       <p>Outpatient care, certified emergency room, and campus pharmacy open 24 hours.</p>
-                      <span className="ps-card-badge ps-card-badge--live">Always Open</span>
                     </div>
                   </div>
 
@@ -507,7 +520,6 @@ export default function PatientLanding() {
                     <div className="ps-card-body">
                       <h4>Lab & Diagnostics</h4>
                       <p>Walk-in blood tests, digital ECG, and home sample collection across Kollam.</p>
-                      <span className="ps-card-badge">Home Pickup Available</span>
                     </div>
                   </div>
                 </div>

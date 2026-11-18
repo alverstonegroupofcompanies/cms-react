@@ -40,6 +40,13 @@ type VisitItem = {
   accent: 'clinical' | 'purple' | 'cyan' | 'teal'
   appointmentId?: number
   cancellable?: boolean
+  tokenCode?: string | null
+  tokenNumber?: number | null
+  patientName?: string | null
+  patientCode?: string | null
+  patientPhone?: string | null
+  departmentName?: string | null
+  clinicName?: string | null
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -87,8 +94,11 @@ function isToday(dateStr: string): boolean {
 
 function isMissedAppointment(a: Appointment): boolean {
   if (a.status === 'cancelled' || a.status === 'completed') return false
-  if (a.status === 'no_show') return true
+  if (a.status === 'missed' || a.status === 'no_show') return true
   if (a.status === 'checked_in' && !isToday(a.appointment_date) && appointmentStart(a).getTime() < Date.now()) {
+    return true
+  }
+  if (!isToday(a.appointment_date) && appointmentStart(a).getTime() < Date.now()) {
     return true
   }
   if (a.status !== 'booked') return false
@@ -96,7 +106,7 @@ function isMissedAppointment(a: Appointment): boolean {
 }
 
 function isUpcomingAppointment(a: Appointment): boolean {
-  if (['cancelled', 'completed', 'no_show'].includes(a.status)) return false
+  if (['cancelled', 'completed', 'no_show', 'missed'].includes(a.status)) return false
   if (a.queue_token?.status === 'completed') return false
   if (isMissedAppointment(a)) return false
   return appointmentStart(a).getTime() >= Date.now() || (a.status === 'checked_in' && isToday(a.appointment_date))
@@ -139,7 +149,14 @@ function appointmentToVisit(a: Appointment, _index: number): VisitItem {
                   : (STATUS_LABELS[a.status] || a.status),
     accent,
     appointmentId: a.id,
-    cancellable: !isCompleted && ['booked', 'no_show', 'checked_in'].includes(a.status),
+    cancellable: !isCompleted && ['booked', 'no_show', 'missed', 'checked_in'].includes(a.status),
+    tokenCode: a.queue_token?.display_code,
+    tokenNumber: a.queue_token?.token_number,
+    patientName: a.patient?.name,
+    patientCode: a.patient?.patient_code,
+    patientPhone: a.patient?.phone,
+    departmentName: a.department?.name,
+    clinicName: a.clinic?.name,
   }
 }
 
@@ -852,10 +869,12 @@ export default function VisitsSection({
                           </button>
                         </div>
                       ) : !isUpcomingTab && visit.kind === 'appointment' ? (
-                        <Link to="/patient/book" className="mv-btn-reschedule mv-btn-full" title="Book a new follow-up">
-                          <IconCalendar size={13} />
-                          <span>Book Follow-up</span>
-                        </Link>
+                        <div className="mv-button-row">
+                          <Link to="/patient/book" className="mv-btn-reschedule" title="Book a new follow-up">
+                            <IconCalendar size={13} />
+                            <span>Book Follow-up</span>
+                          </Link>
+                        </div>
                       ) : (
                         <div className="mv-card-campus-badge">
                           <IconBuilding size={12} />

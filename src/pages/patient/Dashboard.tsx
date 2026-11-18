@@ -91,8 +91,11 @@ function isTodayDate(dateStr: string): boolean {
 
 function isMissedAppointment(a: Appointment): boolean {
   if (a.status === 'cancelled' || a.status === 'completed') return false
-  if (a.status === 'no_show') return true
+  if (a.status === 'missed' || a.status === 'no_show') return true
   if (a.status === 'checked_in' && !isTodayDate(a.appointment_date) && appointmentStart(a).getTime() < Date.now()) {
+    return true
+  }
+  if (!isTodayDate(a.appointment_date) && appointmentStart(a).getTime() < Date.now()) {
     return true
   }
   if (a.status !== 'booked') return false
@@ -100,7 +103,7 @@ function isMissedAppointment(a: Appointment): boolean {
 }
 
 function isUpcomingAppointment(a: Appointment): boolean {
-  if (['cancelled', 'completed', 'no_show'].includes(a.status)) return false
+  if (['cancelled', 'completed', 'no_show', 'missed'].includes(a.status)) return false
   if (a.queue_token?.status === 'completed') return false
   if (isMissedAppointment(a)) return false
   return appointmentStart(a).getTime() >= Date.now() || (a.status === 'checked_in' && isTodayDate(a.appointment_date))
@@ -108,6 +111,7 @@ function isUpcomingAppointment(a: Appointment): boolean {
 
 function appointmentStatusLabel(a: Appointment) {
   if (a.status === 'completed' || a.queue_token?.status === 'completed') return 'Completed'
+  if (a.status === 'missed' || a.status === 'no_show') return 'Missed'
   if (a.status === 'checked_in') {
     return a.queue_token?.status === 'in_consultation' ? 'With doctor' : 'In queue'
   }
@@ -413,7 +417,6 @@ export default function PatientDashboard() {
             ================================================================== */}
         <section
           className="po-flow-hero"
-          data-reveal="hero"
           style={{ backgroundImage: "url('/images/patient-care-banner.jpg?v=2')" }}
         >
           <div className="po-flow-hero-veil" aria-hidden />
@@ -684,81 +687,10 @@ export default function PatientDashboard() {
             </div>
           )}
 
-          {/* Royal Points Loyalty Banner */}
-          <section
-            style={{
-              background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 60%, #fde68a 100%)',
-              border: '1px solid rgba(245, 158, 11, 0.3)',
-              borderRadius: '16px',
-              padding: '1.25rem 1.5rem',
-              marginBottom: '2rem',
-              boxShadow: '0 4px 15px rgba(245, 158, 11, 0.08)',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              gap: '1rem',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-              <div
-                style={{
-                  width: '44px',
-                  height: '44px',
-                  borderRadius: '12px',
-                  background: '#f59e0b',
-                  color: '#fff',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '1.4rem',
-                  boxShadow: '0 2px 8px rgba(245, 158, 11, 0.4)',
-                }}
-              >
-                👑
-              </div>
-              <div>
-                <div style={{ fontWeight: 800, color: '#92400e', fontSize: '1.05rem' }}>
-                  Royal Points Loyalty Program
-                </div>
-                <p style={{ margin: 0, fontSize: '0.85rem', color: '#78350f' }}>
-                  Earn <strong>4 pts per ₹100 spent</strong> on consultations, labs & medicines · Redeem <strong>4 pts = ₹1</strong> directly at billing
-                </p>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-              <div style={{ textAlign: 'right' }}>
-                <span style={{ fontSize: '0.78rem', color: '#78350f', fontWeight: 600, display: 'block' }}>Your Balance</span>
-                <span style={{ fontSize: '1.45rem', fontWeight: 900, color: '#92400e', lineHeight: 1 }}>
-                  {patient?.royal_points || 0} <small style={{ fontSize: '0.85rem' }}>pts</small>
-                </span>
-                <span style={{ fontSize: '0.8rem', color: '#059669', fontWeight: 700, display: 'block' }}>
-                  ≈ ₹{Math.round(((patient?.royal_points || 0) / 4) * 100) / 100} cash value
-                </span>
-              </div>
-              <Link
-                to="/patient/profile"
-                className="ps-btn"
-                style={{
-                  padding: '0.45rem 0.85rem',
-                  fontSize: '0.82rem',
-                  background: '#92400e',
-                  borderColor: '#92400e',
-                  color: '#fff',
-                  borderRadius: '8px',
-                  textDecoration: 'none',
-                }}
-              >
-                View Account
-              </Link>
-            </div>
-          </section>
-
           {/* ==================================================================
               3. FLOWING EDITORIAL CARE INDEX (REPLACES THE 4 SERVICE BOXES)
               ================================================================== */}
-          <section className="po-index-section" data-reveal>
+          <section className="po-index-section">
             <div className="po-index-intro">
               <span className="po-stage-eyebrow">Patient Care Pathways</span>
               <h2>Navigate your healthcare</h2>
@@ -826,7 +758,7 @@ export default function PatientDashboard() {
           {/* ==================================================================
               4. OPEN VERTICAL TIMELINE & BORDERLESS CLINICAL LEDGER
               ================================================================== */}
-          <section className="po-open-split" data-reveal>
+          <section className="po-open-split">
             {/* Left: Open Vertical Consultation Timeline (No Outer Box) */}
             <div className="po-open-timeline-col">
               <div className="po-open-col-head">

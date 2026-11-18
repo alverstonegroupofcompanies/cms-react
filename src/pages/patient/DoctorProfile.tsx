@@ -177,7 +177,7 @@ export default function DoctorProfile() {
                   </div>
 
                   <div className="dp-metric-cell">
-                    <span className="dp-metric-label">OPD Days</span>
+                    <span className="dp-metric-label">Clinic Days</span>
                     <span className="dp-metric-val">{doctor.daysSummary}</span>
                   </div>
                 </div>
@@ -301,7 +301,7 @@ export default function DoctorProfile() {
                 <div className="dp-step-box">
                   <span className="dp-step-num">3</span>
                   <h4 className="dp-step-heading">Enter {doctor.room}</h4>
-                  <p className="dp-step-desc">Enter when your token number appears on the OPD waiting room TV display.</p>
+                  <p className="dp-step-desc">Enter when your token number appears on the waiting room TV display.</p>
                 </div>
               </div>
             </section>
@@ -320,6 +320,14 @@ export default function DoctorProfile() {
               </div>
 
               <dl>
+                {doctor.consultationFee != null && (
+                  <div className="dp-sidebar-info-row">
+                    <dt>Consultation Fee</dt>
+                    <dd style={{ color: '#8b1e2b', fontWeight: 800, fontSize: '1rem' }}>
+                      ₹{Math.round(Number(doctor.consultationFee))}
+                    </dd>
+                  </div>
+                )}
                 <div className="dp-sidebar-info-row">
                   <dt>Consulting Room</dt>
                   <dd>{doctor.room}</dd>

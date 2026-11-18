@@ -147,6 +147,32 @@
   border: 1px solid #e2e8f0;
   box-shadow: 0 2px 8px rgba(24, 24, 27, 0.08);
   pointer-events: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.sdg-img-badge--amber {
+  background: rgba(254, 243, 199, 0.95);
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.sdg-img-badge--emerald {
+  background: rgba(236, 253, 245, 0.95);
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+.sdg-img-badge--rose {
+  background: rgba(255, 241, 242, 0.95);
+  color: #9f1239;
+  border-color: #fecdd3;
+}
+
+.sdg-img-badge--sapphire {
+  background: rgba(240, 249, 255, 0.95);
+  color: #075985;
+  border-color: #bae6fd;
 }
 
 /* Text Tiles Base */
@@ -226,101 +252,127 @@
 }
 
 /* ==========================================================================
-   TILE COLOR PALETTES (COMFORTABLE CLINICAL CRIMSON & SOFT SLATE SHADES)
+   TILE COLOR PALETTES (BALANCED MULTI-SPECIALTY MEDICAL PALETTES)
    ========================================================================== */
 
-/* 1. Soft Slate Blush Tile (Row 1, Col 2) */
+/* 1. Pediatrics - Joyful Sunny Honey Amber (Row 1, Col 2) */
+.sdg-tile--pediatrics,
 .sdg-tile--cream {
-  background: #f8fafc;
-  color: #18181b;
-  border: 1.5px solid #e2e8f0;
-  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06);
+  background: linear-gradient(150deg, #fffdf7 0%, #fef9c3 65%, #fef08a 100%);
+  color: #78350f;
+  border: 1.5px solid #fde047;
+  box-shadow: 0 10px 28px -6px rgba(202, 138, 4, 0.16);
 }
+.sdg-tile--pediatrics:hover,
 .sdg-tile--cream:hover {
-  box-shadow: 0 16px 36px -8px rgba(139, 30, 43, 0.1);
-  border-color: #cbd5e1;
+  box-shadow: 0 20px 44px -8px rgba(202, 138, 4, 0.28);
+  border-color: #eab308;
 }
+.sdg-tile--pediatrics .sdg-tag,
 .sdg-tile--cream .sdg-tag {
-  color: #8b1e2b;
+  color: #a16207;
 }
+.sdg-tile--pediatrics .sdg-tile-title,
 .sdg-tile--cream .sdg-tile-title {
-  color: #18181b;
+  color: #713f12;
 }
+.sdg-tile--pediatrics .sdg-tile-desc,
 .sdg-tile--cream .sdg-tile-desc {
-  color: #475569;
+  color: #854d0e;
 }
+.sdg-tile--pediatrics .sdg-tile-link,
 .sdg-tile--cream .sdg-tile-link {
-  color: #8b1e2b;
+  color: #a16207;
 }
 
-/* 2. Deep Velvet Crimson Tile (Row 1, Col 4) */
+/* 2. General Medicine - Deep Executive Clinical Navy & Mint (Row 1, Col 4) */
+.sdg-tile--medicine,
 .sdg-tile--dark {
-  background: #4a121a;
+  background: linear-gradient(150deg, #09131f 0%, #0d1e30 60%, #064e3b 100%);
   color: #ffffff;
-  border: 1.5px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 14px 34px -6px rgba(56, 12, 19, 0.32);
+  border: 1.5px solid rgba(110, 231, 183, 0.22);
+  box-shadow: 0 14px 36px -6px rgba(15, 23, 42, 0.35);
 }
+.sdg-tile--medicine:hover,
 .sdg-tile--dark:hover {
-  box-shadow: 0 22px 46px -10px rgba(56, 12, 19, 0.44);
+  box-shadow: 0 22px 48px -10px rgba(6, 78, 59, 0.45);
+  border-color: rgba(52, 211, 153, 0.45);
 }
+.sdg-tile--medicine .sdg-tag,
 .sdg-tile--dark .sdg-tag {
-  color: #e2e8f0;
+  color: #6ee7b7;
 }
+.sdg-tile--medicine .sdg-tile-title,
 .sdg-tile--dark .sdg-tile-title {
   color: #ffffff;
 }
+.sdg-tile--medicine .sdg-tile-desc,
 .sdg-tile--dark .sdg-tile-desc {
-  color: #f1f5f9;
+  color: #e2e8f0;
 }
+.sdg-tile--medicine .sdg-tile-link,
 .sdg-tile--dark .sdg-tile-link {
-  color: #ffffff;
+  color: #a7f3d0;
 }
 
-/* 3. Signature Medical Crimson Tile (Row 2, Col 1) */
+/* 3. Dermatology & Aesthetics - Signature Rose Garnet (Row 2, Col 1) */
+.sdg-tile--dermatology,
 .sdg-tile--slate {
-  background: #8b1e2b;
+  background: linear-gradient(150deg, #881337 0%, #9f1239 50%, #be123c 100%);
   color: #ffffff;
-  border: 1.5px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 14px 34px -6px rgba(139, 30, 43, 0.25);
+  border: 1.5px solid rgba(254, 205, 211, 0.28);
+  box-shadow: 0 14px 34px -6px rgba(159, 18, 57, 0.32);
 }
+.sdg-tile--dermatology:hover,
 .sdg-tile--slate:hover {
-  box-shadow: 0 22px 46px -10px rgba(139, 30, 43, 0.35);
+  box-shadow: 0 22px 48px -10px rgba(190, 18, 60, 0.45);
+  border-color: rgba(254, 205, 211, 0.55);
 }
+.sdg-tile--dermatology .sdg-tag,
 .sdg-tile--slate .sdg-tag {
-  color: #f1f5f9;
+  color: #fecdd3;
 }
+.sdg-tile--dermatology .sdg-tile-title,
 .sdg-tile--slate .sdg-tile-title {
   color: #ffffff;
 }
+.sdg-tile--dermatology .sdg-tile-desc,
 .sdg-tile--slate .sdg-tile-desc {
-  color: #f8fafc;
+  color: #ffe4e6;
 }
+.sdg-tile--dermatology .sdg-tile-link,
 .sdg-tile--slate .sdg-tile-link {
   color: #ffffff;
 }
 
-/* 4. Crisp White Porcelain Tile (Row 2, Col 3) */
+/* 4. Diagnostic Pathology - Precision Laboratory Sapphire Azure (Row 2, Col 3) */
+.sdg-tile--pathology,
 .sdg-tile--porcelain {
-  background: #ffffff;
-  color: #18181b;
-  border: 1.5px solid #e2e8f0;
-  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.05);
+  background: linear-gradient(150deg, #f0f9ff 0%, #e0f2fe 70%, #bae6fd 100%);
+  color: #0c4a6e;
+  border: 1.5px solid #7dd3fc;
+  box-shadow: 0 10px 28px -6px rgba(2, 132, 199, 0.16);
 }
+.sdg-tile--pathology:hover,
 .sdg-tile--porcelain:hover {
-  box-shadow: 0 18px 36px -8px rgba(139, 30, 43, 0.08);
-  border-color: #cbd5e1;
+  box-shadow: 0 20px 44px -8px rgba(2, 132, 199, 0.28);
+  border-color: #38bdf8;
 }
+.sdg-tile--pathology .sdg-tag,
 .sdg-tile--porcelain .sdg-tag {
-  color: #8b1e2b;
+  color: #0284c7;
 }
+.sdg-tile--pathology .sdg-tile-title,
 .sdg-tile--porcelain .sdg-tile-title {
-  color: #18181b;
+  color: #0c4a6e;
 }
+.sdg-tile--pathology .sdg-tile-desc,
 .sdg-tile--porcelain .sdg-tile-desc {
-  color: #475569;
+  color: #0369a1;
 }
+.sdg-tile--pathology .sdg-tile-link,
 .sdg-tile--porcelain .sdg-tile-link {
-  color: #8b1e2b;
+  color: #0284c7;
 }
 
 /* ==========================================================================

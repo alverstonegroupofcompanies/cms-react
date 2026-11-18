@@ -8,10 +8,13 @@ import {
   queueStatusLabel,
   type QueueRow,
 } from '../../components/QueueRowActions'
-import { IconQueue, IconStethoscope, IconTv } from '../../components/Icons'
+import { IconPlus, IconPrinter, IconQueue, IconStethoscope, IconTv } from '../../components/Icons'
 import { cancelToken, checkInQueueToken, checkOutQueueToken, getDoctors } from '../../api/client'
 import { useQueuePolling } from '../../hooks/useQueuePolling'
 import { receptionistNav } from '../../config/navigation'
+import TokenModal from '../../components/TokenModal'
+import IssueTokenModal from '../../components/IssueTokenModal'
+import type { TokenData } from '../../components/PrintableTokenSlip'
 import type { Doctor } from '../../api/types'
 
 export default function QueueBoard() {
@@ -19,6 +22,8 @@ export default function QueueBoard() {
   const [doctorId, setDoctorId] = useState<number | null>(null)
   const [busyId, setBusyId] = useState<number | null>(null)
   const [flash, setFlash] = useState('')
+  const [tokenModalData, setTokenModalData] = useState<TokenData | null>(null)
+  const [showIssueTokenModal, setShowIssueTokenModal] = useState(false)
   const { queue, refresh } = useQueuePolling(doctorId, 2500)
 
   useEffect(() => {
@@ -73,6 +78,23 @@ export default function QueueBoard() {
     setBusyId(null)
   }
 
+  const handlePreviewToken = (row: QueueRow) => {
+    const selectedDoctor = doctors.find((d) => d.id === doctorId)
+    const tData: TokenData = {
+      type: 'consultation',
+      tokenCode: row.display_code || (row.token_number ? `#${row.token_number}` : 'AMC01'),
+      tokenNumber: row.token_number,
+      patientName: row.patient?.name || 'Registered Patient',
+      patientCode: row.patient?.patient_code,
+      doctorName: selectedDoctor?.name,
+      specialization: selectedDoctor?.specialization,
+      roomOrCounter: 'OPD Consultation Suite',
+      slotTime: row.slot_time,
+      status: row.status,
+    }
+    setTokenModalData(tData)
+  }
+
   const rows = queue as QueueRow[]
   const waiting = rows.filter((r) => r.status === 'waiting' || r.status === 'checked_in').length
   const inConsult = rows.filter((r) => r.status === 'in_consultation').length
@@ -104,7 +126,30 @@ export default function QueueBoard() {
                 <span className="rdm-live-dot" aria-hidden /> Live
               </span>
             </div>
-            <div className="rdm-bar-right" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div className="rdm-bar-right" style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+              <button
+                type="button"
+                className="rdm-btn rdm-btn-solid"
+                onClick={() => setShowIssueTokenModal(true)}
+                title="Issue consultation token"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
+                  borderColor: '#047857',
+                  color: '#ffffff',
+                  fontWeight: 750,
+                  fontSize: '0.86rem',
+                  padding: '0.45rem 1rem',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(5, 150, 105, 0.35)',
+                }}
+              >
+                <IconPlus size={15} />
+                <span>Issue Token</span>
+              </button>
               <a
                 href={doctorId ? `/tv?doctor_id=${doctorId}&layout=horizontal` : '/tv?layout=horizontal'}
                 target="_blank"
@@ -193,9 +238,31 @@ export default function QueueBoard() {
                           key={t.id}
                           className={t.status === 'in_consultation' ? 'rdm-row-consult' : undefined}
                         >
-                          <td>{t.position}</td>
+                          <td>{t.token_number ?? t.position}</td>
                           <td>
-                            <span className="rdm-token">{t.display_code}</span>
+                            <button
+                              type="button"
+                              className="rdm-token-btn"
+                              onClick={() => handlePreviewToken(t)}
+                              title="Click to preview & print official token slip"
+                              style={{
+                                cursor: 'pointer',
+                                border: 'none',
+                                background: 'transparent',
+                                padding: 0,
+                                font: 'inherit',
+                                color: 'inherit',
+                                textAlign: 'left',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.35rem',
+                              }}
+                            >
+                              <span className="rdm-token" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                                <span style={{ color: '#38bdf8', display: 'flex' }}><IconPrinter size={13} /></span>
+                                <span>{t.display_code}</span>
+                              </span>
+                            </button>
                           </td>
                           <td>
                             <div className="rdm-patient">
@@ -219,6 +286,7 @@ export default function QueueBoard() {
                               onCheckIn={handleCheckIn}
                               onCheckOut={handleCheckOut}
                               onCancel={handleCancel}
+                              onPreviewToken={handlePreviewToken}
                               showCancel
                               allowCheckOut={false}
                             />
@@ -233,6 +301,23 @@ export default function QueueBoard() {
           </div>
         </section>
       </div>
+
+      <IssueTokenModal
+        isOpen={showIssueTokenModal}
+        onClose={() => setShowIssueTokenModal(false)}
+        doctors={doctors}
+        onTokenIssued={(tData, msg) => {
+          setFlash(msg)
+          refresh()
+          setTokenModalData(tData)
+        }}
+      />
+
+      <TokenModal
+        isOpen={Boolean(tokenModalData)}
+        token={tokenModalData}
+        onClose={() => setTokenModalData(null)}
+      />
     </Layout>
   )
 }

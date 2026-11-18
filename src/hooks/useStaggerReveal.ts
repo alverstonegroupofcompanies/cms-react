@@ -50,6 +50,7 @@ export function useStaggerReveal<T extends HTMLElement = HTMLDivElement>(options
                 start: options.start ?? ANIMATION_CONFIG.start,
                 toggleActions: ANIMATION_CONFIG.toggleActions,
                 once: true,
+                invalidateOnRefresh: true,
               },
             })
             return
